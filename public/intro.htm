@@ -1,0 +1,492 @@
+<html>
+<head>
+    <link href="css/reset.css" type="text/css" rel="stylesheet" />
+    <style>
+        body {
+            position: relative;
+            color: white;
+            text-shadow: 1px 1px 3px black;
+            width: 100%;
+        }
+
+        .intro {
+            position: absolute;
+            width: 1920px;
+            height: 1080px;
+            background-image: url("images/roncliGamingTwitch.png");
+            background-size: 1920px 1080px;
+        }
+
+        .outro {
+            position: absolute;
+            width: 1920px;
+            height: 1080px;
+            background-image: url("images/roncliGamingTwitch.png");
+            background-size: 1920px 1080px;
+            opacity: 0;
+        }
+
+        .outro.animate {
+            animation: outroFade 13s linear;
+        }
+
+        @keyframes outroFade {
+            0% {
+                opacity: 0;
+            }
+            20%, 80% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .nowPlaying {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 384px;
+        }
+
+        .npText {
+            width: 324px;
+        }
+
+        .npImage {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60px;
+            height: 60px;
+            opacity: 0.5;
+            outline: 0;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .upNext {
+            position: absolute;
+            top: 10px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            z-index: 2;
+        }
+
+        .unText {
+            font-size: 96px;
+            z-index: 2;
+        }
+
+        .unGame {
+            font-size: 120px;
+            z-index: 2;
+        }
+
+        .status {
+            position: absolute;
+            top: 930px;
+            width: 100%;
+            text-align: center;
+            z-index: 2;
+        }
+
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 1920px;
+            height: 1080px;
+            z-index: 1;
+            opacity: 0;
+        }
+
+        .background.animate {
+            animation: fader 8s linear;
+        }
+
+        .bgImage {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 1920px;
+            height: 1080px;
+            transform: scale(1);
+        }
+
+        .statusText {
+            font-size: 120px;
+        }
+
+        @keyframes fader {
+            0% {
+                opacity: 0;
+                transform: scale(0.4) rotate(15deg); 
+            }
+
+            24% {
+                opacity: 1;
+                transform: scale(0.45) rotate(7.5deg); 
+            }
+
+            72% {
+                opacity: 1;
+                transform: scale(0.55) rotate(-7.5deg); 
+            }
+
+            96% {
+                opacity: 0;
+                transform: scale(0.6) rotate(-15deg); 
+            }
+        }
+
+        .fadeout {
+            transition: opacity 4s linear;
+            opacity: 0;
+        }
+
+        .countdown {
+            position: absolute;
+            width: 1920px;
+            height: 1080px;
+        }
+
+        .container {
+            position: absolute;
+            width: 1920px;
+            height: 1080px;
+        }
+
+        .small, .large {
+            display: table-cell;
+            width: 1920px;
+            height: 1080px;
+            font-size: 576px;
+            text-align: center;
+            vertical-align: middle;
+            transform: scale(1);
+        }
+
+        .large {
+            color: #404040;
+            z-index: -1;
+        }
+
+        .small:after, .large:after {
+            opacity: 1;
+            content: "";
+        }
+
+        .small.animate {
+            animation: shrink 10s linear;
+        }
+
+        .large.animate {
+            animation: grow 10s linear;
+        }
+
+        .animate:after {
+            animation: countdown 10s linear;
+        }
+
+        @keyframes shrink {
+            0% {
+                transform: scale(1);
+            }
+            9.99% {
+                transform: scale(0);
+            }
+            10% {
+                transform: scale(1);
+            }
+            19.99% {
+                transform: scale(0);
+            }
+            20% {
+                transform: scale(1);
+            }
+            29.99% {
+                transform: scale(0);
+            }
+            30% {
+                transform: scale(1);
+            }
+            39.99% {
+                transform: scale(0);
+            }
+            40% {
+                transform: scale(1);
+            }
+            49.99% {
+                transform: scale(0);
+            }
+            50% {
+                transform: scale(1);
+            }
+            59.99% {
+                transform: scale(0);
+            }
+            60% {
+                transform: scale(1);
+            }
+            69.99% {
+                transform: scale(0);
+            }
+            70% {
+                transform: scale(1);
+            }
+            79.99% {
+                transform: scale(0);
+            }
+            80% {
+                transform: scale(1);
+            }
+            89.99% {
+                transform: scale(0);
+            }
+            90% {
+                transform: scale(1);
+            }
+            93.33% {
+                transform: scale(0);
+            }
+            93.34% {
+                transform: scale(2);
+            }
+            96.66% {
+                transform: scale(0);
+            }
+            96.67% {
+                transform: scale(3);
+            }
+            100% {
+                transform: scale(0);
+            }
+        }
+
+        @keyframes grow {
+            0% {
+                transform: scale(1);
+            }
+            9.99% {
+                transform: scale(15);
+            }
+            10% {
+                transform: scale(1);
+            }
+            19.99% {
+                transform: scale(15);
+            }
+            20% {
+                transform: scale(1);
+            }
+            29.99% {
+                transform: scale(15);
+            }
+            30% {
+                transform: scale(1);
+            }
+            39.99% {
+                transform: scale(15);
+            }
+            40% {
+                transform: scale(1);
+            }
+            49.99% {
+                transform: scale(15);
+            }
+            50% {
+                transform: scale(1);
+            }
+            59.99% {
+                transform: scale(15);
+            }
+            60% {
+                transform: scale(1);
+            }
+            69.99% {
+                transform: scale(15);
+            }
+            70% {
+                transform: scale(1);
+            }
+            79.99% {
+                transform: scale(15);
+            }
+            80% {
+                transform: scale(1);
+            }
+            89.99% {
+                transform: scale(15);
+            }
+            90% {
+                transform: scale(1);
+            }
+            93.33% {
+                transform: scale(15);
+            }
+            93.34% {
+                transform: scale(2);
+            }
+            96.66% {
+                transform: scale(15);
+            }
+            96.67% {
+                transform: scale(3);
+            }
+            100% {
+                transform: scale(15);
+            }
+        }
+
+        @keyframes countdown {
+            0% {
+                opacity: 1;
+                content: "10";
+            }
+            9.99% {
+                opacity: 0;
+                content: "10";
+            }
+            10% {
+                opacity: 1;
+                content: "9";
+            }
+            19.99% {
+                opacity: 0;
+                content: "9";
+            }
+            20% {
+                opacity: 1;
+                content: "8";
+            }
+            29.99% {
+                opacity: 0;
+                content: "8";
+            }
+            30% {
+                opacity: 1;
+                content: "7";
+            }
+            39.99% {
+                opacity: 0;
+                content: "7";
+            }
+            40% {
+                opacity: 1;
+                content: "6";
+            }
+            49.99% {
+                opacity: 0;
+                content: "6";
+            }
+            50% {
+                opacity: 1;
+                content: "5";
+            }
+            59.99% {
+                opacity: 0;
+                content: "5";
+            }
+            60% {
+                opacity: 1;
+                content: "4";
+            }
+            69.99% {
+                opacity: 0;
+                content: "4";
+            }
+            70% {
+                opacity: 1;
+                content: "3";
+            }
+            79.99% {
+                opacity: 0;
+                content: "3";
+            }
+            80% {
+                opacity: 1;
+                content: "2";
+            }
+            89.99% {
+                opacity: 0;
+                content: "2";
+            }
+            90% {
+                opacity: 1;
+                content: "1";
+            }
+            93.33% {
+                opacity: 0;
+                content: "1";
+            }
+            93.34% {
+                opacity: 1;
+                content: "1";
+            }
+            96.66% {
+                opacity: 0;
+                content: "1";
+            }
+            96.67% {
+                opacity: 1;
+                content: "1";
+            }
+            100% {
+                opacity: 0;
+                content: "1";
+            }
+        }
+    </style>
+    <script src="js/local.js"></script>
+    <script src="js/intro.js"></script>
+    <script src="js/slideshow.js"></script>
+</head>
+<body>
+    <div class="intro">
+        <div class="nowPlaying">
+            <div class="npText"></div>
+            <img class="npImage hidden" />
+        </div>
+        <div class="upNext">
+            <div class="unText">Up Next:</div>
+            <div class="unGame"></div>
+        </div>
+        <div class="status">
+            <div class="statusText"></div>
+        </div>
+        <div class="background">
+            <img class="bgImage" />
+        </div>
+    </div>
+    <div class="countdown">
+        <div class="container">
+            <div class="small"></div>
+        </div>
+        <div class="container">
+            <div class="large"></div>
+        </div>
+    </div>
+    <div class="outro"></div>
+    <audio id="countdownHype">
+        <source src="/media/countdown.mp3" type="audio/mp3">
+    </audio>
+    <audio id="roncliProductionsOrchestral">
+        <source src="/media/roncliProductionsIntro.ogg" type="audio/ogg">
+    </audio>
+    <audio id="roncliProductionsPiano">
+        <source src="/media/roncliProductionsIntroPiano.mp3" type="audio/mp3">
+    </audio>
+    <audio id="roncliProductionsTechno">
+        <source src="/media/roncliProductionsIntroTechno.mp3" type="audio/mp3">
+    </audio>
+    <script>
+        updateDiv(".unGame", "C:\\Users\\roncli\\Desktop\\roncliGaming\\roncliGamingUpNext.txt", 5000);
+        //updateDiv(".statusText", "C:\\Users\\roncli\\Desktop\\roncliGaming\\roncliGamingStatus.txt", 5000);
+        updateDiv(".npText", "C:\\Snaz\\TextFiles\\TrackInfo.txt");
+    </script>
+</body>
+</html>

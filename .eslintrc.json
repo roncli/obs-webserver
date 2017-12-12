@@ -1,0 +1,76 @@
+{
+    "env": {
+        "es6": true,
+        "node": true
+    },
+    "globals": {},
+    "parserOptions": {
+        "ecmaFeatures": {
+            "impliedStrict": true
+        },
+        "sourceType": "module",
+        "ecmaVersion": 6
+    },
+    "extends": "eslint:all",
+    "rules": {
+        "array-element-newline": "off",
+        "capitalized-comments": "off",
+        "camelcase": "off",
+        "class-methods-use-this": "off",
+        "complexity": "off",
+        "consistent-this": "off",
+        "default-case": "off",
+        "dot-location": "off",
+        "func-names": "off",
+        "global-require": "off",
+        "id-length": "off",
+        "indent": ["error", 4, {"SwitchCase": 1}],
+        "init-declarations": "off",
+        "line-comment-position": "off",
+        "linebreak-style": "off",
+        "max-depth": "off",
+        "max-len": "off",
+        "max-lines": "off",
+        "max-params": "off",
+        "max-statements": "off",
+        "multiline-ternary": "off",
+        "newline-per-chained-call": "off",
+        "no-confusing-arrow": "off",
+        "no-console": "off",
+        "no-continue": "off",
+        "no-empty-function": "off",
+        "no-implicit-coercion": "off",
+        "no-inline-comments": "off",
+        "no-invalid-this": "off",
+        "no-magic-numbers": "off",
+        "no-mixed-operators": "off",
+        "no-mixed-requires": "off",
+        "no-nested-ternary": "off",
+        "no-param-reassign": "off",
+        "no-plusplus": "off",
+        "no-process-exit": "off",
+        "no-return-assign": "off",
+        "no-trailing-spaces": ["error", {"ignoreComments": false}],
+        "no-ternary": "off",
+        "no-underscore-dangle": "off",
+        "no-useless-constructor": "off",
+        "no-void": "off",
+        "object-property-newline": "off",
+        "one-var": ["off", {"const": "always"}],
+        "padded-blocks": "off",
+        "prefer-destructuring": ["error", {"array": false}, {"enforceForRenamedProperties": true}],
+        "sort-keys": "off",
+        "sort-vars": "off",
+        "space-before-function-paren": "off",
+        "quote-props": "off",
+        "require-jsdoc": ["error", {
+            "require": {
+                "FunctionDeclaration": true,
+                "MethodDefinition": true,
+                "ClassDeclaration": true,
+                "ArrowFunctionExpression": true
+            }
+        }],
+        "valid-jsdoc": ["error", {"prefer": {"return": "return"}}]
+    }
+}

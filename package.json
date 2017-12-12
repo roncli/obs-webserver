@@ -1,0 +1,25 @@
+{
+    "name": "obs-webserver",
+    "version": "0.0.1",
+    "description": "roncli Gaming webserver for OBS.",
+    "license": "None",
+    "author": {
+        "name": "Ronald M. Clifford",
+        "email": "roncli@roncli.com",
+        "url": "http://www.roncli.com"
+    },
+    "dependencies": {
+        "body-parser": "1.18.2",
+        "express": "4.16.2",
+        "google-spreadsheet": "2.0.4",
+        "jquery": "3.2.1",
+        "jsdom": "11.5.1",
+        "request": "2.83.0",
+        "spotify-web-api-node": "2.5.0",
+        "steam-api": "1.1.3"
+    },
+    "engines": {
+        "node": ">=8.0.0"
+    },
+    "private": true
+}

@@ -1,0 +1,75 @@
+<html>
+<head>
+    <link href="css/reset.css" type="text/css" rel="stylesheet" />
+    <style>
+        .title, .title * {
+            text-align: center;
+            font-size: 48px;
+        }
+
+        * {
+            font-family: "NecroSans";
+            font-size: 32px;
+            color: #cccccc;
+        }
+
+        table {
+            margin: auto;
+        }
+
+        th, td {
+            padding: 0 30px;
+            text-align: left;
+        }
+
+        .standings table tbody td:nth-child(1),
+        .standings table tbody td:nth-child(3),
+        .standings table tbody td:nth-child(4),
+        .standings table tbody td:nth-child(5),
+        .standings table tbody td:nth-child(6),
+        .standings table tbody td:nth-child(7) {
+            text-align: center;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .results table thead th,
+        .upcoming table thead th {
+            text-align: center;
+        }
+    </style>
+    <script src="js/ndc6.js"></script>
+</head>
+<body>
+    <div class="results hidden">
+        <div class="title">Previous Results - <span class="tier"></span></div><br />
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="2">Racers</th>
+                    <th>Date</th>
+                    <th>Result</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div class="upcoming hidden">
+        <div class="title">Upcoming Matches - <span class="tier2"></span></div><br />
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="2">Racers</th>
+                    <th>Scheduled Date</th>
+                    <th>Cawmunity Cast</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<html>
+<head>
+    <link href="css/reset.css" type="text/css" rel="stylesheet" />
+    <style>
+        body {
+            position: relative;
+            color: white;
+            text-shadow: 1px 1px 3px black;
+            width: 100%;
+        }
+
+        .nowPlaying {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 384px;
+        }
+
+        .npText {
+            width: 324px;
+        }
+
+        .npImage {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60px;
+            height: 60px;
+            opacity: 0.5;
+            outline: 0;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .upNext {
+            position: absolute;
+            top: 10px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+        }
+
+        .unText {
+            font-size: 96px;
+        }
+
+        .unGame {
+            font-size: 120px;
+        }
+
+        .status {
+            position: absolute;
+            top: 930px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 1920px;
+            height: 1080px;
+            z-index: -1;
+            opacity: 0;
+        }
+
+        .background.animate {
+            animation: fader 8s linear;
+        }
+
+        .bgImage {
+            position: absolute;
+            top: 0;
+            left 0;
+            width: 1920px;
+            height: 1080px;
+            transform: scale(1);
+        }
+
+        .statusText {
+            font-size: 120px;
+        }
+
+        @keyframes fader {
+            0% {
+                opacity: 0;
+                transform: scale(0.4) rotate(15deg); 
+            }
+
+            24% {
+                opacity: 1;
+                transform: scale(0.45) rotate(7.5deg); 
+            }
+
+            72% {
+                opacity: 1;
+                transform: scale(0.55) rotate(-7.5deg); 
+            }
+
+            96% {
+                opacity: 0;
+                transform: scale(0.6) rotate(-15deg); 
+            }
+        }
+    </style>
+    <script src="js/local.js"></script>
+    <script src="js/slideshow.js"></script>
+</head>
+<body>
+<div class="nowPlaying">
+    <div class="npText"></div>
+    <img class="npImage hidden" />
+</div>
+<div class="upNext">
+    <div class="unText">Up Next:</div>
+    <div class="unGame"></div>
+</div>
+<div class="status">
+    <div class="statusText">Be right back!</div>
+</div>
+<div class="background">
+    <img class="bgImage" />
+</div>
+<script>
+    updateDiv(".unGame", "C:\\Users\\roncli\\Desktop\\roncliGaming\\roncliGamingUpNext.txt", 5000);
+    updateSpotify(".npText", ".npImage", 1000);
+</script>
+</body>
+</html>

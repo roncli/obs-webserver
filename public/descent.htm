@@ -1,0 +1,116 @@
+<html>
+<head>
+    <link href="css/reset.css" type="text/css" rel="stylesheet"/>
+    <style>
+        body {
+            position: relative;
+        }
+
+        .container {
+            position: absolute;
+            width: 1920px;
+            left: 0;
+            bottom: 266px;
+        }
+
+        .video {
+            position: relative;
+            margin: 4px 0;
+            width: 384px;
+            height: 216px;
+        }
+
+        .top {
+            display: table-cell;
+            max-width: 384px;
+            height: 300px;
+            vertical-align: bottom;
+        }
+
+        .dcl {
+            position: absolute;
+            width: 384px;
+            right: 0;
+            top: 0;
+        }
+
+        .rank {
+            text-transform: capitalize;
+        }
+
+        .roncliGaming {
+            text-align: center;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+        }
+
+        .alerts {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 384px;
+            height: 216px;
+        }
+
+        .top, .dcl {
+            color: white;
+            text-shadow: 1px 1px 3px black;
+        }
+
+        .roncliGaming div {
+            text-shadow: 1px 1px 3px white;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+    <script src="js/local.js"></script>
+    <script src="js/dcl.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="top">
+            <div class="topText">
+                Descent Rangers:<br />
+                • http://www.descentrangers.com<br />
+                <br />
+                Descent Champions Ladder:<br />
+                • http://www.descentchampions.org<br />
+                <br />
+                Descent: Underground:<br />
+                • http://ronc.li/descent-underground<br />
+                <br />
+                Get Retro for Descent 1 and 2!<br />
+                • http://ronc.li/get-retro
+            </div><br />
+            <div class="topStatus"></div>
+        </div>
+        <div class="video">
+            <video autoplay="autoplay" id="video" width="384"></video>
+            <div class="roncliGaming">
+                <img src="images/roncliProductions60.png">
+                <div>roncli Gaming</div>
+            </div>
+            <iframe class="alerts" src="https://streamlabs.com/alert-box/v3/736C04212DA2E1949B1F"></iframe>
+        </div>
+        <div class="dcl hidden">
+            Descent Champions Ladder stats:<br />
+            <span class="rank"></span><br /><br />
+            Records:<br />
+            vs. Diamond: <span class="diamond"></span><br />
+            vs. Gold: <span class="gold"></span><br />
+            vs. Silver: <span class="silver"></span><br />
+            vs. Bronze: <span class="bronze"></span><br />
+            vs. Unrated: <span class="unrated"></span><br /><br />
+            Recent games:<br />
+            <div class="games"></div>
+        </div>
+    </div>
+    <script>
+        updateVideo("#video");
+        updateDiv(".topStatus", "C:\\Users\\roncli\\Desktop\\roncliGaming\\roncliGamingStreamText.txt", 5000);
+    </script>
+</body>
+</html>
