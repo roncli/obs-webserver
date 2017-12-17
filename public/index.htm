@@ -1,102 +1,43 @@
 <html>
 <head>
     <link href="css/reset.css" type="text/css" rel="stylesheet"/>
-    <style>
-        body {
-            position: relative;
-        }
-
-        .container {
-            position: absolute;
-            top: 432px;
-            max-width: 384px;
-            right: 0;
-        }
-
-        .video {
-            position: relative;
-            margin: 4px 0;
-            width: 384px;
-            height: 216px;
-        }
-
-        .top {
-            display: table-cell;
-            height: 300px;
-            width: 100%;
-            vertical-align: bottom;
-        }
-
-        .roncliGaming {
-            text-align: center;
-            position: absolute;
-            top: 5px;
-            right: 5px;
-        }
-
-        .alerts {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 384px;
-            height: 216px;
-        }
-
-        .top, .bottom {
-            color: white;
-            text-shadow: 1px 1px 3px black;
-        }
-
-        .roncliGaming div {
-            text-shadow: 1px 1px 3px white;
-        }
-
-        .bottom {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-        }
-
-        .bottomText {
-            width: 324px;
-        }
-
-        .bottomImage {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 60px;
-            height: 60px;
-        }
-
-        .hidden {
-            display: none;
-        }
-    </style>
-    <script src="js/local.js"></script>
+    <link href="css/index.css" type="text/css" rel="stylesheet"/>
+    <script src="js/index.js"></script>
 </head>
 <body>
-    <div class="container">
-        <div class="top"></div>
-        <div class="video">
-            <video autoplay="autoplay" id="video" width="384"></video>
-            <div class="roncliGaming">
-                <img src="images/roncliProductions60.png">
-
-                <div>roncli Gaming</div>
-            </div>
-            <iframe class="alerts" src="https://streamlabs.com/alert-box/v3/736C04212DA2E1949B1F"></iframe>
-            <div class="bottom">
-                <div class="bottomText"></div>
-            </div>
-            <img class="bottomImage hidden"/>
+    <div id="now-playing" class="hidden">
+        <div class="track">
+            <div class="track-text"></div>
+        </div>
+        <img class="album-art hidden"/>
+    </div>
+    <div id="video" class="hidden">
+        <video autoplay="autoplay" id="video" width="384"></video>
+        <div class="roncliGaming">
+            <img src="images/roncliProductions60.png">
+            <div>roncli Gaming</div>
+        </div>
+        <iframe class="alerts" src="https://streamlabs.com/alert-box/v3/736C04212DA2E1949B1F"></iframe>
+    </div>
+    <div id="intro" class="hidden">
+        <div class="upNext">
+            <div class="unText">Up Next:</div>
+            <div class="unGame"></div>
+        </div>
+        <div class="status">
+            <div class="statusText">Be Right Back!</div>
+        </div>
+        <div class="background">
+            <img class="bgImage" />
         </div>
     </div>
-    <script>
-        positionContainer();
-        updateVideo("#video");
-        updateDiv(".top", "C:\\Users\\roncli\\Desktop\\roncliGaming\\roncliGamingStreamText.txt", 5000);
-        updateSpotify(".bottomText", ".bottomImage", 1000);
-    </script>
+    <div id="brb" class="hidden">
+
+    </div>
+    <div id="scene" class="hidden">
+        <div class="container">
+            <div class="stream-text"></div>
+        </div>
+    </div>
 </body>
 </html>

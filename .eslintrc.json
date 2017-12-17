@@ -22,6 +22,7 @@
         "default-case": "off",
         "dot-location": "off",
         "func-names": "off",
+        "getter-return": "off",
         "global-require": "off",
         "id-length": "off",
         "indent": ["error", 4, {"SwitchCase": 1}],
@@ -34,6 +35,10 @@
         "max-params": "off",
         "max-statements": "off",
         "multiline-ternary": "off",
+        "new-cap": [
+            "error",
+            {"properties": false}
+        ],
         "newline-per-chained-call": "off",
         "no-confusing-arrow": "off",
         "no-console": "off",

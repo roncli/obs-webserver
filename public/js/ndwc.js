@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function(ev) {
             start(JSON.parse(x.responseText));
         }
     };
-    x.open("GET", "api/necrodancerworldcup", true);
+    x.open("GET", "api/necrodancerWorldCup", true);
     x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     x.send();
 });

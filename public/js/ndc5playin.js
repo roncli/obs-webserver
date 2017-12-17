@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function(ev) {
             start(JSON.parse(x.responseText));
         }
     };
-    x.open("GET", "api/necrodancercondor5", true);
+    x.open("GET", "api/necrodancerCondor5", true);
     x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     x.send();
 });

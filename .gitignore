@@ -57,6 +57,9 @@ typings/
 # dotenv environment variables file
 .env
 
+# VS Code
+.vscode/
+
 # Sensitive stuff
 config.js
 roncli.com-*.json

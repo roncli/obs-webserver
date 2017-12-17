@@ -1,0 +1,16 @@
+{
+    "env": {
+        "es6": true,
+        "node": false,
+        "browser": true
+    },
+    "globals": {},
+    "parserOptions": {
+        "ecmaFeatures": {
+            "impliedStrict": true
+        },
+        "sourceType": "module",
+        "ecmaVersion": 6
+    },
+    "extends": "../.eslintrc.json"
+}
