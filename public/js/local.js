@@ -106,18 +106,19 @@ var updateSpotify = function(textElement, imageElement, interval) {
 
             if (x.readyState === 4 && x.status === 200) {
                 response = JSON.parse(x.responseText);
-                if (response.item) {
-                    document.querySelector(textElement).innerText = (response.item.artists && response.item.artists[0] && response.item.artists[0].name && response.item.name ? "Now Playing:\n" + response.item.artists[0].name + " - " + response.item.name : "");
-                    if (response.item.album && response.item.album.images && response.item.album.images[0]) {
-                        if (response.item.album.images[0].url !== document.querySelector(imageElement).src) {
-                            document.querySelector(imageElement).src = response.item.album.images[0].url;
+
+                if (response.playing) {
+                    document.querySelector(textElement).innerText = "Now Playing:\n" + response.artist + " - " + response.title;
+                    if (response.imageUrl) {
+                        if (response.imageUrl !== document.querySelector(imageElement).src) {
+                            document.querySelector(imageElement).src = response.imageUrl;
                             document.querySelector(imageElement).classList.remove("hidden");
                         }
                     } else {
                         document.querySelector(imageElement).src = "";
                         document.querySelector(imageElement).classList.add("hidden");
                     }
-                    setTimeout(readSpotify, Math.min((1000 + response.item.duration_ms - response.progress_ms) || 10000, 10000));
+                    setTimeout(readSpotify, Math.min((1000 + response.duration - response.progress) || 10000, 10000));
                 } else {
                     setTimeout(readSpotify, 10000);
                 }

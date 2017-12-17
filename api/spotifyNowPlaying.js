@@ -27,21 +27,10 @@ class SpotifyNowPlaying {
      * @returns {void}
      */
     static get(req, res) {
-        Spotify.getSpotifyToken().then(() => {
-            Spotify.spotify.getMyCurrentPlayingTrack().then((response) => {
-                res.status(200);
-                res.send(JSON.stringify(response.body));
-                res.end();
-            }).catch((err) => {
-                if (err.statusCode === 400) {
-                    res.send("{}");
-                    res.sendStatus(200);
-                    return;
-                }
-
-                res.sendStatus(500);
-                console.log(err);
-            });
+        Spotify.nowPlaying().then((track) => {
+            res.status(200);
+            res.send(JSON.stringify(track));
+            res.end();
         }).catch((err) => {
             res.sendStatus(500);
             console.log(err);

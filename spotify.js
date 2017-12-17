@@ -1,5 +1,7 @@
 const config = require("./config"),
-    SpotifyApi = require("spotify-web-api-node");
+    SpotifyApi = require("spotify-web-api-node"),
+    SpotifyWebHelper = require("spotify-webhelper"),
+    {promisify} = require("util");
 
 let accessTokenValid = false;
 
@@ -47,6 +49,56 @@ class Spotify {
             }).catch((err) => {
                 reject(err);
             });
+        });
+    }
+
+    //                   ###   ##                 #
+    //                   #  #   #
+    // ###    ##   #  #  #  #   #     ###  #  #  ##    ###    ###
+    // #  #  #  #  #  #  ###    #    #  #  #  #   #    #  #  #  #
+    // #  #  #  #  ####  #      #    # ##   # #   #    #  #   ##
+    // #  #   ##   ####  #     ###    # #    #   ###   #  #  #
+    //                                      #                 ###
+    /**
+     * Returns the currently playing track.
+     * @returns {Promise} A promise that resolves with the currently playing track.
+     */
+    static nowPlaying() {
+        return new Promise((resolve, reject) => {
+            Spotify.getSpotifyToken().then(() => {
+                Spotify.spotify.getMyCurrentPlayingTrack().then((response) => {
+                    if (response && response.body && response.body.item) {
+                        resolve({
+                            playing: response.body.is_playing,
+                            progress: response.body.progress_ms,
+                            duration: response.body.item.duration_ms,
+                            imageUrl: response.body.item.album.images[0] && response.body.item.album.images[0].url,
+                            title: response.body.item.name,
+                            artist: response.body.item.artists[0].name
+                        });
+                    } else {
+                        resolve({});
+                    }
+                }).catch((err) => {
+                    if (err.statusCode === 400) {
+                        const webHelper = new SpotifyWebHelper.SpotifyWebHelper();
+
+                        promisify(webHelper.getStatus).bind(webHelper)().then((response) => {
+                            resolve({
+                                playing: response.playing,
+                                progress: Math.round(response.playing_position * 1000),
+                                duration: response.track.length * 1000,
+                                title: response.track.track_resource.name,
+                                artist: response.track.artist_resource.name
+                            });
+                        }).catch(reject);
+
+                        return;
+                    }
+
+                    reject(err);
+                });
+            }).catch(reject);
         });
     }
 }

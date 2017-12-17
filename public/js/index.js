@@ -148,19 +148,21 @@ class Index {
         Index.readSpotify().then((responseText) => {
             const response = JSON.parse(responseText);
 
-            if (response.item) {
-                document.querySelector(textElement).innerText = response.item.artists && response.item.artists[0] && response.item.artists[0].name && response.item.name ? `Now Playing:\n${response.item.artists[0].name} - ${response.item.name}` : "";
-                if (response.item.album && response.item.album.images && response.item.album.images[0]) {
-                    if (response.item.album.images[0].url !== document.querySelector(imageElement).src) {
-                        ({url: document.querySelector(imageElement).src} = response.item.album.images[0]);
-                        document.querySelector(imageElement).classList.remove("hidden");
+            if (response.playing) {
+                const image = document.querySelector(imageElement);
+
+                document.querySelector(textElement).innerText = `Now Playing:\n${response.artist} - ${response.title}`;
+                if (response.imageUrl) {
+                    if (response.imageUrl !== document.querySelector(imageElement).src) {
+                        ({imageUrl: image.src} = response);
+                        image.classList.remove("hidden");
                     }
                 } else {
-                    document.querySelector(imageElement).src = "";
-                    document.querySelector(imageElement).classList.add("hidden");
+                    image.src = "";
+                    image.classList.add("hidden");
                 }
 
-                return Math.min(1000 + response.item.duration_ms - response.progress_ms || interval, interval);
+                return Math.min(1000 + response.duration - response.progress || interval, interval);
             }
 
             return void 0;

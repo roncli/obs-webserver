@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function(ev) {
 
                 playSong = function(track, playlist) {
                     var x = new XMLHttpRequest();
-                    x.open("POST", "api/playSong", true);
+                    x.open("POST", "api/spotifyPlay", true);
                     x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                     if (track) {
                         x.send("track=" + track + "&stop=true");
