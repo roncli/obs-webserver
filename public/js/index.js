@@ -192,9 +192,116 @@ class Index {
             Index.rotateSlideshow(index);
         }, 8000);
     }
+
+    static red(x) {
+        if (x <= 1 / 6 || x >= 5 / 6) {
+            return 255;
+        }
+
+        if (x >= 2 / 6 && x <= 4 / 6) {
+            return 0;
+        }
+
+        if (x > 1 / 6 && x < 2 / 6) {
+            return Math.floor((2 / 6 - x) * 6 * 255);
+        }
+
+        if (x > 4 / 6 && x < 5 / 6) {
+            return Math.floor((x - 4 / 6) * 6 * 255);
+        }
+    }
+
+    static green(x) {
+        if (x >= 1 / 6 && x <= 3 / 6) {
+            return 255;
+        }
+
+        if (x >= 4 / 6) {
+            return 0;
+        }
+
+        if (x > 3 / 6 && x < 4 / 6) {
+            return Math.floor((4 / 6 - x) * 6 * 255);
+        }
+
+        if (x < 1 / 6) {
+            return Math.floor(x * 6 * 255);
+        }
+    }
+
+    static blue(x) {
+        if (x >= 3 / 6 && x <= 5 / 6) {
+            return 255;
+        }
+
+        if (x <= 2 / 6) {
+            return 0;
+        }
+
+        if (x > 5 / 6) {
+            return Math.floor((1 - x) * 6 * 255);
+        }
+
+        if (x > 2 / 6 && x < 3 / 6) {
+            return Math.floor((x - 2 / 6) * 6 * 255);
+        }
+    }
+
+    static analyzer() {
+        const audioContext = new window.AudioContext(),
+            analyser = audioContext.createAnalyser(),
+            canvas = document.getElementById("analyzer"),
+            canvasCtx = canvas.getContext("2d");
+
+        analyser.minDecibels = -100;
+        analyser.maxDecibels = -15;
+        analyser.smoothingTimeConstant = 0.3;
+        analyser.fftSize = 512;
+
+        navigator.getUserMedia(
+            {audio: true},
+            (stream) => {
+                const source = audioContext.createMediaStreamSource(stream),
+                    dataArrayAlt = new Uint8Array(analyser.frequencyBinCount);
+
+                source.connect(analyser);
+                analyser.connect(audioContext.destination);
+
+                canvasCtx.clearRect(0, 0, 1920, 200);
+
+                const drawAlt = () => {
+                    requestAnimationFrame(drawAlt);
+
+                    analyser.getByteFrequencyData(dataArrayAlt);
+
+                    canvasCtx.fillStyle = "rgb(0, 0, 0)";
+                    canvasCtx.fillRect(0, 0, 1920, 200);
+
+                    let x = 0;
+
+                    for (let i = 0; i < analyser.frequencyBinCount; i++) {
+                        if (x >= 1920) {
+                            break;
+                        }
+
+                        const {[i]: barHeight} = dataArrayAlt;
+
+                        canvasCtx.fillStyle = `rgb(${Index.red(x / 1920)}, ${Index.green(x / 1920)}, ${Index.blue(x / 1920)})`;
+                        canvasCtx.fillRect(x, 200 - barHeight / 2, 2500 / analyser.frequencyBinCount - 1, barHeight / 2);
+
+                        x += 2500 / analyser.frequencyBinCount;
+                    }
+                };
+
+                drawAlt();
+            },
+            () => {}
+        );
+    }
 }
 
 document.addEventListener("DOMContentLoaded", (ev) => {
+    Index.analyzer();
     Index.positionContainer();
     Index.updateVideo("#video");
     Index.updateDiv(".stream-text", "C:\\Users\\roncli\\Desktop\\roncliGaming\\roncliGamingStreamText.txt", 5000);
