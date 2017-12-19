@@ -70,6 +70,15 @@ body {
     display: none;
 }
 
+#intro {
+    position: relative;
+    background-color: black;
+    color: white;
+    text-shadow: 1px 1px 3px black;
+    width: 1920px;
+    height: 1080px;
+}
+
 #intro .intro {
     position: absolute;
     width: 1920px;
@@ -85,6 +94,11 @@ body {
     background-image: url("images/roncliGamingTwitch.png");
     background-size: 1920px 1080px;
     opacity: 0;
+}
+
+#intro .analyzer {
+    position: absolute;
+    bottom: 0;
 }
 
 #intro .outro.animate {

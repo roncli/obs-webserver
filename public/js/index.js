@@ -7,7 +7,29 @@ const slideshowImages = [
     "images/wow.png"
 ];
 
+//   ###              #
+//    #               #
+//    #    # ##    ## #   ###   #   #
+//    #    ##  #  #  ##  #   #   # #
+//    #    #   #  #   #  #####    #
+//    #    #   #  #  ##  #       # #
+//   ###   #   #   ## #   ###   #   #
+/**
+ * A class of static functions for the index page.
+ */
 class Index {
+    //                      #  #                       ##
+    //                      #  #                        #
+    // ###    ##    ###   ###  #      ##    ##    ###   #
+    // #  #  # ##  #  #  #  #  #     #  #  #     #  #   #
+    // #     ##    # ##  #  #  #     #  #  #     # ##   #
+    // #      ##    # #   ###  ####   ##    ##    # #  ###
+    /**
+     * Reads a local file.
+     * @param {string} path The path of the file.
+     * @param {boolean} base64 Whether to retrieve its Base64 representation.
+     * @returns {Promise} A promise that resolves with the contents of the file.
+     */
     static readLocal(path, base64) {
         return new Promise((resolve, reject) => {
             const x = new XMLHttpRequest();
@@ -25,6 +47,17 @@ class Index {
         });
     }
 
+    //                      #   ##                #     #      #
+    //                      #  #  #               #           # #
+    // ###    ##    ###   ###   #    ###    ##   ###   ##     #    #  #
+    // #  #  # ##  #  #  #  #    #   #  #  #  #   #     #    ###   #  #
+    // #     ##    # ##  #  #  #  #  #  #  #  #   #     #     #     # #
+    // #      ##    # #   ###   ##   ###    ##     ##  ###    #      #
+    //                               #                              #
+    /**
+     * Reads now playing information from Spotify.
+     * @returns {Promise} A promise that resolves with the Spotify information.
+     */
     static readSpotify() {
         return new Promise((resolve, reject) => {
             const x = new XMLHttpRequest();
@@ -52,6 +85,18 @@ class Index {
         });
     }
 
+    //       #                 #     #                   #    #  #           #         #
+    //       #                 #     #                   #    #  #           #         #
+    //  ##   ###    ##    ##   # #   #      ###   ###   ###   #  #  ###    ###   ###  ###    ##
+    // #     #  #  # ##  #     ##    #     #  #  ##      #    #  #  #  #  #  #  #  #   #    # ##
+    // #     #  #  ##    #     # #   #     # ##    ##    #    #  #  #  #  #  #  # ##   #    ##
+    //  ##   #  #   ##    ##   #  #  ####   # #  ###      ##   ##   ###    ###   # #    ##   ##
+    //                                                              #
+    /**
+     * Checks the last update date of a local file.
+     * @param {string} path The path of the file.
+     * @returns {Promise} A promise that resolves with the last update date of the file.
+     */
     static checkLastUpdate(path) {
         return new Promise((resolve, reject) => {
             const x = new XMLHttpRequest();
@@ -79,24 +124,46 @@ class Index {
         });
     }
 
-    static positionContainer() {
+    //                     #     #     #                 ##                #           #
+    //                           #                      #  #               #
+    // ###    ##    ###   ##    ###   ##     ##   ###   #      ##   ###   ###    ###  ##    ###    ##   ###
+    // #  #  #  #  ##      #     #     #    #  #  #  #  #     #  #  #  #   #    #  #   #    #  #  # ##  #  #
+    // #  #  #  #    ##    #     #     #    #  #  #  #  #  #  #  #  #  #   #    # ##   #    #  #  ##    #
+    // ###    ##   ###    ###     ##  ###    ##   #  #   ##    ##   #  #    ##   # #  ###   #  #   ##   #
+    // #
+    /**
+     * Positions the container.
+     * @param {object} options The positioning options.
+     * @returns {void}
+     */
+    static positionContainer(options) {
         const css = [].slice.call([].slice.call(document.styleSheets).find((ss) => ss.href === null).rules).find((rule) => rule.selectorText === ".container");
         if (css) {
-            const params = new URLSearchParams(location.search.slice(1));
-            if (params.get("top")) {
-                css.style.top = params.get("top");
+            if (options.top) {
+                ({top: css.style.top} = options);
             }
-            if (params.get("left")) {
-                css.style.left = params.get("left");
+            if (options.left) {
+                ({left: css.style.left} = options);
                 css.style.right = "";
-            }
-            if (params.get("right")) {
+            } else if (options.right) {
                 css.style.left = "";
-                css.style.right = params.get("right");
+                ({right: css.style.right} = options);
             }
         }
     }
 
+    //                #         #          #  #   #       #
+    //                #         #          #  #           #
+    // #  #  ###    ###   ###  ###    ##   #  #  ##     ###   ##    ##
+    // #  #  #  #  #  #  #  #   #    # ##  #  #   #    #  #  # ##  #  #
+    // #  #  #  #  #  #  # ##   #    ##     ##    #    #  #  ##    #  #
+    //  ###  ###    ###   # #    ##   ##    ##   ###    ###   ##    ##
+    //       #
+    /**
+     * Updates the specified video element with the web cam feed.
+     * @param {string} element The element to update.
+     * @returns {void}
+     */
     static updateVideo(element) {
         const video = document.querySelector(element);
 
@@ -119,6 +186,20 @@ class Index {
         });
     }
 
+    //                #         #          ###    #
+    //                #         #          #  #
+    // #  #  ###    ###   ###  ###    ##   #  #  ##    # #
+    // #  #  #  #  #  #  #  #   #    # ##  #  #   #    # #
+    // #  #  #  #  #  #  # ##   #    ##    #  #   #    # #
+    //  ###  ###    ###   # #    ##   ##   ###   ###    #
+    //       #
+    /**
+     * Updates the specified div element with the text from a local path at a specified interval.
+     * @param {string} element The element to update.
+     * @param {string} path The local path to get the text.
+     * @param {number} interval The interval in milliseconds to update the text.
+     * @returns {void}
+     */
     static updateDiv(element, path, interval) {
         Index.readLocal(path, false).then((responseText) => {
             document.querySelector(element).innerText = responseText;
@@ -129,6 +210,21 @@ class Index {
         });
     }
 
+    //                #         #          ###
+    //                #         #           #
+    // #  #  ###    ###   ###  ###    ##    #    # #    ###   ###   ##
+    // #  #  #  #  #  #  #  #   #    # ##   #    ####  #  #  #  #  # ##
+    // #  #  #  #  #  #  # ##   #    ##     #    #  #  # ##   ##   ##
+    //  ###  ###    ###   # #    ##   ##   ###   #  #   # #  #      ##
+    //       #                                                ###
+    /**
+     * Updates the specified image element with the image from a local path at a specified interval.
+     * @param {string} element The element to update.
+     * @param {string} path The local path to get the image.
+     * @param {number} interval The interval in milliseconds to update the image.
+     * @param {string} [lastUpdated] The last updated date of the image.  Leave undefined to force an update.
+     * @returns {void}
+     */
     static updateImage(element, path, interval, lastUpdated) {
         Index.checkLastUpdate(path).then((responseText) => {
             if (responseText !== lastUpdated) {
@@ -144,6 +240,20 @@ class Index {
         });
     }
 
+    //                #         #           ##                #     #      #
+    //                #         #          #  #               #           # #
+    // #  #  ###    ###   ###  ###    ##    #    ###    ##   ###   ##     #    #  #
+    // #  #  #  #  #  #  #  #   #    # ##    #   #  #  #  #   #     #    ###   #  #
+    // #  #  #  #  #  #  # ##   #    ##    #  #  #  #  #  #   #     #     #     # #
+    //  ###  ###    ###   # #    ##   ##    ##   ###    ##     ##  ###    #      #
+    //       #                                   #                              #
+    /**
+     * Updates the specified div and image elements with information from Spotify at the specified interval.
+     * @param {string} textElement The text element to update with the song title.
+     * @param {string} imageElement The image element to update with the album art.
+     * @param {number} interval The interval in milliseconds to update the information.
+     * @returns {void}
+     */
     static updateSpotify(textElement, imageElement, interval) {
         Index.readSpotify().then((responseText) => {
             const response = JSON.parse(responseText);
@@ -173,6 +283,17 @@ class Index {
         });
     }
 
+    //              #           #           ##   ##     #       #               #
+    //              #           #          #  #   #             #               #
+    // ###    ##   ###    ###  ###    ##    #     #    ##     ###   ##    ###   ###    ##   #  #
+    // #  #  #  #   #    #  #   #    # ##    #    #     #    #  #  # ##  ##     #  #  #  #  #  #
+    // #     #  #   #    # ##   #    ##    #  #   #     #    #  #  ##      ##   #  #  #  #  ####
+    // #      ##     ##   # #    ##   ##    ##   ###   ###    ###   ##   ###    #  #   ##   ####
+    /**
+     * Rotates the slideshow to the next image.
+     * @param {number} index The index of the next image to update to.
+     * @returns {void}
+     */
     static rotateSlideshow(index) {
         const bg = document.querySelector(".background");
 
@@ -193,6 +314,17 @@ class Index {
         }, 8000);
     }
 
+    //                #
+    //                #
+    // ###    ##    ###
+    // #  #  # ##  #  #
+    // #     ##    #  #
+    // #      ##    ###
+    /**
+     * Gets the amount of red on a spectrum at a given percentage.
+     * @param {number} x The percentange at which to find the red value.
+     * @returns {number} The amount of red to use.
+     */
     static red(x) {
         if (x <= 1 / 6 || x >= 5 / 6) {
             return 255;
@@ -209,8 +341,20 @@ class Index {
         if (x > 4 / 6 && x < 5 / 6) {
             return Math.floor((x - 4 / 6) * 6 * 255);
         }
+
+        return 0;
     }
 
+    //  ###  ###    ##    ##   ###
+    // #  #  #  #  # ##  # ##  #  #
+    //  ##   #     ##    ##    #  #
+    // #     #      ##    ##   #  #
+    //  ###
+    /**
+     * Gets the amount of green on a spectrum at a given percentage.
+     * @param {number} x The percentange at which to find the green value.
+     * @returns {number} The amount of green to use.
+     */
     static green(x) {
         if (x >= 1 / 6 && x <= 3 / 6) {
             return 255;
@@ -227,8 +371,21 @@ class Index {
         if (x < 1 / 6) {
             return Math.floor(x * 6 * 255);
         }
+
+        return 0;
     }
 
+    // #     ##
+    // #      #
+    // ###    #    #  #   ##
+    // #  #   #    #  #  # ##
+    // #  #   #    #  #  ##
+    // ###   ###    ###   ##
+    /**
+     * Gets the amount of blue on a spectrum at a given percentage.
+     * @param {number} x The percentange at which to find the blue value.
+     * @returns {number} The amount of blue to use.
+     */
     static blue(x) {
         if (x >= 3 / 6 && x <= 5 / 6) {
             return 255;
@@ -245,13 +402,26 @@ class Index {
         if (x > 2 / 6 && x < 3 / 6) {
             return Math.floor((x - 2 / 6) * 6 * 255);
         }
+
+        return 0;
     }
 
+    //                   ##
+    //                    #
+    //  ###  ###    ###   #    #  #  ####   ##   ###
+    // #  #  #  #  #  #   #    #  #    #   # ##  #  #
+    // # ##  #  #  # ##   #     # #   #    ##    #
+    //  # #  #  #   # #  ###     #   ####   ##   #
+    //                          #
+    /**
+     * Draws the analyzer.
+     * @returns {void}
+     */
     static analyzer() {
         const audioContext = new window.AudioContext(),
             analyser = audioContext.createAnalyser(),
             canvas = document.getElementById("analyzer"),
-            canvasCtx = canvas.getContext("2d");
+            canvasContext = canvas.getContext("2d");
 
         analyser.minDecibels = -100;
         analyser.maxDecibels = -15;
@@ -262,20 +432,30 @@ class Index {
             {audio: true},
             (stream) => {
                 const source = audioContext.createMediaStreamSource(stream),
-                    dataArrayAlt = new Uint8Array(analyser.frequencyBinCount);
+                    buffer = new Uint8Array(analyser.frequencyBinCount);
 
                 source.connect(analyser);
                 analyser.connect(audioContext.destination);
 
-                canvasCtx.clearRect(0, 0, 1920, 200);
+                canvasContext.clearRect(0, 0, 1920, 200);
 
-                const drawAlt = () => {
-                    requestAnimationFrame(drawAlt);
+                //    #
+                //    #
+                //  ###  ###    ###  #  #
+                // #  #  #  #  #  #  #  #
+                // #  #  #     # ##  ####
+                //  ###  #      # #  ####
+                /**
+                 * Draws a frame of the analyzer.
+                 * @returns {void}
+                 */
+                const draw = () => {
+                    requestAnimationFrame(draw);
 
-                    analyser.getByteFrequencyData(dataArrayAlt);
+                    analyser.getByteFrequencyData(buffer);
 
-                    canvasCtx.fillStyle = "rgb(0, 0, 0)";
-                    canvasCtx.fillRect(0, 0, 1920, 200);
+                    canvasContext.fillStyle = "rgb(0, 0, 0)";
+                    canvasContext.fillRect(0, 0, 1920, 200);
 
                     let x = 0;
 
@@ -284,27 +464,34 @@ class Index {
                             break;
                         }
 
-                        const {[i]: barHeight} = dataArrayAlt;
+                        const {[i]: barHeight} = buffer;
 
-                        canvasCtx.fillStyle = `rgb(${Index.red(x / 1920)}, ${Index.green(x / 1920)}, ${Index.blue(x / 1920)})`;
-                        canvasCtx.fillRect(x, 200 - barHeight / 2, 2500 / analyser.frequencyBinCount - 1, barHeight / 2);
+                        canvasContext.fillStyle = `rgb(${Index.red(x / 1920)}, ${Index.green(x / 1920)}, ${Index.blue(x / 1920)})`;
+                        canvasContext.fillRect(x, 200 - barHeight / 2, 2500 / analyser.frequencyBinCount - 1, barHeight / 2);
 
                         x += 2500 / analyser.frequencyBinCount;
                     }
                 };
 
-                drawAlt();
+                draw();
             },
             () => {}
         );
     }
 }
 
-document.addEventListener("DOMContentLoaded", (ev) => {
+document.addEventListener("DOMContentLoaded", () => {
+    const state = "intro";
+
+    document.getElementById("intro").classList.remove("hidden");
+
+    Index.rotateSlideshow(0);
     Index.analyzer();
-    Index.positionContainer();
+
+    return;
+
+    Index.positionContainer({top: 100});
     Index.updateVideo("#video");
     Index.updateDiv(".stream-text", "C:\\Users\\roncli\\Desktop\\roncliGaming\\roncliGamingStreamText.txt", 5000);
     Index.updateSpotify(".track-text", ".album-art", 1000);
-    Index.rotateSlideshow(0);
 });
