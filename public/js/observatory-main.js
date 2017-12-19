@@ -4,8 +4,8 @@ ws.onopen = () => {
     ws.send(JSON.stringify({type: "standings"}));
 };
 
-ws.onmessage = (data) => {
-    var msg = JSON.parse(data.data);
+ws.onmessage = (ev) => {
+    var msg = JSON.parse(ev.data);
 
     switch (msg.type) {
         case "match":

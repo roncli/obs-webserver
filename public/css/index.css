@@ -48,9 +48,18 @@ body {
     text-shadow: 1px 1px 3px white;
 }
 
+#now-playing {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 384px;
+    height: 60px;
+    z-index: 10;
+}
+
 #now-playing .track {
     position: absolute;
-    bottom: 0;
+    top: 0;
     left: 0;
 }
 
@@ -77,44 +86,21 @@ body {
     text-shadow: 1px 1px 3px black;
     width: 1920px;
     height: 1080px;
+    overflow: hidden;
 }
 
-#intro .intro {
+#intro .backdrop {
     position: absolute;
+    top: 0;
+    left: 0;
     width: 1920px;
     height: 1080px;
-    background-image: url("images/roncliGamingTwitch.png");
-    background-size: 1920px 1080px;
-}
-
-#intro .outro {
-    position: absolute;
-    width: 1920px;
-    height: 1080px;
-    background-image: url("images/roncliGamingTwitch.png");
-    background-size: 1920px 1080px;
-    opacity: 0;
+    background-image: url("../images/roncliGamingTwitch.png");
 }
 
 #intro .analyzer {
     position: absolute;
     bottom: 0;
-}
-
-#intro .outro.animate {
-    animation: outroFade 13s linear;
-}
-
-@keyframes outroFade {
-    0% {
-        opacity: 0;
-    }
-    20%, 80% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-    }
 }
 
 #intro .nowPlaying {

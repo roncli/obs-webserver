@@ -101,6 +101,31 @@ class Spotify {
             }).catch(reject);
         });
     }
+
+    //         #                 ##     #    #                 ##                                  #     ##
+    //         #                #  #   # #   #                #  #                                 #    #  #
+    //  ###   ###    ##   ###   #  #   #    ###    ##   ###   #     #  #  ###   ###    ##   ###   ###    #     ##   ###    ###
+    // ##      #    #  #  #  #  ####  ###    #    # ##  #  #  #     #  #  #  #  #  #  # ##  #  #   #      #   #  #  #  #  #  #
+    //   ##    #    #  #  #  #  #  #   #     #    ##    #     #  #  #  #  #     #     ##    #  #   #    #  #  #  #  #  #   ##
+    // ###      ##   ##   ###   #  #   #      ##   ##   #      ##    ###  #     #      ##   #  #    ##   ##    ##   #  #  #
+    //                    #                                                                                                ###
+    /**
+     * Stops playback after the current song.
+     * @returns {void}
+     */
+    static stopAfterCurrentSong() {
+        if (Spotify.stopTimeout) {
+            clearTimeout(Spotify.stopTimeout);
+        }
+
+        Spotify.nowPlaying().then((track) => {
+            if (track && track.progress && track.duration) {
+                Spotify.stopTimeout = setTimeout(() => Spotify.spotify.pause(), track.duration - track.progress);
+            }
+        }).catch(() => {
+            Spotify.stopAfterCurrentSong();
+        });
+    }
 }
 
 module.exports = Spotify;

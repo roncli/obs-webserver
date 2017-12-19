@@ -5,7 +5,7 @@
     <script src="js/index.js"></script>
 </head>
 <body>
-    <div id="now-playing" class="hidden">
+    <div id="now-playing">
         <div class="track">
             <div class="track-text"></div>
         </div>
@@ -20,15 +20,16 @@
         <iframe class="alerts" src="https://streamlabs.com/alert-box/v3/736C04212DA2E1949B1F"></iframe>
     </div>
     <div id="intro" class="hidden">
+        <div class="backdrop"></div>
         <div class="upNext">
             <div class="unText">Up Next:</div>
             <div class="unGame"></div>
         </div>
         <div class="status">
-            <div class="statusText">Be Right Back!</div>
+            <div class="statusText"></div>
         </div>
         <div class="analyzer">
-            <canvas id="analyzer" width="1920" height="200" />
+            <canvas id="analyzer" width="1920" height="400" />
         </div>
         <div class="background">
             <img class="bgImage" />

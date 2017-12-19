@@ -35,6 +35,10 @@ class Index {
             const x = new XMLHttpRequest();
 
             x.onreadystatechange = () => {
+                if (x.readyState !== 4) {
+                    return;
+                }
+
                 if (x.readyState === 4 && x.status === 200) {
                     resolve(x.responseText);
                 } else {
@@ -64,6 +68,10 @@ class Index {
 
             x.timeout = 5000;
             x.onreadystatechange = () => {
+                if (x.readyState !== 4) {
+                    return;
+                }
+
                 if (x.readyState === 4 && x.status === 200) {
                     resolve(x.responseText);
                 } else {
@@ -85,6 +93,28 @@ class Index {
         });
     }
 
+    //       ##                ###   ##                ##     #            #
+    //        #                #  #   #                 #                  #
+    // ###    #     ###  #  #  #  #   #     ###  #  #   #    ##     ###   ###
+    // #  #   #    #  #  #  #  ###    #    #  #  #  #   #     #    ##      #
+    // #  #   #    # ##   # #  #      #    # ##   # #   #     #      ##    #
+    // ###   ###    # #    #   #     ###    # #    #   ###   ###   ###      ##
+    // #                  #                       #
+    /**
+     * Plays a Spotify playlist.
+     * @param {string} playlist The Spotify Uri of the playlist to play.
+     * @param {boolean} stop Whether to stop the playlist after one song.
+     * @returns {void}
+     */
+    static playPlaylist(playlist, stop) {
+        const x = new XMLHttpRequest();
+
+        x.timeout = 5000;
+        x.open("POST", "api/spotifyPlay", true);
+        x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        x.send(`playlist=${playlist}${stop ? "&stop=true" : ""}`);
+    }
+
     //       #                 #     #                   #    #  #           #         #
     //       #                 #     #                   #    #  #           #         #
     //  ##   ###    ##    ##   # #   #      ###   ###   ###   #  #  ###    ###   ###  ###    ##
@@ -103,6 +133,10 @@ class Index {
 
             x.timeout = 5000;
             x.onreadystatechange = () => {
+                if (x.readyState !== 4) {
+                    return;
+                }
+
                 if (x.readyState === 4 && x.status === 200) {
                     resolve(x.responseText);
                 } else {
@@ -256,11 +290,10 @@ class Index {
      */
     static updateSpotify(textElement, imageElement, interval) {
         Index.readSpotify().then((responseText) => {
-            const response = JSON.parse(responseText);
+            const response = JSON.parse(responseText),
+                image = document.querySelector(imageElement);
 
             if (response.playing) {
-                const image = document.querySelector(imageElement);
-
                 document.querySelector(textElement).innerText = `Now Playing:\n${response.artist} - ${response.title}`;
                 if (response.imageUrl) {
                     if (response.imageUrl !== document.querySelector(imageElement).src) {
@@ -272,8 +305,18 @@ class Index {
                     image.classList.add("hidden");
                 }
 
+                if (Index.countdown) {
+                    Index.countdown = false;
+                    Index.songEndsAt = new Date().getTime() + response.duration - response.progress;
+                    Index.updateCountdown();
+                }
+
                 return Math.min(1000 + response.duration - response.progress || interval, interval);
             }
+
+            document.querySelector(textElement).innerText = "";
+            image.src = "";
+            image.classList.add("hidden");
 
             return void 0;
         }).catch(() => {}).then((thisInterval) => {
@@ -406,6 +449,40 @@ class Index {
         return 0;
     }
 
+    //    #
+    //    #
+    //  ###  ###    ###  #  #
+    // #  #  #  #  #  #  #  #
+    // #  #  #     # ##  ####
+    //  ###  #      # #  ####
+    /**
+     * Draws a frame of the analyzer.
+     * @returns {void}
+     */
+    static draw() {
+        requestAnimationFrame(Index.draw);
+
+        const buffer = new Uint8Array(Index.analyser.frequencyBinCount);
+
+        Index.analyser.getByteFrequencyData(buffer);
+
+        Index.canvasContext.clearRect(0, 0, 1920, 400);
+
+        let x = 0;
+
+        for (let i = 0; i < Index.analyser.frequencyBinCount; i++) {
+            if (x >= 1920) {
+                break;
+            }
+
+            const {[i]: barHeight} = buffer;
+
+            Index.canvasContext.fillStyle = `rgb(${Index.red(x / 1920)}, ${Index.green(x / 1920)}, ${Index.blue(x / 1920)})`;
+            Index.canvasContext.fillRect(x, 400 - 400 * barHeight / 255, 2500 / Index.analyser.frequencyBinCount - 1, 400 * barHeight / 255);
+            x += 2500 / Index.analyser.frequencyBinCount;
+        }
+    };
+
     //                   ##
     //                    #
     //  ###  ###    ###   #    #  #  ####   ##   ###
@@ -419,79 +496,104 @@ class Index {
      */
     static analyzer() {
         const audioContext = new window.AudioContext(),
-            analyser = audioContext.createAnalyser(),
-            canvas = document.getElementById("analyzer"),
-            canvasContext = canvas.getContext("2d");
+            canvas = document.getElementById("analyzer");
 
-        analyser.minDecibels = -100;
-        analyser.maxDecibels = -15;
-        analyser.smoothingTimeConstant = 0.3;
-        analyser.fftSize = 512;
+        Index.analyser = audioContext.createAnalyser();
+        Index.canvasContext = canvas.getContext("2d");
 
-        navigator.getUserMedia(
-            {audio: true},
-            (stream) => {
-                const source = audioContext.createMediaStreamSource(stream),
-                    buffer = new Uint8Array(analyser.frequencyBinCount);
+        Index.analyser.minDecibels = -100;
+        Index.analyser.maxDecibels = -15;
+        Index.analyser.smoothingTimeConstant = 0.65;
+        Index.analyser.fftSize = 512;
 
-                source.connect(analyser);
-                analyser.connect(audioContext.destination);
+        navigator.getUserMedia({audio: true}, (stream) => {
+            const source = audioContext.createMediaStreamSource(stream);
 
-                canvasContext.clearRect(0, 0, 1920, 200);
+            source.connect(Index.analyser);
+            Index.analyser.connect(audioContext.destination);
 
-                //    #
-                //    #
-                //  ###  ###    ###  #  #
-                // #  #  #  #  #  #  #  #
-                // #  #  #     # ##  ####
-                //  ###  #      # #  ####
-                /**
-                 * Draws a frame of the analyzer.
-                 * @returns {void}
-                 */
-                const draw = () => {
-                    requestAnimationFrame(draw);
+            Index.canvasContext.clearRect(0, 0, 1920, 400);
 
-                    analyser.getByteFrequencyData(buffer);
+            Index.draw();
+        }, () => {});
+    }
 
-                    canvasContext.fillStyle = "rgb(0, 0, 0)";
-                    canvasContext.fillRect(0, 0, 1920, 200);
+    //         #                 #    #  #        #                        #            #
+    //         #                 #    #  #        #                        #            #
+    //  ###   ###    ###  ###   ###   #  #   ##   ###    ###    ##    ##   # #    ##   ###
+    // ##      #    #  #  #  #   #    ####  # ##  #  #  ##     #  #  #     ##    # ##   #
+    //   ##    #    # ##  #      #    ####  ##    #  #    ##   #  #  #     # #   ##     #
+    // ###      ##   # #  #       ##  #  #   ##   ###   ###     ##    ##   #  #   ##     ##
+    /**
+     * Starts the WebSocket connection and performs updates based on the messages received.
+     * @returns {void}
+     */
+    static startWebsocket() {
+        Index.ws = new WebSocket("ws://localhost:60578/listen");
 
-                    let x = 0;
+        Index.ws.onmessage = (ev) => {
+            const {data} = ev;
 
-                    for (let i = 0; i < analyser.frequencyBinCount; i++) {
-                        if (x >= 1920) {
-                            break;
-                        }
+            if (data.type === "state") {
+                [].forEach.call(document.getElementsByClassName("scenes"), (el) => {
+                    el.classList.add("hidden");
+                });
 
-                        const {[i]: barHeight} = buffer;
+                switch (data.state) {
+                    case "intro":
+                        document.getElementById("intro").classList.remove("hidden");
+                        setTimeout(() => {
+                            Index.countdown = true;
+                            Index.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", true);
+                        }, 15000);
+                        break;
+                    case "brb":
+                        document.querySelector("#intro .statusText").innerText = "Be right back!";
+                        document.getElementById("intro").classList.remove("hidden");
+                        Index.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", false);
+                }
+            }
+        };
+    }
 
-                        canvasContext.fillStyle = `rgb(${Index.red(x / 1920)}, ${Index.green(x / 1920)}, ${Index.blue(x / 1920)})`;
-                        canvasContext.fillRect(x, 200 - barHeight / 2, 2500 / analyser.frequencyBinCount - 1, barHeight / 2);
+    //                #         #           ##                      #       #
+    //                #         #          #  #                     #       #
+    // #  #  ###    ###   ###  ###    ##   #      ##   #  #  ###   ###    ###   ##   #  #  ###
+    // #  #  #  #  #  #  #  #   #    # ##  #     #  #  #  #  #  #   #    #  #  #  #  #  #  #  #
+    // #  #  #  #  #  #  # ##   #    ##    #  #  #  #  #  #  #  #   #    #  #  #  #  ####  #  #
+    //  ###  ###    ###   # #    ##   ##    ##    ##    ###  #  #    ##   ###   ##   ####  #  #
+    //       #
+    /**
+     * Updates the countdown text.
+     * @returns {void}
+     */
+    static updateCountdown() {
+        const timeLeft = new Date(Index.songEndsAt - new Date().getTime()),
+            statusText = document.querySelector("#intro .statusText");
 
-                        x += 2500 / analyser.frequencyBinCount;
-                    }
-                };
+        if (timeLeft.getTime() < 0) {
+            statusText.innerText = "00:00:00";
+            return;
+        }
 
-                draw();
-            },
-            () => {}
-        );
+        statusText.innerText = timeLeft.toLocaleDateString("en-us", {timeZone: "UTC", hour12: false, hour: "2-digit", minute: "2-digit", second: "2-digit"}).split(" ")[1];
+
+        setTimeout(() => {
+            Index.updateCountdown();
+        }, timeLeft.getTime() % 1000 + 1);
     }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    const state = "intro";
-
-    document.getElementById("intro").classList.remove("hidden");
-
     Index.rotateSlideshow(0);
     Index.analyzer();
+    Index.updateDiv(".unGame", "C:\\Users\\roncli\\Desktop\\roncliGaming\\roncliGamingUpNext.txt", 5000);
+    Index.updateDiv(".stream-text", "C:\\Users\\roncli\\Desktop\\roncliGaming\\roncliGamingStreamText.txt", 5000);
+    Index.updateSpotify(".track-text", ".album-art", 5000);
+    Index.startWebsocket();
 
     return;
 
     Index.positionContainer({top: 100});
     Index.updateVideo("#video");
-    Index.updateDiv(".stream-text", "C:\\Users\\roncli\\Desktop\\roncliGaming\\roncliGamingStreamText.txt", 5000);
-    Index.updateSpotify(".track-text", ".album-art", 1000);
 });
