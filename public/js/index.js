@@ -462,6 +462,10 @@ class Index {
     static draw() {
         requestAnimationFrame(Index.draw);
 
+        if (document.getElementById("intro").classList.contains("hidden")) {
+            return;
+        }
+
         const buffer = new Uint8Array(Index.analyser.frequencyBinCount);
 
         Index.analyser.getByteFrequencyData(buffer);
@@ -529,19 +533,21 @@ class Index {
      * @returns {void}
      */
     static startWebsocket() {
-        Index.ws = new WebSocket("ws://localhost:60578/listen");
+        Index.ws = new WebSocket("ws://localhost:60576/ws/listen");
 
         Index.ws.onmessage = (ev) => {
-            const {data} = ev;
+            const data = JSON.parse(ev.data);
 
-            if (data.type === "state") {
-                [].forEach.call(document.getElementsByClassName("scenes"), (el) => {
+            if (data.type === "scene") {
+                [].forEach.call(document.getElementsByClassName("scene"), (el) => {
                     el.classList.add("hidden");
                 });
 
                 switch (data.state) {
                     case "intro":
+                        document.getElementById("video").classList.add("hidden");
                         document.getElementById("intro").classList.remove("hidden");
+                        document.getElementById("now-playing").style.transform = "translate(0, 0)";
                         setTimeout(() => {
                             Index.countdown = true;
                             Index.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", true);
@@ -549,8 +555,18 @@ class Index {
                         break;
                     case "brb":
                         document.querySelector("#intro .statusText").innerText = "Be right back!";
+                        document.getElementById("video").classList.add("hidden");
                         document.getElementById("intro").classList.remove("hidden");
+                        document.getElementById("now-playing").style.transform = "translate(0, 0)";
                         Index.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", false);
+                        break;
+                    case "fullscreen":
+                        document.getElementById("fullscreen").classList.remove("hidden");
+                        document.getElementById("now-playing").style.transform = "translate(1534px, 980px)";
+                        document.getElementById("video").classList.remove("hidden");
+                        document.getElementById("webcam").style.width = "1920px";
+                        document.getElementById("webcam").style.height = "1080px";
+                        break;
                 }
             }
         };
@@ -568,11 +584,20 @@ class Index {
      * @returns {void}
      */
     static updateCountdown() {
-        const timeLeft = new Date(Index.songEndsAt - new Date().getTime()),
+        const timeLeft = new Date(Index.songEndsAt - new Date().getTime() - 15000),
             statusText = document.querySelector("#intro .statusText");
 
         if (timeLeft.getTime() < 0) {
+            [].forEach.call(document.getElementsByClassName("scene"), (el) => {
+                el.classList.add("hidden");
+            });
+
             statusText.innerText = "00:00:00";
+            document.getElementById("fullscreen").classList.remove("hidden");
+            document.getElementById("now-playing").style.transform = "translate(1534px, 980px)";
+            document.getElementById("video").classList.remove("hidden");
+            document.getElementById("webcam").style.width = "1920px";
+            document.getElementById("webcam").style.height = "1080px";
             return;
         }
 
@@ -584,6 +609,12 @@ class Index {
     }
 }
 
+// ###    ##   #  #   ##                #                 #    #                    #           #
+// #  #  #  #  ####  #  #               #                 #    #                    #           #
+// #  #  #  #  ####  #      ##   ###   ###    ##   ###   ###   #      ##    ###   ###   ##    ###
+// #  #  #  #  #  #  #     #  #  #  #   #    # ##  #  #   #    #     #  #  #  #  #  #  # ##  #  #
+// #  #  #  #  #  #  #  #  #  #  #  #   #    ##    #  #   #    #     #  #  # ##  #  #  ##    #  #
+// ###    ##   #  #   ##    ##   #  #    ##   ##   #  #    ##  ####   ##    # #   ###   ##    ###
 document.addEventListener("DOMContentLoaded", () => {
     Index.rotateSlideshow(0);
     Index.analyzer();
@@ -591,9 +622,9 @@ document.addEventListener("DOMContentLoaded", () => {
     Index.updateDiv(".stream-text", "C:\\Users\\roncli\\Desktop\\roncliGaming\\roncliGamingStreamText.txt", 5000);
     Index.updateSpotify(".track-text", ".album-art", 5000);
     Index.startWebsocket();
+    Index.updateVideo("#webcam");
 
     return;
 
     Index.positionContainer({top: 100});
-    Index.updateVideo("#video");
 });

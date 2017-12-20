@@ -2,50 +2,20 @@ body {
     position: relative;
 }
 
-#scene .container {
-    position: absolute;
-    top: 432px;
-    max-width: 384px;
-    right: 0;
-}
-
-#scene .video {
-    position: relative;
-    margin: 4px 0;
-    width: 384px;
-    height: 216px;
-}
-
-#scene .stream-text {
-    display: table-cell;
-    height: 300px;
-    width: 100%;
-    vertical-align: bottom;
-}
-
-#scene .roncliGaming {
-    text-align: center;
-    position: absolute;
-    top: 5px;
-    right: 5px;
-}
-
-#scene .alerts {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 384px;
-    height: 216px;
-}
-
-#scene .stream-text, #now-playing .track-text {
+.stream-text, .track-text {
     color: white;
     text-shadow: 1px 1px 3px black;
 }
 
-#scene .roncliGaming div {
-    color: black;
-    text-shadow: 1px 1px 3px white;
+.scene {
+    transition: visibility 0.5s, opacity 0.5s linear;
+    visibility: visible;
+    opacity: 1;
+}
+
+.hidden {
+    visibility: hidden;
+    opacity: 0;
 }
 
 #now-playing {
@@ -55,6 +25,7 @@ body {
     width: 384px;
     height: 60px;
     z-index: 10;
+    transition: transform 0.5s linear;
 }
 
 #now-playing .track {
@@ -75,8 +46,53 @@ body {
     height: 60px;
 }
 
-.hidden {
-    display: none;
+#video {
+    transition: transform 0.5s, visibility 0.5s, opacity 0.5s linear;
+    visibility: visible;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#video #webcam {
+    width: 1920px;
+    height: 1080px;
+}
+
+#video .roncliGaming {
+    text-align: center;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+#video .roncliGaming div {
+    color: black;
+    text-shadow: 1px 1px 3px white;
+}
+
+#video .alerts {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 384px;
+    height: 216px;
+}
+
+#fullscreen {
+    transition: visibility 0.5s, opacity 0.5s linear;
+    visibility: visible;
+}
+
+#fullscreen .roncliGaming {
+    text-align: center;
+    position: absolute;
+    top: 25px;
+    right: 25px;
+}
+
+#fullscreen .roncliGaming * {
+    font-size: 100px;
 }
 
 #intro {
@@ -96,18 +112,6 @@ body {
     width: 1920px;
     height: 1080px;
     background-image: url("../images/roncliGamingTwitch.png");
-}
-
-#intro .analyzer {
-    position: absolute;
-    bottom: 0;
-}
-
-#intro .nowPlaying {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 384px;
 }
 
 #intro .upNext {
@@ -137,6 +141,15 @@ body {
     z-index: 2;
 }
 
+#intro .statusText {
+    font-size: 120px;
+}
+
+#intro .analyzer {
+    position: absolute;
+    bottom: 0;
+}
+
 #intro .background {
     position: absolute;
     top: 0;
@@ -145,23 +158,6 @@ body {
     height: 1080px;
     z-index: 1;
     opacity: 0;
-}
-
-#intro .background.animate {
-    animation: fader 8s linear;
-}
-
-#intro .bgImage {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 1920px;
-    height: 1080px;
-    transform: scale(1);
-}
-
-#intro .statusText {
-    font-size: 120px;
 }
 
 @keyframes fader {
@@ -184,4 +180,38 @@ body {
         opacity: 0;
         transform: scale(0.6) rotate(-15deg); 
     }
+}
+
+#intro .background.animate {
+    animation: fader 8s linear;
+}
+
+#intro .bgImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1920px;
+    height: 1080px;
+    transform: scale(1);
+}
+
+#scene .container {
+    position: absolute;
+    top: 432px;
+    max-width: 384px;
+    right: 0;
+}
+
+#scene .video {
+    position: relative;
+    margin: 4px 0;
+    width: 384px;
+    height: 216px;
+}
+
+#scene .stream-text {
+    display: table-cell;
+    height: 300px;
+    width: 100%;
+    vertical-align: bottom;
 }
