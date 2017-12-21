@@ -73,7 +73,7 @@ class Index {
                 }
 
                 if (x.readyState === 4 && x.status === 200) {
-                    resolve(x.responseText);
+                    resolve(JSON.parse(x.responseText));
                 } else {
                     reject(new Error());
                 }
@@ -261,9 +261,8 @@ class Index {
      * @returns {void}
      */
     static updateSpotify(textElement, imageElement, interval) {
-        Index.readSpotify().then((responseText) => {
-            const response = JSON.parse(responseText),
-                image = document.querySelector(imageElement);
+        Index.readSpotify().then((response) => {
+            const image = document.querySelector(imageElement);
 
             if (response.playing) {
                 document.querySelector(textElement).innerText = `Now Playing:\n${response.artist} - ${response.title}`;
@@ -486,7 +485,6 @@ class Index {
             const source = audioContext.createMediaStreamSource(stream);
 
             source.connect(Index.analyser);
-            Index.analyser.connect(audioContext.destination);
 
             Index.canvasContext.clearRect(0, 0, 1920, 400);
 
@@ -508,50 +506,101 @@ class Index {
         Index.ws = new WebSocket("ws://localhost:60576/ws/listen");
 
         Index.ws.onmessage = (ev) => {
-            const data = JSON.parse(ev.data);
+            const data = JSON.parse(ev.data),
+                sound = document.getElementById("sound-fire");
 
-            if (data.type === "scene") {
-                [].forEach.call(document.getElementsByClassName("scene"), (el) => {
-                    el.classList.add("hidden");
-                });
+            switch (data.type) {
+                case "scene":
+                    [].forEach.call(document.getElementsByClassName("scene"), (el) => {
+                        el.classList.add("hidden");
+                    });
 
-                switch (data.state) {
-                    case "intro":
-                        document.getElementById("video").classList.add("hidden");
-                        document.querySelector("#video .roncliGaming").classList.add("hidden");
-                        document.getElementById("intro").classList.remove("hidden");
-                        document.getElementById("now-playing").style.transform = "translate(1534px, 1019px)";
-                        setTimeout(() => {
-                            Index.countdown = true;
-                            Index.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", true);
-                        }, 15000);
-                        break;
-                    case "brb":
-                        document.querySelector("#intro .statusText").innerText = "Be right back!";
-                        document.getElementById("video").classList.add("hidden");
-                        document.querySelector("#video .roncliGaming").classList.add("hidden");
-                        document.getElementById("intro").classList.remove("hidden");
-                        document.getElementById("now-playing").style.transform = "translate(1534px, 1019px)";
-                        Index.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", false);
-                        break;
-                    case "fullscreen":
-                        document.getElementById("fullscreen").classList.remove("hidden");
-                        document.getElementById("now-playing").style.transform = "translate(1534px, 1019px)";
-                        document.getElementById("video").classList.remove("hidden");
-                        document.querySelector("#video .roncliGaming").classList.add("hidden");
-                        document.getElementById("webcam").style.transform = "translate(0, 0) scale(1)";
-                        break;
-                    case "scene":
-                        document.getElementById("scene").classList.remove("hidden");
-                        document.getElementById("scene").style.transform = `translate(${data.scene.position.left}px, ${data.scene.position.top}px)`;
-                        document.getElementById("now-playing").style.transform = `translate(${data.scene.position.left}px, ${data.scene.position.top + 456}px)`;
-                        document.getElementById("video").classList.remove("hidden");
-                        document.querySelector("#video .roncliGaming").classList.remove("hidden");
-                        document.querySelector("#video .roncliGaming").style.transform = `translate(${data.scene.position.left + 277}px, ${data.scene.position.top + 305}px)`;
-                        document.getElementById("webcam").style.transform = `translate(${data.scene.position.left}px, ${data.scene.position.top + 300}px) scale(0.2) `;
-                }
+                    switch (data.state) {
+                        case "intro":
+                            document.getElementById("video").classList.add("hidden");
+                            document.querySelector("#video .roncliGaming").classList.add("hidden");
+                            document.getElementById("intro").classList.remove("hidden");
+                            document.getElementById("now-playing").style.transform = "translate(1534px, 1019px)";
+                            document.getElementById("streamlabs").style.transform = "translate(0, 0)";
+                            setTimeout(() => {
+                                Index.countdown = true;
+                                Index.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", true);
+                            }, 15000);
+                            break;
+                        case "brb":
+                            document.querySelector("#intro .statusText").innerText = "Be right back!";
+                            document.getElementById("video").classList.add("hidden");
+                            document.querySelector("#video .roncliGaming").classList.add("hidden");
+                            document.getElementById("intro").classList.remove("hidden");
+                            document.getElementById("now-playing").style.transform = "translate(1534px, 1019px)";
+                            document.getElementById("streamlabs").style.transform = "translate(0, 0)";
+                            Index.readSpotify().then((response) => {
+                                if (!response || !response.playing) {
+                                    Index.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", false);
+                                }
+                            }).catch(() => {
+                                Index.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", false);
+                            });
+                            break;
+                        case "fullscreen":
+                            Index.goFullscreen();
+                            break;
+                        case "scene":
+                            document.getElementById("scene").classList.remove("hidden");
+                            document.getElementById("scene").style.transform = `translate(${data.scene.position.left}px, ${data.scene.position.top}px)`;
+                            document.getElementById("now-playing").style.transform = `translate(${data.scene.position.left}px, ${data.scene.position.top + 456}px)`;
+                            document.getElementById("video").classList.remove("hidden");
+                            document.querySelector("#video .roncliGaming").classList.remove("hidden");
+                            document.querySelector("#video .roncliGaming").style.transform = `translate(${data.scene.position.left + 277}px, ${data.scene.position.top + 305}px)`;
+                            document.getElementById("webcam").style.transform = `translate(${data.scene.position.left}px, ${data.scene.position.top + 300}px) scale(0.2)`;
+                            document.getElementById("streamlabs").style.transform = `translate(${data.scene.position.left}px, ${data.scene.position.top + 300}px)`;
+                            document.getElementById("fire").style.transform = `translate(${data.scene.position.left}px, ${data.scene.position.top + 305}px)`;
+                            break;
+                    }
+                    break;
+                case "action":
+                    switch (data.action) {
+                        case "fire":
+                            sound.volume = 1;
+                            sound.play();
+
+                            document.getElementById("fire").classList.add("fade-animation");
+
+                            setTimeout(() => {
+                                document.getElementById("fire").classList.remove("fade-animation");
+                            }, 12000);
+                            break;
+                        case "time":
+                            document.getElementById("time").classList.add("fade-animation");
+
+                            setTimeout(() => {
+                                document.getElementById("time").classList.remove("fade-animation");
+                            }, 12000);
+                            break;
+                    }
+                    break;
             }
         };
+    }
+
+    //             ####        ##    ##
+    //             #            #     #
+    //  ###   ##   ###   #  #   #     #     ###    ##   ###    ##    ##   ###
+    // #  #  #  #  #     #  #   #     #    ##     #     #  #  # ##  # ##  #  #
+    //  ##   #  #  #     #  #   #     #      ##   #     #     ##    ##    #  #
+    // #      ##   #      ###  ###   ###   ###     ##   #      ##    ##   #  #
+    //  ###
+    /**
+     * Switches to full screen mode.
+     * @returns {void}
+     */
+    static goFullscreen() {
+        document.getElementById("fullscreen").classList.remove("hidden");
+        document.getElementById("now-playing").style.transform = "translate(1534px, 1019px)";
+        document.getElementById("video").classList.remove("hidden");
+        document.querySelector("#video .roncliGaming").classList.add("hidden");
+        document.getElementById("webcam").style.transform = "translate(0, 0) scale(1)";
+        document.getElementById("streamlabs").style.transform = "translate(0, 0)";
     }
 
     //                #         #           ##                      #       #
@@ -575,11 +624,8 @@ class Index {
             });
 
             statusText.innerText = "00:00:00";
-            document.getElementById("fullscreen").classList.remove("hidden");
-            document.getElementById("now-playing").style.transform = "translate(1534px, 980px)";
-            document.getElementById("video").classList.remove("hidden");
-            document.getElementById("webcam").style.width = "1920px";
-            document.getElementById("webcam").style.height = "1080px";
+
+            Index.goFullscreen();
             return;
         }
 
@@ -605,6 +651,4 @@ document.addEventListener("DOMContentLoaded", () => {
     Index.updateSpotify(".track-text", ".album-art", 5000);
     Index.startWebsocket();
     Index.updateVideo("#webcam");
-
-    return;
 });

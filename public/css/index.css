@@ -18,6 +18,28 @@ body {
     opacity: 0;
 }
 
+.fade-animation {
+    animation: image-fader 12s linear;
+}
+
+@keyframes image-fader {
+    0% {
+        opacity: 0;
+    }
+
+    15% {
+        opacity: 1;
+    }
+
+    85% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
 #now-playing {
     position: absolute;
     top: 0;
@@ -84,6 +106,15 @@ body {
     left: 0;
     width: 384px;
     height: 216px;
+}
+
+#video .fire {
+    position: absolute;
+    top: 108px;
+    width: 384px;
+    height: 108px;
+    opacity: 0;
+    -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 1.0), transparent)
 }
 
 #fullscreen {
@@ -167,7 +198,7 @@ body {
     opacity: 0;
 }
 
-@keyframes fader {
+@keyframes background-fader {
     0% {
         opacity: 0;
         transform: scale(0.4) rotate(15deg); 
@@ -190,7 +221,7 @@ body {
 }
 
 #intro .background.animate {
-    animation: fader 8s linear;
+    animation: background-fader 8s linear;
 }
 
 #intro .bgImage {
@@ -228,4 +259,16 @@ body {
     height: 300px;
     width: 100%;
     vertical-align: bottom;
+}
+
+#time {
+    position: absolute;
+    width: 800px;
+    height: 800px;
+    background: url("../images/time.png") 800px 800px;
+    background-size: 800px 800px;
+    left: 560px;
+    top: 140px;
+    opacity: 0;
+    z-index: 3;
 }
