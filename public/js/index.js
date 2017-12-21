@@ -158,34 +158,6 @@ class Index {
         });
     }
 
-    //                     #     #     #                 ##                #           #
-    //                           #                      #  #               #
-    // ###    ##    ###   ##    ###   ##     ##   ###   #      ##   ###   ###    ###  ##    ###    ##   ###
-    // #  #  #  #  ##      #     #     #    #  #  #  #  #     #  #  #  #   #    #  #   #    #  #  # ##  #  #
-    // #  #  #  #    ##    #     #     #    #  #  #  #  #  #  #  #  #  #   #    # ##   #    #  #  ##    #
-    // ###    ##   ###    ###     ##  ###    ##   #  #   ##    ##   #  #    ##   # #  ###   #  #   ##   #
-    // #
-    /**
-     * Positions the container.
-     * @param {object} options The positioning options.
-     * @returns {void}
-     */
-    static positionContainer(options) {
-        const css = [].slice.call([].slice.call(document.styleSheets).find((ss) => ss.href === null).rules).find((rule) => rule.selectorText === ".container");
-        if (css) {
-            if (options.top) {
-                ({top: css.style.top} = options);
-            }
-            if (options.left) {
-                ({left: css.style.left} = options);
-                css.style.right = "";
-            } else if (options.right) {
-                css.style.left = "";
-                ({right: css.style.right} = options);
-            }
-        }
-    }
-
     //                #         #          #  #   #       #
     //                #         #          #  #           #
     // #  #  ###    ###   ###  ###    ##   #  #  ##     ###   ##    ##
@@ -546,8 +518,9 @@ class Index {
                 switch (data.state) {
                     case "intro":
                         document.getElementById("video").classList.add("hidden");
+                        document.querySelector("#video .roncliGaming").classList.add("hidden");
                         document.getElementById("intro").classList.remove("hidden");
-                        document.getElementById("now-playing").style.transform = "translate(0, 0)";
+                        document.getElementById("now-playing").style.transform = "translate(1534px, 1019px)";
                         setTimeout(() => {
                             Index.countdown = true;
                             Index.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", true);
@@ -556,17 +529,26 @@ class Index {
                     case "brb":
                         document.querySelector("#intro .statusText").innerText = "Be right back!";
                         document.getElementById("video").classList.add("hidden");
+                        document.querySelector("#video .roncliGaming").classList.add("hidden");
                         document.getElementById("intro").classList.remove("hidden");
-                        document.getElementById("now-playing").style.transform = "translate(0, 0)";
+                        document.getElementById("now-playing").style.transform = "translate(1534px, 1019px)";
                         Index.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", false);
                         break;
                     case "fullscreen":
                         document.getElementById("fullscreen").classList.remove("hidden");
-                        document.getElementById("now-playing").style.transform = "translate(1534px, 980px)";
+                        document.getElementById("now-playing").style.transform = "translate(1534px, 1019px)";
                         document.getElementById("video").classList.remove("hidden");
-                        document.getElementById("webcam").style.width = "1920px";
-                        document.getElementById("webcam").style.height = "1080px";
+                        document.querySelector("#video .roncliGaming").classList.add("hidden");
+                        document.getElementById("webcam").style.transform = "translate(0, 0) scale(1)";
                         break;
+                    case "scene":
+                        document.getElementById("scene").classList.remove("hidden");
+                        document.getElementById("scene").style.transform = `translate(${data.scene.position.left}px, ${data.scene.position.top}px)`;
+                        document.getElementById("now-playing").style.transform = `translate(${data.scene.position.left}px, ${data.scene.position.top + 456}px)`;
+                        document.getElementById("video").classList.remove("hidden");
+                        document.querySelector("#video .roncliGaming").classList.remove("hidden");
+                        document.querySelector("#video .roncliGaming").style.transform = `translate(${data.scene.position.left + 277}px, ${data.scene.position.top + 305}px)`;
+                        document.getElementById("webcam").style.transform = `translate(${data.scene.position.left}px, ${data.scene.position.top + 300}px) scale(0.2) `;
                 }
             }
         };
@@ -625,6 +607,4 @@ document.addEventListener("DOMContentLoaded", () => {
     Index.updateVideo("#webcam");
 
     return;
-
-    Index.positionContainer({top: 100});
 });

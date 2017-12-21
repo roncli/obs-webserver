@@ -1,15 +1,23 @@
 <html>
 <head>
     <link href="css/reset.css" type="text/css" rel="stylesheet"/>
+    <link href="css/config.css" type="text/css" rel="stylesheet"/>
     <script src="js/config.js"></script>
 </head>
 <body>
-    <div class="buttons">
-        <button id="intro">Intro</button>
-        <button id="brb">BRB</button>
-        <button id="full-screen">Full Screen</button>
-        <!--button id="default-left">Default Left</button>
-        <button id="default-right">Default Right</button-->
+    <div id="title">
+        <img src="images/roncliGamingTwitch.png" width="300" />
+    </div>
+    <div id="buttons">
+        <span>
+            <button id="intro">Intro</button>
+            <button id="brb">BRB</button>
+            <button id="full-screen">Full Screen</button>
+        </span>
+    </div>
+    <div id="scenes">
+        <select id="scene-list"></select>
+        <button id="switch-scene">Switch to Scene</button>
     </div>
 </body>
 </html>
