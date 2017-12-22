@@ -21,6 +21,7 @@
         "consistent-this": "off",
         "default-case": "off",
         "dot-location": "off",
+        "func-name-matching": "off",
         "func-names": "off",
         "getter-return": "off",
         "global-require": "off",

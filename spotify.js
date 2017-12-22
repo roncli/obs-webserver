@@ -5,36 +5,41 @@ const config = require("./config"),
     SpotifyWebHelper = require("spotify-webhelper"),
     {promisify} = require("util");
 
-//  ##                #     #      #          ##          #                      ##
-// #  #               #           # #        #  #                                 #
-//  #    ###    ##   ###   ##     #    #  #  #  #  ###   ##          # #    ##    #    #  #  # #    ##
-//   #   #  #  #  #   #     #    ###   #  #  ####  #  #   #          # #   #  #   #    #  #  ####  # ##
-// #  #  #  #  #  #   #     #     #     # #  #  #  #  #   #     ##   # #   #  #   #    #  #  #  #  ##
-//  ##   ###    ##     ##  ###    #      #   #  #  ###   ###    ##    #     ##   ###    ###  #  #   ##
-//       #                              #          #
-/**
- * Sets the volume in Spotify.
- * @param {number} volume A percentage value to set the volume to.
- * @param {function} [callback] The callback function.
- * @returns {Promise} Returns a promise that resolves when the volume change request is sent.
- */
-SpotifyApi.prototype.volume = (volume, callback) => {
-    const request = WebApiRequest.builder().withPath(`/v1/me/player/volume?volume_percent=${volume}`).withHeaders({"Content-Type": "application/json"}).build();
+Object.defineProperty(SpotifyApi.prototype, "volume", {
+    //  ##                #     #      #          ##          #                      ##
+    // #  #               #           # #        #  #                                 #
+    //  #    ###    ##   ###   ##     #    #  #  #  #  ###   ##          # #    ##    #    #  #  # #    ##
+    //   #   #  #  #  #   #     #    ###   #  #  ####  #  #   #          # #   #  #   #    #  #  ####  # ##
+    // #  #  #  #  #  #   #     #     #     # #  #  #  #  #   #     ##   # #   #  #   #    #  #  #  #  ##
+    //  ##   ###    ##     ##  ###    #      #   #  #  ###   ###    ##    #     ##   ###    ###  #  #   ##
+    //       #                              #          #
+    /**
+     * Sets the volume in Spotify.
+     * @param {number} percent A percentage value to set the volume to.
+     * @param {function} [callback] The callback function.
+     * @returns {Promise} Returns a promise that resolves when the volume change request is sent.
+     */
+    value: function volume(percent, callback) {
+        const request = WebApiRequest.builder().withPath(`/v1/me/player/volume?volume_percent=${percent}`).withHeaders({"Content-Type": "application/json"}).build();
 
-    this._addAccessToken(request, this.getAccessToken());
+        this._addAccessToken(request, this.getAccessToken());
 
-    const promise = this._performRequest(HttpManager.put, request);
+        const promise = this._performRequest(HttpManager.put, request);
 
-    if (callback) {
-        return promise.then((data) => {
-            callback(null, data);
-        }, (err) => {
-            callback(err);
-        });
-    }
+        if (callback) {
+            return promise.then((data) => {
+                callback(null, data);
+            }, (err) => {
+                callback(err);
+            });
+        }
 
-    return promise;
-};
+        return promise;
+    },
+    writable: true,
+    enumerable: true,
+    configurable: true
+});
 
 let accessTokenValid = false;
 

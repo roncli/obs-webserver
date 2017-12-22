@@ -1,3 +1,5 @@
+/* global Spotify */
+
 const slideshowImages = [
     "images/crypt.png",
     "images/descent.png",
@@ -49,91 +51,6 @@ class Index {
             x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             x.send(`${base64 ? "base64=true&" : ""}file=${encodeURIComponent(path)}`);
         });
-    }
-
-    //                      #   ##                #     #      #
-    //                      #  #  #               #           # #
-    // ###    ##    ###   ###   #    ###    ##   ###   ##     #    #  #
-    // #  #  # ##  #  #  #  #    #   #  #  #  #   #     #    ###   #  #
-    // #     ##    # ##  #  #  #  #  #  #  #  #   #     #     #     # #
-    // #      ##    # #   ###   ##   ###    ##     ##  ###    #      #
-    //                               #                              #
-    /**
-     * Reads now playing information from Spotify.
-     * @returns {Promise} A promise that resolves with the Spotify information.
-     */
-    static readSpotify() {
-        return new Promise((resolve, reject) => {
-            const x = new XMLHttpRequest();
-
-            x.timeout = 5000;
-            x.onreadystatechange = () => {
-                if (x.readyState !== 4) {
-                    return;
-                }
-
-                if (x.readyState === 4 && x.status === 200) {
-                    resolve(JSON.parse(x.responseText));
-                } else {
-                    reject(new Error());
-                }
-            };
-
-            x.ontimeout = () => {
-                reject(new Error());
-            };
-
-            x.onerror = () => {
-                reject(new Error());
-            };
-
-            x.open("GET", "api/spotifyNowPlaying", true);
-            x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            x.send();
-        });
-    }
-
-    //               #     ##                #     #      #         #  #        ##
-    //               #    #  #               #           # #        #  #         #
-    //  ###    ##   ###    #    ###    ##   ###   ##     #    #  #  #  #   ##    #    #  #  # #    ##
-    // ##     # ##   #      #   #  #  #  #   #     #    ###   #  #  #  #  #  #   #    #  #  ####  # ##
-    //   ##   ##     #    #  #  #  #  #  #   #     #     #     # #   ##   #  #   #    #  #  #  #  ##
-    // ###     ##     ##   ##   ###    ##     ##  ###    #      #    ##    ##   ###    ###  #  #   ##
-    //                          #                              #
-    /**
-     * Sets the Spotify volume.
-     * @param {number} volume A percent value to set the volume to.
-     * @returns {void}
-     */
-    setSpotifyVolume(volume) {
-        const x = new XMLHttpRequest();
-
-        x.timeout = 5000;
-        x.open("POST", "api/spotifyVolume", true);
-        x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        x.send(`volume=${volume}`);
-    }
-
-    //       ##                ###   ##                ##     #            #
-    //        #                #  #   #                 #                  #
-    // ###    #     ###  #  #  #  #   #     ###  #  #   #    ##     ###   ###
-    // #  #   #    #  #  #  #  ###    #    #  #  #  #   #     #    ##      #
-    // #  #   #    # ##   # #  #      #    # ##   # #   #     #      ##    #
-    // ###   ###    # #    #   #     ###    # #    #   ###   ###   ###      ##
-    // #                  #                       #
-    /**
-     * Plays a Spotify playlist.
-     * @param {string} playlist The Spotify Uri of the playlist to play.
-     * @param {boolean} stop Whether to stop the playlist after one song.
-     * @returns {void}
-     */
-    static playPlaylist(playlist, stop) {
-        const x = new XMLHttpRequest();
-
-        x.timeout = 5000;
-        x.open("POST", "api/spotifyPlay", true);
-        x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        x.send(`playlist=${playlist}${stop ? "&stop=true" : ""}`);
     }
 
     //       #                 #     #                   #    #  #           #         #
@@ -282,7 +199,7 @@ class Index {
      * @returns {void}
      */
     static updateSpotify(textElement, imageElement, interval) {
-        Index.readSpotify().then((response) => {
+        Spotify.readSpotify().then((response) => {
             const image = document.querySelector(imageElement);
 
             if (response.playing) {
@@ -524,7 +441,7 @@ class Index {
      * @returns {void}
      */
     static startWebsocket() {
-        Index.ws = new WebSocket("ws://localhost:60576/ws/listen");
+        Index.ws = new WebSocket(`ws://localhost:${document.location.port || "80"}/ws/listen`);
 
         Index.ws.onmessage = (ev) => {
             const data = JSON.parse(ev.data),
@@ -545,10 +462,10 @@ class Index {
                             document.getElementById("intro").classList.remove("hidden");
                             document.getElementById("now-playing").style.transform = "translate(1534px, 1019px)";
                             document.getElementById("streamlabs").style.transform = "translate(0, 0)";
-                            Index.setSpotifyVolume(100);
+                            Spotify.setSpotifyVolume(100);
                             setTimeout(() => {
                                 Index.countdown = true;
-                                Index.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", true);
+                                Spotify.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", true);
                             }, 15000);
                             break;
                         case "brb":
@@ -560,13 +477,13 @@ class Index {
                             document.getElementById("intro").classList.remove("hidden");
                             document.getElementById("now-playing").style.transform = "translate(1534px, 1019px)";
                             document.getElementById("streamlabs").style.transform = "translate(0, 0)";
-                            Index.setSpotifyVolume(100);
-                            Index.readSpotify().then((response) => {
+                            Spotify.setSpotifyVolume(100);
+                            Spotify.readSpotify().then((response) => {
                                 if (!response || !response.playing) {
-                                    Index.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", false);
+                                    Spotify.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", false);
                                 }
                             }).catch(() => {
-                                Index.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", false);
+                                Spotify.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", false);
                             });
                             break;
                         case "thanks":
@@ -578,13 +495,13 @@ class Index {
                             document.getElementById("intro").classList.remove("hidden");
                             document.getElementById("now-playing").style.transform = "translate(1534px, 1019px)";
                             document.getElementById("streamlabs").style.transform = "translate(0, 0)";
-                            Index.setSpotifyVolume(100);
-                            Index.readSpotify().then((response) => {
+                            Spotify.setSpotifyVolume(100);
+                            Spotify.readSpotify().then((response) => {
                                 if (!response || !response.playing) {
-                                    Index.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", false);
+                                    Spotify.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", false);
                                 }
                             }).catch(() => {
-                                Index.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", false);
+                                Spotify.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", false);
                             });
                             break;
                         case "fullscreen":
@@ -600,7 +517,7 @@ class Index {
                             document.getElementById("webcam").style.transform = `translate(${data.scene.position.left}px, ${data.scene.position.top + 300}px) scale(0.2)`;
                             document.getElementById("streamlabs").style.transform = `translate(${data.scene.position.left}px, ${data.scene.position.top + 300}px)`;
                             document.getElementById("fire").style.transform = `translate(${data.scene.position.left}px, ${data.scene.position.top + 305}px)`;
-                            Index.setSpotifyVolume(50);
+                            Spotify.setSpotifyVolume(50);
                             break;
                     }
                     break;
