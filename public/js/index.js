@@ -93,6 +93,27 @@ class Index {
         });
     }
 
+    //               #     ##                #     #      #         #  #        ##
+    //               #    #  #               #           # #        #  #         #
+    //  ###    ##   ###    #    ###    ##   ###   ##     #    #  #  #  #   ##    #    #  #  # #    ##
+    // ##     # ##   #      #   #  #  #  #   #     #    ###   #  #  #  #  #  #   #    #  #  ####  # ##
+    //   ##   ##     #    #  #  #  #  #  #   #     #     #     # #   ##   #  #   #    #  #  #  #  ##
+    // ###     ##     ##   ##   ###    ##     ##  ###    #      #    ##    ##   ###    ###  #  #   ##
+    //                          #                              #
+    /**
+     * Sets the Spotify volume.
+     * @param {number} volume A percent value to set the volume to.
+     * @returns {void}
+     */
+    setSpotifyVolume(volume) {
+        const x = new XMLHttpRequest();
+
+        x.timeout = 5000;
+        x.open("POST", "api/spotifyVolume", true);
+        x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        x.send(`volume=${volume}`);
+    }
+
     //       ##                ###   ##                ##     #            #
     //        #                #  #   #                 #                  #
     // ###    #     ###  #  #  #  #   #     ###  #  #   #    ##     ###   ###
@@ -456,7 +477,7 @@ class Index {
             Index.canvasContext.fillRect(x, 400 - 400 * barHeight / 255, 2500 / Index.analyser.frequencyBinCount - 1, 400 * barHeight / 255);
             x += 2500 / Index.analyser.frequencyBinCount;
         }
-    };
+    }
 
     //                   ##
     //                    #
@@ -517,23 +538,47 @@ class Index {
 
                     switch (data.state) {
                         case "intro":
+                            document.querySelector("#intro .upNext").classList.remove("hidden");
+                            document.querySelector("#intro .thanks").classList.add("hidden");
                             document.getElementById("video").classList.add("hidden");
                             document.querySelector("#video .roncliGaming").classList.add("hidden");
                             document.getElementById("intro").classList.remove("hidden");
                             document.getElementById("now-playing").style.transform = "translate(1534px, 1019px)";
                             document.getElementById("streamlabs").style.transform = "translate(0, 0)";
+                            Index.setSpotifyVolume(100);
                             setTimeout(() => {
                                 Index.countdown = true;
                                 Index.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", true);
                             }, 15000);
                             break;
                         case "brb":
+                            document.querySelector("#intro .upNext").classList.remove("hidden");
+                            document.querySelector("#intro .thanks").classList.add("hidden");
                             document.querySelector("#intro .statusText").innerText = "Be right back!";
                             document.getElementById("video").classList.add("hidden");
                             document.querySelector("#video .roncliGaming").classList.add("hidden");
                             document.getElementById("intro").classList.remove("hidden");
                             document.getElementById("now-playing").style.transform = "translate(1534px, 1019px)";
                             document.getElementById("streamlabs").style.transform = "translate(0, 0)";
+                            Index.setSpotifyVolume(100);
+                            Index.readSpotify().then((response) => {
+                                if (!response || !response.playing) {
+                                    Index.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", false);
+                                }
+                            }).catch(() => {
+                                Index.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", false);
+                            });
+                            break;
+                        case "thanks":
+                            document.querySelector("#intro .upNext").classList.add("hidden");
+                            document.querySelector("#intro .thanks").classList.remove("hidden");
+                            document.querySelector("#intro .statusText").innerText = "";
+                            document.getElementById("video").classList.add("hidden");
+                            document.querySelector("#video .roncliGaming").classList.add("hidden");
+                            document.getElementById("intro").classList.remove("hidden");
+                            document.getElementById("now-playing").style.transform = "translate(1534px, 1019px)";
+                            document.getElementById("streamlabs").style.transform = "translate(0, 0)";
+                            Index.setSpotifyVolume(100);
                             Index.readSpotify().then((response) => {
                                 if (!response || !response.playing) {
                                     Index.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", false);
@@ -555,6 +600,7 @@ class Index {
                             document.getElementById("webcam").style.transform = `translate(${data.scene.position.left}px, ${data.scene.position.top + 300}px) scale(0.2)`;
                             document.getElementById("streamlabs").style.transform = `translate(${data.scene.position.left}px, ${data.scene.position.top + 300}px)`;
                             document.getElementById("fire").style.transform = `translate(${data.scene.position.left}px, ${data.scene.position.top + 305}px)`;
+                            Index.setSpotifyVolume(50);
                             break;
                     }
                     break;

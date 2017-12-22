@@ -161,6 +161,16 @@ body {
     z-index: 2;
 }
 
+#intro .thanks {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 120px;
+    z-index: 2;
+}
+
 #intro .unText {
     font-size: 96px;
     z-index: 2;

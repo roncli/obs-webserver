@@ -1,7 +1,40 @@
 const config = require("./config"),
     SpotifyApi = require("spotify-web-api-node"),
+    WebApiRequest = require("spotify-web-api-node/src/webapi-request"),
+    HttpManager = require("spotify-web-api-node/src/http-manager"),
     SpotifyWebHelper = require("spotify-webhelper"),
     {promisify} = require("util");
+
+//  ##                #     #      #          ##          #                      ##
+// #  #               #           # #        #  #                                 #
+//  #    ###    ##   ###   ##     #    #  #  #  #  ###   ##          # #    ##    #    #  #  # #    ##
+//   #   #  #  #  #   #     #    ###   #  #  ####  #  #   #          # #   #  #   #    #  #  ####  # ##
+// #  #  #  #  #  #   #     #     #     # #  #  #  #  #   #     ##   # #   #  #   #    #  #  #  #  ##
+//  ##   ###    ##     ##  ###    #      #   #  #  ###   ###    ##    #     ##   ###    ###  #  #   ##
+//       #                              #          #
+/**
+ * Sets the volume in Spotify.
+ * @param {number} volume A percentage value to set the volume to.
+ * @param {function} [callback] The callback function.
+ * @returns {Promise} Returns a promise that resolves when the volume change request is sent.
+ */
+SpotifyApi.prototype.volume = (volume, callback) => {
+    const request = WebApiRequest.builder().withPath(`/v1/me/player/volume?volume_percent=${volume}`).withHeaders({"Content-Type": "application/json"}).build();
+
+    this._addAccessToken(request, this.getAccessToken());
+
+    const promise = this._performRequest(HttpManager.put, request);
+
+    if (callback) {
+        return promise.then((data) => {
+            callback(null, data);
+        }, (err) => {
+            callback(err);
+        });
+    }
+
+    return promise;
+};
 
 let accessTokenValid = false;
 
