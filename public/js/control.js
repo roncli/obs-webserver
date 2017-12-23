@@ -10,9 +10,9 @@
 //                                     #   #
 //                                      ###
 /**
- * A class of static functions for the config page.
+ * A class of static functions for the control page.
  */
-class Config {
+class Control {
     //         #                 #    #  #        #                        #            #
     //         #                 #    #  #        #                        #            #
     //  ###   ###    ###  ###   ###   #  #   ##   ###    ###    ##    ##   # #    ##   ###
@@ -24,19 +24,21 @@ class Config {
      * @returns {void}
      */
     static startWebsocket() {
-        Config.ws = new WebSocket(`ws://localhost:${document.location.port || "80"}/ws/update`);
+        Control.ws = new WebSocket(`ws://${document.location.hostname}:${document.location.port || "80"}/ws/update`);
 
-        Config.ws.onmessage = (ev) => {
-            const data = JSON.parse(ev.data),
+        Control.ws.onmessage = function(ev) {
+            var data = JSON.parse(ev.data),
                 sceneList = document.getElementById("scene-list");
 
-            switch (data.type) {
+                switch (data.type) {
                 case "scenes":
-                    ({data: {scenes: Config.scenes}} = data);
+                    Control.scenes = data.data.scenes;
 
-                    Config.scenes.forEach((scene) => {
-                        const option = document.createElement("option");
-                        ({name: option.value, name: option.text} = scene);
+                    Control.scenes.forEach(function(scene) {
+                        var option = document.createElement("option");
+
+                        option.value = scene.name;
+                        option.text = scene.name;
 
                         sceneList.appendChild(option);
                     });
@@ -52,71 +54,67 @@ class Config {
 // #  #  #  #  #  #  #     #  #  #  #   #    # ##  #  #   #    #     #  #  #  #  #  #  # ##  #  #
 // #  #  #  #  #  #  #  #  #  #  #  #   #    ##    #  #   #    #     #  #  # ##  #  #  ##    #  #
 // ###    ##   #  #   ##    ##   #  #    ##   ##   #  #    ##  ####   ##    # #   ###   ##    ###
-document.addEventListener("DOMContentLoaded", () => {
-    Config.startWebsocket();
+document.addEventListener("DOMContentLoaded", function() {
+    Control.startWebsocket();
 
-    document.getElementById("intro").onclick = () => {
-        Config.ws.send(JSON.stringify({
+    document.getElementById("intro").onclick = function() {
+        Control.ws.send(JSON.stringify({
             type: "scene",
             state: "intro"
         }));
     };
 
-    document.getElementById("brb").onclick = () => {
-        Config.ws.send(JSON.stringify({
+    document.getElementById("brb").onclick = function() {
+        Control.ws.send(JSON.stringify({
             type: "scene",
             state: "brb"
         }));
     };
 
-    document.getElementById("thanks").onclick = () => {
-        Config.ws.send(JSON.stringify({
+    document.getElementById("thanks").onclick = function() {
+        Control.ws.send(JSON.stringify({
             type: "scene",
             state: "thanks"
         }));
     };
 
-    document.getElementById("full-screen").onclick = () => {
-        Config.ws.send(JSON.stringify({
+    document.getElementById("full-screen").onclick = function() {
+        Control.ws.send(JSON.stringify({
             type: "scene",
             state: "fullscreen"
         }));
     };
 
-    document.getElementById("switch-scene").onclick = () => {
-        const sceneList = document.getElementById("scene-list"),
-            {options: {[sceneList.selectedIndex]: {value: sceneName}}} = sceneList;
+    document.getElementById("switch-scene").onclick = function() {
+        var sceneList = document.getElementById("scene-list"),
+            sceneName = sceneList.options[sceneList.selectedIndex].value;
 
-        Config.ws.send(JSON.stringify({
+        Control.ws.send(JSON.stringify({
             type: "scene",
             state: "scene",
-            scene: Config.scenes.find((s) => s.name === sceneName)
+            scene: Control.scenes.find(function(s) {return s.name === sceneName;})
         }));
     };
 
-    document.getElementById("fire").onclick = () => {
-        Config.ws.send(JSON.stringify({
+    document.getElementById("fire").onclick = function() {
+        Control.ws.send(JSON.stringify({
             type: "action",
             action: "fire"
         }));
     };
 
-    document.getElementById("time").onclick = () => {
-        Config.ws.send(JSON.stringify({
+    document.getElementById("time").onclick = function() {
+        Control.ws.send(JSON.stringify({
             type: "action",
             action: "time"
         }));
     };
 
-    document.getElementById("stop").onclick = () => {
+    document.getElementById("stop").onclick = function() {
         Spotify.pause();
     };
 
-    document.getElementById("roncli-gaming").onclick = () => {
+    document.getElementById("roncli-gaming").onclick = function() {
         Spotify.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A");
-    };
-
-    document.getElementById("edm-radio").onclick = () => {
-        Spotify.playPlaylist("spotify:station:user:1211227601:playlist:3r5jKhprymfYPPXfBmlHP5");
     };
 });

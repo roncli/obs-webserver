@@ -441,7 +441,7 @@ class Index {
      * @returns {void}
      */
     static startWebsocket() {
-        Index.ws = new WebSocket(`ws://localhost:${document.location.port || "80"}/ws/listen`);
+        Index.ws = new WebSocket(`ws://${document.location.hostname}:${document.location.port || "80"}/ws/listen`);
 
         Index.ws.onmessage = (ev) => {
             const data = JSON.parse(ev.data),

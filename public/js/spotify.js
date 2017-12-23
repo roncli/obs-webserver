@@ -25,7 +25,7 @@ class Spotify {
      * @returns {void}
      */
     static playPlaylist(playlist, stop) {
-        const x = new XMLHttpRequest();
+        var x = new XMLHttpRequest();
 
         x.timeout = 5000;
         x.open("POST", "api/spotifyPlay", true);
@@ -43,7 +43,7 @@ class Spotify {
      * @returns {void}
      */
     static pause() {
-        const x = new XMLHttpRequest();
+        var x = new XMLHttpRequest();
 
         x.timeout = 5000;
         x.open("POST", "api/spotifyPause", true);
@@ -63,11 +63,11 @@ class Spotify {
      * @returns {Promise} A promise that resolves with the Spotify information.
      */
     static readSpotify() {
-        return new Promise((resolve, reject) => {
-            const x = new XMLHttpRequest();
+        return new Promise(function(resolve, reject) {
+            var x = new XMLHttpRequest();
 
             x.timeout = 5000;
-            x.onreadystatechange = () => {
+            x.onreadystatechange = function() {
                 if (x.readyState !== 4) {
                     return;
                 }
@@ -79,11 +79,11 @@ class Spotify {
                 }
             };
 
-            x.ontimeout = () => {
+            x.ontimeout = function() {
                 reject(new Error());
             };
 
-            x.onerror = () => {
+            x.onerror = function() {
                 reject(new Error());
             };
 
@@ -106,7 +106,7 @@ class Spotify {
      * @returns {void}
      */
     static setSpotifyVolume(volume) {
-        const x = new XMLHttpRequest();
+        var x = new XMLHttpRequest();
 
         x.timeout = 5000;
         x.open("POST", "api/spotifyVolume", true);
