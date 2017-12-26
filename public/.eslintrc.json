@@ -12,5 +12,21 @@
         "sourceType": "module",
         "ecmaVersion": 6
     },
-    "extends": "../.eslintrc.json"
+    "extends": "../.eslintrc.json",
+    "overrides": [
+        {
+            "files": ["js/control.js", "js/spotify.js"],
+            "env": {
+                "es6": false
+            },
+            "parserOptions": {
+                "ecmaVersion": 5
+            },
+            "rules": {
+                "no-var": false,
+                "prefer-arrow-callback": false,
+                "prefer-destructuring": false
+            }
+        }
+    ]
 }

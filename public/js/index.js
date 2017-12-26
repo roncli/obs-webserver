@@ -507,6 +507,19 @@ class Index {
                         case "fullscreen":
                             Index.goFullscreen();
                             break;
+                        case "dcl":
+                            document.getElementById("dcl").classList.remove("hidden");
+                            document.getElementById("scene").classList.remove("hidden");
+                            document.getElementById("scene").style.transform = "translate(0px, 298px)";
+                            document.getElementById("now-playing").style.transform = "translate(0px, 754px)";
+                            document.getElementById("video").classList.remove("hidden");
+                            document.querySelector("#video .roncliGaming").classList.remove("hidden");
+                            document.querySelector("#video .roncliGaming").style.transform = "translate(277px, 603px)";
+                            document.getElementById("webcam").style.transform = "translate(0px, 598px) scale(0.2)";
+                            document.getElementById("streamlabs").style.transform = "translate(0px, 598px)";
+                            document.getElementById("fire").style.transform = "translate(0px, 603px)";
+                            Index.updateDcl();
+                            break;
                         case "scene":
                             document.getElementById("scene").classList.remove("hidden");
                             document.getElementById("scene").style.transform = `translate(${data.scene.position.left}px, ${data.scene.position.top}px)`;
@@ -597,6 +610,67 @@ class Index {
         setTimeout(() => {
             Index.updateCountdown();
         }, timeLeft.getTime() % 1000 + 1);
+    }
+
+    //                #         #          ###         ##
+    //                #         #          #  #         #
+    // #  #  ###    ###   ###  ###    ##   #  #   ##    #
+    // #  #  #  #  #  #  #  #   #    # ##  #  #  #      #
+    // #  #  #  #  #  #  # ##   #    ##    #  #  #      #
+    //  ###  ###    ###   # #    ##   ##   ###    ##   ###
+    //       #
+    /**
+     * Updates the DCL stats.
+     * @returns {void}
+     */
+    static updateDcl() {
+        if (Index.updateDclTimeout) {
+            clearTimeout(Index.updateDclTimeout);
+        }
+
+        if (document.querySelector("#dcl").classList.contains("hidden")) {
+            return;
+        }
+
+        const x = new XMLHttpRequest();
+
+        x.onreadystatechange = function() {
+            if (x.readyState === 4 && x.status === 200) {
+                const stats = JSON.parse(x.responseText);
+
+                if (stats) {
+                    const games = document.querySelector("#dcl .games");
+
+                    document.querySelector("#dcl .dcl .rank").innerText = `${stats.rating} #${stats.rank}`;
+                    document.querySelector("#dcl .dcl .diamond").innerText = `${stats.records.diamond.wins}-${stats.records.diamond.losses}`;
+                    document.querySelector("#dcl .dcl .gold").innerText = `${stats.records.gold.wins}-${stats.records.gold.losses}`;
+                    document.querySelector("#dcl .dcl .silver").innerText = `${stats.records.silver.wins}-${stats.records.silver.losses}`;
+                    document.querySelector("#dcl .dcl .bronze").innerText = `${stats.records.bronze.wins}-${stats.records.bronze.losses}`;
+                    document.querySelector("#dcl .dcl .unrated").innerText = `${stats.records.unrated.wins}-${stats.records.unrated.losses}`;
+
+                    while (games.firstChild) {
+                        games.removeChild(games.firstChild);
+                    }
+
+                    for (let index = 0; index < 5 && index < stats.matches.length; index++) {
+                        const {matches: {[index]: match}} = stats,
+                            div = document.createElement("div");
+
+                        div.innerText = `${match.pilot.score > match.opponent.score ? "W" : "L"} ${match.pilot.score}-${match.opponent.score} vs. ${match.opponent.name}, ${match.game} ${match.map}`;
+                        games.appendChild(div);
+                    }
+                    document.getElementById("dcl").classList.remove("hidden");
+                } else {
+                    document.getElementById("dcl").classList.add("hidden");
+                }
+
+                Index.updateDclTimeout = setTimeout(Index.updateDcl, 300000);
+            }
+        };
+
+        x.open("GET", "api/dclStats", true);
+        x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        x.send();
     }
 }
 
