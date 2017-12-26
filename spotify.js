@@ -126,8 +126,8 @@ class Spotify {
                                 playing: response.playing,
                                 progress: Math.round(response.playing_position * 1000),
                                 duration: response.track.length * 1000,
-                                title: response.track.track_resource.name,
-                                artist: response.track.artist_resource.name
+                                title: response.track.track_resource && response.track.track_resource.name,
+                                artist: response.track.artist_resource && response.track.artist_resource.name
                             });
                         }).catch(reject);
 
