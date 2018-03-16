@@ -118,7 +118,7 @@ class Spotify {
                         resolve({});
                     }
                 }).catch((err) => {
-                    if (err.statusCode === 400) {
+                    if (err.statusCode === 400 || err.statusCode === 502) {
                         const webHelper = new SpotifyWebHelper.SpotifyWebHelper();
 
                         promisify(webHelper.getStatus).bind(webHelper)().then((response) => {
