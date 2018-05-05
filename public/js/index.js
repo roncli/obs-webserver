@@ -419,15 +419,25 @@ class Index {
         Index.analyser.smoothingTimeConstant = 0.65;
         Index.analyser.fftSize = 512;
 
-        navigator.getUserMedia({audio: true}, (stream) => {
-            const source = audioContext.createMediaStreamSource(stream);
+        navigator.mediaDevices.enumerateDevices().then((devices) => {
+            const device = devices.find((d) => d.kind === "audioinput");
 
-            source.connect(Index.analyser);
+            if (device) {
+                navigator.mediaDevices.getUserMedia({audio: {deviceId: {exact: device.deviceId}}, video: false}).then((stream) => {
+                    const source = audioContext.createMediaStreamSource(stream);
 
-            Index.canvasContext.clearRect(0, 0, 1920, 400);
+                    source.connect(Index.analyser);
 
-            Index.draw();
-        }, () => {});
+                    Index.canvasContext.clearRect(0, 0, 1920, 400);
+
+                    Index.draw();
+                }).catch((err) => {
+                    console.log(err);
+                });
+            }
+        }).catch((err) => {
+            document.querySelector("body").innerText = err;
+        });
     }
 
     //         #                 #    #  #        #                        #            #
