@@ -156,13 +156,15 @@ class Spotify {
             clearTimeout(Spotify.stopTimeout);
         }
 
-        Spotify.nowPlaying().then((track) => {
-            if (track && track.progress && track.duration) {
-                Spotify.stopTimeout = setTimeout(() => Spotify.spotify.pause(), track.duration - track.progress);
-            }
-        }).catch(() => {
-            Spotify.stopAfterCurrentSong();
-        });
+        setTimeout(() => {
+            Spotify.nowPlaying().then((track) => {
+                if (track && track.progress && track.duration) {
+                    Spotify.stopTimeout = setTimeout(() => Spotify.spotify.pause(), track.duration - track.progress);
+                }
+            }).catch(() => {
+                Spotify.stopAfterCurrentSong();
+            });
+        }, 2500);
     }
 }
 

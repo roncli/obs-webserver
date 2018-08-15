@@ -30,6 +30,11 @@ class Astats {
      */
     static get(req, res) {
         promisify(request)("http://astats.astats.nl/astats/User_Games.php?SteamID64=76561197996696153&DisplayType=1&AchievementsOnly=1").then((response, body) => {
+            if (!body) {
+                res.sendStatus(500);
+                return;
+            }
+
             body = `<div>${body.replace(/^[\s\S]*<body.*?>|<\/body>[\s\S]*$/ig, "")}</div>`;
             res.status(200);
             res.send(JSON.stringify($.makeArray($($(body).find("table")[1]).find("tbody tr").map((index, el) => {

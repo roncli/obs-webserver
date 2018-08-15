@@ -124,7 +124,7 @@ class Index {
                     optional: [{sourceId: deviceId}]
                 }
             }, (stream) => {
-                video.src = window.URL.createObjectURL(stream);
+                video.srcObject = stream;
             }, (err) => {
                 console.log(err);
             });
@@ -151,6 +151,88 @@ class Index {
         }).catch(() => {}).then(() => {
             setTimeout(() => {
                 Index.updateDiv(element, path, interval);
+            }, interval);
+        });
+    }
+
+    //                #         #          ###    #     #    ##
+    //                #         #           #           #     #
+    // #  #  ###    ###   ###  ###    ##    #    ##    ###    #     ##
+    // #  #  #  #  #  #  #  #   #    # ##   #     #     #     #    # ##
+    // #  #  #  #  #  #  # ##   #    ##     #     #     #     #    ##
+    //  ###  ###    ###   # #    ##   ##    #    ###     ##  ###    ##
+    //       #
+    /**
+     * Updates the title with the text from a local path at a specified interval.
+     * @param {string} path The local path to get the text.
+     * @param {number} interval The interval in milliseconds to update the text.
+     * @returns {void}
+     */
+    static updateTitle(path, interval) {
+        Index.readLocal(path, false).then((responseText) => {
+            const lines = responseText.split("\n");
+            document.querySelector("#title-1").innerText = lines[0];
+            document.querySelector("#title-2").innerText = lines[1];
+        }).catch(() => {}).then(() => {
+            setTimeout(() => {
+                Index.updateTitle(path, interval);
+            }, interval);
+        });
+    }
+
+    //                #         #          ###                #
+    //                #         #           #                 #
+    // #  #  ###    ###   ###  ###    ##    #     ##   #  #  ###
+    // #  #  #  #  #  #  #  #   #    # ##   #    # ##   ##    #
+    // #  #  #  #  #  #  # ##   #    ##     #    ##     ##    #
+    //  ###  ###    ###   # #    ##   ##    #     ##   #  #    ##
+    //       #
+    /**
+     * Updates the stream text with the text from a local path at a specified interval.
+     * @param {string} path The local path to get the text.
+     * @param {number} interval The interval in milliseconds to update the text.
+     * @returns {void}
+     */
+    static updateText(path, interval) {
+        Index.readLocal(path, false).then((responseText) => {
+            const lines = responseText.trim().split("\n"),
+                outerEl = document.createElement("div");
+
+            let open = false,
+                innerEl;
+
+            lines.forEach((line) => {
+                line = line.trim();
+
+                if (line.length > 0 && !open) {
+                    innerEl = document.createElement("div");
+                    innerEl.classList.add("panel");
+                    innerEl.classList.add("panel-primary");
+
+                    const el = document.createElement("div");
+                    el.classList.add("panel-heading");
+                    el.classList.add("text-center");
+                    el.innerText = line;
+                    innerEl.appendChild(el);
+
+                    open = true;
+                } else if (line.length === 0 && open) {
+                    outerEl.appendChild(innerEl);
+                    open = false;
+                } else if (line.length > 0) {
+                    const el = document.createElement("div");
+                    el.classList.add("panel-body");
+                    el.innerText = line;
+                    innerEl.appendChild(el);
+                }
+            });
+
+            outerEl.appendChild(innerEl);
+
+            document.querySelector("#stream-text").innerHTML = outerEl.innerHTML;
+        }).catch(() => {}).then(() => {
+            setTimeout(() => {
+                Index.updateText(path, interval);
             }, interval);
         });
     }
@@ -464,15 +546,16 @@ class Index {
                         el.classList.add("hidden");
                     });
 
+                    document.getElementById("screen").classList.remove("green-screen");
+
                     switch (data.state) {
                         case "intro":
                             document.querySelector("#intro .upNext").classList.remove("hidden");
                             document.querySelector("#intro .thanks").classList.add("hidden");
                             document.getElementById("video").classList.add("hidden");
-                            document.querySelector("#video .roncliGaming").classList.add("hidden");
                             document.getElementById("intro").classList.remove("hidden");
-                            document.getElementById("now-playing").style.transform = "translate(1534px, 1019px)";
-                            document.getElementById("streamlabs").style.transform = "translate(0, 0)";
+                            document.getElementById("now-playing").style.transform = "translate(1534px, 5px)";
+//                            document.getElementById("streamlabs").style.transform = "translate(0, 0)";
                             Spotify.setSpotifyVolume(100);
                             setTimeout(() => {
                                 Index.countdown = true;
@@ -484,10 +567,9 @@ class Index {
                             document.querySelector("#intro .thanks").classList.add("hidden");
                             document.querySelector("#intro .statusText").innerText = "Be right back!";
                             document.getElementById("video").classList.add("hidden");
-                            document.querySelector("#video .roncliGaming").classList.add("hidden");
                             document.getElementById("intro").classList.remove("hidden");
-                            document.getElementById("now-playing").style.transform = "translate(1534px, 1019px)";
-                            document.getElementById("streamlabs").style.transform = "translate(0, 0)";
+                            document.getElementById("now-playing").style.transform = "translate(1534px, 5px)";
+//                            document.getElementById("streamlabs").style.transform = "translate(0, 0)";
                             Spotify.setSpotifyVolume(100);
                             Spotify.readSpotify().then((response) => {
                                 if (!response || !response.playing) {
@@ -502,10 +584,9 @@ class Index {
                             document.querySelector("#intro .thanks").classList.remove("hidden");
                             document.querySelector("#intro .statusText").innerText = "";
                             document.getElementById("video").classList.add("hidden");
-                            document.querySelector("#video .roncliGaming").classList.add("hidden");
                             document.getElementById("intro").classList.remove("hidden");
-                            document.getElementById("now-playing").style.transform = "translate(1534px, 1019px)";
-                            document.getElementById("streamlabs").style.transform = "translate(0, 0)";
+                            document.getElementById("now-playing").style.transform = "translate(1534px, 5px)";
+//                            document.getElementById("streamlabs").style.transform = "translate(0, 0)";
                             Spotify.setSpotifyVolume(100);
                             Spotify.readSpotify().then((response) => {
                                 if (!response || !response.playing) {
@@ -520,14 +601,16 @@ class Index {
                             break;
                         case "scene":
                             document.getElementById("scene").classList.remove("hidden");
-                            document.getElementById("scene").style.transform = `translate(${data.scene.position.left}px, ${data.scene.position.top}px)`;
-                            document.getElementById("now-playing").style.transform = `translate(${data.scene.position.left}px, ${data.scene.position.top + 456}px)`;
+                            document.getElementById("scene").style.transform = "translate(0px, 0px)";
+                            document.getElementById("now-playing").style.transform = "translate(1534px, 5px)";
                             document.getElementById("video").classList.remove("hidden");
-                            document.querySelector("#video .roncliGaming").classList.remove("hidden");
-                            document.querySelector("#video .roncliGaming").style.transform = `translate(${data.scene.position.left + 277}px, ${data.scene.position.top + 305}px)`;
-                            document.getElementById("webcam").style.transform = `translate(${data.scene.position.left}px, ${data.scene.position.top + 300}px) scale(0.2)`;
-                            document.getElementById("streamlabs").style.transform = `translate(${data.scene.position.left}px, ${data.scene.position.top + 300}px)`;
-                            document.getElementById("fire").style.transform = `translate(${data.scene.position.left}px, ${data.scene.position.top + 305}px)`;
+                            document.getElementById("video").style.maxWidth = "369px";
+                            document.getElementById("webcam").style.transform = "translate(-80px, 800px) scale(0.26)";
+//                            document.getElementById("streamlabs").style.transform = "translate(0px, 832px)";
+                            document.getElementById("fire").style.transform = "translate(0px, 869px)";
+                            setTimeout(() => {
+                                document.getElementById("screen").classList.add("green-screen");
+                            }, 1000);
                             Spotify.setSpotifyVolume(50);
                             break;
                     }
@@ -570,11 +653,11 @@ class Index {
      */
     static goFullscreen() {
         document.getElementById("fullscreen").classList.remove("hidden");
-        document.getElementById("now-playing").style.transform = "translate(1534px, 1019px)";
+        document.getElementById("now-playing").style.transform = "translate(1534px, 5px)";
+        document.getElementById("video").style.maxWidth = "1920px";
         document.getElementById("video").classList.remove("hidden");
-        document.querySelector("#video .roncliGaming").classList.add("hidden");
         document.getElementById("webcam").style.transform = "translate(0, 0) scale(1)";
-        document.getElementById("streamlabs").style.transform = "translate(0, 0)";
+//        document.getElementById("streamlabs").style.transform = "translate(0, 0)";
     }
 
     //                #         #           ##                      #       #
@@ -589,7 +672,7 @@ class Index {
      * @returns {void}
      */
     static updateCountdown() {
-        const timeLeft = new Date(Index.songEndsAt - new Date().getTime() - 15000),
+        const timeLeft = new Date(Index.songEndsAt - new Date().getTime() - 10000),
             statusText = document.querySelector("#intro .statusText");
 
         if (timeLeft.getTime() < 0) {
@@ -621,7 +704,9 @@ document.addEventListener("DOMContentLoaded", () => {
     Index.rotateSlideshow(0);
     Index.analyzer();
     Index.updateDiv(".unGame", "C:\\Users\\roncli\\Desktop\\roncliGaming\\roncliGamingUpNext.txt", 5000);
-    Index.updateDiv(".stream-text", "C:\\Users\\roncli\\Desktop\\roncliGaming\\roncliGamingStreamText.txt", 5000);
+//    Index.updateDiv(".timer", "C:\\Snaz\\TextFiles\\Countdown.txt", 250);
+    Index.updateText("C:\\Users\\roncli\\Desktop\\roncliGaming\\roncliGamingStreamText.txt", 5000);
+    Index.updateTitle("C:\\Users\\roncli\\Desktop\\roncliGaming\\roncliGamingUpNext.txt", 5000);
     Index.updateSpotify(".track-text", ".album-art", 5000);
     Index.startWebsocket();
     Index.updateVideo("#webcam");
