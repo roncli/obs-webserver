@@ -1,3 +1,5 @@
+/* global config, OBSWebSocket, Spotify */
+
 const slideshowImages = [
     "images/crypt.png",
     "images/deathstate.png",
@@ -282,7 +284,7 @@ class Index {
             const image = document.querySelector(imageElement);
 
             if (response.playing) {
-                document.querySelector(textElement).innerText = `Now Playing:\n${response.artist} - ${response.title}`;
+                document.querySelector(textElement).innerText = `Now Playing:\n${response.artist}\n${response.title}`;
                 if (response.imageUrl) {
                     if (response.imageUrl !== document.querySelector(imageElement).src) {
                         ({imageUrl: image.src} = response);
@@ -551,8 +553,7 @@ class Index {
                             document.querySelector("#intro .thanks").classList.add("hidden");
                             document.getElementById("video").classList.add("hidden");
                             document.getElementById("intro").classList.remove("hidden");
-                            document.getElementById("now-playing").style.transform = "translate(1534px, 5px)";
-//                            document.getElementById("streamlabs").style.transform = "translate(0, 0)";
+                            document.getElementById("now-playing").style.transform = "translate(1418px, 5px)";
                             Spotify.setSpotifyVolume(100);
                             setTimeout(() => {
                                 Index.countdown = true;
@@ -566,8 +567,7 @@ class Index {
                             document.querySelector("#intro .statusText").innerText = "Be right back!";
                             document.getElementById("video").classList.add("hidden");
                             document.getElementById("intro").classList.remove("hidden");
-                            document.getElementById("now-playing").style.transform = "translate(1534px, 5px)";
-//                            document.getElementById("streamlabs").style.transform = "translate(0, 0)";
+                            document.getElementById("now-playing").style.transform = "translate(1418px, 5px)";
                             Spotify.setSpotifyVolume(100);
                             Spotify.readSpotify().then((response) => {
                                 if (!response || !response.playing) {
@@ -584,8 +584,7 @@ class Index {
                             document.querySelector("#intro .statusText").innerText = "";
                             document.getElementById("video").classList.add("hidden");
                             document.getElementById("intro").classList.remove("hidden");
-                            document.getElementById("now-playing").style.transform = "translate(1534px, 5px)";
-//                            document.getElementById("streamlabs").style.transform = "translate(0, 0)";
+                            document.getElementById("now-playing").style.transform = "translate(1418px, 5px)";
                             Spotify.setSpotifyVolume(100);
                             Spotify.readSpotify().then((response) => {
                                 if (!response || !response.playing) {
@@ -603,17 +602,16 @@ class Index {
                         case "scene":
                             document.getElementById("scene").classList.remove("hidden");
                             document.getElementById("scene").style.transform = "translate(0px, 0px)";
-                            document.getElementById("now-playing").style.transform = "translate(1534px, 5px)";
+                            document.getElementById("now-playing").style.transform = "translate(1418px, 5px)";
                             document.getElementById("video").classList.remove("hidden");
                             document.getElementById("video").style.maxWidth = "369px";
                             document.getElementById("webcam").style.transform = "translate(-80px, 800px) scale(0.26)";
-//                            document.getElementById("streamlabs").style.transform = "translate(0px, 832px)";
                             document.getElementById("fire").style.transform = "translate(0px, 869px)";
                             setTimeout(() => {
                                 document.getElementById("screen").classList.add("green-screen");
                             }, 1000);
                             Spotify.setSpotifyVolume(50);
-                            Index.obs.setCurrentScene({"scene-name": "roncli Gaming - Game Play"});
+                            Index.obs.setCurrentScene({"scene-name": data.scene});
                             break;
                     }
                     break;
@@ -657,11 +655,10 @@ class Index {
      */
     static goFullscreen() {
         document.getElementById("fullscreen").classList.remove("hidden");
-        document.getElementById("now-playing").style.transform = "translate(1534px, 5px)";
+        document.getElementById("now-playing").style.transform = "translate(1418px, 5px)";
         document.getElementById("video").style.maxWidth = "1920px";
         document.getElementById("video").classList.remove("hidden");
         document.getElementById("webcam").style.transform = "translate(0, 0) scale(1)";
-//        document.getElementById("streamlabs").style.transform = "translate(0, 0)";
     }
 
     //                #         #           ##                      #       #
@@ -708,7 +705,6 @@ document.addEventListener("DOMContentLoaded", () => {
     Index.rotateSlideshow(0);
     Index.analyzer();
     Index.updateDiv(".unGame", "C:\\Users\\roncli\\Desktop\\roncliGaming\\roncliGamingUpNext.txt", 5000);
-//    Index.updateDiv(".timer", "C:\\Snaz\\TextFiles\\Countdown.txt", 250);
     Index.updateText("C:\\Users\\roncli\\Desktop\\roncliGaming\\roncliGamingStreamText.txt", 5000);
     Index.updateTitle("C:\\Users\\roncli\\Desktop\\roncliGaming\\roncliGamingUpNext.txt", 5000);
     Index.updateSpotify(".track-text", ".album-art", 5000);

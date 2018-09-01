@@ -30,15 +30,15 @@ class Control {
             var data = JSON.parse(ev.data),
                 sceneList = document.getElementById("scene-list");
 
-                switch (data.type) {
+            switch (data.type) {
                 case "scenes":
                     Control.scenes = data.data.scenes;
 
                     Control.scenes.forEach(function(scene) {
                         var option = document.createElement("option");
 
-                        option.value = scene.name;
                         option.text = scene.name;
+                        option.value = scene.value;
 
                         sceneList.appendChild(option);
                     });
@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", function() {
         Control.ws.send(JSON.stringify({
             type: "scene",
             state: "scene",
-            scene: Control.scenes.find(function(s) {return s.name === sceneName;})
+            scene: sceneName
         }));
     };
 

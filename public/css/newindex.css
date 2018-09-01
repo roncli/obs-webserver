@@ -46,11 +46,11 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    width: 384px;
+    width: 500px;
     height: 60px;
     z-index: 10;
     transition: transform 0.5s linear;
-    transform: translate(1534px, 980px);
+    transform: translate(1418px, 5px);
 }
 
 #now-playing .track {
@@ -60,7 +60,7 @@ body {
 }
 
 #now-playing .track-text {
-    width: 324px;
+    width: 440px;
 }
 
 #now-playing .album-art {
