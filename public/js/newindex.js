@@ -1,5 +1,3 @@
-/* global Spotify */
-
 const slideshowImages = [
     "images/crypt.png",
     "images/deathstate.png",
@@ -523,16 +521,17 @@ class Index {
 
     //         #                 #    #  #        #                        #            #
     //         #                 #    #  #        #                        #            #
-    //  ###   ###    ###  ###   ###   #  #   ##   ###    ###    ##    ##   # #    ##   ###
-    // ##      #    #  #  #  #   #    ####  # ##  #  #  ##     #  #  #     ##    # ##   #
-    //   ##    #    # ##  #      #    ####  ##    #  #    ##   #  #  #     # #   ##     #
-    // ###      ##   # #  #       ##  #  #   ##   ###   ###     ##    ##   #  #   ##     ##
+    //  ###   ###    ###  ###   ###   #  #   ##   ###    ###    ##    ##   # #    ##   ###    ###
+    // ##      #    #  #  #  #   #    ####  # ##  #  #  ##     #  #  #     ##    # ##   #    ##
+    //   ##    #    # ##  #      #    ####  ##    #  #    ##   #  #  #     # #   ##     #      ##
+    // ###      ##   # #  #       ##  #  #   ##   ###   ###     ##    ##   #  #   ##     ##  ###
     /**
-     * Starts the WebSocket connection and performs updates based on the messages received.
+     * Starts the WebSocket connections and performs updates based on the messages received.
      * @returns {void}
      */
-    static startWebsocket() {
+    static startWebsockets() {
         Index.ws = new WebSocket(`ws://${document.location.hostname}:${document.location.port || "80"}/ws/listen`);
+        Index.obs = new OBSWebSocket();
 
         Index.ws.onmessage = (ev) => {
             const data = JSON.parse(ev.data),
@@ -559,6 +558,7 @@ class Index {
                                 Index.countdown = true;
                                 Spotify.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", true);
                             }, 15000);
+                            Index.obs.setCurrentScene({"scene-name": "roncli Gaming - Bumper"});
                             break;
                         case "brb":
                             document.querySelector("#intro .upNext").classList.remove("hidden");
@@ -576,6 +576,7 @@ class Index {
                             }).catch(() => {
                                 Spotify.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", false);
                             });
+                            Index.obs.setCurrentScene({"scene-name": "roncli Gaming - Bumper"});
                             break;
                         case "thanks":
                             document.querySelector("#intro .upNext").classList.add("hidden");
@@ -593,9 +594,11 @@ class Index {
                             }).catch(() => {
                                 Spotify.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", false);
                             });
+                            Index.obs.setCurrentScene({"scene-name": "roncli Gaming - Bumper"});
                             break;
                         case "fullscreen":
                             Index.goFullscreen();
+                            Index.obs.setCurrentScene({"scene-name": "roncli Gaming - Full Screen"});
                             break;
                         case "scene":
                             document.getElementById("scene").classList.remove("hidden");
@@ -610,6 +613,7 @@ class Index {
                                 document.getElementById("screen").classList.add("green-screen");
                             }, 1000);
                             Spotify.setSpotifyVolume(50);
+                            Index.obs.setCurrentScene({"scene-name": "roncli Gaming - Game Play"});
                             break;
                     }
                     break;
@@ -636,6 +640,8 @@ class Index {
                     break;
             }
         };
+
+        Index.obs.connect(config.websocket);
     }
 
     //             ####        ##    ##
@@ -706,6 +712,6 @@ document.addEventListener("DOMContentLoaded", () => {
     Index.updateText("C:\\Users\\roncli\\Desktop\\roncliGaming\\roncliGamingStreamText.txt", 5000);
     Index.updateTitle("C:\\Users\\roncli\\Desktop\\roncliGaming\\roncliGamingUpNext.txt", 5000);
     Index.updateSpotify(".track-text", ".album-art", 5000);
-    Index.startWebsocket();
+    Index.startWebsockets();
     Index.updateVideo("#webcam");
 });
