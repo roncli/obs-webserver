@@ -26,15 +26,16 @@ class SpotifyNowPlaying {
      * @param {object} res The response object.
      * @returns {void}
      */
-    static get(req, res) {
-        Spotify.nowPlaying().then((track) => {
+    static async get(req, res) {
+        try {
+            const track = await Spotify.nowPlaying();
             res.status(200);
             res.send(JSON.stringify(track));
             res.end();
-        }).catch((err) => {
+        } catch (err) {
             res.sendStatus(500);
             console.log(err);
-        });
+        }
     }
 }
 

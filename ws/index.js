@@ -26,7 +26,7 @@ router.ws("/:api", (ws, req) => {
 
         ws.emit("init");
     }).catch((err) => {
-        ws.close(1011, "An server error occurred.");
+        ws.close(1011, "A server error occurred.");
         console.log(err);
     });
 });

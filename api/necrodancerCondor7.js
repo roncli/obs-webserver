@@ -2,16 +2,16 @@ const {promisify} = require("util"),
     GS = require("google-spreadsheet");
 
 //  #   #                                  #                                      ###                     #                #####
-//  #   #                                  #                                     #   #                    #                #
-//  ##  #   ###    ###   # ##    ###    ## #   ###   # ##    ###    ###   # ##   #       ###   # ##    ## #   ###   # ##   # ##
-//  # # #  #   #  #   #  ##  #  #   #  #  ##      #  ##  #  #   #  #   #  ##  #  #      #   #  ##  #  #  ##  #   #  ##  #  ##  #
-//  #  ##  #####  #      #      #   #  #   #   ####  #   #  #      #####  #      #      #   #  #   #  #   #  #   #  #          #
-//  #   #  #      #   #  #      #   #  #  ##  #   #  #   #  #   #  #      #      #   #  #   #  #   #  #  ##  #   #  #      #   #
-//  #   #   ###    ###   #       ###    ## #   ####  #   #   ###    ###   #       ###    ###   #   #   ## #   ###   #       ###
+//  #   #                                  #                                     #   #                    #                    #
+//  ##  #   ###    ###   # ##    ###    ## #   ###   # ##    ###    ###   # ##   #       ###   # ##    ## #   ###   # ##      #
+//  # # #  #   #  #   #  ##  #  #   #  #  ##      #  ##  #  #   #  #   #  ##  #  #      #   #  ##  #  #  ##  #   #  ##  #     #
+//  #  ##  #####  #      #      #   #  #   #   ####  #   #  #      #####  #      #      #   #  #   #  #   #  #   #  #        #
+//  #   #  #      #   #  #      #   #  #  ##  #   #  #   #  #   #  #      #      #   #  #   #  #   #  #  ##  #   #  #       #
+//  #   #   ###    ###   #       ###    ## #   ####  #   #   ###    ###   #       ###    ###   #   #   ## #   ###   #       #
 /**
- * API to return stats for Necrodancer CoNDOR season 5.
+ * API to return stats for Necrodancer CoNDOR season 7.
  */
-class NecrodancerCondor5 {
+class NecrodancerCondor7 {
     //              #
     //              #
     //  ###   ##   ###
@@ -20,16 +20,19 @@ class NecrodancerCondor5 {
     // #      ##     ##
     //  ###
     /**
-     * Returns stats for Necrodancer CoNDOR season 5.
+     * Returns stats for Necrodancer CoNDOR season 7.
      * @param {object} req The request object.
      * @param {object} res The response object.
      * @returns {void}
      */
     static async get(req, res) {
         try {
-            const doc = new GS("17GKLiNDS0o-5_SXgBfvFRHTF9RMRrpOwT_p-aJ-S0Uk"),
+            const doc = new GS("1ZrDUfY5BgIpFkYH-0uEAPDjdrWFlH_zUp_e0F0irNhc"),
                 creds = require("../roncli.com-968d02fefdb4.json"),
-                apiReturn = {};
+                apiReturn = {
+                    races: {},
+                    standings: []
+                };
 
             await promisify(doc.useServiceAccountAuth)(creds);
 
@@ -79,22 +82,22 @@ class NecrodancerCondor5 {
 
                 match.score = weekTable[index][8] ? weekTable[index][8] : "Pending";
 
-                if (!apiReturn[tier]) {
-                    apiReturn[tier] = {
+                if (!apiReturn.races[tier]) {
+                    apiReturn.races[tier] = {
                         previousResults: [],
                         upcomingMatches: []
                     };
                 }
 
                 if (match.date && match.date.getTime() < new Date().getTime()) {
-                    apiReturn[tier].previousResults.push(match);
+                    apiReturn.races[tier].previousResults.push(match);
                 } else {
-                    apiReturn[tier].upcomingMatches.push(match);
+                    apiReturn.races[tier].upcomingMatches.push(match);
                 }
             }
 
-            Object.keys(apiReturn).forEach((returnTier) => {
-                apiReturn[returnTier].previousResults.sort((a, b) => {
+            Object.keys(apiReturn.races).forEach((returnTier) => {
+                apiReturn.races[returnTier].previousResults.sort((a, b) => {
                     if (b.date && a.date) {
                         return b.date.getTime() - a.date.getTime();
                     }
@@ -107,7 +110,7 @@ class NecrodancerCondor5 {
                     return 0;
                 });
 
-                apiReturn[returnTier].upcomingMatches.sort((a, b) => {
+                apiReturn.races[returnTier].upcomingMatches.sort((a, b) => {
                     if (a.date && b.date) {
                         return a.date.getTime() - b.date.getTime();
                     }
@@ -121,6 +124,40 @@ class NecrodancerCondor5 {
                 });
             });
 
+            const qtpi = info.worksheets.find((sheet) => sheet.title === "QTPi Standings");
+
+            const standings = await promisify(qtpi.getCells)({
+                "min-row": 5,
+                "max-row": 100,
+                "min-col": 1,
+                "max-col": 17
+            });
+
+            const qtpiTable = [];
+
+            standings.forEach((standing) => {
+                if (!qtpiTable[standing.row]) {
+                    qtpiTable[standing.row] = [];
+                }
+                qtpiTable[standing.row][standing.col] = typeof standing.numericValue === "number" ? standing.numericValue : standing.value;
+            });
+
+            qtpiTable.forEach((standing) => {
+                if (standing[1]) {
+                    apiReturn.standings.push({
+                        player: standing[1],
+                        points: standing[2],
+                        week1: (standing[3] || 0) + (standing[4] || 0) + (standing[5] || 0),
+                        week2: (standing[6] || 0) + (standing[7] || 0) + (standing[8] || 0),
+                        week3: (standing[9] || 0) + (standing[10] || 0) + (standing[11] || 0),
+                        week4: (standing[12] || 0) + (standing[13] || 0) + (standing[14] || 0),
+                        week5: (standing[15] || 0) + (standing[16] || 0) + (standing[17] || 0)
+                    });
+                }
+            });
+
+            apiReturn.standings.sort((a, b) => b.points - a.points);
+
             res.status(200);
             res.send(JSON.stringify(apiReturn));
             res.end();
@@ -131,4 +168,4 @@ class NecrodancerCondor5 {
     }
 }
 
-module.exports = NecrodancerCondor5;
+module.exports = NecrodancerCondor7;

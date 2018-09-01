@@ -42,9 +42,8 @@ var updateDiv = function(element, path, interval) {
                 setTimeout(readLocal, interval);
             }
         };
-        x.open("POST", "api/local", true);
-        x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        x.send("file=" + encodeURIComponent(path));
+        x.open("GET", `api/local?file=${encodeURIComponent(path)}`, true);
+        x.send();
     };
 
     readLocal();
@@ -60,9 +59,8 @@ var updateImage = function(element, path, interval) {
                     document.querySelector(element).src = "data:image/png;base64," + x.responseText;
                 }
             };
-            x.open("POST", "api/local", true);
-            x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            x.send("base64=true&file=" + encodeURIComponent(path));
+            x.open("GET", `api/local?base64=true&file=${encodeURIComponent(path)}`, true);
+            x.send();
         },
 
         checkLastUpdate = function() {
@@ -88,9 +86,8 @@ var updateImage = function(element, path, interval) {
                 setTimeout(checkLastUpdate, 10000);
             };
 
-            x.open("POST", "api/lastModified", true);
-            x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            x.send("file=" + encodeURIComponent(path));
+            x.open(`GET", "api/lastModified?file=${encodeURIComponent(path)}`, true);
+            x.send();
         };
 
     checkLastUpdate();

@@ -23,7 +23,6 @@ class Proxy {
     /**
      * Returns stats from Astats.
      * @param {object} req The request object.
-     * @param {string} req.query.url The URL to proxy.
      * @param {object} res The response object.
      * @returns {void}
      */

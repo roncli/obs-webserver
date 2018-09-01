@@ -1,4 +1,4 @@
-const fs = require("fs");
+const fs = require("fs").promises;
 
 //  #                     #     #   #             #    #      ##     #               #
 //  #                     #     #   #             #          #  #                    #
@@ -11,32 +11,30 @@ const fs = require("fs");
  * API to retrieve the last modified date of a file.
  */
 class LastModified {
-    //                     #
-    //                     #
-    // ###    ##    ###   ###
-    // #  #  #  #  ##      #
-    // #  #  #  #    ##    #
-    // ###    ##   ###      ##
-    // #
+    //              #
+    //              #
+    //  ###   ##   ###
+    // #  #  # ##   #
+    //  ##   ##     #
+    // #      ##     ##
+    //  ###
     /**
      * Returns the last modified date of the file.
-     * @param {object} req The request object.
-     * @param {string} req.body.file The filename.
-     * @param {object} res The response object.
+     * @param {Request} req The request object.
+     * @param {Response} res The response object.
      * @returns {void}
      */
-    static post(req, res) {
-        fs.stat(req.body.file, (err, data) => {
-            if (err) {
-                res.status(500);
-                res.end();
-                return;
-            }
+    static async get(req, res) {
+        try {
+            const data = await fs.stat(req.query.file);
 
             res.status(200);
             res.send(data.mtime);
             res.end();
-        });
+        } catch (err) {
+            res.sendStatus(500);
+            console.log(err);
+        }
     }
 }
 

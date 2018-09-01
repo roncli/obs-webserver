@@ -13,7 +13,6 @@ document.addEventListener("DOMContentLoaded", function(ev) {
         }
     };
     x.open("GET", "api/necrodancerCondor5", true);
-    x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     x.send();
 });
 

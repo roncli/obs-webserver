@@ -26,17 +26,20 @@ class SpotifyPlay {
      * @param {object} res The response object.
      * @returns {void}
      */
-    static post(req, res) {
-        Spotify.getSpotifyToken().then(() => Spotify.spotify.play({uris: req.body.track ? [req.body.track] : void 0, context_uri: req.body.playlist})).then(() => {
+    static async post(req, res) {
+        try {
+            await Spotify.getSpotifyToken();
+            await Spotify.spotify.play({uris: req.body.track ? [req.body.track] : void 0, context_uri: req.body.playlist});
+
             if (req.body.stop) {
                 Spotify.stopAfterCurrentSong();
             }
 
             res.sendStatus(204);
-        }).catch((err) => {
+        } catch (err) {
             res.sendStatus(500);
             console.log(err);
-        });
+        }
     }
 }
 
