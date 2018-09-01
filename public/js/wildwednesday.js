@@ -42,12 +42,10 @@ document.addEventListener("DOMContentLoaded", function(ev) {
                 }
             };
             y.open("GET", "api/steam", true);
-            y.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             y.send();
         }
     };
     x.open("GET", "api/astats", true);
-    x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     x.send();
 });
 

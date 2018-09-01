@@ -25,15 +25,16 @@ class DclStats {
      * @param {object} res The response object.
      * @returns {void}
      */
-    static get(req, res) {
-        promisify(request)("http://descentchampions.org/pilot_data.php?uid=114").then((response, body) => {
+    static async get(req, res) {
+        try {
+            const response = await promisify(request)("http://descentchampions.org/pilot_data.php?uid=114");
             res.status(200);
-            res.send(JSON.stringify(body));
+            res.send(response.body);
             res.end();
-        }).catch((err) => {
+        } catch (err) {
             res.sendStatus(500);
             console.log(err);
-        });
+        }
     }
 }
 

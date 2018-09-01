@@ -26,13 +26,20 @@ class SpotifyPause {
      * @param {object} res The response object.
      * @returns {void}
      */
-    static post(req, res) {
-        Spotify.getSpotifyToken().then(() => Spotify.spotify.pause()).then(() => {
+    static async post(req, res) {
+        try {
+            await Spotify.getSpotifyToken();
+            await Spotify.spotify.pause();
             res.sendStatus(204);
-        }).catch((err) => {
-            res.sendStatus(500);
-            console.log(err);
-        });
+        } catch (err) {
+            if (err.statusCode === 403) {
+                // Forbidden from the Spotify API means that the player is already paused, which is fine.
+                res.sendStatus(204);
+            } else {
+                res.sendStatus(500);
+                console.log(err);
+            }
+        }
     }
 }
 

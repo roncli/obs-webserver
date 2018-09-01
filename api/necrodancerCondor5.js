@@ -25,22 +25,23 @@ class NecrodancerCondor5 {
      * @param {object} res The response object.
      * @returns {void}
      */
-    static get(req, res) {
-        const doc = new GS("17GKLiNDS0o-5_SXgBfvFRHTF9RMRrpOwT_p-aJ-S0Uk"),
-            creds = require("../roncli.com-968d02fefdb4.json"),
-            apiReturn = {};
+    static async get(req, res) {
+        try {
+            const doc = new GS("17GKLiNDS0o-5_SXgBfvFRHTF9RMRrpOwT_p-aJ-S0Uk"),
+                creds = require("../roncli.com-968d02fefdb4.json"),
+                apiReturn = {};
 
-        promisify(doc.useServiceAccountAuth)(creds).then(() => promisify(doc.getInfo)()).then((info) => {
-            const week = info.worksheets.find((sheet) => sheet.title === "Current Week - Sorted Schedule");
+            await promisify(doc.useServiceAccountAuth)(creds);
 
-            return promisify(week.getCells)({
-                "min-row": 4,
-                "max-row": 100,
-                "min-col": 2,
-                "max-col": 8
-            });
-        }).then((results) => {
-            const weekTable = [];
+            const info = await promisify(doc.getInfo)(),
+                week = info.worksheets.find((sheet) => sheet.title === "Current Week - Sorted Schedule"),
+                results = await promisify(week.getCells)({
+                    "min-row": 4,
+                    "max-row": 100,
+                    "min-col": 2,
+                    "max-col": 8
+                }),
+                weekTable = [];
             let index, tier, match;
 
             results.forEach((result) => {
@@ -123,10 +124,10 @@ class NecrodancerCondor5 {
             res.status(200);
             res.send(JSON.stringify(apiReturn));
             res.end();
-        }).catch((err) => {
+        } catch (err) {
             res.sendStatus(500);
             console.log(err);
-        });
+        }
     }
 }
 

@@ -4,7 +4,7 @@ const express = require("express"),
     path = require("path"),
     {promisify} = require("util");
 
-router.all("/:api", (req, res) => {
+router.all("/:api", async (req, res) => {
     const {params: {api}} = req;
 
     // Don't allow calls to index.js.
@@ -15,12 +15,14 @@ router.all("/:api", (req, res) => {
 
     const filename = path.join(__dirname, `${api}.js`);
 
-    promisify(fs.access)(filename, fs.constants.R_OK).then(() => {
+    try {
+        await promisify(fs.access)(filename, fs.constants.R_OK);
+
         const {[req.method.toLocaleLowerCase()]: fx} = require(filename);
 
         if (fx && typeof fx === "function") {
             try {
-                fx(req, res);
+                await fx(req, res);
             } catch (err) {
                 res.sendStatus(500);
                 console.log(err);
@@ -28,9 +30,9 @@ router.all("/:api", (req, res) => {
         } else {
             res.sendStatus(404);
         }
-    }).catch(() => {
+    } catch (err) {
         res.sendStatus(404);
-    });
+    }
 });
 
 module.exports = router;

@@ -26,14 +26,17 @@ class SpotifyVolume {
      * @param {object} res The response object.
      * @returns {void}
      */
-    static post(req, res) {
-        Spotify.getSpotifyToken().then(() => Spotify.spotify.volume(req.body.volume)).then(() => {
+    static async post(req, res) {
+        try {
+            await Spotify.getSpotifyToken();
+            await Spotify.spotify.setVolume(req.body.volume);
+
             res.status(204);
             res.end();
-        }).catch((err) => {
+        } catch (err) {
             res.sendStatus(500);
             console.log(err);
-        });
+        }
     }
 }
 

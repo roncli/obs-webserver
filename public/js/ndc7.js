@@ -88,43 +88,45 @@ const start = (results) => {
         },
 
         nextResults = function() {
-            const $tbody = document.querySelector(".results tbody");
+            if (data[tiers[tier]].previousResults.length > 0) {
+                const $tbody = document.querySelector(".results tbody");
 
-            let ix, result;
+                let ix, result;
 
-            $standings.classList.add("hidden");
-            $results.classList.remove("hidden");
-            $upcoming.classList.add("hidden");
+                $standings.classList.add("hidden");
+                $results.classList.remove("hidden");
+                $upcoming.classList.add("hidden");
 
-            document.querySelector(".tier").innerText = tiers[tier];
+                document.querySelector(".tier").innerText = tiers[tier];
 
-            while ($tbody.firstChild) {
-                $tbody.removeChild($tbody.firstChild);
-            }
+                while ($tbody.firstChild) {
+                    $tbody.removeChild($tbody.firstChild);
+                }
 
-            for (ix = index; ix < index + 20 && ix < data[tiers[tier]].previousResults.length; ix++) {
-                result = data[tiers[tier]].previousResults[ix];
+                for (ix = index; ix < index + 20 && ix < data[tiers[tier]].previousResults.length; ix++) {
+                    result = data[tiers[tier]].previousResults[ix];
 
-                const row = document.createElement("tr");
-                let node;
+                    const row = document.createElement("tr");
+                    let node;
 
-                node = document.createElement("td");
-                node.innerText = result.player1 || "";
-                row.appendChild(node);
+                    node = document.createElement("td");
+                    node.innerText = result.player1 || "";
+                    row.appendChild(node);
 
-                node = document.createElement("td");
-                node.innerText = result.player2 || "";
-                row.appendChild(node);
+                    node = document.createElement("td");
+                    node.innerText = result.player2 || "";
+                    row.appendChild(node);
 
-                node = document.createElement("td");
-                node.innerText = result.dateStr || "";
-                row.appendChild(node);
+                    node = document.createElement("td");
+                    node.innerText = result.dateStr || "";
+                    row.appendChild(node);
 
-                node = document.createElement("td");
-                node.innerText = `${result.score}${(result.winner ? ` ${result.winner}` : "")}`;
-                row.appendChild(node);
+                    node = document.createElement("td");
+                    node.innerText = `${result.score}${(result.winner ? ` ${result.winner}` : "")}`;
+                    row.appendChild(node);
 
-                $tbody.appendChild(row);
+                    $tbody.appendChild(row);
+                }
             }
 
             if (data[tiers[tier]].previousResults.length > index + 20) {
@@ -138,46 +140,52 @@ const start = (results) => {
                 status = 2;
             }
 
-            setTimeout(next, delay);
+            if (data[tiers[tier]].previousResults.length > 0) {
+                setTimeout(next, delay);
+            } else {
+                next();
+            }
         },
 
         nextUpcoming = function() {
-            const $tbody = document.querySelector(".upcoming tbody");
-            let ix, match;
+            if (data[tiers[tier]].upcomingMatches.length > 0) {
+                const $tbody = document.querySelector(".upcoming tbody");
+                let ix, match;
 
-            $standings.classList.add("hidden");
-            $results.classList.add("hidden");
-            $upcoming.classList.remove("hidden");
+                $standings.classList.add("hidden");
+                $results.classList.add("hidden");
+                $upcoming.classList.remove("hidden");
 
-            document.querySelector(".tier2").innerText = tiers[tier];
+                document.querySelector(".tier2").innerText = tiers[tier];
 
-            while ($tbody.firstChild) {
-                $tbody.removeChild($tbody.firstChild);
-            }
+                while ($tbody.firstChild) {
+                    $tbody.removeChild($tbody.firstChild);
+                }
 
-            for (ix = index; ix < index + 20 && ix < data[tiers[tier]].upcomingMatches.length; ix++) {
-                match = data[tiers[tier]].upcomingMatches[ix];
+                for (ix = index; ix < index + 20 && ix < data[tiers[tier]].upcomingMatches.length; ix++) {
+                    match = data[tiers[tier]].upcomingMatches[ix];
 
-                const row = document.createElement("tr");
-                let node;
+                    const row = document.createElement("tr");
+                    let node;
 
-                node = document.createElement("td");
-                node.innerText = match.player1 || "";
-                row.appendChild(node);
+                    node = document.createElement("td");
+                    node.innerText = match.player1 || "";
+                    row.appendChild(node);
 
-                node = document.createElement("td");
-                node.innerText = match.player2 || "";
-                row.appendChild(node);
+                    node = document.createElement("td");
+                    node.innerText = match.player2 || "";
+                    row.appendChild(node);
 
-                node = document.createElement("td");
-                node.innerText = match.dateStr || "";
-                row.appendChild(node);
+                    node = document.createElement("td");
+                    node.innerText = match.dateStr || "";
+                    row.appendChild(node);
 
-                node = document.createElement("td");
-                node.innerText = match.cawmentary || "";
-                row.appendChild(node);
+                    node = document.createElement("td");
+                    node.innerText = match.cawmentary || "";
+                    row.appendChild(node);
 
-                $tbody.appendChild(row);
+                    $tbody.appendChild(row);
+                }
             }
 
             if (data[tiers[tier]].upcomingMatches.length > index + 20) {
@@ -191,7 +199,11 @@ const start = (results) => {
                 status = 0;
             }
 
-            setTimeout(next, delay);
+            if (data[tiers[tier]].upcomingMatches.length > 0) {
+                setTimeout(next, delay);
+            } else {
+                next();
+            }
         },
 
         next = function() {
@@ -219,6 +231,5 @@ document.addEventListener("DOMContentLoaded", (ev) => {
         }
     };
     x.open("GET", "api/necrodancerCondor7", true);
-    x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     x.send();
 });

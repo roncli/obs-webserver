@@ -88,7 +88,6 @@ class Spotify {
             };
 
             x.open("GET", "api/spotifyNowPlaying", true);
-            x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             x.send();
         });
     }

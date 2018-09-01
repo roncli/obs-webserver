@@ -36,18 +36,15 @@ class NecrodancerCondor7 {
 
             await promisify(doc.useServiceAccountAuth)(creds);
 
-            const info = await promisify(doc.getInfo)();
-
-            const week = info.worksheets.find((sheet) => sheet.title === "Current Week - Sorted Schedule");
-
-            const results = await promisify(week.getCells)({
-                "min-row": 4,
-                "max-row": 100,
-                "min-col": 2,
-                "max-col": 8
-            });
-
-            const weekTable = [];
+            const info = await promisify(doc.getInfo)(),
+                week = info.worksheets.find((sheet) => sheet.title === "Current Week - Sorted Schedule"),
+                results = await promisify(week.getCells)({
+                    "min-row": 4,
+                    "max-row": 100,
+                    "min-col": 2,
+                    "max-col": 8
+                }),
+                weekTable = [];
             let index, tier, match;
 
             results.forEach((result) => {

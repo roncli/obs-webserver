@@ -23,7 +23,7 @@ class Time {
      * @returns {void}
      */
     static get(req, res) {
-        res.status(200).send(new Date().toString());
+        res.status(200).send(new Date());
     }
 }
 

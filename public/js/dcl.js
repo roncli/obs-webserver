@@ -37,7 +37,6 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         x.open("GET", "api/dclStats", true);
-        x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         x.send();
     };
 

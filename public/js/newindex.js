@@ -48,9 +48,8 @@ class Index {
                     reject(new Error());
                 }
             };
-            x.open("POST", "api/local", true);
-            x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            x.send(`${base64 ? "base64=true&" : ""}file=${encodeURIComponent(path)}`);
+            x.open("GET", `api/local?${base64 ? "base64=true&" : ""}file=${encodeURIComponent(path)}`, true);
+            x.send();
         });
     }
 
@@ -91,9 +90,8 @@ class Index {
                 reject(new Error());
             };
 
-            x.open("POST", "api/lastModified", true);
-            x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            x.send(`file=${encodeURIComponent(path)}`);
+            x.open(`GET", "api/lastModified?file=${encodeURIComponent(path)}`, true);
+            x.send();
         });
     }
 
