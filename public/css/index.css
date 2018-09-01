@@ -271,36 +271,6 @@ body {
     vertical-align: bottom;
 }
 
-#dcl .container {
-    position: absolute;
-    width: 1920px;
-    left: 0;
-    bottom: 266px;
-}
-
-#dcl .top {
-    display: table-cell;
-    max-width: 384px;
-    height: 300px;
-    vertical-align: bottom;
-}
-
-#dcl .dcl {
-    position: absolute;
-    width: 384px;
-    right: 0;
-    top: 0;
-}
-
-#dcl .rank {
-    text-transform: capitalize;
-}
-
-#dcl .top, #dcl .dcl {
-    color: white;
-    text-shadow: 1px 1px 3px black;
-}
-
 #time {
     position: absolute;
     width: 800px;

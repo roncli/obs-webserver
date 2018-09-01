@@ -1,4 +1,3 @@
-/* eslint-env es6:false */
 /* global Spotify */
 
 //   ###                   ##     #
@@ -31,7 +30,7 @@ class Control {
             var data = JSON.parse(ev.data),
                 sceneList = document.getElementById("scene-list");
 
-            switch (data.type) {
+                switch (data.type) {
                 case "scenes":
                     Control.scenes = data.data.scenes;
 
@@ -86,13 +85,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }));
     };
 
-    document.getElementById("dcl").onclick = function() {
-        Control.ws.send(JSON.stringify({
-            type: "scene",
-            state: "dcl"
-        }));
-    };
-
     document.getElementById("switch-scene").onclick = function() {
         var sceneList = document.getElementById("scene-list"),
             sceneName = sceneList.options[sceneList.selectedIndex].value;
@@ -100,9 +92,7 @@ document.addEventListener("DOMContentLoaded", function() {
         Control.ws.send(JSON.stringify({
             type: "scene",
             state: "scene",
-            scene: Control.scenes.find(function(s) {
-                return s.name === sceneName;
-            })
+            scene: Control.scenes.find(function(s) {return s.name === sceneName;})
         }));
     };
 
