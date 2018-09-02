@@ -42,6 +42,20 @@ body {
     }
 }
 
+.blink-animation {
+    animation: image-blinker 2s steps(1) infinite;
+}
+
+@keyframes image-blinker {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
 #now-playing {
     position: absolute;
     top: 0;
@@ -103,7 +117,8 @@ body {
     width: 384px;
     height: 108px;
     opacity: 0;
-    -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 1.0), transparent)
+    mask-image: linear-gradient(to top, rgba(0, 0, 0, 1.0), transparent);
+    -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 1.0), transparent);
 }
 
 #fullscreen {

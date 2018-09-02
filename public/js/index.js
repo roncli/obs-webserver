@@ -31,7 +31,7 @@ class Index {
      * Reads a local file.
      * @param {string} path The path of the file.
      * @param {boolean} base64 Whether to retrieve its Base64 representation.
-     * @returns {Promise} A promise that resolves with the contents of the file.
+     * @returns {Promise<string>} A promise that resolves with the contents of the file.
      */
     static readLocal(path, base64) {
         return new Promise((resolve, reject) => {
@@ -63,7 +63,7 @@ class Index {
     /**
      * Checks the last update date of a local file.
      * @param {string} path The path of the file.
-     * @returns {Promise} A promise that resolves with the last update date of the file.
+     * @returns {Promise<string>} A promise that resolves with the last update date of the file.
      */
     static checkLastUpdate(path) {
         return new Promise((resolve, reject) => {
@@ -95,6 +95,53 @@ class Index {
         });
     }
 
+    //              #    ###         ##
+    //              #    #  #         #
+    //  ###   ##   ###   #  #   ##    #
+    // #  #  # ##   #    #  #  #      #
+    //  ##   ##     #    #  #  #      #
+    // #      ##     ##  ###    ##   ###
+    //  ###
+    /**
+     * Gets DCL stats.
+     * @returns {Promise<object>} A promise that resolves with the DCL data.
+     */
+    static getDcl() {
+        return new Promise((resolve, reject) => {
+            if (Index.dclStats) {
+                resolve(Index.dclStats);
+                return;
+            }
+
+            const x = new XMLHttpRequest();
+
+            x.onreadystatechange = function() {
+                if (x.readyState !== 4) {
+                    return;
+                }
+
+                if (x.readyState === 4 && x.status === 200) {
+                    const stats = JSON.parse(x.responseText);
+
+                    if (stats) {
+                        Index.dclStats = stats;
+                        setTimeout(() => {
+                            Index.dclStats = void 0;
+                        }, 300000);
+                        resolve(stats);
+                    } else {
+                        reject(new Error());
+                    }
+                } else {
+                    reject(new Error());
+                }
+            };
+
+            x.open("GET", "api/dclStats", true);
+            x.send();
+        });
+    }
+
     //                #         #          #  #   #       #
     //                #         #          #  #           #
     // #  #  ###    ###   ###  ###    ##   #  #  ##     ###   ##    ##
@@ -105,27 +152,25 @@ class Index {
     /**
      * Updates the specified video element with the web cam feed.
      * @param {string} element The element to update.
-     * @returns {void}
+     * @returns {Promise} A promise that returns when the video element is updated.
      */
-    static updateVideo(element) {
-        const video = document.querySelector(element);
+    static async updateVideo(element) {
+        const video = document.querySelector(element),
+            devices = await navigator.mediaDevices.enumerateDevices(),
+            {deviceId} = devices.filter((d) => d.kind === "videoinput" && d.label.startsWith("Logitech HD Pro Webcam C920"))[0];
 
-        navigator.mediaDevices.enumerateDevices().then((devices) => {
-            const {deviceId} = devices.filter((d) => d.kind === "videoinput" && d.label.startsWith("Logitech HD Pro Webcam C920"))[0];
-
-            navigator.webkitGetUserMedia({
-                video: {
-                    mandatory: {
-                        minWidth: 1920,
-                        minHeight: 1080
-                    },
-                    optional: [{sourceId: deviceId}]
-                }
-            }, (stream) => {
-                video.srcObject = stream;
-            }, (err) => {
-                console.log(err);
-            });
+        navigator.webkitGetUserMedia({
+            video: {
+                mandatory: {
+                    minWidth: 1920,
+                    minHeight: 1080
+                },
+                optional: [{sourceId: deviceId}]
+            }
+        }, (stream) => {
+            video.srcObject = stream;
+        }, (err) => {
+            console.log(err);
         });
     }
 
@@ -141,16 +186,18 @@ class Index {
      * @param {string} element The element to update.
      * @param {string} path The local path to get the text.
      * @param {number} interval The interval in milliseconds to update the text.
-     * @returns {void}
+     * @returns {Promise} A promise that resolves when the div element is updated.
      */
-    static updateDiv(element, path, interval) {
-        Index.readLocal(path, false).then((responseText) => {
+    static async updateDiv(element, path, interval) {
+        try {
+            const responseText = await Index.readLocal(path, false);
+
             document.querySelector(element).innerText = responseText;
-        }).catch(() => {}).then(() => {
+        } finally {
             setTimeout(() => {
                 Index.updateDiv(element, path, interval);
             }, interval);
-        });
+        }
     }
 
     //                #         #          ###    #     #    ##
@@ -164,18 +211,20 @@ class Index {
      * Updates the title with the text from a local path at a specified interval.
      * @param {string} path The local path to get the text.
      * @param {number} interval The interval in milliseconds to update the text.
-     * @returns {void}
+     * @returns {Promise} A promise that resolves when the title is updated.
      */
-    static updateTitle(path, interval) {
-        Index.readLocal(path, false).then((responseText) => {
-            const lines = responseText.split("\n");
+    static async updateTitle(path, interval) {
+        try {
+            const responseText = await Index.readLocal(path, false),
+                lines = responseText.split("\n");
+
             document.querySelector("#title-1").innerText = lines[0];
             document.querySelector("#title-2").innerText = lines[1];
-        }).catch(() => {}).then(() => {
+        } finally {
             setTimeout(() => {
                 Index.updateTitle(path, interval);
             }, interval);
-        });
+        }
     }
 
     //                #         #          ###                #
@@ -189,10 +238,18 @@ class Index {
      * Updates the stream text with the text from a local path at a specified interval.
      * @param {string} path The local path to get the text.
      * @param {number} interval The interval in milliseconds to update the text.
-     * @returns {void}
+     * @returns {Promise} A promise that resolves when the text is updated.
      */
-    static updateText(path, interval) {
-        Index.readLocal(path, false).then((responseText) => {
+    static async updateText(path, interval) {
+        try {
+            let responseText = await Index.readLocal(path, false);
+
+            if (Index.dcl) {
+                const stats = await Index.getDcl();
+
+                responseText = `Descent Champions Ladder Stats\nRank: ${stats.rating.replace(/^./, (s) => s.toUpperCase())} #${stats.rank}\nvs. Diamond: ${stats.records.diamond.wins}-${stats.records.diamond.losses}\nvs. Gold: ${stats.records.gold.wins}-${stats.records.gold.losses}\nvs. Silver: ${stats.records.silver.wins}-${stats.records.silver.losses}\nvs. Bronze: ${stats.records.bronze.wins}-${stats.records.bronze.losses}\nvs. Unrated: ${stats.records.unrated.wins}-${stats.records.unrated.losses}\n\n${stats.matches.length > 0 ? `Recent Games\n${stats.matches.slice(0, 5).map((match) => `${match.pilot.score > match.opponent.score ? "W" : "L"} ${match.pilot.score}-${match.opponent.score} vs. ${match.opponent.name}, ${match.game} ${match.map}`).join("\n")}` : ""}\n\n${responseText}`;
+            }
+
             const lines = responseText.trim().split("\n"),
                 outerEl = document.createElement("div");
 
@@ -228,11 +285,11 @@ class Index {
             outerEl.appendChild(innerEl);
 
             document.querySelector("#stream-text").innerHTML = outerEl.innerHTML;
-        }).catch(() => {}).then(() => {
+        } finally {
             setTimeout(() => {
                 Index.updateText(path, interval);
             }, interval);
-        });
+        }
     }
 
     //                #         #          ###
@@ -248,21 +305,25 @@ class Index {
      * @param {string} path The local path to get the image.
      * @param {number} interval The interval in milliseconds to update the image.
      * @param {string} [lastUpdated] The last updated date of the image.  Leave undefined to force an update.
-     * @returns {void}
+     * @returns {Promise} A promise that resolves when the image element is updated.
      */
-    static updateImage(element, path, interval, lastUpdated) {
-        Index.checkLastUpdate(path).then((responseText) => {
+    static async updateImage(element, path, interval, lastUpdated) {
+        let responseText;
+
+        try {
+            responseText = await Index.checkLastUpdate(path);
+
             if (responseText !== lastUpdated) {
-                Index.readLocal(path, true).then((imageData) => {
-                    document.querySelector(element).src = `data:image/png;base64,${imageData}`;
-                });
+                const imageData = await Index.readLocal(path, true);
+
+                document.querySelector(element).src = `data:image/png;base64,${imageData}`;
             }
             return responseText;
-        }).catch(() => {}).then((responseText) => {
+        } finally {
             setTimeout(() => {
                 Index.updateImage(element, path, interval, responseText || lastUpdated);
             }, interval);
-        });
+        }
     }
 
     //                #         #           ##                #     #      #
@@ -277,11 +338,14 @@ class Index {
      * @param {string} textElement The text element to update with the song title.
      * @param {string} imageElement The image element to update with the album art.
      * @param {number} interval The interval in milliseconds to update the information.
-     * @returns {void}
+     * @returns {Promise} A promise that resolves when Spotify is updated.
      */
-    static updateSpotify(textElement, imageElement, interval) {
-        Spotify.readSpotify().then((response) => {
-            const image = document.querySelector(imageElement);
+    static async updateSpotify(textElement, imageElement, interval) {
+        let thisInterval;
+
+        try {
+            const response = await Spotify.readSpotify(),
+                image = document.querySelector(imageElement);
 
             if (response.playing) {
                 document.querySelector(textElement).innerText = `Now Playing:\n${response.artist}\n${response.title}`;
@@ -301,19 +365,19 @@ class Index {
                     Index.updateCountdown();
                 }
 
-                return Math.min(1000 + response.duration - response.progress || interval, interval);
+                thisInterval = Math.min(1000 + response.duration - response.progress || interval, interval);
+            } else {
+                document.querySelector(textElement).innerText = "";
+                image.src = "";
+                image.classList.add("hidden");
+
+                thisInterval = void 0;
             }
-
-            document.querySelector(textElement).innerText = "";
-            image.src = "";
-            image.classList.add("hidden");
-
-            return void 0;
-        }).catch(() => {}).then((thisInterval) => {
+        } finally {
             setTimeout(() => {
                 Index.updateSpotify(textElement, imageElement, interval);
             }, thisInterval || interval);
-        });
+        }
     }
 
     //              #           #           ##   ##     #       #               #
@@ -486,9 +550,9 @@ class Index {
     //                          #
     /**
      * Draws the analyzer.
-     * @returns {void}
+     * @returns {Promise} A promise that resolves when the analyzer is drawn.
      */
-    static analyzer() {
+    static async analyzer() {
         const audioContext = new window.AudioContext(),
             canvas = document.getElementById("analyzer");
 
@@ -500,25 +564,27 @@ class Index {
         Index.analyser.smoothingTimeConstant = 0.65;
         Index.analyser.fftSize = 512;
 
-        navigator.mediaDevices.enumerateDevices().then((devices) => {
-            const device = devices.find((d) => d.kind === "audioinput");
+        try {
+            const devices = await navigator.mediaDevices.enumerateDevices(),
+                device = devices.find((d) => d.kind === "audioinput");
 
             if (device) {
-                navigator.mediaDevices.getUserMedia({audio: {deviceId: {exact: device.deviceId}}, video: false}).then((stream) => {
-                    const source = audioContext.createMediaStreamSource(stream);
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({audio: {deviceId: {exact: device.deviceId}}, video: false}),
+                        source = audioContext.createMediaStreamSource(stream);
 
                     source.connect(Index.analyser);
 
                     Index.canvasContext.clearRect(0, 0, 1920, 400);
 
                     Index.draw();
-                }).catch((err) => {
+                } catch (err) {
                     console.log(err);
-                });
+                }
             }
-        }).catch((err) => {
-            document.querySelector("body").innerText = err;
-        });
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     //         #                 #    #  #        #                        #            #
@@ -535,7 +601,7 @@ class Index {
         Index.ws = new WebSocket(`ws://${document.location.hostname}:${document.location.port || "80"}/ws/listen`);
         Index.obs = new OBSWebSocket();
 
-        Index.ws.onmessage = (ev) => {
+        Index.ws.onmessage = async (ev) => {
             const data = JSON.parse(ev.data),
                 sound = document.getElementById("sound-fire");
 
@@ -569,13 +635,15 @@ class Index {
                             document.getElementById("intro").classList.remove("hidden");
                             document.getElementById("now-playing").style.transform = "translate(1418px, 5px)";
                             Spotify.setSpotifyVolume(100);
-                            Spotify.readSpotify().then((response) => {
+                            try {
+                                const response = await Spotify.readSpotify();
+
                                 if (!response || !response.playing) {
                                     Spotify.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", false);
                                 }
-                            }).catch(() => {
+                            } catch (err) {
                                 Spotify.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", false);
-                            });
+                            }
                             Index.obs.setCurrentScene({"scene-name": "roncli Gaming - Bumper"});
                             break;
                         case "thanks":
@@ -586,13 +654,15 @@ class Index {
                             document.getElementById("intro").classList.remove("hidden");
                             document.getElementById("now-playing").style.transform = "translate(1418px, 5px)";
                             Spotify.setSpotifyVolume(100);
-                            Spotify.readSpotify().then((response) => {
+                            try {
+                                const response = await Spotify.readSpotify();
+
                                 if (!response || !response.playing) {
                                     Spotify.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", false);
                                 }
-                            }).catch(() => {
+                            } catch (err) {
                                 Spotify.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", false);
-                            });
+                            }
                             Index.obs.setCurrentScene({"scene-name": "roncli Gaming - Bumper"});
                             break;
                         case "fullscreen":
@@ -628,11 +698,14 @@ class Index {
                             }, 12000);
                             break;
                         case "time":
-                            document.getElementById("time").classList.add("fade-animation");
+                            document.getElementById("time").classList.add("blink-animation");
 
                             setTimeout(() => {
-                                document.getElementById("time").classList.remove("fade-animation");
+                                document.getElementById("time").classList.remove("blink-animation");
                             }, 12000);
+                            break;
+                        case "dcl":
+                            Index.dcl = !Index.dcl;
                             break;
                     }
                     break;
@@ -684,6 +757,7 @@ class Index {
             statusText.innerText = "00:00:00";
 
             Index.goFullscreen();
+            Index.obs.setCurrentScene({"scene-name": "roncli Gaming - Full Screen"});
             return;
         }
 

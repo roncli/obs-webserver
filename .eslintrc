@@ -87,12 +87,6 @@
                 "es6": true,
                 "node": false,
                 "browser": true
-            },
-            "parserOptions": {
-                "ecmaFeatures": {
-                    "impliedStrict": true
-                },
-                "ecmaVersion": 6
             }
         },
         {

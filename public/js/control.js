@@ -96,6 +96,13 @@ document.addEventListener("DOMContentLoaded", function() {
         }));
     };
 
+    document.getElementById("dcl").onclick = function() {
+        Control.ws.send(JSON.stringify({
+            type: "action",
+            action: "dcl"
+        }));
+    };
+
     document.getElementById("fire").onclick = function() {
         Control.ws.send(JSON.stringify({
             type: "action",
