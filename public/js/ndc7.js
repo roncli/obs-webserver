@@ -35,7 +35,7 @@ const start = (results) => {
                 $tbody.removeChild($tbody.firstChild);
             }
 
-            for (ix = index; ix < index + 20 && ix < standings.length; ix++) {
+            for (let ix = index; ix < index + 20 && ix < standings.length; ix++) {
                 standing = standings[ix];
 
                 const row = document.createElement("tr");
@@ -221,9 +221,9 @@ const start = (results) => {
         };
 
     next();
-}
+};
 
-document.addEventListener("DOMContentLoaded", (ev) => {
+document.addEventListener("DOMContentLoaded", () => {
     const x = new XMLHttpRequest();
     x.onreadystatechange = function() {
         if (x.readyState === 4 && x.status === 200) {

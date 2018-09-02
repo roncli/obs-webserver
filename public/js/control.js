@@ -1,14 +1,12 @@
 /* global Spotify */
 
-//   ###                   ##     #
-//  #   #                 #  #
-//  #       ###   # ##    #      ##     ## #
-//  #      #   #  ##  #  ####     #    #  #
-//  #      #   #  #   #   #       #     ##
-//  #   #  #   #  #   #   #       #    #
-//   ###    ###   #   #   #      ###    ###
-//                                     #   #
-//                                      ###
+//   ###                  #                    ##
+//  #   #                 #                     #
+//  #       ###   # ##   ####   # ##    ###     #
+//  #      #   #  ##  #   #     ##  #  #   #    #
+//  #      #   #  #   #   #     #      #   #    #
+//  #   #  #   #  #   #   #  #  #      #   #    #
+//   ###    ###   #   #    ##   #       ###    ###
 /**
  * A class of static functions for the control page.
  */
@@ -46,82 +44,88 @@ class Control {
             }
         };
     }
+
+    // ###    ##   #  #   ##                #                 #    #                    #           #
+    // #  #  #  #  ####  #  #               #                 #    #                    #           #
+    // #  #  #  #  ####  #      ##   ###   ###    ##   ###   ###   #      ##    ###   ###   ##    ###
+    // #  #  #  #  #  #  #     #  #  #  #   #    # ##  #  #   #    #     #  #  #  #  #  #  # ##  #  #
+    // #  #  #  #  #  #  #  #  #  #  #  #   #    ##    #  #   #    #     #  #  # ##  #  #  ##    #  #
+    // ###    ##   #  #   ##    ##   #  #    ##   ##   #  #    ##  ####   ##    # #   ###   ##    ###
+    /**
+     * Starts up the control page.
+     * @returns {void}
+     */
+    static DOMContentLoaded() {
+        Control.startWebsocket();
+
+        document.getElementById("intro").onclick = function() {
+            Control.ws.send(JSON.stringify({
+                type: "scene",
+                state: "intro"
+            }));
+        };
+
+        document.getElementById("brb").onclick = function() {
+            Control.ws.send(JSON.stringify({
+                type: "scene",
+                state: "brb"
+            }));
+        };
+
+        document.getElementById("thanks").onclick = function() {
+            Control.ws.send(JSON.stringify({
+                type: "scene",
+                state: "thanks"
+            }));
+        };
+
+        document.getElementById("full-screen").onclick = function() {
+            Control.ws.send(JSON.stringify({
+                type: "scene",
+                state: "fullscreen"
+            }));
+        };
+
+        document.getElementById("switch-scene").onclick = function() {
+            var sceneList = document.getElementById("scene-list"),
+                sceneName = sceneList.options[sceneList.selectedIndex].value;
+
+            Control.ws.send(JSON.stringify({
+                type: "scene",
+                state: "scene",
+                scene: sceneName
+            }));
+        };
+
+        document.getElementById("dcl").onclick = function() {
+            Control.ws.send(JSON.stringify({
+                type: "action",
+                action: "dcl"
+            }));
+        };
+
+        document.getElementById("fire").onclick = function() {
+            Control.ws.send(JSON.stringify({
+                type: "action",
+                action: "fire"
+            }));
+        };
+
+        document.getElementById("time").onclick = function() {
+            Control.ws.send(JSON.stringify({
+                type: "action",
+                action: "time"
+            }));
+        };
+
+        document.getElementById("stop").onclick = function() {
+            Spotify.pause();
+        };
+
+        document.getElementById("roncli-gaming").onclick = function() {
+            Spotify.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A");
+        };
+    }
 }
 
-// ###    ##   #  #   ##                #                 #    #                    #           #
-// #  #  #  #  ####  #  #               #                 #    #                    #           #
-// #  #  #  #  ####  #      ##   ###   ###    ##   ###   ###   #      ##    ###   ###   ##    ###
-// #  #  #  #  #  #  #     #  #  #  #   #    # ##  #  #   #    #     #  #  #  #  #  #  # ##  #  #
-// #  #  #  #  #  #  #  #  #  #  #  #   #    ##    #  #   #    #     #  #  # ##  #  #  ##    #  #
-// ###    ##   #  #   ##    ##   #  #    ##   ##   #  #    ##  ####   ##    # #   ###   ##    ###
-document.addEventListener("DOMContentLoaded", function() {
-    Control.startWebsocket();
-
-    document.getElementById("intro").onclick = function() {
-        Control.ws.send(JSON.stringify({
-            type: "scene",
-            state: "intro"
-        }));
-    };
-
-    document.getElementById("brb").onclick = function() {
-        Control.ws.send(JSON.stringify({
-            type: "scene",
-            state: "brb"
-        }));
-    };
-
-    document.getElementById("thanks").onclick = function() {
-        Control.ws.send(JSON.stringify({
-            type: "scene",
-            state: "thanks"
-        }));
-    };
-
-    document.getElementById("full-screen").onclick = function() {
-        Control.ws.send(JSON.stringify({
-            type: "scene",
-            state: "fullscreen"
-        }));
-    };
-
-    document.getElementById("switch-scene").onclick = function() {
-        var sceneList = document.getElementById("scene-list"),
-            sceneName = sceneList.options[sceneList.selectedIndex].value;
-
-        Control.ws.send(JSON.stringify({
-            type: "scene",
-            state: "scene",
-            scene: sceneName
-        }));
-    };
-
-    document.getElementById("dcl").onclick = function() {
-        Control.ws.send(JSON.stringify({
-            type: "action",
-            action: "dcl"
-        }));
-    };
-
-    document.getElementById("fire").onclick = function() {
-        Control.ws.send(JSON.stringify({
-            type: "action",
-            action: "fire"
-        }));
-    };
-
-    document.getElementById("time").onclick = function() {
-        Control.ws.send(JSON.stringify({
-            type: "action",
-            action: "time"
-        }));
-    };
-
-    document.getElementById("stop").onclick = function() {
-        Spotify.pause();
-    };
-
-    document.getElementById("roncli-gaming").onclick = function() {
-        Spotify.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A");
-    };
-});
+document.addEventListener("DOMContentLoaded", Control.DOMContentLoaded);

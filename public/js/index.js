@@ -767,21 +767,27 @@ class Index {
             Index.updateCountdown();
         }, timeLeft.getTime() % 1000 + 1);
     }
+
+    // ###    ##   #  #   ##                #                 #    #                    #           #
+    // #  #  #  #  ####  #  #               #                 #    #                    #           #
+    // #  #  #  #  ####  #      ##   ###   ###    ##   ###   ###   #      ##    ###   ###   ##    ###
+    // #  #  #  #  #  #  #     #  #  #  #   #    # ##  #  #   #    #     #  #  #  #  #  #  # ##  #  #
+    // #  #  #  #  #  #  #  #  #  #  #  #   #    ##    #  #   #    #     #  #  # ##  #  #  ##    #  #
+    // ###    ##   #  #   ##    ##   #  #    ##   ##   #  #    ##  ####   ##    # #   ###   ##    ###
+    /**
+     * Starts up the index page.
+     * @returns {void}
+     */
+    static DOMContentLoaded() {
+        Index.rotateSlideshow(0);
+        Index.analyzer();
+        Index.updateDiv(".unGame", "C:\\Users\\roncli\\Desktop\\roncliGaming\\roncliGamingUpNext.txt", 5000);
+        Index.updateText("C:\\Users\\roncli\\Desktop\\roncliGaming\\roncliGamingStreamText.txt", 5000);
+        Index.updateTitle("C:\\Users\\roncli\\Desktop\\roncliGaming\\roncliGamingUpNext.txt", 5000);
+        Index.updateSpotify(".track-text", ".album-art", 5000);
+        Index.startWebsockets();
+        Index.updateVideo("#webcam");
+    }
 }
 
-// ###    ##   #  #   ##                #                 #    #                    #           #
-// #  #  #  #  ####  #  #               #                 #    #                    #           #
-// #  #  #  #  ####  #      ##   ###   ###    ##   ###   ###   #      ##    ###   ###   ##    ###
-// #  #  #  #  #  #  #     #  #  #  #   #    # ##  #  #   #    #     #  #  #  #  #  #  # ##  #  #
-// #  #  #  #  #  #  #  #  #  #  #  #   #    ##    #  #   #    #     #  #  # ##  #  #  ##    #  #
-// ###    ##   #  #   ##    ##   #  #    ##   ##   #  #    ##  ####   ##    # #   ###   ##    ###
-document.addEventListener("DOMContentLoaded", () => {
-    Index.rotateSlideshow(0);
-    Index.analyzer();
-    Index.updateDiv(".unGame", "C:\\Users\\roncli\\Desktop\\roncliGaming\\roncliGamingUpNext.txt", 5000);
-    Index.updateText("C:\\Users\\roncli\\Desktop\\roncliGaming\\roncliGamingStreamText.txt", 5000);
-    Index.updateTitle("C:\\Users\\roncli\\Desktop\\roncliGaming\\roncliGamingUpNext.txt", 5000);
-    Index.updateSpotify(".track-text", ".album-art", 5000);
-    Index.startWebsockets();
-    Index.updateVideo("#webcam");
-});
+document.addEventListener("DOMContentLoaded", Index.DOMContentLoaded);

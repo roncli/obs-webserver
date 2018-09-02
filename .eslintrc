@@ -87,6 +87,9 @@
                 "es6": true,
                 "node": false,
                 "browser": true
+            },
+            "parserOptions": {
+                "sourceType": "script"
             }
         },
         {
@@ -97,7 +100,8 @@
                 "browser": true
             },
             "parserOptions": {
-                "ecmaVersion": 5
+                "ecmaVersion": 5,
+                "sourceType": "script"
             },
             "rules": {
                 "no-var": "off",

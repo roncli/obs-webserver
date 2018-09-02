@@ -1,136 +1,204 @@
-var games = [],
-    updated = false,
-    wheel,
+/* global Power3, Winwheel */
 
-    update = function() {
-        var ctx = wheel.ctx;
+//  #   #    #     ##        #  #   #             #                           #
+//  #   #           #        #  #   #             #                           #
+//  #   #   ##      #     ## #  #   #   ###    ## #  # ##    ###    ###    ## #   ###   #   #
+//  # # #    #      #    #  ##  # # #  #   #  #  ##  ##  #  #   #  #      #  ##      #  #   #
+//  # # #    #      #    #   #  # # #  #####  #   #  #   #  #####   ###   #   #   ####  #  ##
+//  ## ##    #      #    #  ##  ## ##  #      #  ##  #   #  #          #  #  ##  #   #   ## #
+//  #   #   ###    ###    ## #  #   #   ###    ## #  #   #   ###   ####    ## #   ####      #
+//                                                                                      #   #
+//                                                                                       ###
+/**
+ * A class to draw and animate the Wild Wednesday wheel.
+ */
+class WildWednesday {
+    //    #                    ###          #           #
+    //    #                    #  #                     #
+    //  ###  ###    ###  #  #  #  #   ##   ##    ###   ###    ##   ###
+    // #  #  #  #  #  #  #  #  ###   #  #   #    #  #   #    # ##  #  #
+    // #  #  #     # ##  ####  #     #  #   #    #  #   #    ##    #
+    //  ###  #      # #  ####  #      ##   ###   #  #    ##   ##   #
+    /**
+     * Draws the pointer.
+     * @returns {void}
+     */
+    static drawPointer() {
+        const ctx = WildWednesday.wheel.ctx;
 
         ctx.strokeStyle = "#000000";
         ctx.fillStyle = "#191935";
         ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.moveTo(990, 475);
-        ctx.lineTo(990, 525);
-        ctx.lineTo(960, 500);
-        ctx.lineTo(990, 475);
+        ctx.moveTo(824, 387);
+        ctx.lineTo(824, 437);
+        ctx.lineTo(794, 412);
+        ctx.lineTo(824, 387);
         ctx.stroke();
         ctx.fill();
-    },
-
-    finished = function() {
-        for (let index = 1; index < wheel.segments.length; index++) {
-            wheel.segments[index].lineWidth = 0;
-            if (wheel.segments[index].text !== wheel.getIndicatedSegment().text) {
-                wheel.segments[index].fillStyle = "#000000";
-                wheel.segments[index].text = "";
-                wheel.segments[index].imgData = new Image();
-            }
-        }
-        wheel.draw();
-        update();
-    };
-
-document.addEventListener("DOMContentLoaded", function(ev) {
-    var x = new XMLHttpRequest();
-    x.onreadystatechange = function() {
-        if (x.readyState === 4 && x.status === 200) {
-            var y = new XMLHttpRequest();
-
-            y.onreadystatechange = function() {
-                if (y.readyState === 4 && y.status === 200) {
-                    start(JSON.parse(x.responseText), JSON.parse(y.responseText));
-                }
-            };
-            y.open("GET", "api/steam", true);
-            y.send();
-        }
-    };
-    x.open("GET", "api/astats", true);
-    x.send();
-});
-
-function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
-
-    // While there remain elements to shuffle...
-    while (0 !== currentIndex) {
-
-        // Pick a remaining element...
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-
-        // And swap it with the current element.
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
     }
 
-    return array;
-}
+    //   #    #           #           #              #
+    //  # #                           #              #
+    //  #    ##    ###   ##     ###   ###    ##    ###
+    // ###    #    #  #   #    ##     #  #  # ##  #  #
+    //  #     #    #  #   #      ##   #  #  ##    #  #
+    //  #    ###   #  #  ###   ###    #  #   ##    ###
+    /**
+     * Finishes drawing the wheel.
+     * @returns {void}
+     */
+    static finished() {
+        const wheel = WildWednesday.wheel;
 
-function start(achievements, gameList) {
-    var totalSize = 0;
+        for (let index = 1; index < wheel.segments.length; index++) {
+            const segment = wheel.segments[index];
 
-    achievements.forEach(function(achievement) {
-        const game = gameList.find((game) => +game.appId === achievement.id);
-
-        if (game && [517530, 450220, 314680, 366080, 205790, 367540, 2430, 35420, 443940, 570].indexOf(achievement.id) === -1 && game.playtimeTwoWeeks === 0) {
-            if (achievement.percent < 100) {
-                games.push({
-                    name: game.name,
-                    header: "/api/proxy?url=http://cdn.akamai.steamstatic.com/steam/apps/" + game.appId + "/header.jpg",
-                    size: 100 - achievement.percent
-                });
-                totalSize += 100 - achievement.percent;
+            segment.lineWidth = 0;
+            if (segment.text !== wheel.getIndicatedSegment().text) {
+                segment.fillStyle = "#000000";
+                segment.text = "";
+                segment.imgData = new Image();
             }
         }
-    });
 
-    games = shuffle(games);
+        wheel.draw();
+        WildWednesday.drawPointer();
+    }
 
-    setTimeout(function() {
-        wheel = new Winwheel({
-            canvasId: "wheel",
-            numSegments: games.length,
-            outerRadius: 460,
-            pointerAngle: 90,
-            textAlignment: "outer",
-            drawMode: "segmentImage",
-            drawText: true,
-            imageDirection: "E",
-            imageOverlay: true,
-            strokeStyle: "#ffffff",
-            segments: games.map(function(game) {
-                return {
+    //        #             #     #   ##
+    //        #            # #   # #   #
+    //  ###   ###   #  #   #     #     #     ##
+    // ##     #  #  #  #  ###   ###    #    # ##
+    //   ##   #  #  #  #   #     #     #    ##
+    // ###    #  #   ###   #     #    ###    ##
+    /**
+     * Shuffles an array.
+     * @param {[object]} array The array to shuffle.
+     * @returns {[object]} The shuffled array.
+     */
+    static shuffle(array) {
+        let currentIndex = array.length,
+            temporaryValue, randomIndex;
+
+        while (currentIndex !== 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+        }
+
+        return array;
+    }
+
+    //         #                 #
+    //         #                 #
+    //  ###   ###    ###  ###   ###
+    // ##      #    #  #  #  #   #
+    //   ##    #    # ##  #      #
+    // ###      ##   # #  #       ##
+    /**
+     * Starts the wheel.
+     * @param {[object]} achievements The achievement list.
+     * @param {[object]} gameList The game list.
+     * @returns {void}
+     */
+    static start(achievements, gameList) {
+        const games = [];
+        let totalSize = 0;
+
+        achievements.forEach((achievement) => {
+            const game = gameList.find((g) => +g.appId === achievement.id);
+
+            if (game && [517530, 450220, 314680, 366080, 205790, 367540, 2430, 35420, 443940, 570].indexOf(achievement.id) === -1 && game.playtimeTwoWeeks === 0) {
+                if (achievement.percent < 100) {
+                    games.push({
+                        name: game.name,
+                        header: `/api/proxy?url=http://cdn.akamai.steamstatic.com/steam/apps/${game.appId}/header.jpg`,
+                        size: 100 - achievement.percent
+                    });
+                    totalSize += 100 - achievement.percent;
+                }
+            }
+        });
+
+        setTimeout(() => {
+            WildWednesday.wheel = new Winwheel({
+                canvasId: "wheel",
+                numSegments: games.length,
+                outerRadius: 392,
+                pointerAngle: 90,
+                textAlignment: "outer",
+                drawMode: "segmentImage",
+                drawText: true,
+                imageDirection: "E",
+                imageOverlay: true,
+                strokeStyle: "#ffffff",
+                segments: WildWednesday.shuffle(games).map((game) => ({
                     text: game.name,
                     image: game.header,
                     size: 360 * game.size / totalSize,
                     textFontFamily: "Archivo Narrow",
                     textStrokeStyle: "#ffffff",
                     textLineWidth: 1
-                };
-            }),
-            animation: {
-                type: "spinToStop",
-                duration: 15,
-                spins: 5,
-                easing: Power3.easeInOut,
-                callbackFinished: "finished()",
-                callbackAfter: "update()"
-            }
-        });
+                })),
+                animation: {
+                    type: "spinToStop",
+                    duration: 15,
+                    spins: 5,
+                    easing: Power3.easeInOut,
+                    callbackFinished: "WildWednesday.finished()",
+                    callbackAfter: "WildWednesday.drawPointer()"
+                }
+            });
 
-        setTimeout(function() {
-            var img = new Image();
-            img.src = wheel.ctx.canvas.toDataURL();
+            setTimeout(() => {
+                const img = new Image(),
+                    wheel = WildWednesday.wheel;
 
-            wheel.drawMode = "image";
-            wheel.wheelImage = img;
+                img.src = wheel.ctx.canvas.toDataURL();
 
-            updated = true;
-            wheel.draw();
+                wheel.drawMode = "image";
+                wheel.wheelImage = img;
 
-            wheel.startAnimation();
+                wheel.draw();
+
+                wheel.startAnimation();
+            }, 5000);
         }, 5000);
-    }, 5000);
+    }
+
+    // ###    ##   #  #   ##                #                 #    #                    #           #
+    // #  #  #  #  ####  #  #               #                 #    #                    #           #
+    // #  #  #  #  ####  #      ##   ###   ###    ##   ###   ###   #      ##    ###   ###   ##    ###
+    // #  #  #  #  #  #  #     #  #  #  #   #    # ##  #  #   #    #     #  #  #  #  #  #  # ##  #  #
+    // #  #  #  #  #  #  #  #  #  #  #  #   #    ##    #  #   #    #     #  #  # ##  #  #  ##    #  #
+    // ###    ##   #  #   ##    ##   #  #    ##   ##   #  #    ##  ####   ##    # #   ###   ##    ###
+    /**
+     * Starts up the Wild Wednesday page.
+     * @returns {void}
+     */
+    static DOMContentLoaded() {
+        const x = new XMLHttpRequest();
+
+        x.onreadystatechange = function() {
+            if (x.readyState === 4 && x.status === 200) {
+                const y = new XMLHttpRequest();
+
+                y.onreadystatechange = function() {
+                    if (y.readyState === 4 && y.status === 200) {
+                        WildWednesday.start(JSON.parse(x.responseText), JSON.parse(y.responseText));
+                    }
+                };
+                y.open("GET", "api/steam", true);
+                y.send();
+            }
+        };
+        x.open("GET", "api/astats", true);
+        x.send();
+    }
 }
+
+document.addEventListener("DOMContentLoaded", WildWednesday.DOMContentLoaded);
