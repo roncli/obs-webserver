@@ -602,10 +602,12 @@ class Index {
         Index.obs = new OBSWebSocket();
 
         Index.ws.onmessage = async (ev) => {
-            const data = JSON.parse(ev.data),
-                sound = document.getElementById("sound-fire");
+            const data = JSON.parse(ev.data);
 
             switch (data.type) {
+                case "obs-scene":
+                    Index.obs.setCurrentScene({"scene-name": data.scene});
+                    break;
                 case "scene":
                     [].forEach.call(document.getElementsByClassName("scene"), (el) => {
                         el.classList.add("hidden");
@@ -688,8 +690,12 @@ class Index {
                 case "action":
                     switch (data.action) {
                         case "fire":
-                            sound.volume = 1;
-                            sound.play();
+                            {
+                                const sound = document.getElementById("sound-fire");
+
+                                sound.volume = 1;
+                                sound.play();
+                            }
 
                             document.getElementById("fire").classList.add("fade-animation");
 

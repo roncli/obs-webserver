@@ -29,9 +29,9 @@ class Update {
     static init() {
         const ws = this;
 
-        promisify(fs.readFile)(path.join(__dirname, "../settings/scenes.json"), "utf8").then((data) => {
+        promisify(fs.readFile)(path.join(__dirname, "../settings/settings.json"), "utf8").then((data) => {
             ws.send(JSON.stringify({
-                type: "scenes",
+                type: "settings",
                 data: JSON.parse(data)
             }));
         }).catch((err) => {

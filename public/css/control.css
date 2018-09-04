@@ -1,39 +1,39 @@
-button {
-    -webkit-appearance: none;
-    background-color: buttonface;
+* {
+    font-size: 24px;
 }
 
 body {
+    color: white;
     background-color: black;
+    text-align: center;
 }
 
 select {
     font-size: 24px;
-    padding: 15px;
+    padding: 10px;
+}
+
+input {
+    font-size: 24px;
+    margin: 10px;
 }
 
 button {
     font-size: 24px;
-    padding: 15px;
+    padding: 10px;
     margin: 10px;
+    -webkit-appearance: none;
+    background-color: buttonface;
 }
 
-#title {
-    text-align: center;
+div {
+    display: inline-block;
+    padding: 10px;
+    margin: 10px;
+    vertical-align: top;
+    border: solid 1px #191935;
 }
 
-#buttons {
-    text-align: center;
-}
-
-#scenes {
-    text-align: center;
-}
-
-#actions {
-    text-align: center;
-}
-
-#music {
-    text-align: center;
+.hidden {
+    display: none;
 }
