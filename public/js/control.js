@@ -1,5 +1,3 @@
-/* global Spotify */
-
 //   ###                  #                    ##
 //  #   #                 #                     #
 //  #       ###   # ##   ####   # ##    ###     #
@@ -210,11 +208,21 @@ class Control {
         };
 
         document.getElementById("stop").onclick = function() {
-            Spotify.pause();
+            var x = new XMLHttpRequest();
+
+            x.timeout = 5000;
+            x.open("POST", "api/spotifyPause", true);
+            x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            x.send();
         };
 
         document.getElementById("roncli-gaming").onclick = function() {
-            Spotify.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A");
+            var x = new XMLHttpRequest();
+
+            x.timeout = 5000;
+            x.open("POST", "api/spotifyPlay", true);
+            x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            x.send("playlist=spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A");
         };
 
         document.getElementById("nd-player-1").onblur = function() {
