@@ -29,7 +29,7 @@ class Control {
                 musicList = document.getElementById("music-list"),
                 sceneList = document.getElementById("scene-list"),
                 layoutList = document.getElementById("nd-layout-list");
-console.log("EH");
+
             switch (data.type) {
                 case "settings":
                     data.data["obs-scenes"].forEach(function(scene) {
