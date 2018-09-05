@@ -1,0 +1,87 @@
+{
+    "obs-scenes": [
+        {
+            "name": "roncli Gaming",
+            "scene": "roncli Gaming - Bumper",
+            "control": "scenes-roncliGaming"
+        },
+        {
+            "name": "CoNDOR",
+            "scene": "CoNDOR - Bumper",
+            "control": "scenes-condor"
+        }
+    ],
+    "scenes": [
+        {
+            "name": "Game Play",
+            "value": "roncli Gaming - Game Play"
+        },
+        {
+            "name": "Wild Wednesday",
+            "value": "roncli Gaming - Wild Wednesday"
+        }
+    ],
+    "playlists": [
+        {
+            "name": "roncli Gaming",
+            "value": "spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A"
+        },
+        {
+            "name": "Descent",
+            "value": "spotify:user:1211227601:playlist:3ld3qI0evdqsr66HoaE0Zp"
+        },
+        {
+            "name": "EDM",
+            "value": "spotify:user:1211227601:playlist:3r5jKhprymfYPPXfBmlHP5"
+        },
+        {
+            "name": "NecroDancer",
+            "value": "spotify:user:1211227601:playlist:2IU5xZkAV0ZPnhEItPTrsB"
+        }
+    ],
+    "channels": [
+        {
+            "name": "CoNDOR 1",
+            "guildId": "214389515417026561",
+            "channelId": "215231226137673728"
+        },
+        {
+            "name": "CoNDOR 2",
+            "guildId": "214389515417026561",
+            "channelId": "215231262107893761"
+        },
+        {
+            "name": "CoNDOR 3",
+            "guildId": "214389515417026561",
+            "channelId": "285494965553987584"
+        },
+        {
+            "name": "CoNDOR 4",
+            "guildId": "214389515417026561",
+            "channelId": "328828339131252746"
+        },
+        {
+            "name": "CoNDOR 5",
+            "guildId": "214389515417026561",
+            "channelId": "328828437026439168"
+        }
+    ],
+    "nd-layouts": [
+        {
+            "name": "Blood",
+            "value": "nd-blood.png"
+        },
+        {
+            "name": "Titanium",
+            "value": "nd-titanium.png"
+        },
+        {
+            "name": "Obsidian",
+            "value": "nd-obsidian.png"
+        },
+        {
+            "name": "Crystal",
+            "value": "nd-crystal.png"
+        }
+    ]
+}

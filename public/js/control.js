@@ -25,10 +25,11 @@ class Control {
         Control.ws.onmessage = function(ev) {
             var data = JSON.parse(ev.data),
                 obsScenesList = document.getElementById("obs-scenes-list"),
-                sceneList = document.getElementById("scene-list"),
                 channelList = document.getElementById("channel-list"),
+                musicList = document.getElementById("music-list"),
+                sceneList = document.getElementById("scene-list"),
                 layoutList = document.getElementById("nd-layout-list");
-
+console.log("EH");
             switch (data.type) {
                 case "settings":
                     data.data["obs-scenes"].forEach(function(scene) {
@@ -40,15 +41,6 @@ class Control {
                         obsScenesList.appendChild(option);
                     });
 
-                    data.data.scenes.forEach(function(scene) {
-                        var option = document.createElement("option");
-
-                        option.text = scene.name;
-                        option.value = scene.value;
-
-                        sceneList.appendChild(option);
-                    });
-
                     data.data.channels.forEach(function(channel) {
                         var option = document.createElement("option");
 
@@ -56,6 +48,24 @@ class Control {
                         option.value = channel.guildId + "/" + channel.channelId;
 
                         channelList.appendChild(option);
+                    });
+
+                    data.data.playlists.forEach(function(playlist) {
+                        var option = document.createElement("option");
+
+                        option.text = playlist.name;
+                        option.value = playlist.value;
+
+                        musicList.appendChild(option);
+                    });
+
+                    data.data.scenes.forEach(function(scene) {
+                        var option = document.createElement("option");
+
+                        option.text = scene.name;
+                        option.value = scene.value;
+
+                        sceneList.appendChild(option);
                     });
 
                     data.data["nd-layouts"].forEach(function(layout) {
@@ -207,6 +217,16 @@ class Control {
             }));
         };
 
+        document.getElementById("play-playlist").onclick = function() {
+            var musicList = document.getElementById("music-list"),
+                x = new XMLHttpRequest();
+
+            x.timeout = 5000;
+            x.open("POST", "api/spotifyPlay", true);
+            x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            x.send("playlist=" + musicList.options[musicList.selectedIndex].value);
+        };
+
         document.getElementById("stop").onclick = function() {
             var x = new XMLHttpRequest();
 
@@ -214,15 +234,6 @@ class Control {
             x.open("POST", "api/spotifyPause", true);
             x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             x.send();
-        };
-
-        document.getElementById("roncli-gaming").onclick = function() {
-            var x = new XMLHttpRequest();
-
-            x.timeout = 5000;
-            x.open("POST", "api/spotifyPlay", true);
-            x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            x.send("playlist=spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A");
         };
 
         document.getElementById("nd-player-1").onblur = function() {
