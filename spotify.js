@@ -1,6 +1,5 @@
 const config = require("./config"),
     SpotifyApi = require("spotify-web-api-node"),
-    SpotifyWebHelper = require("spotify-webhelper"),
     {promisify} = require("util");
 let accessTokenValid = false;
 
@@ -58,39 +57,22 @@ class Spotify {
      * @returns {Promise<{playing: boolean, progress: number, duration: number, imageUrl: string?, title: string, artist: string}>} A promise that resolves with the currently playing track.
      */
     static async nowPlaying() {
-        try {
-            await Spotify.getSpotifyToken();
+        await Spotify.getSpotifyToken();
 
-            const response = await Spotify.spotify.getMyCurrentPlayingTrack();
+        const response = await Spotify.spotify.getMyCurrentPlayingTrack();
 
-            if (response && response.body && response.body.item) {
-                return {
-                    playing: response.body.is_playing,
-                    progress: response.body.progress_ms,
-                    duration: response.body.item.duration_ms,
-                    imageUrl: response.body.item.album.images[0] && response.body.item.album.images[0].url,
-                    title: response.body.item.name,
-                    artist: response.body.item.artists[0].name
-                };
-            }
-
-            return {};
-        } catch (err) {
-            if (err.statusCode === 400 || err.statusCode === 502) {
-                const webHelper = new SpotifyWebHelper.SpotifyWebHelper(),
-                    response = await promisify(webHelper.getStatus).bind(webHelper)();
-
-                return {
-                    playing: response.playing,
-                    progress: Math.round(response.playing_position * 1000),
-                    duration: response.track.length * 1000,
-                    title: response.track.track_resource && response.track.track_resource.name,
-                    artist: response.track.artist_resource && response.track.artist_resource.name
-                };
-            }
-
-            throw err;
+        if (response && response.body && response.body.item) {
+            return {
+                playing: response.body.is_playing,
+                progress: response.body.progress_ms,
+                duration: response.body.item.duration_ms,
+                imageUrl: response.body.item.album.images[0] && response.body.item.album.images[0].url,
+                title: response.body.item.name,
+                artist: response.body.item.artists[0].name
+            };
         }
+
+        return {};
     }
 
     //         #                 ##     #    #                 ##                                  #     ##

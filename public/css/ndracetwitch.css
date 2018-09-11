@@ -6,11 +6,11 @@ body {
 #player1 {
     position: absolute;
     left: 17px;
-    top: 235px;
+    top: 234px;
 }
 
 #player2 {
     position: absolute;
     left: 966px;
-    top: 235px;
+    top: 234px;
 }

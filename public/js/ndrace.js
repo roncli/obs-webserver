@@ -374,7 +374,7 @@ class NDRace {
                             bumper.classList.add("hidden");
                             race.classList.remove("hidden");
 
-                            Spotify.setSpotifyVolume(50);
+                            Spotify.setSpotifyVolume(33);
                             NDRace.obs.setCurrentScene({"scene-name": "CoNDOR - Race"});
                             break;
                         case "nd-thanks":
