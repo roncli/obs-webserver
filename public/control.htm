@@ -67,11 +67,13 @@
                 Scenes<br />
                 <div>
                     Countdown<br />
+                    <button id="nd-scene-countdown-no-event">No Event</button><br />
                     <button id="nd-scene-countdown-ndc7">Season 7</button>
                 </div>
                 <button id="nd-scene-race">Race</button>
                 <div>
                     Thanks<br />
+                    <button id="nd-scene-thanks-no-event">No Event</button><br />
                     <button id="nd-scene-thanks-ndc7">Season 7</button>
                 </div>
             </div>
@@ -93,6 +95,36 @@
                 <button id="nd-timer-start">Start</button>
                 <button id="nd-timer-stop">Stop</button>
                 <button id="nd-timer-reset">Reset</button>
+            </div>
+        </div>
+        <div id="scenes-observatory" class="obs-scene-control hidden">
+            The Observatory<br />
+            <div>
+                Episode<br />
+                Season <input type="text" id="obs-season" /><br />
+                Title <input type="text" id="obs-title" /><br />
+            </div>
+            <div>
+                Scenes<br />
+                <button id="obs-scene-countdown">Countdown</button>
+                <button id="obs-scene-tournament">Tournament</button>
+                <button id="obs-scene-thanks">Thanks</button>
+            </div>
+            <div>
+                Display<br />
+                <button id="obs-display-standings">Standings</button>
+                <select id="obs-round-list">
+                    <option value="1">Round 1</option>
+                    <option value="2">Round 2</option>
+                    <option value="3">Round 3</option>
+                    <option value="4">Round 4</option>
+                </select>
+                <button id="obs-display-round">Round</button>
+            </div>
+            <div>
+                Countdown<br />
+                Start Time <input type="text" id="obs-start-time" /><br />
+                Finish Text <input type="text" id="obs-finish-text" value="Prepare For Descent!" />
             </div>
         </div>
     </body>

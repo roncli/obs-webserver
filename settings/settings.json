@@ -9,6 +9,11 @@
             "name": "CoNDOR",
             "scene": "CoNDOR - Bumper",
             "control": "scenes-condor"
+        },
+        {
+            "name": "The Observatory",
+            "scene": "The Observatory - Bumper",
+            "control": "scenes-observatory"
         }
     ],
     "scenes": [

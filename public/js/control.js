@@ -308,6 +308,17 @@ class Control {
             }));
         };
 
+        document.getElementById("nd-scene-countdown-no-event").onclick = function() {
+            Control.ws.send(JSON.stringify({
+                type: "scene",
+                scene: "nd-countdown",
+                stats: "none",
+                event: Control.event,
+                time: document.getElementById("nd-start-time").value,
+                finish: document.getElementById("nd-finish-text").value
+            }));
+        };
+
         document.getElementById("nd-scene-countdown-ndc7").onclick = function() {
             Control.ws.send(JSON.stringify({
                 type: "scene",
@@ -326,6 +337,15 @@ class Control {
                 type: "scene",
                 scene: "nd-race",
                 layout: layoutList.options[layoutList.selectedIndex].value
+            }));
+        };
+
+        document.getElementById("nd-scene-thanks-no-event").onclick = function() {
+            Control.ws.send(JSON.stringify({
+                type: "scene",
+                scene: "nd-thanks",
+                stats: "none",
+                event: Control.event
             }));
         };
 
@@ -420,6 +440,83 @@ class Control {
                 action: "timer-reset"
             }));
         };
+
+        document.getElementById("obs-season").onblur = function() {
+            Control.ws.send(JSON.stringify({
+                type: "obs",
+                action: "season",
+                season: document.getElementById("obs-season").value
+            }));
+        };
+
+        document.getElementById("obs-title").onblur = function() {
+            Control.ws.send(JSON.stringify({
+                type: "obs",
+                action: "title",
+                title: document.getElementById("obs-title").value
+            }));
+        };
+
+        document.getElementById("obs-scene-countdown").onclick = function() {
+            Control.ws.send(JSON.stringify({
+                type: "scene",
+                scene: "obs-countdown",
+                season: document.getElementById("obs-season").value,
+                title: document.getElementById("obs-title").value,
+                time: document.getElementById("obs-start-time").value,
+                finish: document.getElementById("obs-finish-text").value
+            }));
+        };
+
+        document.getElementById("obs-scene-tournament").onclick = function() {
+            Control.ws.send(JSON.stringify({
+                type: "scene",
+                scene: "obs-tournament",
+                season: document.getElementById("obs-season").value,
+                title: document.getElementById("obs-title").value
+            }));
+        };
+
+        document.getElementById("obs-scene-thanks").onclick = function() {
+            Control.ws.send(JSON.stringify({
+                type: "scene",
+                scene: "obs-thanks"
+            }));
+        };
+
+        document.getElementById("obs-display-standings").onclick = function() {
+            Control.ws.send(JSON.stringify({
+                type: "display",
+                display: "standings"
+            }));
+        };
+
+        document.getElementById("obs-display-round").onclick = function() {
+            var roundList = document.getElementById("obs-round-list");
+
+            Control.ws.send(JSON.stringify({
+                type: "display",
+                display: "round",
+                round: roundList.options[roundList.selectedIndex].value
+            }));
+        };
+
+        document.getElementById("obs-start-time").onblur = function() {
+            Control.ws.send(JSON.stringify({
+                type: "obs",
+                action: "start-time",
+                time: document.getElementById("obs-start-time").value
+            }));
+        };
+
+        document.getElementById("obs-finish-text").onblur = function() {
+            Control.ws.send(JSON.stringify({
+                type: "obs",
+                action: "finish-text",
+                finish: document.getElementById("obs-finish-text").value
+            }));
+        };
+
     }
 }
 

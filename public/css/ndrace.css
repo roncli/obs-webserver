@@ -19,7 +19,7 @@ body {
     position: absolute;
     width: 1920px;
     height: 1080px;
-    transition: transform 0.5s linear, visibility 0.5s linear, opacity 0.5s linear;
+    transition: visibility 0.5s linear, opacity 0.5s linear;
     visibility: visible;
     background-color: #211133;
 }
@@ -114,6 +114,14 @@ body {
     background-position: center;
 }
 
+#no-event .condor-heart {
+    position: absolute;
+    top: 195px;
+    left: 735px;
+    width: 450px;
+    height: 630px;
+}
+
 #season-7 {
     position: absolute;
 }
@@ -182,7 +190,7 @@ body {
     position: absolute;
     width: 1920px;
     height: 1080px;
-    transition: transform 0.5s linear, visibility 0.5s linear, opacity 0.5s linear;
+    transition: visibility 0.5s linear, opacity 0.5s linear;
     visibility: visible;
 }
 

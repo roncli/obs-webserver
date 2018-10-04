@@ -367,6 +367,7 @@ class NDRace {
                             document.getElementById("thanks").classList.add("hidden");
                             document.getElementById("countdown").classList.remove("hidden");
 
+                            Spotify.playPlaylist("spotify:user:1211227601:playlist:2IU5xZkAV0ZPnhEItPTrsB", false);
                             Spotify.setSpotifyVolume(100);
                             NDRace.obs.setCurrentScene({"scene-name": "CoNDOR - Bumper"});
                             break;
@@ -394,6 +395,9 @@ class NDRace {
 
                     [].forEach.call(document.getElementsByClassName("event-stats"), (c) => c.classList.add("hidden"));
                     switch (data.stats) {
+                        case "none":
+                            document.getElementById("no-event").classList.remove("hidden");
+                            break;
                         case "ndc7":
                             document.querySelector("#season-7 .standings").classList.add("hidden");
                             document.querySelector("#season-7 .results").classList.add("hidden");
@@ -580,7 +584,7 @@ class NDRace {
      */
     static updateCountdown() {
         const timeLeft = new Date(NDRace.startTime.getTime() - new Date().getTime()),
-            countdown = document.querySelector("#countdown");
+            countdown = document.getElementById("countdown");
 
         if (timeLeft.getTime() < 0) {
             countdown.innerText = NDRace.finishText;

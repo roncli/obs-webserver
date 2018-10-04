@@ -1,6 +1,5 @@
 const config = require("./config"),
-    SpotifyApi = require("spotify-web-api-node"),
-    {promisify} = require("util");
+    SpotifyApi = require("spotify-web-api-node");
 let accessTokenValid = false;
 
 //   ###                  #       #      ##
