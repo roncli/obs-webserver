@@ -559,14 +559,14 @@ class Index {
         Index.analyser = audioContext.createAnalyser();
         Index.canvasContext = canvas.getContext("2d");
 
-        Index.analyser.minDecibels = -200;
+        Index.analyser.minDecibels = -105;
         Index.analyser.maxDecibels = -15;
-        Index.analyser.smoothingTimeConstant = 0.25;
+        Index.analyser.smoothingTimeConstant = 0.5;
         Index.analyser.fftSize = 512;
 
         try {
             const devices = await navigator.mediaDevices.enumerateDevices(),
-                device = devices.find((d) => d.kind === "audioinput" && d.label === "VoiceMeeter Output (VB-Audio VoiceMeeter VAIO)");
+                device = devices.find((d) => d.kind === "audioinput" && d.label === "Stereo Mix (Realtek High Definition Audio)");
 
             if (device) {
                 try {
