@@ -47,6 +47,7 @@
             font-family: "Descent ][ Logo";
             font-size: 62px;
             background: -webkit-linear-gradient(#ffffff 0%, #283888 70%);
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -84,6 +85,7 @@
             font-family: "Descent ][ Logo";
             font-size: 134px;
             background: -webkit-linear-gradient(#00c000 0%, #ffffff 70%);
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -106,6 +108,7 @@
             font-family: "Descent ][ Logo";
             font-size: 72px;
             background: -webkit-linear-gradient(#283888 0%, #ffffff 70%);
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -121,7 +124,6 @@
             display: none;
         }
     </style>
-    <script src="js/local.js"></script>
     <script src="js/observatory-main.js"></script>
 </head>
 <body>
@@ -141,7 +143,6 @@
         </div>
     </div>
     <script>
-        positionContainer();
         updateVideo("#video");
         updateDiv(".nowPlaying", "C:\\Snaz\\TextFiles\\TrackInfo.txt", 1000);
         updateDiv(".hosts", "C:\\Users\\roncli\\Desktop\\roncliGaming\\The Observatory\\observatory-hosts.txt", 5000);

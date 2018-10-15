@@ -1,32 +1,131 @@
 <html>
-<head>
-    <link href="https://fonts.googleapis.com/css?family=Archivo+Narrow" rel="stylesheet">
-    <link href="css/reset.css" type="text/css" rel="stylesheet"/>
-    <link href="css/control.css" type="text/css" rel="stylesheet"/>
-    <script src="js/spotify.js"></script>
-    <script src="js/control.js"></script>
-</head>
-<body>
-    <div id="title">
-        <img src="images/roncliGamingTwitch.png" width="300" />
-    </div>
-    <div id="buttons">
-        <button id="intro">Intro</button>
-        <button id="brb">BRB</button>
-        <button id="thanks">Thanks</button>
-        <button id="full-screen">Full Screen</button>
-    </div>
-    <div id="scenes">
-        <select id="scene-list"></select>
-        <button id="switch-scene">Switch to Scene</button>
-    </div>
-    <div id="actions">
-        <button id="fire">Fire</button>
-        <button id="time">Time</button>
-    </div>
-    <div id="music">
-        <button id="stop">Stop Music</button>
-        <button id="roncli-gaming">roncli Gaming</button>
-    </div>
-</body>
+    <head>
+        <link href="https://fonts.googleapis.com/css?family=Archivo+Narrow" rel="stylesheet">
+        <link href="css/reset.css" type="text/css" rel="stylesheet"/>
+        <link href="css/control.css" type="text/css" rel="stylesheet"/>
+        <script src="js/control.js"></script>
+    </head>
+    <body>
+        <img src="images/roncliGamingTwitch.png" width="300" /><br />
+        <div>
+            <div>
+                OBS Scenes<br />
+                <select id="obs-scenes-list"></select>
+                <button id="obs-scenes-select">Select OBS Scene</button>
+            </div>
+            <div>
+                Discord Overlay<br />
+                <select id="channel-list"></select>
+                <button id="channel-select">Select Channel</button>
+            </div>
+            <div>
+                Music<br />
+                <select id="music-list"></select>
+                <button id="play-playlist">Play</button>
+                <button id="stop">Stop</button>
+            </div>
+        </div>
+        <div id="scenes-roncliGaming" class="obs-scene-control hidden">
+            roncli Gaming<br />
+            <div>
+                Bumper Scenes<br />
+                <button id="intro">Intro</button>
+                <button id="brb">BRB</button>
+                <button id="thanks">Thanks</button>
+                <button id="full-screen">Full Screen</button>
+            </div>
+            <div>
+                Main Scenes<br />
+                <select id="scene-list"></select>
+                <button id="switch-scene">Switch to Scene</button>
+                <button id="dcl">DCL</button>
+            </div>
+            <div>
+                Actions<br />
+                <button id="fire">Fire</button>
+                <button id="time">Time</button>
+            </div>
+
+        </div>
+        <div id="scenes-condor" class="obs-scene-control hidden">
+            Crypt of the NecroDancer CoNDOR Races<br />
+            <div>
+                Player 1<br />
+                <input type="text" id="nd-player-1" /><br />
+                <button id="nd-lute-left1">Lute 1</button>
+                <button id="nd-lute-left2">Lute 2</button>
+                <button id="nd-lute-left3">Lute 3</button>
+            </div>
+            <div>
+                Player 2<br />
+                <input type="text" id="nd-player-2" /><br />
+                <button id="nd-lute-right1">Lute 1</button>
+                <button id="nd-lute-right2">Lute 2</button>
+                <button id="nd-lute-right3">Lute 3</button>
+            </div>
+            <div>
+                Scenes<br />
+                <div>
+                    Countdown<br />
+                    <button id="nd-scene-countdown-no-event">No Event</button><br />
+                    <button id="nd-scene-countdown-ndc7">Season 7</button>
+                </div>
+                <button id="nd-scene-race">Race</button>
+                <div>
+                    Thanks<br />
+                    <button id="nd-scene-thanks-no-event">No Event</button><br />
+                    <button id="nd-scene-thanks-ndc7">Season 7</button>
+                </div>
+            </div>
+            <div>
+                Players<br />
+                <select id="nd-schedule-list"></select>
+                <button id="nd-schedule-select">Select From Schedule</button><br />
+                <select id="nd-layout-list"></select>
+                <button id="nd-change-layout">Change Layout</button>
+                <button id="nd-open-streams">Open Streams</button>
+            </div>
+            <div>
+                Countdown<br />
+                Start Time <input type="text" id="nd-start-time" /><br />
+                Finish Text <input type="text" id="nd-finish-text" value="100% Consistent" />
+            </div>
+            <div>
+                Timer<br />
+                <button id="nd-timer-start">Start</button>
+                <button id="nd-timer-stop">Stop</button>
+                <button id="nd-timer-reset">Reset</button>
+            </div>
+        </div>
+        <div id="scenes-observatory" class="obs-scene-control hidden">
+            The Observatory<br />
+            <div>
+                Episode<br />
+                Season <input type="text" id="obs-season" /><br />
+                Title <input type="text" id="obs-title" /><br />
+            </div>
+            <div>
+                Scenes<br />
+                <button id="obs-scene-countdown">Countdown</button>
+                <button id="obs-scene-tournament">Tournament</button>
+                <button id="obs-scene-thanks">Thanks</button>
+            </div>
+            <div>
+                Display<br />
+                <button id="obs-display-standings">Standings</button>
+                <select id="obs-round-list">
+                    <option value="1">Round 1</option>
+                    <option value="2">Round 2</option>
+                    <option value="3">Round 3</option>
+                    <option value="4">Round 4</option>
+                </select>
+                <button id="obs-display-round">Round</button>
+            </div>
+            <div>
+                Countdown<br />
+                Start Time <input type="text" id="obs-start-time" /><br />
+                Finish Text <input type="text" id="obs-finish-text" value="Prepare For Descent!" />
+            </div>
+        </div>
+    </body>
 </html>

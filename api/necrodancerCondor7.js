@@ -54,6 +54,8 @@ class NecrodancerCondor7 {
                 weekTable[result.row][result.col] = typeof result.numericValue === "number" ? result.numericValue : result.value;
             });
 
+            const initDate = new Date(Date.UTC(1899, 11, 30, 4));
+
             for (index = 4; index < weekTable.length; index++) {
                 if (!weekTable[index] || !(weekTable[index][3] && weekTable[index][4])) {
                     continue;
@@ -67,8 +69,7 @@ class NecrodancerCondor7 {
                 };
 
                 if (weekTable[index][5] && typeof weekTable[index][5] === "number") {
-                    match.date = new Date(Date.UTC(1899, 11, 30, 4));
-                    match.date = new Date(match.date.getTime() + weekTable[index][5] * 86400000 + 100);
+                    match.date = new Date(initDate.getTime() + weekTable[index][5] * 86400000 + 100);
                     match.dateStr = match.date.toLocaleString("en-us", {timeZone: "America/Los_Angeles", weekday: "short", month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit", timeZoneName: "short"});
                 }
 

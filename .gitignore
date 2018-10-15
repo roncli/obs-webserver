@@ -63,4 +63,3 @@ typings/
 # Sensitive stuff
 config.js
 roncli.com-*.json
-settings/

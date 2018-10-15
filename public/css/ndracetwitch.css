@@ -1,0 +1,16 @@
+body {
+    overflow: hidden;
+    background-color: black;
+}
+
+#player1 {
+    position: absolute;
+    left: 17px;
+    top: 234px;
+}
+
+#player2 {
+    position: absolute;
+    left: 966px;
+    top: 234px;
+}
