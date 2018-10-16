@@ -145,6 +145,521 @@ class Observatory {
         });
     }
 
+    //         #           #            ##    #                 #
+    //         #           #           #  #   #                 #
+    //  ###   ###    ###  ###    ###    #    ###    ###  ###   ###
+    // ##      #    #  #   #    ##       #    #    #  #  #  #   #
+    //   ##    #    # ##   #      ##   #  #   #    # ##  #      #
+    // ###      ##   # #    ##  ###     ##     ##   # #  #       ##
+    /**
+     * Starts the stats carousel.
+     * @returns {Promise} A promise that resolves when the stats carousel is started.
+     */
+    static async statsStart() {
+        try {
+            await new Promise((resolve) => {
+                const x = new XMLHttpRequest();
+                x.onreadystatechange = function() {
+                    if (x.readyState === 4 && x.status === 200) {
+                        Observatory.events = JSON.parse(x.responseText);
+                        resolve();
+                    }
+                };
+                x.open("GET", "api/observatoryEvents", true);
+                x.send();
+            });
+
+            await new Promise((resolve) => {
+                const x = new XMLHttpRequest();
+                x.onreadystatechange = function() {
+                    if (x.readyState === 4 && x.status === 200) {
+                        Observatory.stats = JSON.parse(x.responseText);
+                        Observatory.stats.sort((a, b) => {
+                            if (a.championshipSeasons - b.championshipSeasons !== 0) {
+                                return b.championshipSeasons - a.championshipSeasons;
+                            }
+
+                            if (a.runnerUpSeasons - b.runnerUpSeasons !== 0) {
+                                return b.runnerUpSeasons - a.runnerUpSeasons;
+                            }
+
+                            if (a.games - b.games !== 0) {
+                                return b.games - a.games;
+                            }
+
+                            return b.rating - a.rating;
+                        }).splice(30);
+                        Observatory.stats.sort((a, b) => {
+                            if (a.championshipSeasons - b.championshipSeasons !== 0) {
+                                return b.championshipSeasons - a.championshipSeasons;
+                            }
+
+                            if (a.runnerUpSeasons - b.runnerUpSeasons !== 0) {
+                                return b.runnerUpSeasons - a.runnerUpSeasons;
+                            }
+
+                            return b.rating - a.rating;
+                        });
+                        resolve();
+                    }
+                };
+                x.open("GET", "api/observatoryStats", true);
+                x.send();
+            });
+
+            Observatory.seasons = {};
+            Observatory.delay = 30000;
+            Observatory.status = 0;
+            Observatory.season = 0;
+            Observatory.event = 0;
+
+            Observatory.statsNext();
+        } catch (ex) {
+            setTimeout(Observatory.statsStart, Observatory.delay);
+        }
+    }
+
+    //         #           #           #  #               #     ##                           ##    ##
+    //         #           #           ## #               #    #  #                           #     #
+    //  ###   ###    ###  ###    ###   ## #   ##   #  #  ###   #  #  # #    ##   ###    ###   #     #
+    // ##      #    #  #   #    ##     # ##  # ##   ##    #    #  #  # #   # ##  #  #  #  #   #     #
+    //   ##    #    # ##   #      ##   # ##  ##     ##    #    #  #  # #   ##    #     # ##   #     #
+    // ###      ##   # #    ##  ###    #  #   ##   #  #    ##   ##    #     ##   #      # #  ###   ###
+    /**
+     * Shows the overall stats.
+     * @returns {void}
+     */
+    static statsNextOverall() {
+        const $thead = document.querySelector("#stats thead"),
+            $tbody = document.querySelector("#stats tbody");
+
+        while ($thead.firstChild) {
+            $thead.removeChild($thead.firstChild);
+        }
+
+        let node;
+
+        node = document.createElement("td");
+        node.innerText = "Pilot";
+        $thead.appendChild(node);
+
+        node = document.createElement("td");
+        node.innerText = "Rating";
+        node.classList.add("center");
+        $thead.appendChild(node);
+
+        node = document.createElement("td");
+        node.innerText = "Overall";
+        node.classList.add("center");
+        $thead.appendChild(node);
+
+        node = document.createElement("td");
+        node.innerText = "Qualifiers";
+        node.classList.add("center");
+        $thead.appendChild(node);
+
+        node = document.createElement("td");
+        node.innerText = "Finals Tournament";
+        node.classList.add("center");
+        $thead.appendChild(node);
+
+        node = document.createElement("td");
+        node.innerText = "Championship Seasons";
+        node.classList.add("center");
+        $thead.appendChild(node);
+
+        node = document.createElement("td");
+        node.innerText = "Runner Up Seasons";
+        node.classList.add("center");
+        $thead.appendChild(node);
+
+        while ($tbody.firstChild) {
+            $tbody.removeChild($tbody.firstChild);
+        }
+
+        Observatory.stats.forEach((stat) => {
+            const row = document.createElement("tr");
+            row.style.borderTop = "solid 1px rgba(128, 128, 128, 0.5)";
+
+            node = document.createElement("td");
+            node.innerText = stat.name;
+            row.appendChild(node);
+
+            node = document.createElement("td");
+            node.innerText = Math.round(stat.rating);
+            node.classList.add("center");
+            row.appendChild(node);
+
+            node = document.createElement("td");
+            node.innerText = `${stat.wins}-${stat.losses}`;
+            node.classList.add("center");
+            row.appendChild(node);
+
+            node = document.createElement("td");
+            node.innerText = `${stat.qualifierWins}-${stat.qualifierLosses}`;
+            node.classList.add("center");
+            row.appendChild(node);
+
+            node = document.createElement("td");
+            node.innerText = `${stat.finalsTournamentWins}-${stat.finalsTournamentLosses}`;
+            node.classList.add("center");
+            row.appendChild(node);
+
+            node = document.createElement("td");
+            node.innerText = stat.championshipSeasons;
+            node.classList.add("center");
+            row.appendChild(node);
+
+            node = document.createElement("td");
+            node.innerText = stat.runnerUpSeasons;
+            node.classList.add("center");
+            row.appendChild(node);
+
+            $tbody.appendChild(row);
+        });
+
+        Observatory.status = 1;
+        Observatory.season++;
+        if (!Observatory.events.find((ev) => ev.season === Observatory.season)) {
+            Observatory.season = 1;
+        }
+        Observatory.event = 1;
+
+        setTimeout(Observatory.statsNext, Observatory.delay);
+    }
+
+    //         #           #           #  #               #     ##    #                   #   #
+    //         #           #           ## #               #    #  #   #                   #
+    //  ###   ###    ###  ###    ###   ## #   ##   #  #  ###    #    ###    ###  ###    ###  ##    ###    ###   ###
+    // ##      #    #  #   #    ##     # ##  # ##   ##    #      #    #    #  #  #  #  #  #   #    #  #  #  #  ##
+    //   ##    #    # ##   #      ##   # ##  ##     ##    #    #  #   #    # ##  #  #  #  #   #    #  #   ##     ##
+    // ###      ##   # #    ##  ###    #  #   ##   #  #    ##   ##     ##   # #  #  #   ###  ###   #  #  #     ###
+    //                                                                                                    ###
+    /**
+     * Shows standings from a season.
+     * @returns {void}
+     */
+    static async statsNextStandings() {
+        if (!Observatory.seasons[Observatory.season]) {
+            try {
+                await new Promise((resolve) => {
+                    const x = new XMLHttpRequest();
+                    x.onreadystatechange = function() {
+                        if (x.readyState === 4 && x.status === 200) {
+                            Observatory.seasons[Observatory.season] = JSON.parse(x.responseText);
+                            resolve();
+                        }
+                    };
+                    x.open("GET", `api/observatorySeason?season=${Observatory.season}`, true);
+                    x.send();
+                });
+            } catch (ex) {
+                setTimeout(Observatory.statsNext, Observatory.delay);
+                return;
+            }
+        }
+
+        const event = Observatory.events.filter((ev) => ev.season === Observatory.season)[Observatory.event - 1],
+            $thead = document.querySelector("#stats thead"),
+            $tbody = document.querySelector("#stats tbody");
+
+        while ($thead.firstChild) {
+            $thead.removeChild($thead.firstChild);
+        }
+
+        while ($tbody.firstChild) {
+            $tbody.removeChild($tbody.firstChild);
+        }
+
+        if (event.event.indexOf("Qualifier") === -1) {
+            let row, node, div, innerNode, innerTable;
+
+            row = document.createElement("tr");
+
+            node = document.createElement("td");
+            node.colSpan = 2;
+            div = document.createElement("div");
+            div.innerText = `Season ${Observatory.season} Results`;
+            div.classList.add("obs-box");
+            div.classList.add("no-margin");
+            node.appendChild(div);
+            row.appendChild(node);
+
+            $tbody.appendChild(row);
+
+            row = document.createElement("tr");
+
+            node = document.createElement("td");
+            node.colSpan = 2;
+            node.innerText = `Finals Tournament - ${new Date(event.date).toLocaleDateString("en-us", {timeZone: "America/Los_Angeles", weekday: "long", year: "numeric", month: "long", day: "numeric", hour12: true, hour: "2-digit", minute: "2-digit", timeZoneName: "short"})}`;
+            node.classList.add("center");
+            row.appendChild(node);
+
+            $tbody.appendChild(row);
+
+            const innerRow = document.createElement("tr");
+
+            innerNode = document.createElement("td");
+            innerTable = document.createElement("table");
+
+            row = document.createElement("tr");
+
+            node = document.createElement("td");
+            node.colSpan = 6;
+            div = document.createElement("div");
+            div.innerText = "Standings";
+            div.classList.add("obs-box");
+            node.appendChild(div);
+            row.appendChild(node);
+
+            innerTable.appendChild(row);
+
+            row = document.createElement("tr");
+
+            node = document.createElement("td");
+            node.innerText = "Pos";
+            node.classList.add("center");
+            row.appendChild(node);
+
+            node = document.createElement("td");
+            node.innerText = "Pilot";
+            row.appendChild(node);
+
+            node = document.createElement("td");
+            node.innerText = "Week 1";
+            node.classList.add("center");
+            row.appendChild(node);
+
+            node = document.createElement("td");
+            node.innerText = "Week 2";
+            node.classList.add("center");
+            row.appendChild(node);
+
+            node = document.createElement("td");
+            node.innerText = "Week 3";
+            node.classList.add("center");
+            row.appendChild(node);
+
+            node = document.createElement("td");
+            node.innerText = "Points";
+            node.classList.add("center");
+            row.appendChild(node);
+
+            innerTable.appendChild(row);
+
+            Observatory.seasons[Observatory.season].standings.forEach((pilot, index) => {
+                row = document.createElement("tr");
+
+                node = document.createElement("td");
+                node.innerText = index + 1;
+                node.classList.add("center");
+                row.appendChild(node);
+
+                node = document.createElement("td");
+                node.innerText = pilot.name;
+                row.appendChild(node);
+
+                node = document.createElement("td");
+                node.innerText = `${pilot.qualifiers[1] ? `${pilot.qualifiers[1].points} (${pilot.qualifiers[1].wins}-${pilot.qualifiers[1].losses})` : "-"}`;
+                node.classList.add("center");
+                row.appendChild(node);
+
+                node = document.createElement("td");
+                node.innerText = `${pilot.qualifiers[2] ? `${pilot.qualifiers[2].points} (${pilot.qualifiers[2].wins}-${pilot.qualifiers[2].losses})` : "-"}`;
+                node.classList.add("center");
+                row.appendChild(node);
+
+                node = document.createElement("td");
+                node.innerText = `${pilot.qualifiers[3] ? `${pilot.qualifiers[3].points} (${pilot.qualifiers[3].wins}-${pilot.qualifiers[3].losses})` : "-"}`;
+                node.classList.add("center");
+                row.appendChild(node);
+
+                node = document.createElement("td");
+                node.innerText = pilot.points;
+                node.classList.add("center");
+                row.appendChild(node);
+
+                innerTable.appendChild(row);
+            });
+
+            innerNode.appendChild(innerTable);
+            innerRow.appendChild(innerNode);
+
+            innerNode = document.createElement("td");
+            innerTable = document.createElement("table");
+            innerTable.classList.add("fixed");
+
+            row = document.createElement("tr");
+
+            node = document.createElement("td");
+            node.colSpan = Object.keys(Observatory.seasons[Observatory.season].finals).length;
+            div = document.createElement("div");
+            div.innerText = "Tournament";
+            div.classList.add("obs-box");
+            node.appendChild(div);
+            row.appendChild(node);
+
+            innerTable.appendChild(row);
+
+            row = document.createElement("tr");
+
+            Object.keys(Observatory.seasons[Observatory.season].finals).forEach((round) => {
+                node = document.createElement("td");
+
+                Observatory.seasons[Observatory.season].finals[round].forEach((match) => {
+                    let scoreNode, scoreRow;
+
+                    const matchTable = document.createElement("table");
+
+                    match.score.forEach((score) => {
+                        scoreRow = document.createElement("tr");
+                        scoreRow.classList.add("score");
+
+                        scoreNode = document.createElement("td");
+                        scoreNode.innerText = `${score.seed}) ${score.name}`;
+                        scoreRow.appendChild(scoreNode);
+
+                        scoreNode = document.createElement("td");
+                        scoreNode.innerText = score.score;
+                        scoreNode.classList.add("right");
+                        scoreNode.style.width = "1px";
+                        scoreRow.appendChild(scoreNode);
+
+                        matchTable.appendChild(scoreRow);
+                    });
+
+                    scoreRow = document.createElement("tr");
+
+                    scoreNode = document.createElement("td");
+                    scoreNode.innerText = match.map;
+                    scoreNode.colSpan = 2;
+                    scoreRow.appendChild(scoreNode);
+
+                    matchTable.appendChild(scoreRow);
+
+                    node.appendChild(matchTable);
+                });
+
+                row.appendChild(node);
+            });
+
+            innerTable.appendChild(row);
+
+            innerNode.appendChild(innerTable);
+            innerRow.appendChild(innerNode);
+
+            $tbody.append(innerRow);
+        } else {
+            let row, node, div, innerNode, innerTable;
+
+            row = document.createElement("tr");
+
+            node = document.createElement("td");
+            node.colSpan = 2;
+            div = document.createElement("div");
+            div.innerText = `Season ${Observatory.season} Results`;
+            div.classList.add("obs-box");
+            div.classList.add("no-margin");
+            node.appendChild(div);
+            row.appendChild(node);
+
+            $tbody.appendChild(row);
+
+            row = document.createElement("tr");
+
+            node = document.createElement("td");
+            node.colSpan = 2;
+            node.innerText = `Qualifier ${Observatory.event} - ${new Date(event.date).toLocaleDateString("en-us", {timeZone: "America/Los_Angeles", weekday: "long", year: "numeric", month: "long", day: "numeric", hour12: true, hour: "2-digit", minute: "2-digit", timeZoneName: "short"})}`;
+            node.classList.add("center");
+            row.appendChild(node);
+
+            $tbody.appendChild(row);
+
+            const innerRow = document.createElement("tr");
+
+            Object.keys(Observatory.seasons[Observatory.season].qualifier[Observatory.event]).forEach((round) => {
+                if (round % 2 === 1) {
+                    innerNode = document.createElement("td");
+                    innerTable = document.createElement("table");
+                    innerNode.appendChild(innerTable);
+                    innerRow.appendChild(innerNode);
+                }
+
+                row = document.createElement("tr");
+
+                node = document.createElement("td");
+                node.colSpan = 5;
+                div = document.createElement("div");
+                div.innerText = `Round ${round}`;
+                div.classList.add("obs-box");
+                node.appendChild(div);
+                row.appendChild(node);
+
+                innerTable.appendChild(row);
+
+                Observatory.seasons[Observatory.season].qualifier[Observatory.event][round].forEach((match) => {
+                    row = document.createElement("tr");
+
+                    node = document.createElement("td");
+                    node.innerText = match.score[0].name;
+                    row.appendChild(node);
+
+                    node = document.createElement("td");
+                    node.innerText = match.score[0].score;
+                    node.classList.add("right");
+                    row.appendChild(node);
+
+                    node = document.createElement("td");
+                    node.innerText = match.score[1].name;
+                    row.appendChild(node);
+
+                    node = document.createElement("td");
+                    node.innerText = match.score[1].score;
+                    node.classList.add("right");
+                    row.appendChild(node);
+
+                    node = document.createElement("td");
+                    node.innerText = match.map;
+                    row.appendChild(node);
+
+                    innerTable.appendChild(row);
+                });
+            });
+
+            $tbody.appendChild(innerRow);
+        }
+
+        Observatory.event++;
+
+        if (Observatory.event > Observatory.events.filter((ev) => ev.season === Observatory.season).length) {
+            Observatory.status = 0;
+        }
+
+        setTimeout(Observatory.statsNext, Observatory.delay);
+    }
+
+    //         #           #           #  #               #
+    //         #           #           ## #               #
+    //  ###   ###    ###  ###    ###   ## #   ##   #  #  ###
+    // ##      #    #  #   #    ##     # ##  # ##   ##    #
+    //   ##    #    # ##   #      ##   # ##  ##     ##    #
+    // ###      ##   # #    ##  ###    #  #   ##   #  #    ##
+    /**
+     * Displays the next page.
+     * @returns {void}
+     */
+    static statsNext() {
+        switch (Observatory.status) {
+            case 0:
+                Observatory.statsNextOverall();
+                break;
+            case 1:
+                Observatory.statsNextStandings();
+                break;
+        }
+
+    }
+
     //        #                 #  #         #          #
     //        #                 ####         #          #
     //  ###   ###    ##   #  #  ####   ###  ###    ##   ###    ##    ###
@@ -367,6 +882,8 @@ class Observatory {
                             Spotify.playPlaylist("spotify:user:1211227601:playlist:3ld3qI0evdqsr66HoaE0Zp", false);
                             Spotify.setSpotifyVolume(100);
                             Observatory.obs.setCurrentScene({"scene-name": "The Observatory - Bumper"});
+
+                            Observatory.statsStart();
 
                             break;
                         case "obs-tournament":

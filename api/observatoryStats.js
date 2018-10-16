@@ -44,7 +44,7 @@ class ObservatoryStats {
                 matches = data && data.recordsets && data.recordsets[1] && data.recordsets[1].map((row) => ({id: row.MatchID, eventId: row.EventID})),
                 scores = data && data.recordsets && data.recordsets[2] && data.recordsets[2].map((row) => ({playerId: row.PlayerID, matchId: row.MatchID, score: row.Score})),
                 seasons = data && data.recordsets && data.recordsets[3] && data.recordsets[3].map((row) => ({championPlayerId: row.ChampionPlayerID, runnerUpPlayerId: row.RunnerUpPlayerID})),
-                players = data && data.recordsets && data.recordsets[4] && data.recordsets[4].map((row) => ({id: row.PlayerID, name: row.Name, rating: row.Rating, wins: 0, losses: 0, qualifierWins: 0, qualifierLosses: 0, finalsTournamentWins: 0, finalsTournamentLosses: 0, championshipSeasons: 0, runnerUpSeasons: 0}));
+                players = data && data.recordsets && data.recordsets[4] && data.recordsets[4].map((row) => ({id: row.PlayerID, name: row.Name, rating: row.Rating, games: 0, wins: 0, losses: 0, qualifierWins: 0, qualifierLosses: 0, finalsTournamentWins: 0, finalsTournamentLosses: 0, championshipSeasons: 0, runnerUpSeasons: 0}));
 
             matches.forEach((match) => {
                 const matchScores = scores.filter((score) => score.matchId === match.id).sort((a, b) => b.score - a.score);
@@ -59,6 +59,8 @@ class ObservatoryStats {
 
                 winner.wins++;
                 loser.losses++;
+                winner.games++;
+                loser.games++;
 
                 if (qualifier) {
                     winner.qualifierWins++;

@@ -12,6 +12,8 @@ require("express-ws")(app);
 const api = require("./api"),
     ws = require("./ws");
 
+require("./database");
+
 app.use(express.static("public", {index: "index.htm"}));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use("/api", api);

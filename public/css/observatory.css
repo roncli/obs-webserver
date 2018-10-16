@@ -89,6 +89,28 @@ body {
     text-align: right;
 }
 
+#stats {
+    position: absolute;
+    left: 5px;
+    top: 200px;
+    width: 1910px;
+    height: 650px;
+}
+
+#stats table {
+    margin: 0 auto;
+}
+
+#stats td, #stats th {
+    position: relative;
+    font-family: "Descent ][ Score";
+    font-size: 18px;
+    color: #ffffff;
+    padding: 0 5px;
+    z-index: 1;
+    vertical-align: top;
+}
+
 #countdown {
     position: absolute;
     top: 900px;
@@ -250,6 +272,49 @@ body {
 
 .right {
     text-align: right;
+}
+
+.center {
+    text-align: center;
+}
+
+.obs-box {
+    background-color: white;
+    border: solid 5px #283888;
+    filter: drop-shadow(25px 15px 10px rgba(40, 56, 136));
+    clip: rect(-10px, 1920px, 100px, 0px);
+    font-family: "Descent ][ Logo" !important;
+    font-size: 36px !important;
+    color: #283888 !important;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.no-margin {
+    margin-top: 0;
+}
+
+.fixed {
+    table-layout: fixed;
+    width: 1000px;
+}
+
+.fixed td {
+    vertical-align: middle !important;
+}
+
+.fixed table {
+    margin: 10px 5px !important;
+    width: 100%;
+}
+
+.fixed table tr.score {
+    background-color: white;
+}
+
+.fixed table tr.score td {
+    color: #283888 !important;
+    padding: 1px 2px !important;
 }
 
 #data tr.withdrawn td {

@@ -129,10 +129,23 @@ class ObservatorySeason {
                 });
             });
 
-            ret.standings.sort((a, b) => b.points - a.points);
-
             const finalsData = await db.query("SELECT EventID FROM tblEvent WHERE Season = @season AND Event LIKE '%Finals Tournament%' ORDER BY EventID", {season: {type: Db.INT, value: season}}),
-                finalsEventId = finalsData && finalsData.recordsets && finalsData.recordsets[0] && finalsData.recordsets[0][0] && finalsData.recordsets[0][0].EventID;
+                finalsEventId = finalsData && finalsData.recordsets && finalsData.recordsets[0] && finalsData.recordsets[0][0] && finalsData.recordsets[0][0].EventID,
+                ratingData = await db.query(`
+                    SELECT DISTINCT p.Name, r.Rating
+                    FROM tblRating r
+                    INNER JOIN tblPlayer p ON r.PlayerID = p.PlayerID
+                    WHERE r.EventID = @eventId - 1
+                `, {eventId: {type: Db.INT, value: finalsEventId}}),
+                seasonRatings = ratingData && ratingData.recordsets && ratingData.recordsets[0] && ratingData.recordsets[0].map((row) => ({name: row.Name, rating: row.Rating}));
+
+            ret.standings.sort((a, b) => {
+                if (a.points !== b.points) {
+                    return b.points - a.points;
+                }
+
+                return seasonRatings.find((rating) => rating.name === b.name).rating - seasonRatings.find((rating) => rating.name === a.name).rating;
+            });
 
             if (finalsEventId) {
                 ret.finals = {};
