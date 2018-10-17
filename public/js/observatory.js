@@ -1336,6 +1336,61 @@ class Observatory {
                             break;
                         case "season-standings":
                             Observatory.showSeasonStandingsUI();
+                            break;
+                        case "qualifier-rules":
+                            {
+                                const tbody = document.querySelector("#data table tbody"),
+                                    row = document.createElement("tr"),
+                                    node = document.createElement("td");
+
+                                while (tbody.firstChild) {
+                                    tbody.removeChild(tbody.firstChild);
+                                }
+
+                                document.getElementById("text").innerText = "Qualfier Rules";
+                                node.innerText = "- Three qualifiers are played per season on three different days.\n\n- Each qualifier is run as an individual tournament using the Swiss format.\n\n- Games are contested under DCL rules: Insane difficulty, game to 20 and win by 2.\n\n- A player earns 3 season points per win, plus bonus points equal to the number of wins each defeated opponent had in the event.\n\n- The top four players earn a spot in the knockout stage of the Finals Tournament.\n\n- Seeds 5 through 8, plus ties, earn a spot in the Wildcard Anarchy, an anarchy game that awards at least two additional spots in the knockout stage.";
+
+                                row.appendChild(node);
+                                tbody.appendChild(row);
+                            }
+
+                            break;
+                        case "wildcard-rules":
+                            {
+                                const tbody = document.querySelector("#data table tbody"),
+                                    row = document.createElement("tr"),
+                                    node = document.createElement("td");
+
+                                while (tbody.firstChild) {
+                                    tbody.removeChild(tbody.firstChild);
+                                }
+
+                                document.getElementById("text").innerText = "Wildcard Anarchy Rules";
+                                node.innerText = "- An anarchy game is played to award at least two additional spots in the knockout stage of the Finals Tournament.\n\n- Seeds 5 through 8, including ties, earn a spot in the Wildcard Anarchy.\n\n- Pilots select a level they would like to play in for the anarchy game.  The level is then selected randomly prior to the event.\n\n- The game is played to 10 times the number of players in the game.  Once one player has reached the kill goal, the game ends.";
+
+                                row.appendChild(node);
+                                tbody.appendChild(row);
+                            }
+
+                            break;
+                        case "tournament-rules":
+                            {
+                                const tbody = document.querySelector("#data table tbody"),
+                                    row = document.createElement("tr"),
+                                    node = document.createElement("td");
+
+                                while (tbody.firstChild) {
+                                    tbody.removeChild(tbody.firstChild);
+                                }
+
+                                document.getElementById("text").innerText = "Tournament Rules";
+                                node.innerText = "- 6 pilots play in a knockout tournament to determine the season champion.  Seeds 1 and 2 earn a bye to the semifinals.\n\n- In the quarterfinals and semifinals, the highest seed chooses which of two lower seeds to play.  The two remaining seeds in the round also play each other.\n\n- Each match in the knockout stage consists of two games with the lower seed getting their home level first and the higher seed getting their home level last.\n\n- Individual games are played to 15 in the quarterfinals and semifinals and to 20 in the finals (no win by 2), with the winner being determined by combined score.\n\n- In the event of a tie, a third game is played to decide the match in the higher seed's home level, game to 5 win by 2.\n\n- If a pilot reaches a point total in the 2nd game that cannot be overcome without suicides, the game ends early.";
+
+                                row.appendChild(node);
+                                tbody.appendChild(row);
+                            }
+
+                            break;
                     }
                     break;
             }

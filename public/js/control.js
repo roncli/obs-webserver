@@ -511,6 +511,27 @@ class Control {
             }));
         };
 
+        document.getElementById("obs-display-qualifier-rules").onclick = function() {
+            Control.ws.send(JSON.stringify({
+                type: "display",
+                display: "qualifier-rules"
+            }));
+        };
+
+        document.getElementById("obs-display-wildcard-rules").onclick = function() {
+            Control.ws.send(JSON.stringify({
+                type: "display",
+                display: "wildcard-rules"
+            }));
+        };
+
+        document.getElementById("obs-display-tournament-rules").onclick = function() {
+            Control.ws.send(JSON.stringify({
+                type: "display",
+                display: "tournament-rules"
+            }));
+        };
+
         document.getElementById("obs-display-round").onclick = function() {
             var roundList = document.getElementById("obs-round-list");
 
