@@ -207,7 +207,21 @@ class Observatory {
                 x.send();
             });
 
-            Observatory.seasons = {};
+            Observatory.lastEvent = Observatory.events[Observatory.events.length - 1];
+            Observatory.seasons = Observatory.seasons || {};
+
+            await new Promise((resolve) => {
+                const x = new XMLHttpRequest();
+                x.onreadystatechange = function() {
+                    if (x.readyState === 4 && x.status === 200) {
+                        Observatory.seasons[Observatory.lastEvent.season] = JSON.parse(x.responseText);
+                        resolve();
+                    }
+                };
+                x.open("GET", `api/observatorySeason?season=${Observatory.events[Observatory.events.length - 1].season}`, true);
+                x.send();
+            });
+
             Observatory.delay = 30000;
             Observatory.status = 0;
             Observatory.season = 0;
@@ -215,7 +229,7 @@ class Observatory {
 
             Observatory.statsNext();
         } catch (ex) {
-            setTimeout(Observatory.statsStart, Observatory.delay);
+            Observatory.carouselTimeout = setTimeout(Observatory.statsStart, Observatory.delay);
         }
     }
 
@@ -325,7 +339,7 @@ class Observatory {
         }
         Observatory.event = 1;
 
-        setTimeout(Observatory.statsNext, Observatory.delay);
+        Observatory.carouselTimeout = setTimeout(Observatory.statsNext, Observatory.delay);
     }
 
     //         #           #           #  #               #     ##    #                   #   #
@@ -354,13 +368,39 @@ class Observatory {
                     x.send();
                 });
             } catch (ex) {
-                setTimeout(Observatory.statsNext, Observatory.delay);
+                Observatory.carouselTimeout = setTimeout(Observatory.statsNext, Observatory.delay);
                 return;
             }
         }
 
-        const event = Observatory.events.filter((ev) => ev.season === Observatory.season)[Observatory.event - 1],
-            $thead = document.querySelector("#stats thead"),
+        Observatory.showEvent(Observatory.events.filter((ev) => ev.season === Observatory.season)[Observatory.event - 1]);
+
+        Observatory.event++;
+
+        if (Observatory.event > Observatory.events.filter((ev) => ev.season === Observatory.season).length) {
+            if (Observatory.seasons[Observatory.lastEvent.season].finals) {
+                Observatory.status = 0;
+            } else {
+                Observatory.status = 2;
+            }
+        }
+
+        Observatory.carouselTimeout = setTimeout(Observatory.statsNext, Observatory.delay);
+    }
+
+    //        #                 ####                     #
+    //        #                 #                        #
+    //  ###   ###    ##   #  #  ###   # #    ##   ###   ###
+    // ##     #  #  #  #  #  #  #     # #   # ##  #  #   #
+    //   ##   #  #  #  #  ####  #     # #   ##    #  #   #
+    // ###    #  #   ##   ####  ####   #     ##   #  #    ##
+    /**
+     * Shows the event.
+     * @param {object} event The event to show.
+     * @returns {void}
+     */
+    static showEvent(event) {
+        const $thead = document.querySelector("#stats thead"),
             $tbody = document.querySelector("#stats tbody");
 
         while ($thead.firstChild) {
@@ -628,14 +668,134 @@ class Observatory {
 
             $tbody.appendChild(innerRow);
         }
+    }
 
-        Observatory.event++;
+    //        #                  ##                                   ##    #                   #   #
+    //        #                 #  #                                 #  #   #                   #
+    //  ###   ###    ##   #  #   #     ##    ###   ###    ##   ###    #    ###    ###  ###    ###  ##    ###    ###   ###
+    // ##     #  #  #  #  #  #    #   # ##  #  #  ##     #  #  #  #    #    #    #  #  #  #  #  #   #    #  #  #  #  ##
+    //   ##   #  #  #  #  ####  #  #  ##    # ##    ##   #  #  #  #  #  #   #    # ##  #  #  #  #   #    #  #   ##     ##
+    // ###    #  #   ##   ####   ##    ##    # #  ###     ##   #  #   ##     ##   # #  #  #   ###  ###   #  #  #     ###
+    //                                                                                                          ###
+    /**
+     * Shows the standings for a given season.
+     * @param {number} season The season to show the standings for.
+     * @returns {void}
+     */
+    static showSeasonStandings(season) {
+        const $thead = document.querySelector("#stats thead"),
+            $tbody = document.querySelector("#stats tbody");
 
-        if (Observatory.event > Observatory.events.filter((ev) => ev.season === Observatory.season).length) {
-            Observatory.status = 0;
+        while ($thead.firstChild) {
+            $thead.removeChild($thead.firstChild);
         }
 
-        setTimeout(Observatory.statsNext, Observatory.delay);
+        while ($tbody.firstChild) {
+            $tbody.removeChild($tbody.firstChild);
+        }
+
+        let row, node;
+
+        row = document.createElement("tr");
+
+        node = document.createElement("td");
+        node.colSpan = 6;
+
+        const div = document.createElement("div");
+
+        div.innerText = `Season ${season} Standings`;
+        div.classList.add("obs-box");
+        div.classList.add("no-margin");
+        node.appendChild(div);
+        row.appendChild(node);
+
+        $tbody.appendChild(row);
+
+        row = document.createElement("tr");
+
+        node = document.createElement("td");
+        node.innerText = "Pos";
+        node.classList.add("center");
+        row.appendChild(node);
+
+        node = document.createElement("td");
+        node.innerText = "Pilot";
+        row.appendChild(node);
+
+        node = document.createElement("td");
+        node.innerText = "Week 1";
+        node.classList.add("center");
+        row.appendChild(node);
+
+        node = document.createElement("td");
+        node.innerText = "Week 2";
+        node.classList.add("center");
+        row.appendChild(node);
+
+        node = document.createElement("td");
+        node.innerText = "Week 3";
+        node.classList.add("center");
+        row.appendChild(node);
+
+        node = document.createElement("td");
+        node.innerText = "Points";
+        node.classList.add("center");
+        row.appendChild(node);
+
+        $tbody.appendChild(row);
+
+        Observatory.seasons[season].standings.forEach((pilot, index) => {
+            row = document.createElement("tr");
+
+            node = document.createElement("td");
+            node.innerText = index + 1;
+            node.classList.add("center");
+            row.appendChild(node);
+
+            node = document.createElement("td");
+            node.innerText = pilot.name;
+            row.appendChild(node);
+
+            node = document.createElement("td");
+            node.innerText = `${pilot.qualifiers[1] ? `${pilot.qualifiers[1].points} (${pilot.qualifiers[1].wins}-${pilot.qualifiers[1].losses})` : "-"}`;
+            node.classList.add("center");
+            row.appendChild(node);
+
+            node = document.createElement("td");
+            node.innerText = `${pilot.qualifiers[2] ? `${pilot.qualifiers[2].points} (${pilot.qualifiers[2].wins}-${pilot.qualifiers[2].losses})` : "-"}`;
+            node.classList.add("center");
+            row.appendChild(node);
+
+            node = document.createElement("td");
+            node.innerText = `${pilot.qualifiers[3] ? `${pilot.qualifiers[3].points} (${pilot.qualifiers[3].wins}-${pilot.qualifiers[3].losses})` : "-"}`;
+            node.classList.add("center");
+            row.appendChild(node);
+
+            node = document.createElement("td");
+            node.innerText = pilot.points;
+            node.classList.add("center");
+            row.appendChild(node);
+
+            $tbody.appendChild(row);
+        });
+    }
+
+    //         #           #           #  #               #     ##                                  #     ##
+    //         #           #           ## #               #    #  #                                 #    #  #
+    //  ###   ###    ###  ###    ###   ## #   ##   #  #  ###   #     #  #  ###   ###    ##   ###   ###    #     ##    ###   ###    ##   ###
+    // ##      #    #  #   #    ##     # ##  # ##   ##    #    #     #  #  #  #  #  #  # ##  #  #   #      #   # ##  #  #  ##     #  #  #  #
+    //   ##    #    # ##   #      ##   # ##  ##     ##    #    #  #  #  #  #     #     ##    #  #   #    #  #  ##    # ##    ##   #  #  #  #
+    // ###      ##   # #    ##  ###    #  #   ##   #  #    ##   ##    ###  #     #      ##   #  #    ##   ##    ##    # #  ###     ##   #  #
+    /**
+     * Displays the current season standings.
+     * @returns {void}
+     */
+    static statsNextCurrentSeason() {
+        Observatory.showSeasonStandings(Observatory.lastEvent.season);
+
+        Observatory.status = 0;
+
+        Observatory.carouselTimeout = setTimeout(Observatory.statsNext, Observatory.delay);
     }
 
     //         #           #           #  #               #
@@ -656,8 +816,121 @@ class Observatory {
             case 1:
                 Observatory.statsNextStandings();
                 break;
+            case 2:
+                Observatory.statsNextCurrentSeason();
+                break;
         }
+    }
 
+    //                                ##    #                 #
+    //                               #  #   #                 #
+    // ###    ##    ##    ###  ###    #    ###    ###  ###   ###
+    // #  #  # ##  #     #  #  #  #    #    #    #  #  #  #   #
+    // #     ##    #     # ##  #  #  #  #   #    # ##  #      #
+    // #      ##    ##    # #  ###    ##     ##   # #  #       ##
+    //                         #
+    /**
+     * Starts the recap carousel.
+     * @returns {Promise} A promise that resolves when the carousel has started.
+     */
+    static async recapStart() {
+        try {
+            await new Promise((resolve) => {
+                const x = new XMLHttpRequest();
+                x.onreadystatechange = function() {
+                    if (x.readyState === 4 && x.status === 200) {
+                        Observatory.events = JSON.parse(x.responseText);
+                        resolve();
+                    }
+                };
+                x.open("GET", "api/observatoryEvents", true);
+                x.send();
+            });
+
+            Observatory.lastEvent = Observatory.events[Observatory.events.length - 1];
+            Observatory.season = Observatory.lastEvent.season;
+            Observatory.event = Observatory.events.filter((event) => event.season === Observatory.season).length;
+            Observatory.seasons = Observatory.seasons || {};
+
+            await new Promise((resolve) => {
+                const x = new XMLHttpRequest();
+                x.onreadystatechange = function() {
+                    if (x.readyState === 4 && x.status === 200) {
+                        Observatory.seasons[Observatory.season] = JSON.parse(x.responseText);
+                        resolve();
+                    }
+                };
+                x.open("GET", `api/observatorySeason?season=${Observatory.season}`, true);
+                x.send();
+            });
+
+            Observatory.delay = 30000;
+            Observatory.status = 0;
+
+            Observatory.recapNext();
+        } catch (ex) {
+            Observatory.carouselTimeout = setTimeout(Observatory.recapStart, Observatory.delay);
+        }
+    }
+
+    //                               #  #               #    ####                     #
+    //                               ## #               #    #                        #
+    // ###    ##    ##    ###  ###   ## #   ##   #  #  ###   ###   # #    ##   ###   ###
+    // #  #  # ##  #     #  #  #  #  # ##  # ##   ##    #    #     # #   # ##  #  #   #
+    // #     ##    #     # ##  #  #  # ##  ##     ##    #    #     # #   ##    #  #   #
+    // #      ##    ##    # #  ###   #  #   ##   #  #    ##  ####   #     ##   #  #    ##
+    //                         #
+    /**
+     * Recaps the event.
+     * @returns {void}
+     */
+    static recapNextEvent() {
+        Observatory.showEvent(Observatory.lastEvent);
+
+        if (Observatory.lastEvent.event.indexOf("Qualifier") !== -1) {
+            Observatory.status = 1;
+            Observatory.carouselTimeout = setTimeout(Observatory.recapNext, Observatory.delay);
+        }
+    }
+
+    //                               #  #               #     ##    #                   #   #
+    //                               ## #               #    #  #   #                   #
+    // ###    ##    ##    ###  ###   ## #   ##   #  #  ###    #    ###    ###  ###    ###  ##    ###    ###   ###
+    // #  #  # ##  #     #  #  #  #  # ##  # ##   ##    #      #    #    #  #  #  #  #  #   #    #  #  #  #  ##
+    // #     ##    #     # ##  #  #  # ##  ##     ##    #    #  #   #    # ##  #  #  #  #   #    #  #   ##     ##
+    // #      ##    ##    # #  ###   #  #   ##   #  #    ##   ##     ##   # #  #  #   ###  ###   #  #  #     ###
+    //                         #                                                                        ###
+    /**
+     * Recaps the standings.
+     * @returns {void}
+     */
+    static recapNextStandings() {
+        Observatory.showSeasonStandings(Observatory.season);
+
+        Observatory.status = 0;
+        Observatory.carouselTimeout = setTimeout(Observatory.recapNext, Observatory.delay);
+    }
+
+    //                               #  #               #
+    //                               ## #               #
+    // ###    ##    ##    ###  ###   ## #   ##   #  #  ###
+    // #  #  # ##  #     #  #  #  #  # ##  # ##   ##    #
+    // #     ##    #     # ##  #  #  # ##  ##     ##    #
+    // #      ##    ##    # #  ###   #  #   ##   #  #    ##
+    //                         #
+    /**
+     * Displays the next page.
+     * @returns {void}
+     */
+    static recapNext() {
+        switch (Observatory.status) {
+            case 0:
+                Observatory.recapNextEvent();
+                break;
+            case 1:
+                Observatory.recapNextStandings();
+                break;
+        }
     }
 
     //        #                 #  #         #          #
@@ -883,6 +1156,9 @@ class Observatory {
                             Spotify.setSpotifyVolume(100);
                             Observatory.obs.setCurrentScene({"scene-name": "The Observatory - Bumper"});
 
+                            if (Observatory.carouselTimeout) {
+                                clearTimeout(Observatory.carouselTimeout);
+                            }
                             Observatory.statsStart();
 
                             break;
@@ -899,6 +1175,10 @@ class Observatory {
                             Spotify.setSpotifyVolume(33);
                             Observatory.obs.setCurrentScene({"scene-name": "The Observatory - Tournament"});
 
+                            if (Observatory.carouselTimeout) {
+                                clearTimeout(Observatory.carouselTimeout);
+                            }
+
                             break;
                         case "obs-thanks":
                             bumper.classList.remove("hidden");
@@ -912,6 +1192,11 @@ class Observatory {
 
                             Spotify.setSpotifyVolume(100);
                             Observatory.obs.setCurrentScene({"scene-name": "The Observatory - Bumper"});
+
+                            if (Observatory.carouselTimeout) {
+                                clearTimeout(Observatory.carouselTimeout);
+                            }
+                            Observatory.recapStart();
 
                             break;
                     }
