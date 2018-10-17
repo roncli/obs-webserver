@@ -469,12 +469,25 @@ class Control {
         };
 
         document.getElementById("obs-scene-tournament").onclick = function() {
+            var channelList = document.getElementById("channel-list"),
+                i;
+
             Control.ws.send(JSON.stringify({
                 type: "scene",
                 scene: "obs-tournament",
                 season: document.getElementById("obs-season").value,
                 title: document.getElementById("obs-title").value
             }));
+
+            for (i = 0; i < channelList.options.length; i++) {
+                if (channelList.options[i].text === "The Observatory Booth") {
+                    channelList.selectedIndex = i;
+                    setTimeout(function() {
+                        document.getElementById("channel-select").click();
+                    }, 1000);
+                    break;
+                }
+            }
         };
 
         document.getElementById("obs-scene-thanks").onclick = function() {
