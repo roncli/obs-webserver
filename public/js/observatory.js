@@ -949,7 +949,9 @@ class Observatory {
 
         const tbody = document.querySelector("#data table tbody");
 
-        tbody.innerHTML = "";
+        while (tbody.firstChild) {
+            tbody.removeChild(tbody.firstChild);
+        }
 
         if (Observatory.matches) {
             Observatory.matches.filter((m) => m.round === round).forEach((match) => {
@@ -987,23 +989,25 @@ class Observatory {
         }
     }
 
-    //        #                  ##    #                   #   #
-    //        #                 #  #   #                   #
-    //  ###   ###    ##   #  #   #    ###    ###  ###    ###  ##    ###    ###   ###
-    // ##     #  #  #  #  #  #    #    #    #  #  #  #  #  #   #    #  #  #  #  ##
-    //   ##   #  #  #  #  ####  #  #   #    # ##  #  #  #  #   #    #  #   ##     ##
-    // ###    #  #   ##   ####   ##     ##   # #  #  #   ###  ###   #  #  #     ###
-    //                                                                     ###
+    //        #                 ####                     #     ##    #                   #   #                       #  #  ###
+    //        #                 #                        #    #  #   #                   #                           #  #   #
+    //  ###   ###    ##   #  #  ###   # #    ##   ###   ###    #    ###    ###  ###    ###  ##    ###    ###   ###   #  #   #
+    // ##     #  #  #  #  #  #  #     # #   # ##  #  #   #      #    #    #  #  #  #  #  #   #    #  #  #  #  ##     #  #   #
+    //   ##   #  #  #  #  ####  #     # #   ##    #  #   #    #  #   #    # ##  #  #  #  #   #    #  #   ##     ##   #  #   #
+    // ###    #  #   ##   ####  ####   #     ##   #  #    ##   ##     ##   # #  #  #   ###  ###   #  #  #     ###     ##   ###
+    //                                                                                                   ###
     /**
-     * Shows the current standings.
+     * Shows the current event's standings.
      * @returns {void}
      */
-    static showStandings() {
-        document.getElementById("text").innerText = "Standings";
+    static showEventStandingsUI() {
+        document.getElementById("text").innerText = "Today's Standings";
 
         const tbody = document.querySelector("#data table tbody");
 
-        tbody.innerHTML = "";
+        while (tbody.firstChild) {
+            tbody.removeChild(tbody.firstChild);
+        }
 
         if (Observatory.standings) {
             Observatory.standings.forEach((standing) => {
@@ -1036,6 +1040,109 @@ class Observatory {
                 tbody.appendChild(row);
             });
         }
+    }
+
+    //        #                  ##                                   ##    #                   #   #                       #  #  ###
+    //        #                 #  #                                 #  #   #                   #                           #  #   #
+    //  ###   ###    ##   #  #   #     ##    ###   ###    ##   ###    #    ###    ###  ###    ###  ##    ###    ###   ###   #  #   #
+    // ##     #  #  #  #  #  #    #   # ##  #  #  ##     #  #  #  #    #    #    #  #  #  #  #  #   #    #  #  #  #  ##     #  #   #
+    //   ##   #  #  #  #  ####  #  #  ##    # ##    ##   #  #  #  #  #  #   #    # ##  #  #  #  #   #    #  #   ##     ##   #  #   #
+    // ###    #  #   ##   ####   ##    ##    # #  ###     ##   #  #   ##     ##   # #  #  #   ###  ###   #  #  #     ###     ##   ###
+    //                                                                                                          ###
+    /**
+     * Shows the current season's standings.
+     * @returns {Promise} A promise that resolves when the season's standings are shown.
+     */
+    static async showSeasonStandingsUI() {
+        await new Promise((resolve) => {
+            const x = new XMLHttpRequest();
+            x.onreadystatechange = function() {
+                if (x.readyState === 4 && x.status === 200) {
+                    Observatory.seasons[Observatory.lastEvent.season] = JSON.parse(x.responseText);
+                    resolve();
+                }
+            };
+            x.open("GET", `api/observatorySeason?season=${Observatory.events[Observatory.events.length - 1].season}`, true);
+            x.send();
+        });
+
+        document.getElementById("text").innerText = "Season Standings";
+
+        const tbody = document.querySelector("#data table tbody");
+
+        while (tbody.firstChild) {
+            tbody.removeChild(tbody.firstChild);
+        }
+
+        let row, node;
+
+        row = document.createElement("tr");
+
+        node = document.createElement("td");
+        node.innerText = "Pos";
+        node.classList.add("center");
+        row.appendChild(node);
+
+        node = document.createElement("td");
+        node.innerText = "Pilot";
+        row.appendChild(node);
+
+        node = document.createElement("td");
+        node.innerText = "Week 1";
+        node.classList.add("center");
+        row.appendChild(node);
+
+        node = document.createElement("td");
+        node.innerText = "Week 2";
+        node.classList.add("center");
+        row.appendChild(node);
+
+        node = document.createElement("td");
+        node.innerText = "Week 3";
+        node.classList.add("center");
+        row.appendChild(node);
+
+        node = document.createElement("td");
+        node.innerText = "Points";
+        node.classList.add("center");
+        row.appendChild(node);
+
+        tbody.appendChild(row);
+
+        Observatory.seasons[Observatory.events[Observatory.events.length - 1].season].standings.forEach((pilot, index) => {
+            row = document.createElement("tr");
+
+            node = document.createElement("td");
+            node.innerText = index + 1;
+            node.classList.add("center");
+            row.appendChild(node);
+
+            node = document.createElement("td");
+            node.innerText = pilot.name;
+            row.appendChild(node);
+
+            node = document.createElement("td");
+            node.innerText = `${pilot.qualifiers[1] ? `${pilot.qualifiers[1].points} (${pilot.qualifiers[1].wins}-${pilot.qualifiers[1].losses})` : "-"}`;
+            node.classList.add("center");
+            row.appendChild(node);
+
+            node = document.createElement("td");
+            node.innerText = `${pilot.qualifiers[2] ? `${pilot.qualifiers[2].points} (${pilot.qualifiers[2].wins}-${pilot.qualifiers[2].losses})` : "-"}`;
+            node.classList.add("center");
+            row.appendChild(node);
+
+            node = document.createElement("td");
+            node.innerText = `${pilot.qualifiers[3] ? `${pilot.qualifiers[3].points} (${pilot.qualifiers[3].wins}-${pilot.qualifiers[3].losses})` : "-"}`;
+            node.classList.add("center");
+            row.appendChild(node);
+
+            node = document.createElement("td");
+            node.innerText = pilot.points;
+            node.classList.add("center");
+            row.appendChild(node);
+
+            tbody.appendChild(row);
+        });
     }
 
     //                #         #          ###                        #
@@ -1104,8 +1211,8 @@ class Observatory {
     static updateStandings(standings) {
         Observatory.standings = standings;
 
-        if (document.getElementById("text").innerHTML === "Standings") {
-            Observatory.showStandings();
+        if (document.getElementById("text").innerHTML === "Today's Standings") {
+            Observatory.showEventStandingsUI();
         }
     }
 
@@ -1224,9 +1331,11 @@ class Observatory {
                         case "round":
                             Observatory.showMatches(+data.round);
                             break;
-                        case "standings":
-                            Observatory.showStandings();
+                        case "event-standings":
+                            Observatory.showEventStandingsUI();
                             break;
+                        case "season-standings":
+                            Observatory.showSeasonStandingsUI();
                     }
                     break;
             }
@@ -1336,7 +1445,6 @@ class Observatory {
      * @returns {void}
      */
     static DOMContentLoaded() {
-        Observatory.updateDiv("#hosts", "C:\\Users\\roncli\\Desktop\\roncliGaming\\The Observatory\\observatory-hosts.txt", 5000);
         Observatory.updateDiv("#standings", "C:\\Users\\roncli\\Desktop\\roncliGaming\\The Observatory\\observatory-results.txt", 5000, true);
         Observatory.updateSpotify(["#playing", "#nowPlaying"], 10000);
         Observatory.updateVideo("#video");

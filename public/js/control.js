@@ -484,10 +484,17 @@ class Control {
             }));
         };
 
-        document.getElementById("obs-display-standings").onclick = function() {
+        document.getElementById("obs-display-event-standings").onclick = function() {
             Control.ws.send(JSON.stringify({
                 type: "display",
-                display: "standings"
+                display: "event-standings"
+            }));
+        };
+
+        document.getElementById("obs-display-season-standings").onclick = function() {
+            Control.ws.send(JSON.stringify({
+                type: "display",
+                display: "season-standings"
             }));
         };
 

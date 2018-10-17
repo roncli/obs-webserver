@@ -69,6 +69,11 @@
             "name": "CoNDOR 5",
             "guildId": "214389515417026561",
             "channelId": "328828437026439168"
+        },
+        {
+            "name": "The Observatory Booth",
+            "guildId": "147567556356603904",
+            "channelId": "266217985046347786"
         }
     ],
     "nd-layouts": [

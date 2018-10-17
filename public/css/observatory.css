@@ -192,16 +192,6 @@ body {
     color: #ffffff;
 }
 
-#hosts {
-    position: absolute;
-    left: 80px;
-    top: 315px;
-    font-family: "Descent ][ Score";
-    font-size: 24px;
-    line-height: 24px;
-    color: #ffffff;
-}
-
 #video {
     position: absolute;
     width: 960px;
