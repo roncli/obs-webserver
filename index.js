@@ -14,6 +14,12 @@ const api = require("./api"),
 
 require("./database");
 
+if (process.platform === "win32") {
+    process.title = "roncli Gaming Webserver";
+} else {
+    process.stdout.write("\x1b]2;roncli Gaming Webserver\x1b\x5c");
+}
+
 app.use(express.static("public", {index: "index.htm"}));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use("/api", api);
