@@ -144,12 +144,14 @@ class ObservatorySeason {
                     return b.points - a.points;
                 }
 
+                if (seasonRatings.length === 0) {
+                    return 0;
+                }
+
                 return seasonRatings.find((rating) => rating.name === b.name).rating - seasonRatings.find((rating) => rating.name === a.name).rating;
             });
 
             if (finalsEventId) {
-                ret.finals = {};
-
                 const matchData = await db.query(`
                     SELECT MatchID, Map, Round FROM tblMatch WHERE EventID = @eventId
 
@@ -170,26 +172,30 @@ class ObservatorySeason {
                     scores = matchData && matchData.recordsets && matchData.recordsets[1] && matchData.recordsets[1].map((row) => ({matchId: row.MatchID, name: row.Name, score: row.Score})),
                     ratings = matchData && matchData.recordsets && matchData.recordsets[2] && matchData.recordsets[2].map((row) => ({name: row.Name, rating: row.Rating}));
 
-                const seeding = ratings.map((rating) => ({name: rating.name, seedPoints: ret.standings.find((standing) => standing.name === rating.name).points + rating.rating / 100000}));
+                if (matches.length > 0) {
+                    ret.finals = {};
 
-                seeding.sort((a, b) => b.seedPoints - a.seedPoints);
+                    const seeding = ratings.map((rating) => ({name: rating.name, seedPoints: ret.standings.find((standing) => standing.name === rating.name).points + rating.rating / 100000}));
 
-                matches.forEach((match) => {
-                    const matchScores = scores.filter((score) => score.matchId === match.id).map((score) => ({name: score.name, seed: seeding.map((seed) => seed.name).indexOf(score.name) + 1, score: score.score})).sort((a, b) => b.score - a.score);
+                    seeding.sort((a, b) => b.seedPoints - a.seedPoints);
 
-                    if (!ret.finals[match.round]) {
-                        ret.finals[match.round] = [];
-                    }
+                    matches.forEach((match) => {
+                        const matchScores = scores.filter((score) => score.matchId === match.id).map((score) => ({name: score.name, seed: seeding.map((seed) => seed.name).indexOf(score.name) + 1, score: score.score})).sort((a, b) => b.score - a.score);
 
-                    ret.finals[match.round].push({
-                        map: match.map,
-                        score: matchScores.sort((a, b) => a.seed - b.seed)
+                        if (!ret.finals[match.round]) {
+                            ret.finals[match.round] = [];
+                        }
+
+                        ret.finals[match.round].push({
+                            map: match.map,
+                            score: matchScores.sort((a, b) => a.seed - b.seed)
+                        });
                     });
-                });
 
-                Object.keys(ret.finals).forEach((round) => {
-                    ret.finals[round].sort((a, b) => a.score[0].seed - b.score[0].seed);
-                });
+                    Object.keys(ret.finals).forEach((round) => {
+                        ret.finals[round].sort((a, b) => a.score[0].seed - b.score[0].seed);
+                    });
+                }
             }
 
             res.status(200);

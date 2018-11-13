@@ -28,7 +28,7 @@ class ObservatoryEvents {
      */
     static async get(req, res) {
         try {
-            const data = await db.query("SELECT EventID, Event, Date, Season FROM tblEvent"),
+            const data = await db.query("SELECT e.EventID, e.Event, e.Date, e.Season FROM tblEvent e INNER JOIN (SELECT DISTINCT(EventID) EventID FROM tblMatch) m ON e.EventID = m.EventID"),
                 events = data && data.recordsets && data.recordsets[0] && data.recordsets[0].map((row) => ({id: row.EventID, event: row.Event, date: row.Date, season: row.Season}));
 
             res.status(200);

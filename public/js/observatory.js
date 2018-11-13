@@ -161,18 +161,6 @@ class Observatory {
                 const x = new XMLHttpRequest();
                 x.onreadystatechange = function() {
                     if (x.readyState === 4 && x.status === 200) {
-                        Observatory.events = JSON.parse(x.responseText);
-                        resolve();
-                    }
-                };
-                x.open("GET", "api/observatoryEvents", true);
-                x.send();
-            });
-
-            await new Promise((resolve) => {
-                const x = new XMLHttpRequest();
-                x.onreadystatechange = function() {
-                    if (x.readyState === 4 && x.status === 200) {
                         Observatory.stats = JSON.parse(x.responseText);
                         Observatory.stats.sort((a, b) => {
                             if (a.championshipSeasons - b.championshipSeasons !== 0) {
@@ -206,9 +194,6 @@ class Observatory {
                 x.open("GET", "api/observatoryStats", true);
                 x.send();
             });
-
-            Observatory.lastEvent = Observatory.events[Observatory.events.length - 1];
-            Observatory.seasons = Observatory.seasons || {};
 
             await new Promise((resolve) => {
                 const x = new XMLHttpRequest();
@@ -378,7 +363,7 @@ class Observatory {
         Observatory.event++;
 
         if (Observatory.event > Observatory.events.filter((ev) => ev.season === Observatory.season).length) {
-            if (Observatory.seasons[Observatory.lastEvent.season].finals) {
+            if (Observatory.seasons[Observatory.lastEvent.season].finals && Object.keys(Observatory.seasons[Observatory.lastEvent.season].finals).length > 0) {
                 Observatory.status = 0;
             } else {
                 Observatory.status = 2;
@@ -1416,6 +1401,10 @@ class Observatory {
             if (data.standings) {
                 Observatory.updateStandings(data.standings);
             }
+
+            if (data.finalsMatch) {
+                // TODO
+            }
         };
 
         Observatory.obs.connect(config.websocket);
@@ -1497,12 +1486,27 @@ class Observatory {
     // ###    ##   #  #   ##    ##   #  #    ##   ##   #  #    ##  ####   ##    # #   ###   ##    ###
     /**
      * Starts up the index page.
-     * @returns {void}
+     * @returns {Promise} A promise that resolves when the index page has started up.
      */
-    static DOMContentLoaded() {
+    static async DOMContentLoaded() {
         Observatory.updateDiv("#standings", "C:\\Users\\roncli\\Desktop\\roncliGaming\\The Observatory\\observatory-results.txt", 5000, true);
         Observatory.updateSpotify(["#playing", "#nowPlaying"], 10000);
         Observatory.updateVideo("#video");
+
+        await new Promise((resolve) => {
+            const x = new XMLHttpRequest();
+            x.onreadystatechange = function() {
+                if (x.readyState === 4 && x.status === 200) {
+                    Observatory.events = JSON.parse(x.responseText);
+                    resolve();
+                }
+            };
+            x.open("GET", "api/observatoryEvents", true);
+            x.send();
+        });
+        Observatory.lastEvent = Observatory.events[Observatory.events.length - 1];
+        Observatory.seasons = {};
+
         Observatory.startWebsockets();
     }
 }
