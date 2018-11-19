@@ -66,25 +66,28 @@ body {
     transition: opacity 0.5s;
 }
 
-#status {
-    display: inline-block;
+#status-container {
     position: absolute;
     left: 110px;
     top: 5px;
     height: 100px;
     width: 1000px;
+}
+
+#status {
+    display: table-cell;
+    vertical-align: middle;
     transition: opacity 0.5s;
     opacity: 0.5;
+    height: 100px;
 }
 
 #status.bumper {
     opacity: 0;
 }
 
-#status, #status * {
+#status * {
     text-align: left;
-    vertical-align: middle;
-    line-height: 100px;
     font-family: "Descent ][ Score";
     font-size: 24px;
     color: white;

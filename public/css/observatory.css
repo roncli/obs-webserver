@@ -316,11 +316,52 @@ body {
 }
 
 #data td.winner {
-    color: #00ff00;
+    color: #00ff00 !important;
+}
+
+#data tr.winner td {
+    color: #008000 !important;
 }
 
 #data td.loser {
-    color: #ff0000;
+    color: #ff0000 !important;
+}
+
+#data tr.loser td {
+    color: #800000 !important;
+}
+
+#data table.results td {
+    vertical-align: middle;
+    font-size: 20px;
+    line-height: 20px;
+}
+
+#data table.results > tbody > tr > td {
+    max-width: 1px;
+}
+
+#data table.results table {
+    margin: 10px 5px;
+    width: 100%;
+}
+
+#data table.results table tr.player {
+    background-color: white;
+}
+
+#data table.results table tr.player td {
+    color: #283888;
+    padding: 1px 2px;
+}
+
+#data table.results table tr.map td {
+    color: white;
+    padding: 1px 2px;
+}
+
+#data table.results table td:nth-child(2) {
+    text-align: right;
 }
 
 .hidden {

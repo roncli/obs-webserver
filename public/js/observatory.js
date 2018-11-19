@@ -573,7 +573,7 @@ class Observatory {
             innerNode.appendChild(innerTable);
             innerRow.appendChild(innerNode);
 
-            $tbody.append(innerRow);
+            $tbody.appendChild(innerRow);
         } else {
             let row, node, div, innerNode, innerTable;
 
@@ -932,7 +932,10 @@ class Observatory {
     static showMatches(round) {
         document.getElementById("text").innerText = `Round ${round}`;
 
-        const tbody = document.querySelector("#data table tbody");
+        const dataTable = document.querySelector("#data table"),
+            tbody = document.querySelector("#data table tbody");
+
+        dataTable.classList.remove("standings");
 
         while (tbody.firstChild) {
             tbody.removeChild(tbody.firstChild);
@@ -986,15 +989,110 @@ class Observatory {
      * @returns {void}
      */
     static showEventStandingsUI() {
+        if (Observatory.finalsMatches && Observatory.finalsMatches.length === 0) {
+            Observatory.showSeasonStandingsUI();
+            return;
+        }
+
         document.getElementById("text").innerText = "Today's Standings";
 
-        const tbody = document.querySelector("#data table tbody");
+        const dataTable = document.querySelector("#data table"),
+            tbody = document.querySelector("#data table tbody");
 
         while (tbody.firstChild) {
             tbody.removeChild(tbody.firstChild);
         }
 
-        if (Observatory.standings) {
+        if (Observatory.finalsMatches) {
+            dataTable.classList.add("results");
+            dataTable.style.width = "950px";
+
+            const row = document.createElement("tr"),
+                seedsSeen = [];
+            let lastRound = 0,
+                node;
+
+            Observatory.finalsMatches.forEach((match) => {
+                if (match.round !== lastRound) {
+                    lastRound = match.round;
+                    if (node) {
+                        row.appendChild(node);
+                    }
+                    node = document.createElement("td");
+                }
+
+                Array.prototype.push.apply(seedsSeen, match.players ? match.players : [match.player1, match.player2]);
+
+                const innerTable = document.createElement("table");
+
+                (match.players ? match.players : [match.player1, match.player2]).forEach((player, index) => {
+                    const seed = Observatory.seeding.find((s) => s.name === player).seed,
+                        innerRow = document.createElement("tr");
+                    let innerNode;
+
+                    innerRow.classList.add("player");
+
+                    if (match.winner) {
+                        if (match.players && match.winner.indexOf(player) !== -1 || !match.players && player === match.winner) {
+                            innerRow.classList.add("winner");
+                        } else {
+                            innerRow.classList.add("loser");
+                        }
+                    }
+
+                    innerNode = document.createElement("td");
+                    innerNode.innerText = `${seed}) ${player}`;
+                    innerRow.appendChild(innerNode);
+
+                    innerNode = document.createElement("td");
+                    if (match.score || match.score1) {
+                        innerNode.innerText = match.score ? match.score.find((s) => s.name === player).score : [match.score1, match.score2][index];
+                    }
+                    innerRow.appendChild(innerNode);
+
+                    innerTable.appendChild(innerRow);
+                });
+
+                const mapRow = document.createElement("tr"),
+                    mapNode = document.createElement("td");
+
+                mapRow.classList.add("map");
+                mapNode.innerText = match.homesPlayed ? match.homesPlayed.join("/") : match.home;
+                mapNode.colSpan = 2;
+
+                mapRow.appendChild(mapNode);
+                innerTable.appendChild(mapRow);
+                node.appendChild(innerTable);
+            });
+
+            row.appendChild(node);
+
+            const remaining = Observatory.seeding.filter((s) => seedsSeen.filter((ss) => ss === s.name).length === 0);
+
+            if (remaining.length > 0) {
+                node = document.createElement("td");
+
+                remaining.forEach((seed) => {
+                    const innerTable = document.createElement("table"),
+                        innerRow = document.createElement("tr"),
+                        innerNode = document.createElement("td");
+
+                    innerRow.classList.add("player");
+                    innerNode.innerText = `${seed.seed}) ${seed.name}`;
+
+                    innerRow.appendChild(innerNode);
+                    innerTable.appendChild(innerRow);
+                    node.appendChild(innerTable);
+                });
+
+                row.appendChild(node);
+            }
+
+            tbody.appendChild(row);
+        } else if (Observatory.standings) {
+            dataTable.classList.remove("results");
+            dataTable.style.width = "";
+
             Observatory.standings.forEach((standing) => {
                 const row = document.createElement("tr");
                 let node;
@@ -1053,7 +1151,10 @@ class Observatory {
 
         document.getElementById("text").innerText = "Season Standings";
 
-        const tbody = document.querySelector("#data table tbody");
+        const dataTable = document.querySelector("#data table"),
+            tbody = document.querySelector("#data table tbody");
+
+        dataTable.classList.remove("results");
 
         while (tbody.firstChild) {
             tbody.removeChild(tbody.firstChild);
@@ -1144,7 +1245,9 @@ class Observatory {
      */
     static updateRound(round) {
         Observatory.round = round;
-        Observatory.showMatches(+round);
+        if (!Observatory.finalsMatches || Observatory.finalsMatches.length === 0) {
+            Observatory.showMatches(+round);
+        }
     }
 
     //                #         #          #  #         #          #
@@ -1181,6 +1284,33 @@ class Observatory {
         }
     }
 
+    //                               ##    #  #         #          #
+    //                                #    ####         #          #
+    //  ##    ###  ###    ##    ##    #    ####   ###  ###    ##   ###
+    // #     #  #  #  #  #     # ##   #    #  #  #  #   #    #     #  #
+    // #     # ##  #  #  #     ##     #    #  #  # ##   #    #     #  #
+    //  ##    # #  #  #   ##    ##   ###   #  #   # #    ##   ##   #  #
+    /**
+     * Cancels a match.
+     * @param {object} match The match to cancel.
+     * @returns {void}
+     */
+    static cancelMatch(match) {
+        if (!Observatory.matches) {
+            return;
+        }
+
+        const existingMatch = Observatory.matches.findIndex((m) => m.player1 === match.player1 && m.player2 === match.player2 && m.round === match.round);
+
+        if (existingMatch !== -1) {
+            Observatory.matches.splice(existingMatch, 1);
+
+            if (document.getElementById("text").innerHTML === `Round ${match.round}`) {
+                Observatory.showMatches(+match.round);
+            }
+        }
+    }
+
     //                #         #           ##    #                   #   #
     //                #         #          #  #   #                   #
     // #  #  ###    ###   ###  ###    ##    #    ###    ###  ###    ###  ##    ###    ###   ###
@@ -1199,6 +1329,83 @@ class Observatory {
         if (document.getElementById("text").innerHTML === "Today's Standings") {
             Observatory.showEventStandingsUI();
         }
+    }
+
+    //               #     ##                  #   #
+    //               #    #  #                 #
+    //  ###    ##   ###    #     ##    ##    ###  ##    ###    ###
+    // ##     # ##   #      #   # ##  # ##  #  #   #    #  #  #  #
+    //   ##   ##     #    #  #  ##    ##    #  #   #    #  #   ##
+    // ###     ##     ##   ##    ##    ##    ###  ###   #  #  #
+    //                                                         ###
+    /**
+     * Sets the seeding for the Finals Tournament.
+     * @param {object} seeding The Finals Tournament seeding.
+     * @returns {void}
+     */
+    static setSeeding(seeding) {
+        Observatory.seeding = seeding;
+    }
+
+    //                #         #          #  #   #    ##       #                       #  #  #         #          #
+    //                #         #          #  #         #       #                       #  ####         #          #
+    // #  #  ###    ###   ###  ###    ##   #  #  ##     #     ###   ##    ###  ###    ###  ####   ###  ###    ##   ###
+    // #  #  #  #  #  #  #  #   #    # ##  ####   #     #    #  #  #     #  #  #  #  #  #  #  #  #  #   #    #     #  #
+    // #  #  #  #  #  #  # ##   #    ##    ####   #     #    #  #  #     # ##  #     #  #  #  #  # ##   #    #     #  #
+    //  ###  ###    ###   # #    ##   ##   #  #  ###   ###    ###   ##    # #  #      ###  #  #   # #    ##   ##   #  #
+    //       #
+    /**
+     * Updates a wildcard match, or adds it if not present.
+     * @param {object} match The match to update or add.
+     * @returns {void}
+     */
+    static updateWildcardMatch(match) {
+        if (!Observatory.finalsMatches) {
+            Observatory.finalsMatches = [];
+        }
+
+        const existingMatch = Observatory.finalsMatches.find((m) => m.round === match.round && m.players.filter((p) => match.players.filter((mp) => p.name === mp.name).length > 0).length === m.players.length && m.players.length === match.players.length);
+
+        if (existingMatch) {
+            existingMatch.winner = match.winner;
+            existingMatch.score = match.score;
+            existingMatch.home = match.home;
+        } else {
+            Observatory.finalsMatches.push(match);
+        }
+
+        Observatory.showEventStandingsUI();
+    }
+
+    //                #         #          ####   #                ##           #  #         #          #
+    //                #         #          #                        #           ####         #          #
+    // #  #  ###    ###   ###  ###    ##   ###   ##    ###    ###   #     ###   ####   ###  ###    ##   ###
+    // #  #  #  #  #  #  #  #   #    # ##  #      #    #  #  #  #   #    ##     #  #  #  #   #    #     #  #
+    // #  #  #  #  #  #  # ##   #    ##    #      #    #  #  # ##   #      ##   #  #  # ##   #    #     #  #
+    //  ###  ###    ###   # #    ##   ##   #     ###   #  #   # #  ###   ###    #  #   # #    ##   ##   #  #
+    //       #
+    /**
+     * Updates a Finals Tournament match, or adds it if not present.
+     * @param {object} match The match to update or add.
+     * @returns {void}
+     */
+    static updateFinalsMatch(match) {
+        if (!Observatory.finalsMatches) {
+            Observatory.finalsMatches = [];
+        }
+
+        const existingMatch = Observatory.finalsMatches.find((m) => m.round === match.round && m.player1 === match.player1 && m.player2 === match.player2);
+
+        if (existingMatch) {
+            existingMatch.winner = match.winner;
+            existingMatch.score1 = match.score1;
+            existingMatch.score2 = match.score2;
+            existingMatch.homesPlayed = match.homesPlayed;
+        } else {
+            Observatory.finalsMatches.push(match);
+        }
+
+        Observatory.showEventStandingsUI();
     }
 
     //         #                 #    #  #        #                        #            #
@@ -1264,7 +1471,7 @@ class Observatory {
                             document.getElementById("bumper-subevent").innerText = data.title;
                             document.getElementById("tournament-subevent").innerText = data.title;
 
-                            Spotify.setSpotifyVolume(33);
+                            Spotify.setSpotifyVolume(40);
                             Observatory.obs.setCurrentScene({"scene-name": "The Observatory - Tournament"});
 
                             if (Observatory.carouselTimeout) {
@@ -1324,9 +1531,12 @@ class Observatory {
                             break;
                         case "qualifier-rules":
                             {
-                                const tbody = document.querySelector("#data table tbody"),
+                                const dataTable = document.querySelector("#data table"),
+                                    tbody = document.querySelector("#data table tbody"),
                                     row = document.createElement("tr"),
                                     node = document.createElement("td");
+
+                                dataTable.classList.remove("results");
 
                                 while (tbody.firstChild) {
                                     tbody.removeChild(tbody.firstChild);
@@ -1342,9 +1552,12 @@ class Observatory {
                             break;
                         case "wildcard-rules":
                             {
-                                const tbody = document.querySelector("#data table tbody"),
+                                const dataTable = document.querySelector("#data table"),
+                                    tbody = document.querySelector("#data table tbody"),
                                     row = document.createElement("tr"),
                                     node = document.createElement("td");
+
+                                dataTable.classList.remove("results");
 
                                 while (tbody.firstChild) {
                                     tbody.removeChild(tbody.firstChild);
@@ -1360,16 +1573,19 @@ class Observatory {
                             break;
                         case "tournament-rules":
                             {
-                                const tbody = document.querySelector("#data table tbody"),
+                                const dataTable = document.querySelector("#data table"),
+                                    tbody = document.querySelector("#data table tbody"),
                                     row = document.createElement("tr"),
                                     node = document.createElement("td");
+
+                                dataTable.classList.remove("results");
 
                                 while (tbody.firstChild) {
                                     tbody.removeChild(tbody.firstChild);
                                 }
 
                                 document.getElementById("text").innerText = "Tournament Rules";
-                                node.innerText = "- 6 pilots play in a knockout tournament to determine the season champion.  Seeds 1 and 2 earn a bye to the semifinals.\n\n- In the quarterfinals and semifinals, the highest seed chooses which of two lower seeds to play.  The two remaining seeds in the round also play each other.\n\n- Each match in the knockout stage consists of two games with the lower seed getting their home level first and the higher seed getting their home level last.\n\n- Individual games are played to 15 in the quarterfinals and semifinals and to 20 in the finals (no win by 2), with the winner being determined by combined score.\n\n- In the event of a tie, a third game is played to decide the match in the higher seed's home level, game to 5 win by 2.\n\n- If a pilot reaches a point total in the 2nd game that cannot be overcome without suicides, the game ends early.";
+                                node.innerText = "- 6 pilots play in a knockout tournament to determine the season champion.  Seeds 1 and 2 earn a bye to the semifinals.\n\n- In the quarterfinals and semifinals, the highest seed chooses which of three lower seeds to play.  The two remaining seeds in the round also play each other.\n\n- Each match in the knockout stage consists of two games with the lower seed getting their home level first and the higher seed getting their home level last.\n\n- Individual games are played to 15 in the quarterfinals and semifinals and to 20 in the finals (no win by 2), with the winner being determined by combined score.\n\n- In the event of a tie, a third game is played to decide the match in the higher seed's home level, game to 5 win by 2.\n\n- If a pilot reaches a point total in the 2nd game that cannot be overcome without suicides, the game ends early.";
 
                                 row.appendChild(node);
                                 tbody.appendChild(row);
@@ -1383,6 +1599,10 @@ class Observatory {
 
         Observatory.obsws.onmessage = (ev) => {
             const data = JSON.parse(ev.data);
+
+            if (data.seeding) {
+                Observatory.setSeeding(data.seeding);
+            }
 
             if (data.round) {
                 Observatory.updateRound(data.round);
@@ -1398,12 +1618,40 @@ class Observatory {
                 });
             }
 
+            if (data.wildcardMatch) {
+                Observatory.updateWildcardMatch(data.wildcardMatch);
+            }
+
+            if (data.finalsMatch) {
+                Observatory.updateFinalsMatch(data.finalsMatch);
+            }
+
+            if (data.wildcardMatches) {
+                if (!Observatory.finalsMatches) {
+                    Observatory.finalsMatches = [];
+                }
+
+                data.wildcardMatches.forEach((match) => {
+                    Observatory.updateWildcardMatch(match);
+                });
+            }
+
+            if (data.finalsMatches) {
+                if (!Observatory.finalsMatches) {
+                    Observatory.finalsMatches = [];
+                }
+
+                data.finalsMatches.forEach((match) => {
+                    Observatory.updateFinalsMatch(match);
+                });
+            }
+
             if (data.standings) {
                 Observatory.updateStandings(data.standings);
             }
 
-            if (data.finalsMatch) {
-                // TODO
+            if (data.cancelMatch) {
+                Observatory.cancelMatch(data.cancelMatch);
             }
         };
 

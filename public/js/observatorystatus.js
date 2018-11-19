@@ -179,6 +179,23 @@ class ObservatoryStatus {
             if (data.match && data.match.winner) {
                 ObservatoryStatus.addMessage(`Match completed\n${data.match.winner} ${data.match.score1}, ${data.match.player1 === data.match.winner ? data.match.player2 : data.match.player1} ${data.match.score2}, ${data.match.home}`);
             }
+
+            if (data.wildcardMatch && data.wildcardMatch.winner) {
+                ObservatoryStatus.addMessage(`Wildcard Anarchy winners\n${data.wildcardMatch.winner.join(", ")}`);
+            }
+
+            if (data.finalsMatch && data.finalsMatch.winner) {
+                ObservatoryStatus.addMessage(`${document.getElementById("round").innerText} winner\n${data.finalsMatch.winner}`);
+            }
+
+            if (data.finalsRound) {
+                document.getElementById("round").innerText = data.finalsRound;
+                if (data.finalsStatus) {
+                    document.getElementById("finals-status").innerText = `\n${data.finalsStatus}`;
+                } else {
+                    document.getElementById("finals-status").innerText = "";
+                }
+            }
         };
     }
 
