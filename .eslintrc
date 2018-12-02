@@ -78,6 +78,7 @@
                 "ArrowFunctionExpression": true
             }
         }],
+        "require-unicode-regexp": "off",
         "valid-jsdoc": ["error", {"prefer": {"return": "return"}}]
     },
     "overrides": [

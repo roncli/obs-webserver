@@ -58,13 +58,12 @@ body {
 
 #now-playing {
     position: absolute;
-    top: 0;
+    bottom: 0;
     left: 0;
     width: 500px;
-    height: 60px;
     z-index: 10;
     transition: transform 0.5s linear;
-    transform: translate(1418px, 5px);
+    transform: translate(1418px, -5px);
 }
 
 #now-playing .track {
@@ -89,13 +88,13 @@ body {
     transition: transform 0.5s linear, visibility 0.5s linear, opacity 0.5s linear;
     visibility: visible;
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 32px;
+    left: 1311px;
     overflow: hidden;
 }
 
 #video #webcam {
-    width: 1920px;
+    width: 534px;
     transform: translate(0, 0) scale(1);
     transition: transform 0.5s linear;
     transform-origin: top left;
@@ -137,126 +136,9 @@ body {
     font-size: 100px;
 }
 
-#intro {
-    position: relative;
-    background-color: black;
-    color: white;
-    text-shadow: 1px 1px 3px black;
-    width: 1920px;
-    height: 1080px;
-    overflow: hidden;
-}
-
-#intro .backdrop {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 1920px;
-    height: 1080px;
-    background-image: url("../images/roncliGamingTwitch.png");
-}
-
-#intro .upNext {
-    position: absolute;
-    top: 10px;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    z-index: 2;
-}
-
-#intro .thanks {
-    position: absolute;
-    top: 10px;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    font-size: 120px;
-    z-index: 2;
-}
-
-#intro .unText {
-    font-size: 96px;
-    z-index: 2;
-}
-
-#intro .unGame {
-    font-size: 120px;
-    z-index: 2;
-}
-
-#intro .status {
-    position: absolute;
-    top: 930px;
-    width: 100%;
-    text-align: center;
-    z-index: 2;
-}
-
-#intro .statusText {
-    font-size: 120px;
-}
-
-#intro .analyzer {
+.analyzer {
     position: absolute;
     bottom: 0;
-}
-
-#intro .background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 1920px;
-    height: 1080px;
-    z-index: 1;
-    opacity: 0;
-}
-
-@keyframes background-fader {
-    0% {
-        opacity: 0;
-        transform: scale(0.4) rotate(15deg); 
-    }
-
-    24% {
-        opacity: 1;
-        transform: scale(0.45) rotate(7.5deg); 
-    }
-
-    72% {
-        opacity: 1;
-        transform: scale(0.55) rotate(-7.5deg); 
-    }
-
-    96% {
-        opacity: 0;
-        transform: scale(0.6) rotate(-15deg); 
-    }
-}
-
-#intro .background.animate {
-    animation: background-fader 8s linear;
-}
-
-#intro .bgImage {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 1920px;
-    height: 1080px;
-    transform: scale(1);
-}
-
-#intro .social {
-    position: absolute;
-    top: 780px;
-    left: 1500px;
-    font-size: 36px;
-    line-height: 1.5;
-}
-
-#intro .social img {
-    vertical-align: middle;
 }
 
 #scene {
@@ -266,14 +148,13 @@ body {
     left: 0;
     width: 1920px;
     height: 1080px;
-    background-color: #191935;
 }
 
 #scene .title {
     position: absolute;
-    width: 830px;
-    top: 5px;
-    left: 545px;
+    width: 670px;
+    top: 464px;
+    left: 1240px;
     height: 90px;
 }
 
@@ -284,9 +165,9 @@ body {
 
 #scene .scene-title {
     position: absolute;
-    top: 5px;
-    left: 10px;
-    width: 349px;
+    top: 364px;
+    left: 1240px;
+    width: 330px;
     height: 90px;
 }
 
@@ -308,42 +189,6 @@ body {
     font-size: 24px;
 }
 
-#scene .game {
-    position: absolute;
-    left: 369px;
-    top: 100px;
-}
-
-#scene .game .panel-body > div {
-    width: 1536px;
-    height: 864px;
-    background-color: black;
-    z-index: 10;
-}
-
-#scene .game .panel-body .green-screen {
-    background-color: #36c781;
-    z-index: 10;
-}
-
-#scene .webcam-panel {
-    position: absolute;
-    left: -15px;
-    top: 784px;
-}
-
-#scene .webcam-panel.panel {
-    position: absolute;
-    left: -15px;
-    top: 784px;
-    box-shadow: none;
-}
-
-#scene .webcam-panel .panel-body {
-    width: 399px;
-    height: 311px;
-}
-
 #scene .video {
     position: relative;
     margin: 4px 0;
@@ -353,10 +198,10 @@ body {
 
 #scene .stream-text {
     position: absolute;
-    top: 115px;
-    left: 10px;
-    width: 349px;
-    max-width: 349px;
+    top: 570px;
+    left: 1240px;
+    width: 670px;
+    max-width: 670px;
 }
 
 #scene .stream-text .panel-heading {
@@ -369,15 +214,15 @@ body {
 
 #scene .social-media {
     position: absolute;
-    top: 1000px;
-    left: 753px;
-    width: 349px;
-    height: 74px;
+    top: 364px;
+    left: 1580px;
+    width: 330px;
+    height: 90px;
     max-width: 349px;
 }
 
 #scene .social-media .panel-body {
-    padding: 7px;
+    padding: 11px;
 }
 
 #scene .social-media .panel-body img {

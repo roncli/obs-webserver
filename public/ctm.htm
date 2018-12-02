@@ -4,11 +4,11 @@
         <link href="css/bootstrap.css" type="text/css" rel="stylesheet" />
         <link href="css/bootstrap-theme.css" type="text/css" rel="stylesheet" />
         <link href="css/bootstrap-theme-override.css" type="text/css" rel="stylesheet" />
-        <link href="css/index.css" type="text/css" rel="stylesheet" />
+        <link href="css/ctm.css" type="text/css" rel="stylesheet" />
         <script src="js/spotify.js"></script>
         <script src="js/obs-websocket.js"></script>
         <script src="js/config.js"></script>
-        <script src="js/index.js"></script>
+        <script src="js/ctm.js"></script>
     </head>
     <body>
         <div id="now-playing">
@@ -17,28 +17,7 @@
             </div>
             <img class="album-art hidden"/>
         </div>
-        <div id="intro" class="hidden scene">
-            <div class="backdrop"></div>
-            <div class="upNext">
-                <div class="unText">Up Next:</div>
-                <div class="unGame"></div>
-            </div>
-            <div class="thanks hidden">Thanks for watching!</div>
-            <div class="status">
-                <div class="statusText"></div>
-            </div>
-            <div class="analyzer">
-                <canvas id="analyzer" width="1920" height="400" />
-            </div>
-            <div class="background">
-                <img class="bgImage" />
-            </div>
-            <div class="social">
-                <img src="images/discord.png" /> http://ronc.li/discord<br />
-                <img src="images/twitter.png" /> http://twitter.com/roncli<br />
-            </div>
-        </div>
-        <div id="scene" class="hidden scene">
+        <div id="scene" class="scene">
             <div class="scene-title panel panel-primary">
                 <div class="panel-body">
                     <div class="roncliGaming row">
@@ -55,14 +34,6 @@
                 <div id="title-1" class="panel-heading text-center"></div>
                 <div id="title-2" class="panel-body text-center"></div>
             </div>
-            <div class="game panel panel-primary">
-                <div class="panel-body">
-                    <div id="screen"></div>
-                </div>
-            </div>
-            <div class="webcam-panel panel panel-primary">
-                <div class="panel-body"></div>
-            </div>
             <div id="stream-text" class="stream-text"></div>
             <div class="social-media panel panel-primary">
                 <div class="panel-body text-center">
@@ -72,17 +43,14 @@
                     <img src="images/twitter.png" /> http://twitter.com/roncli<br />
                 </div>
             </div>
+            <div class="analyzer">
+                <canvas id="analyzer" width="1920" height="400" />
+            </div>
         </div>
-        <div id="video" class="hidden">
+        <div id="video">
             <video autoplay="autoplay" id="webcam"></video>
             <div id="fire" class="fire">
                 <img src="images/fire.gif" width="384" height="108" />
-            </div>
-        </div>
-        <div id="fullscreen" class="hidden scene">
-            <div class="roncliGaming">
-                <img src="images/roncliProductions300.png">
-                <div>roncli Gaming</div>
             </div>
         </div>
         <div id="time"></div>

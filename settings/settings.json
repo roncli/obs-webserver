@@ -14,6 +14,11 @@
             "name": "The Observatory",
             "scene": "The Observatory - Bumper",
             "control": "scenes-observatory"
+        },
+        {
+            "name": "Classic Tetris Monthly",
+            "scene": "CTM",
+            "control": "scenes-ctm"
         }
     ],
     "scenes": [
