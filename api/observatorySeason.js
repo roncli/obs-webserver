@@ -148,7 +148,7 @@ class ObservatorySeason {
                     return 0;
                 }
 
-                return seasonRatings.find((rating) => rating.name === b.name).rating - seasonRatings.find((rating) => rating.name === a.name).rating;
+                return (seasonRatings.find((rating) => rating.name === b.name) || {rating: 1500}).rating - (seasonRatings.find((rating) => rating.name === a.name) || {rating: 1500}).rating;
             });
 
             if (finalsEventId) {
