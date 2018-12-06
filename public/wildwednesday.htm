@@ -4,8 +4,8 @@
     <style>
         body {
             position: relative;
-            width: 1920px;
-            height: 1080px;
+            width: 1536px;
+            height: 864px;
             overflow: hidden;
         }
 
@@ -13,6 +13,18 @@
             position: absolute;
             left: 356px;
             top: 20px;
+        }
+
+        #winning {
+            position: absolute;
+            left: 0px;
+            top: 382px;
+            width: 1536px;
+            font-size: 100px;
+            text-align: center;
+            color: white;
+            text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+            z-index: 100;
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js"></script>
@@ -23,5 +35,6 @@
     <div class="wheel">
         <canvas id="wheel" width="824" height="824"></canvas>
     </div>
+    <div id="winning"></div>
 </body>
 </html>

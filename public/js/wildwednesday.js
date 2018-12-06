@@ -64,6 +64,8 @@ class WildWednesday {
 
         wheel.draw();
         WildWednesday.drawPointer();
+
+        document.getElementById("winning").innerText = wheel.getIndicatedSegment().text;
     }
 
     //        #             #     #   ##
@@ -112,7 +114,7 @@ class WildWednesday {
         achievements.forEach((achievement) => {
             const game = gameList.find((g) => +g.appId === achievement.id);
 
-            if (game && [517530, 450220, 314680, 366080, 205790, 367540, 2430, 35420, 443940, 570].indexOf(achievement.id) === -1 && game.playtimeTwoWeeks === 0) {
+            if (game && [570, 2430, 35420, 205790, 226980, 250820, 274920, 314680, 366080, 367540, 402590, 402591, 402592, 402593, 402594, 402595, 402596, 402597, 402598, 402599, 402600, 402601, 402602, 402603, 402604, 402605, 402606, 402607, 402608, 402609, 443940, 450220, 464350, 512360, 517530, 555070, 596350, 858460].indexOf(achievement.id) === -1 && game.playtimeTwoWeeks === 0) {
                 if (achievement.percent < 100) {
                     games.push({
                         name: game.name,
