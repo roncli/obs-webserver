@@ -399,6 +399,7 @@ class NDRace {
                             document.getElementById("no-event").classList.remove("hidden");
                             break;
                         case "ndc7":
+                            document.getElementById("no-event").classList.add("hidden");
                             document.querySelector("#season-7 .standings").classList.add("hidden");
                             document.querySelector("#season-7 .results").classList.add("hidden");
                             document.querySelector("#season-7 .upcoming").classList.add("hidden");
