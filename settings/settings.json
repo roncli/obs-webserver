@@ -87,6 +87,10 @@
             "value": "nd-blood.png"
         },
         {
+            "name": "Gold",
+            "value": "nd-gold.png"
+        },
+        {
             "name": "Titanium",
             "value": "nd-titanium.png"
         },

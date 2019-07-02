@@ -1,5 +1,7 @@
 /* global config, OBSWebSocket, Spotify */
 
+const numMatch = /[0-9]/;
+
 //  #   #  ####   ####
 //  #   #   #  #  #   #
 //  ##  #   #  #  #   #   ###    ###    ###
@@ -48,147 +50,64 @@ class NDRace {
         }
     }
 
-    //          #        ####   ##    #                 #
-    //          #           #  #  #   #                 #
-    // ###    ###   ##     #    #    ###    ###  ###   ###
-    // #  #  #  #  #       #     #    #    #  #  #  #   #
-    // #  #  #  #  #      #    #  #   #    # ##  #      #
-    // #  #   ###   ##    #     ##     ##   # #  #       ##
+    //          #         ##    ##    #                 #
+    //          #        #  #  #  #   #                 #
+    // ###    ###   ##    ##    #    ###    ###  ###   ###
+    // #  #  #  #  #     #  #    #    #    #  #  #  #   #
+    // #  #  #  #  #     #  #  #  #   #    # ##  #      #
+    // #  #   ###   ##    ##    ##     ##   # #  #       ##
     /**
      * Starts the carousel.
      * @param {object} results The data provided by the API.
      * @returns {void}
      */
-    static ndc7Start(results) {
+    static ndc8Start(results) {
         NDRace.delay = 20000;
-        NDRace.tiers = [
-            "Blood",
-            "Titanium",
-            "Obsidian",
-            "Crystal"
-        ];
-        NDRace.tier = 0;
         NDRace.status = 0;
         NDRace.index = 0;
         NDRace.data = results.races;
-        NDRace.standings = results.standings;
+        NDRace.tiers = results.tiers;
 
-        NDRace.ndc7Next();
+        NDRace.ndc8Next();
     }
 
-    //          #        ####  #  #               #     ##    #                   #   #
-    //          #           #  ## #               #    #  #   #                   #
-    // ###    ###   ##     #   ## #   ##   #  #  ###    #    ###    ###  ###    ###  ##    ###    ###   ###
-    // #  #  #  #  #       #   # ##  # ##   ##    #      #    #    #  #  #  #  #  #   #    #  #  #  #  ##
-    // #  #  #  #  #      #    # ##  ##     ##    #    #  #   #    # ##  #  #  #  #   #    #  #   ##     ##
-    // #  #   ###   ##    #    #  #   ##   #  #    ##   ##     ##   # #  #  #   ###  ###   #  #  #     ###
-    //                                                                                            ###
-    /**
-     * Displays the next standings page.
-     * @returns {void}
-     */
-    static ndc7NextStandings() {
-        const $tbody = document.querySelector("#season-7 .standings tbody");
-        let standing;
-
-        document.querySelector("#season-7 .standings").classList.remove("hidden");
-        document.querySelector("#season-7 .results").classList.add("hidden");
-        document.querySelector("#season-7 .upcoming").classList.add("hidden");
-
-        while ($tbody.firstChild) {
-            $tbody.removeChild($tbody.firstChild);
-        }
-
-        for (let ix = NDRace.index; ix < NDRace.index + 20 && ix < NDRace.standings.length; ix++) {
-            standing = NDRace.standings[ix];
-
-            const row = document.createElement("tr");
-            let node;
-
-            node = document.createElement("td");
-            node.innerText = ix + 1;
-            row.appendChild(node);
-
-            node = document.createElement("td");
-            node.innerText = standing.player;
-            row.appendChild(node);
-
-            node = document.createElement("td");
-            node.innerText = standing.points;
-            row.appendChild(node);
-
-            node = document.createElement("td");
-            node.innerText = standing.week1;
-            row.appendChild(node);
-
-            node = document.createElement("td");
-            node.innerText = standing.week2;
-            row.appendChild(node);
-
-            node = document.createElement("td");
-            node.innerText = standing.week3;
-            row.appendChild(node);
-
-            node = document.createElement("td");
-            node.innerText = standing.week4;
-            row.appendChild(node);
-
-            node = document.createElement("td");
-            node.innerText = standing.week5;
-            row.appendChild(node);
-
-            $tbody.appendChild(row);
-        }
-
-        if (NDRace.standings.length > NDRace.index + 20) {
-            NDRace.index += 20;
-        } else {
-            NDRace.tier = 0;
-            NDRace.index = 0;
-            NDRace.status = 1;
-        }
-
-        NDRace.statsTimeout = setTimeout(NDRace.ndc7Next, NDRace.delay);
-    }
-
-    //          #        ####  #  #               #    ###                      ##     #
-    //          #           #  ## #               #    #  #                      #     #
-    // ###    ###   ##     #   ## #   ##   #  #  ###   #  #   ##    ###   #  #   #    ###    ###
-    // #  #  #  #  #       #   # ##  # ##   ##    #    ###   # ##  ##     #  #   #     #    ##
-    // #  #  #  #  #      #    # ##  ##     ##    #    # #   ##      ##   #  #   #     #      ##
-    // #  #   ###   ##    #    #  #   ##   #  #    ##  #  #   ##   ###     ###  ###     ##  ###
+    //          #         ##   #  #               #    ###                      ##     #
+    //          #        #  #  ## #               #    #  #                      #     #
+    // ###    ###   ##    ##   ## #   ##   #  #  ###   #  #   ##    ###   #  #   #    ###    ###
+    // #  #  #  #  #     #  #  # ##  # ##   ##    #    ###   # ##  ##     #  #   #     #    ##
+    // #  #  #  #  #     #  #  # ##  ##     ##    #    # #   ##      ##   #  #   #     #      ##
+    // #  #   ###   ##    ##   #  #   ##   #  #    ##  #  #   ##   ###     ###  ###     ##  ###
     /**
      * Displays the next results page.
      * @returns {void}
      */
-    static ndc7NextResults() {
-        const resultCount = NDRace.data[NDRace.tiers[NDRace.tier]].previousResults.length;
+    static ndc8NextResults() {
+        const resultCount = NDRace.data.previousResults.length;
 
         if (resultCount > 0) {
-            const $tbody = document.querySelector("#season-7 .results tbody");
+            const $tbody = document.querySelector("#season-8 .results tbody");
             let ix, result;
 
-            document.querySelector("#season-7 .standings").classList.add("hidden");
-            document.querySelector("#season-7 .results").classList.remove("hidden");
-            document.querySelector("#season-7 .upcoming").classList.add("hidden");
-
-            document.querySelector("#season-7 .tier").innerText = NDRace.tiers[NDRace.tier];
+            document.querySelector("#season-8 .results").classList.remove("hidden");
+            document.querySelector("#season-8 .upcoming").classList.add("hidden");
 
             while ($tbody.firstChild) {
                 $tbody.removeChild($tbody.firstChild);
             }
 
-            for (ix = NDRace.index; ix < NDRace.index + 20 && ix < NDRace.data[NDRace.tiers[NDRace.tier]].previousResults.length; ix++) {
-                result = NDRace.data[NDRace.tiers[NDRace.tier]].previousResults[ix];
+            for (ix = NDRace.index; ix < NDRace.index + 20 && ix < NDRace.data.previousResults.length; ix++) {
+                result = NDRace.data.previousResults[ix];
 
                 const row = document.createElement("tr");
                 let node;
 
                 node = document.createElement("td");
+                node.classList.add(NDRace.tiers[result.player1.toLowerCase()]);
                 node.innerText = result.player1 || "";
                 row.appendChild(node);
 
                 node = document.createElement("td");
+                node.classList.add(NDRace.tiers[result.player2.toLowerCase()]);
                 node.innerText = result.player2 || "";
                 row.appendChild(node);
 
@@ -204,63 +123,58 @@ class NDRace {
             }
         }
 
-        if (NDRace.data[NDRace.tiers[NDRace.tier]].previousResults.length > NDRace.index + 20) {
+        if (NDRace.data.previousResults.length > NDRace.index + 20) {
             NDRace.index += 20;
-        } else if (NDRace.tier < 3) {
-            NDRace.tier++;
-            NDRace.index = 0;
         } else {
-            NDRace.tier = 0;
             NDRace.index = 0;
-            NDRace.status = 2;
+            NDRace.status = 1;
         }
 
         if (resultCount > 0) {
-            NDRace.statsTimeout = setTimeout(NDRace.ndc7Next, NDRace.delay);
+            NDRace.statsTimeout = setTimeout(NDRace.ndc8Next, NDRace.delay);
         } else {
-            NDRace.ndc7Next();
+            NDRace.ndc8Next();
         }
     }
 
-    //          #        ####  #  #               #    #  #                           #
-    //          #           #  ## #               #    #  #
-    // ###    ###   ##     #   ## #   ##   #  #  ###   #  #  ###    ##    ##   # #   ##    ###    ###
-    // #  #  #  #  #       #   # ##  # ##   ##    #    #  #  #  #  #     #  #  ####   #    #  #  #  #
-    // #  #  #  #  #      #    # ##  ##     ##    #    #  #  #  #  #     #  #  #  #   #    #  #   ##
-    // #  #   ###   ##    #    #  #   ##   #  #    ##   ##   ###    ##    ##   #  #  ###   #  #  #
+    //          #         ##   #  #               #    #  #                           #
+    //          #        #  #  ## #               #    #  #
+    // ###    ###   ##    ##   ## #   ##   #  #  ###   #  #  ###    ##    ##   # #   ##    ###    ###
+    // #  #  #  #  #     #  #  # ##  # ##   ##    #    #  #  #  #  #     #  #  ####   #    #  #  #  #
+    // #  #  #  #  #     #  #  # ##  ##     ##    #    #  #  #  #  #     #  #  #  #   #    #  #   ##
+    // #  #   ###   ##    ##   #  #   ##   #  #    ##   ##   ###    ##    ##   #  #  ###   #  #  #
     //                                                       #                                    ###
     /**
      * Displays the next upcoming matches page.
      * @returns {void}
      */
-    static ndc7NextUpcoming() {
-        const upcomingCount = NDRace.data[NDRace.tiers[NDRace.tier]].upcomingMatches.length;
+    static ndc8NextUpcoming() {
+        const upcomingCount = NDRace.data.upcomingMatches.length;
 
         if (upcomingCount > 0) {
-            const $tbody = document.querySelector("#season-7 .upcoming tbody");
+            const $tbody = document.querySelector("#season-8 .upcoming tbody");
             let ix, match;
 
-            document.querySelector("#season-7 .standings").classList.add("hidden");
-            document.querySelector("#season-7 .results").classList.add("hidden");
-            document.querySelector("#season-7 .upcoming").classList.remove("hidden");
-
-            document.querySelector("#season-7 .tier2").innerText = NDRace.tiers[NDRace.tier];
+            document.querySelector("#season-8 .results").classList.add("hidden");
+            document.querySelector("#season-8 .upcoming").classList.remove("hidden");
 
             while ($tbody.firstChild) {
                 $tbody.removeChild($tbody.firstChild);
             }
 
-            for (ix = NDRace.index; ix < NDRace.index + 20 && ix < NDRace.data[NDRace.tiers[NDRace.tier]].upcomingMatches.length; ix++) {
-                match = NDRace.data[NDRace.tiers[NDRace.tier]].upcomingMatches[ix];
+            for (ix = NDRace.index; ix < NDRace.index + 20 && ix < NDRace.data.upcomingMatches.length; ix++) {
+                match = NDRace.data.upcomingMatches[ix];
 
                 const row = document.createElement("tr");
                 let node;
 
                 node = document.createElement("td");
+                node.classList.add(NDRace.tiers[match.player1.toLowerCase()]);
                 node.innerText = match.player1 || "";
                 row.appendChild(node);
 
                 node = document.createElement("td");
+                node.classList.add(NDRace.tiers[match.player2.toLowerCase()]);
                 node.innerText = match.player2 || "";
                 row.appendChild(node);
 
@@ -276,44 +190,37 @@ class NDRace {
             }
         }
 
-        if (NDRace.data[NDRace.tiers[NDRace.tier]].upcomingMatches.length > NDRace.index + 20) {
+        if (NDRace.data.upcomingMatches.length > NDRace.index + 20) {
             NDRace.index += 20;
-        } else if (NDRace.tier < 3) {
-            NDRace.tier++;
-            NDRace.index = 0;
         } else {
-            NDRace.tier = 0;
             NDRace.index = 0;
             NDRace.status = 0;
         }
 
         if (upcomingCount > 0) {
-            NDRace.statsTimeout = setTimeout(NDRace.ndc7Next, NDRace.delay);
+            NDRace.statsTimeout = setTimeout(NDRace.ndc8Next, NDRace.delay);
         } else {
-            NDRace.ndc7Next();
+            NDRace.ndc8Next();
         }
     }
 
-    //          #        ####  #  #               #
-    //          #           #  ## #               #
-    // ###    ###   ##     #   ## #   ##   #  #  ###
-    // #  #  #  #  #       #   # ##  # ##   ##    #
-    // #  #  #  #  #      #    # ##  ##     ##    #
-    // #  #   ###   ##    #    #  #   ##   #  #    ##
+    //          #         ##   #  #               #
+    //          #        #  #  ## #               #
+    // ###    ###   ##    ##   ## #   ##   #  #  ###
+    // #  #  #  #  #     #  #  # ##  # ##   ##    #
+    // #  #  #  #  #     #  #  # ##  ##     ##    #
+    // #  #   ###   ##    ##   #  #   ##   #  #    ##
     /**
      * Displays the next page.
      * @returns {void}
      */
-    static ndc7Next() {
+    static ndc8Next() {
         switch (NDRace.status) {
             case 0:
-                NDRace.ndc7NextStandings();
+                NDRace.ndc8NextResults();
                 break;
             case 1:
-                NDRace.ndc7NextResults();
-                break;
-            case 2:
-                NDRace.ndc7NextUpcoming();
+                NDRace.ndc8NextUpcoming();
                 break;
         }
     }
@@ -342,7 +249,7 @@ class NDRace {
 
             switch (data.type) {
                 case "obs-scene":
-                    NDRace.obs.setCurrentScene({"scene-name": data.scene});
+                    NDRace.obs.send("SetCurrentScene", {"scene-name": data.scene});
                     break;
                 case "scene":
                     if (NDRace.statsTimeout) {
@@ -369,14 +276,14 @@ class NDRace {
 
                             Spotify.playPlaylist("spotify:user:1211227601:playlist:2IU5xZkAV0ZPnhEItPTrsB", false);
                             Spotify.setSpotifyVolume(100);
-                            NDRace.obs.setCurrentScene({"scene-name": "CoNDOR - Bumper"});
+                            NDRace.obs.send("SetCurrentScene", {"scene-name": "CoNDOR - Bumper"});
                             break;
                         case "nd-race":
                             bumper.classList.add("hidden");
                             race.classList.remove("hidden");
 
                             Spotify.setSpotifyVolume(33);
-                            NDRace.obs.setCurrentScene({"scene-name": "CoNDOR - Race"});
+                            NDRace.obs.send("SetCurrentScene", {"scene-name": "CoNDOR - Race"});
                             break;
                         case "nd-thanks":
                             title.innerText = `Crypt of the NecroDancer\n${data.event}\nCawmunity Cast`;
@@ -389,7 +296,7 @@ class NDRace {
                             race.classList.add("hidden");
 
                             Spotify.setSpotifyVolume(100);
-                            NDRace.obs.setCurrentScene({"scene-name": "CoNDOR - Bumper"});
+                            NDRace.obs.send("SetCurrentScene", {"scene-name": "CoNDOR - Bumper"});
                             break;
                     }
 
@@ -398,20 +305,19 @@ class NDRace {
                         case "none":
                             document.getElementById("no-event").classList.remove("hidden");
                             break;
-                        case "ndc7":
+                        case "ndc8":
                             document.getElementById("no-event").classList.add("hidden");
-                            document.querySelector("#season-7 .standings").classList.add("hidden");
-                            document.querySelector("#season-7 .results").classList.add("hidden");
-                            document.querySelector("#season-7 .upcoming").classList.add("hidden");
-                            document.getElementById("season-7").classList.remove("hidden");
+                            document.querySelector("#season-8 .results").classList.add("hidden");
+                            document.querySelector("#season-8 .upcoming").classList.add("hidden");
+                            document.getElementById("season-8").classList.remove("hidden");
                             {
                                 const x = new XMLHttpRequest();
                                 x.onreadystatechange = function() {
                                     if (x.readyState === 4 && x.status === 200) {
-                                        NDRace.ndc7Start(JSON.parse(x.responseText));
+                                        NDRace.ndc8Start(JSON.parse(x.responseText));
                                     }
                                 };
-                                x.open("GET", "api/necrodancerCondor7", true);
+                                x.open("GET", "api/necrodancerCondor8", true);
                                 x.send();
                             }
 
@@ -433,6 +339,7 @@ class NDRace {
                                     document.getElementById("player-2").innerText = data.name;
                                     break;
                             }
+                            document.getElementById("vs").innerText = "VS.";
                             break;
                         case "lute":
                             document.getElementById(`lute-${data.side}${data.number}`).classList.toggle("hidden");
@@ -523,7 +430,7 @@ class NDRace {
         timeStr.split("").forEach((char) => {
             const div = document.createElement("div");
 
-            if (/[0-9]/.test(char)) {
+            if (numMatch.test(char)) {
                 div.className = "number";
             }
             div.innerText = char;

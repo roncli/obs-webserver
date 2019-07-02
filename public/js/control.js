@@ -319,11 +319,11 @@ class Control {
             }));
         };
 
-        document.getElementById("nd-scene-countdown-ndc7").onclick = function() {
+        document.getElementById("nd-scene-countdown-ndc8").onclick = function() {
             Control.ws.send(JSON.stringify({
                 type: "scene",
                 scene: "nd-countdown",
-                stats: "ndc7",
+                stats: "ndc8",
                 event: Control.event,
                 time: document.getElementById("nd-start-time").value,
                 finish: document.getElementById("nd-finish-text").value
@@ -349,11 +349,11 @@ class Control {
             }));
         };
 
-        document.getElementById("nd-scene-thanks-ndc7").onclick = function() {
+        document.getElementById("nd-scene-thanks-ndc8").onclick = function() {
             Control.ws.send(JSON.stringify({
                 type: "scene",
                 scene: "nd-thanks",
-                stats: "ndc7",
+                stats: "ndc8",
                 event: Control.event
             }));
         };

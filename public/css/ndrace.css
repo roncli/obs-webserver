@@ -122,18 +122,18 @@ body {
     height: 630px;
 }
 
-#season-7 {
+#season-8 {
     position: absolute;
 }
 
-#season-7 .condor-logo {
+#season-8 .condor-logo {
     position: absolute;
     top: 122px;
     width: 1920px;
     height: 73px;
 }
 
-#season-7 .condor-heart {
+#season-8 .condor-heart {
     position: absolute;
     background-size: 225px 315px;
     top: 750px;
@@ -141,48 +141,48 @@ body {
     height: 315px;
 }
 
-#season-7 .stats {
+#season-8 .stats {
     position: absolute;
     top: 195px;
     width: 1920px;
 }
 
-#season-7 .stats .title, #season-7 .stats .title * {
+#season-8 .stats .title, #season-8 .stats .title * {
     text-align: center;
     font-size: 48px;
 }
 
-#season-7 .stats * {
+#season-8 .stats * {
     font-size: 32px;
     color: #cccccc;
 }
 
-#season-7 .stats table {
+#season-8 .stats table {
     margin: auto;
 }
 
-#season-7 .stats th, #season-7 .stats td {
+#season-8 .stats th, #season-8 .stats td {
     padding: 0 30px;
     text-align: left;
     white-space: nowrap;
 }
 
-#season-7 .stats .standings table tbody td:nth-child(1),
-#season-7 .stats .standings table tbody td:nth-child(3),
-#season-7 .stats .standings table tbody td:nth-child(4),
-#season-7 .stats .standings table tbody td:nth-child(5),
-#season-7 .stats .standings table tbody td:nth-child(6),
-#season-7 .stats .standings table tbody td:nth-child(7),
-#season-7 .stats .standings table tbody td:nth-child(8) {
+#season-8 .stats .standings table tbody td:nth-child(1),
+#season-8 .stats .standings table tbody td:nth-child(3),
+#season-8 .stats .standings table tbody td:nth-child(4),
+#season-8 .stats .standings table tbody td:nth-child(5),
+#season-8 .stats .standings table tbody td:nth-child(6),
+#season-8 .stats .standings table tbody td:nth-child(7),
+#season-8 .stats .standings table tbody td:nth-child(8) {
     text-align: center;
 }
 
-#season-7 .stats .hidden {
+#season-8 .stats .hidden {
     display: none;
 }
 
-#season-7 .stats .results table thead th,
-#season-7 .stats .upcoming table thead th {
+#season-8 .stats .results table thead th,
+#season-8 .stats .upcoming table thead th {
     text-align: center;
 }
 
@@ -317,4 +317,24 @@ body {
     bottom: 14px;
     text-shadow: 3px 3px black, 3px -3px black, -3px -3px black, -3px 3px black;
     font-size: 32px;
+}
+
+.Blood {
+    color: #a10000 !important;
+}
+
+.Gold {
+    color: #ffe51a !important;
+}
+
+.Titanium {
+    color: #d6f2ff !important;
+}
+
+.Obsidian {
+    color: #3358d4 !important;
+}
+
+.Crystal {
+    color: #a0e6f4 !important;
 }
