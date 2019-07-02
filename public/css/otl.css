@@ -1,0 +1,58 @@
+body {
+    position: relative;
+    overflow: hidden;
+    background-color: black;
+}
+
+.track-text {
+    color: white;
+    text-shadow: 1px 1px 3px black;
+    font-family: "Industry Medium";
+    font-size: 18px;
+}
+
+#now-playing {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 500px;
+    height: 60px;
+    z-index: 10;
+}
+
+#now-playing .track {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+#now-playing .track-text {
+    width: 440px;
+}
+
+#now-playing .album-art {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 60px;
+    height: 60px;
+}
+
+#video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 444px;
+    height: 250px;
+}
+
+#video #webcam {
+    width: 444px;
+    height: 250px;
+    top: 0;
+    left: 0;
+}
+
+.hidden {
+    display: none;
+}

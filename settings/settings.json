@@ -76,6 +76,56 @@
             "channelId": "328828437026439168"
         },
         {
+            "name": "OTL 1",
+            "guildId": "453094288742678539",
+            "channelId": "453094288742678547"
+        },
+        {
+            "name": "OTL 2",
+            "guildId": "453094288742678539",
+            "channelId": "528021180704096267"
+        },
+        {
+            "name": "OTL 3",
+            "guildId": "453094288742678539",
+            "channelId": "528021203936477184"
+        },
+        {
+            "name": "OTL 4",
+            "guildId": "453094288742678539",
+            "channelId": "528021235494420480"
+        },
+        {
+            "name": "OTL 5",
+            "guildId": "453094288742678539",
+            "channelId": "528021250518417418"
+        },
+        {
+            "name": "OTL Private 1",
+            "guildId": "453094288742678539",
+            "channelId": "528021366159704084"
+        },
+        {
+            "name": "OTL Private 2",
+            "guildId": "453094288742678539",
+            "channelId": "528021450381328396"
+        },
+        {
+            "name": "OTL Private 3",
+            "guildId": "453094288742678539",
+            "channelId": "528021467519123482"
+        },
+        {
+            "name": "OTL Private 4",
+            "guildId": "453094288742678539",
+            "channelId": "528021482673274901"
+        },
+        {
+            "name": "OTL Private 5",
+            "guildId": "453094288742678539",
+            "channelId": "528021497755729940"
+        },
+        {
             "name": "The Observatory Booth",
             "guildId": "147567556356603904",
             "channelId": "266217985046347786"
