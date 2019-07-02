@@ -128,7 +128,7 @@ class Observatory {
     static async updateVideo(element) {
         const video = document.querySelector(element),
             devices = await navigator.mediaDevices.enumerateDevices(),
-            {deviceId} = devices.filter((d) => d.kind === "videoinput" && d.label.startsWith("Logitech HD Pro Webcam C920"))[0];
+            {deviceId} = devices.filter((d) => d.kind === "videoinput" && d.label.indexOf("HD Pro Webcam C920") !== -1)[0];
 
         navigator.webkitGetUserMedia({
             video: {
