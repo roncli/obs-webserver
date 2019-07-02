@@ -606,7 +606,7 @@ class Index {
 
             switch (data.type) {
                 case "obs-scene":
-                    Index.obs.setCurrentScene({"scene-name": data.scene});
+                    Index.obs.send("SetCurrentScene", {"scene-name": data.scene});
                     break;
                 case "scene":
                     [].forEach.call(document.getElementsByClassName("scene"), (el) => {
@@ -627,7 +627,7 @@ class Index {
                                 Index.countdown = true;
                                 Spotify.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", true);
                             }, 15000);
-                            Index.obs.setCurrentScene({"scene-name": "roncli Gaming - Bumper"});
+                            Index.obs.send("SetCurrentScene", {"scene-name": "roncli Gaming - Bumper"});
                             break;
                         case "brb":
                             document.querySelector("#intro .upNext").classList.remove("hidden");
@@ -646,7 +646,7 @@ class Index {
                             } catch (err) {
                                 Spotify.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", false);
                             }
-                            Index.obs.setCurrentScene({"scene-name": "roncli Gaming - Bumper"});
+                            Index.obs.send("SetCurrentScene", {"scene-name": "roncli Gaming - Bumper"});
                             break;
                         case "thanks":
                             document.querySelector("#intro .upNext").classList.add("hidden");
@@ -665,11 +665,11 @@ class Index {
                             } catch (err) {
                                 Spotify.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", false);
                             }
-                            Index.obs.setCurrentScene({"scene-name": "roncli Gaming - Bumper"});
+                            Index.obs.send("SetCurrentScene", {"scene-name": "roncli Gaming - Bumper"});
                             break;
                         case "fullscreen":
                             Index.goFullscreen();
-                            Index.obs.setCurrentScene({"scene-name": "roncli Gaming - Full Screen"});
+                            Index.obs.send("SetCurrentScene", {"scene-name": "roncli Gaming - Full Screen"});
                             break;
                         case "scene":
                             document.getElementById("scene").classList.remove("hidden");
@@ -683,7 +683,7 @@ class Index {
                                 document.getElementById("screen").classList.add("green-screen");
                             }, 1000);
                             Spotify.setSpotifyVolume(50);
-                            Index.obs.setCurrentScene({"scene-name": data.scene});
+                            Index.obs.send("SetCurrentScene", {"scene-name": data.scene});
                             break;
                     }
                     break;
@@ -763,7 +763,7 @@ class Index {
             statusText.innerText = "00:00:00";
 
             Index.goFullscreen();
-            Index.obs.setCurrentScene({"scene-name": "roncli Gaming - Full Screen"});
+            Index.obs.send("SetCurrentScene", {"scene-name": "roncli Gaming - Full Screen"});
             return;
         }
 

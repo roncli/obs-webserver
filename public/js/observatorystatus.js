@@ -128,7 +128,7 @@ class ObservatoryStatus {
 
             switch (data.type) {
                 case "obs-scene":
-                    ObservatoryStatus.obs.setCurrentScene({"scene-name": data.scene});
+                    ObservatoryStatus.obs.send("SetCurrentScene", {"scene-name": data.scene});
                     break;
                 case "scene":
                     switch (data.scene) {

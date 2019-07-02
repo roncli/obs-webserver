@@ -506,7 +506,7 @@ class CTM {
 
             switch (data.type) {
                 case "obs-scene":
-                    CTM.obs.setCurrentScene({"scene-name": data.scene});
+                    CTM.obs.send("SetCurrentScene", {"scene-name": data.scene});
                     break;
                 case "scene":
                     [].forEach.call(document.getElementsByClassName("scene"), (el) => {

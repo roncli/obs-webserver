@@ -1430,7 +1430,7 @@ class Observatory {
 
             switch (data.type) {
                 case "obs-scene":
-                    Observatory.obs.setCurrentScene({"scene-name": data.scene});
+                    Observatory.obs.send("SetCurrentScene", {"scene-name": data.scene});
                     break;
                 case "scene":
                     switch (data.scene) {
@@ -1453,7 +1453,7 @@ class Observatory {
 
                             Spotify.playPlaylist("spotify:user:1211227601:playlist:3ld3qI0evdqsr66HoaE0Zp", false);
                             Spotify.setSpotifyVolume(100);
-                            Observatory.obs.setCurrentScene({"scene-name": "The Observatory - Bumper"});
+                            Observatory.obs.send("SetCurrentScene", {"scene-name": "The Observatory - Bumper"});
 
                             if (Observatory.carouselTimeout) {
                                 clearTimeout(Observatory.carouselTimeout);
@@ -1472,7 +1472,7 @@ class Observatory {
                             document.getElementById("tournament-subevent").innerText = data.title;
 
                             Spotify.setSpotifyVolume(40);
-                            Observatory.obs.setCurrentScene({"scene-name": "The Observatory - Tournament"});
+                            Observatory.obs.send("SetCurrentScene", {"scene-name": "The Observatory - Tournament"});
 
                             if (Observatory.carouselTimeout) {
                                 clearTimeout(Observatory.carouselTimeout);
@@ -1490,7 +1490,7 @@ class Observatory {
                             document.getElementById("countdown").innerText = "Thanks for watching!";
 
                             Spotify.setSpotifyVolume(100);
-                            Observatory.obs.setCurrentScene({"scene-name": "The Observatory - Bumper"});
+                            Observatory.obs.send("SetCurrentScene", {"scene-name": "The Observatory - Bumper"});
 
                             if (Observatory.carouselTimeout) {
                                 clearTimeout(Observatory.carouselTimeout);
