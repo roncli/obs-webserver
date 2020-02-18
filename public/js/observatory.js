@@ -1719,7 +1719,7 @@ class Observatory {
             return;
         }
 
-        countdown.innerText = timeLeft.toLocaleDateString("en-us", {timeZone: "UTC", hour12: false, hour: "2-digit", minute: "2-digit", second: "2-digit"}).split(" ")[1];
+        countdown.innerText = timeLeft.toLocaleDateString("en-us", {timeZone: "UTC", hourCycle: "h23", hour: "2-digit", minute: "2-digit", second: "2-digit"}).split(" ")[1];
 
         Observatory.countdownTimeout = setTimeout(() => {
             Observatory.updateCountdown();
