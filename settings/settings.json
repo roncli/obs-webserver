@@ -129,7 +129,12 @@
             "name": "The Observatory Booth",
             "guildId": "147567556356603904",
             "channelId": "266217985046347786"
-        }
+        },
+		{
+            "name": "Deathstate - General",
+            "guildId": "400376371655737346",
+            "channelId": "400376372327088157"
+		}
     ],
     "nd-layouts": [
         {

@@ -1,3 +1,7 @@
+/**
+ * @typedef {import("ws")} WS
+ */
+
 const fs = require("fs"),
     path = require("path"),
     {promisify} = require("util"),
@@ -45,7 +49,7 @@ class Update {
     // #  #   ##   ###    ###     # #  #      ##
     //                                  ###
     /**
-     * Echoes a message it to the listeners.
+     * Echoes a message to the listeners.
      * @param {string} data The data to echo.
      * @returns {void}
      */

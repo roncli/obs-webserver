@@ -259,12 +259,14 @@ class Index {
             lines.forEach((line) => {
                 line = line.trim();
 
+                let el;
+
                 if (line.length > 0 && !open) {
                     innerEl = document.createElement("div");
                     innerEl.classList.add("panel");
                     innerEl.classList.add("panel-primary");
 
-                    const el = document.createElement("div");
+                    el = document.createElement("div");
                     el.classList.add("panel-heading");
                     el.classList.add("text-center");
                     el.innerText = line;
@@ -275,7 +277,7 @@ class Index {
                     outerEl.appendChild(innerEl);
                     open = false;
                 } else if (line.length > 0) {
-                    const el = document.createElement("div");
+                    el = document.createElement("div");
                     el.classList.add("panel-body");
                     el.innerText = line;
                     innerEl.appendChild(el);
@@ -308,10 +310,8 @@ class Index {
      * @returns {Promise} A promise that resolves when the image element is updated.
      */
     static async updateImage(element, path, interval, lastUpdated) {
-        let responseText;
-
         try {
-            responseText = await Index.checkLastUpdate(path);
+            const responseText = await Index.checkLastUpdate(path);
 
             if (responseText !== lastUpdated) {
                 const imageData = await Index.readLocal(path, true);
@@ -608,12 +608,14 @@ class Index {
                 case "obs-scene":
                     Index.obs.send("SetCurrentScene", {"scene-name": data.scene});
                     break;
-                case "scene":
+                case "scene": {
                     [].forEach.call(document.getElementsByClassName("scene"), (el) => {
                         el.classList.add("hidden");
                     });
 
                     document.getElementById("screen").classList.remove("green-screen");
+
+                    let response;
 
                     switch (data.state) {
                         case "intro":
@@ -638,7 +640,7 @@ class Index {
                             document.getElementById("now-playing").style.transform = "translate(1418px, 5px)";
                             Spotify.setSpotifyVolume(100);
                             try {
-                                const response = await Spotify.readSpotify();
+                                response = await Spotify.readSpotify();
 
                                 if (!response || !response.playing) {
                                     Spotify.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", false);
@@ -657,7 +659,7 @@ class Index {
                             document.getElementById("now-playing").style.transform = "translate(1418px, 5px)";
                             Spotify.setSpotifyVolume(100);
                             try {
-                                const response = await Spotify.readSpotify();
+                                response = await Spotify.readSpotify();
 
                                 if (!response || !response.playing) {
                                     Spotify.playPlaylist("spotify:user:1211227601:playlist:6vC594uhppzSoqqmxhXy0A", false);
@@ -687,21 +689,29 @@ class Index {
                             break;
                     }
                     break;
-                case "action":
-                    switch (data.action) {
-                        case "fire":
-                            {
-                                const sound = document.getElementById("sound-fire");
+                }
+                case "action": {
+                    let sound;
 
-                                sound.volume = 1;
-                                sound.play();
-                            }
+                    switch (data.action) {
+                        case "fire": {
+                            sound = document.getElementById("sound-fire");
+
+                            sound.volume = 1;
+                            sound.play();
 
                             document.getElementById("fire").classList.add("fade-animation");
 
                             setTimeout(() => {
                                 document.getElementById("fire").classList.remove("fade-animation");
                             }, 12000);
+                            break;
+                        }
+                        case "steve":
+                            sound = document.getElementById("sound-steve");
+
+                            sound.volume = 1;
+                            sound.play();
                             break;
                         case "time":
                             document.getElementById("time").classList.add("blink-animation");
@@ -715,6 +725,7 @@ class Index {
                             break;
                     }
                     break;
+                }
             }
         };
 
@@ -767,7 +778,7 @@ class Index {
             return;
         }
 
-        statusText.innerText = timeLeft.toLocaleDateString("en-us", {timeZone: "UTC", hour12: false, hour: "2-digit", minute: "2-digit", second: "2-digit"}).split(" ")[1];
+        statusText.innerText = timeLeft.toLocaleDateString("en-us", {timeZone: "UTC", hourCycle: "h23", hour: "2-digit", minute: "2-digit", second: "2-digit"}).split(" ")[1];
 
         setTimeout(() => {
             Index.updateCountdown();
