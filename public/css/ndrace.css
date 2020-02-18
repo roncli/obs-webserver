@@ -45,6 +45,16 @@ body {
     font-size: 72px;
 }
 
+#brb {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    text-shadow: 6px 6px 0.5px black, 3px 3px black, 3px -3px black, -3px -3px black, -3px 3px black;
+    line-height: 0.8;
+    text-align: right;
+    font-size: 72px;
+}
+
 #matchup {
     position: absolute;
     right: 10px;
@@ -122,18 +132,18 @@ body {
     height: 630px;
 }
 
-#season-8 {
+#season-9 {
     position: absolute;
 }
 
-#season-8 .condor-logo {
+#season-9 .condor-logo {
     position: absolute;
     top: 122px;
     width: 1920px;
     height: 73px;
 }
 
-#season-8 .condor-heart {
+#season-9 .condor-heart {
     position: absolute;
     background-size: 225px 315px;
     top: 750px;
@@ -141,48 +151,48 @@ body {
     height: 315px;
 }
 
-#season-8 .stats {
+#season-9 .stats {
     position: absolute;
     top: 195px;
     width: 1920px;
 }
 
-#season-8 .stats .title, #season-8 .stats .title * {
+#season-9 .stats .title, #season-9 .stats .title * {
     text-align: center;
     font-size: 48px;
 }
 
-#season-8 .stats * {
+#season-9 .stats * {
     font-size: 32px;
     color: #cccccc;
 }
 
-#season-8 .stats table {
+#season-9 .stats table {
     margin: auto;
 }
 
-#season-8 .stats th, #season-8 .stats td {
+#season-9 .stats th, #season-9 .stats td {
     padding: 0 30px;
     text-align: left;
     white-space: nowrap;
 }
 
-#season-8 .stats .standings table tbody td:nth-child(1),
-#season-8 .stats .standings table tbody td:nth-child(3),
-#season-8 .stats .standings table tbody td:nth-child(4),
-#season-8 .stats .standings table tbody td:nth-child(5),
-#season-8 .stats .standings table tbody td:nth-child(6),
-#season-8 .stats .standings table tbody td:nth-child(7),
-#season-8 .stats .standings table tbody td:nth-child(8) {
+#season-9 .stats .standings table tbody td:nth-child(1),
+#season-9 .stats .standings table tbody td:nth-child(3),
+#season-9 .stats .standings table tbody td:nth-child(4),
+#season-9 .stats .standings table tbody td:nth-child(5),
+#season-9 .stats .standings table tbody td:nth-child(6),
+#season-9 .stats .standings table tbody td:nth-child(7),
+#season-9 .stats .standings table tbody td:nth-child(8) {
     text-align: center;
 }
 
-#season-8 .stats .hidden {
+#season-9 .stats .hidden {
     display: none;
 }
 
-#season-8 .stats .results table thead th,
-#season-8 .stats .upcoming table thead th {
+#season-9 .stats .results table thead th,
+#season-9 .stats .upcoming table thead th {
     text-align: center;
 }
 

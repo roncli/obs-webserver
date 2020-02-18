@@ -52,44 +52,44 @@ class NDRace {
 
     //          #         ##    ##    #                 #
     //          #        #  #  #  #   #                 #
-    // ###    ###   ##    ##    #    ###    ###  ###   ###
-    // #  #  #  #  #     #  #    #    #    #  #  #  #   #
-    // #  #  #  #  #     #  #  #  #   #    # ##  #      #
+    // ###    ###   ##   #  #   #    ###    ###  ###   ###
+    // #  #  #  #  #      ###    #    #    #  #  #  #   #
+    // #  #  #  #  #        #  #  #   #    # ##  #      #
     // #  #   ###   ##    ##    ##     ##   # #  #       ##
     /**
      * Starts the carousel.
      * @param {object} results The data provided by the API.
      * @returns {void}
      */
-    static ndc8Start(results) {
+    static ndc9Start(results) {
         NDRace.delay = 20000;
         NDRace.status = 0;
         NDRace.index = 0;
         NDRace.data = results.races;
         NDRace.tiers = results.tiers;
 
-        NDRace.ndc8Next();
+        NDRace.ndc9Next();
     }
 
     //          #         ##   #  #               #    ###                      ##     #
     //          #        #  #  ## #               #    #  #                      #     #
-    // ###    ###   ##    ##   ## #   ##   #  #  ###   #  #   ##    ###   #  #   #    ###    ###
-    // #  #  #  #  #     #  #  # ##  # ##   ##    #    ###   # ##  ##     #  #   #     #    ##
-    // #  #  #  #  #     #  #  # ##  ##     ##    #    # #   ##      ##   #  #   #     #      ##
+    // ###    ###   ##   #  #  ## #   ##   #  #  ###   #  #   ##    ###   #  #   #    ###    ###
+    // #  #  #  #  #      ###  # ##  # ##   ##    #    ###   # ##  ##     #  #   #     #    ##
+    // #  #  #  #  #        #  # ##  ##     ##    #    # #   ##      ##   #  #   #     #      ##
     // #  #   ###   ##    ##   #  #   ##   #  #    ##  #  #   ##   ###     ###  ###     ##  ###
     /**
      * Displays the next results page.
      * @returns {void}
      */
-    static ndc8NextResults() {
+    static ndc9NextResults() {
         const resultCount = NDRace.data.previousResults.length;
 
         if (resultCount > 0) {
-            const $tbody = document.querySelector("#season-8 .results tbody");
+            const $tbody = document.querySelector("#season-9 .results tbody");
             let ix, result;
 
-            document.querySelector("#season-8 .results").classList.remove("hidden");
-            document.querySelector("#season-8 .upcoming").classList.add("hidden");
+            document.querySelector("#season-9 .results").classList.remove("hidden");
+            document.querySelector("#season-9 .upcoming").classList.add("hidden");
 
             while ($tbody.firstChild) {
                 $tbody.removeChild($tbody.firstChild);
@@ -131,32 +131,32 @@ class NDRace {
         }
 
         if (resultCount > 0) {
-            NDRace.statsTimeout = setTimeout(NDRace.ndc8Next, NDRace.delay);
+            NDRace.statsTimeout = setTimeout(NDRace.ndc9Next, NDRace.delay);
         } else {
-            NDRace.ndc8Next();
+            NDRace.ndc9Next();
         }
     }
 
     //          #         ##   #  #               #    #  #                           #
     //          #        #  #  ## #               #    #  #
-    // ###    ###   ##    ##   ## #   ##   #  #  ###   #  #  ###    ##    ##   # #   ##    ###    ###
-    // #  #  #  #  #     #  #  # ##  # ##   ##    #    #  #  #  #  #     #  #  ####   #    #  #  #  #
-    // #  #  #  #  #     #  #  # ##  ##     ##    #    #  #  #  #  #     #  #  #  #   #    #  #   ##
+    // ###    ###   ##   #  #  ## #   ##   #  #  ###   #  #  ###    ##    ##   # #   ##    ###    ###
+    // #  #  #  #  #      ###  # ##  # ##   ##    #    #  #  #  #  #     #  #  ####   #    #  #  #  #
+    // #  #  #  #  #        #  # ##  ##     ##    #    #  #  #  #  #     #  #  #  #   #    #  #   ##
     // #  #   ###   ##    ##   #  #   ##   #  #    ##   ##   ###    ##    ##   #  #  ###   #  #  #
     //                                                       #                                    ###
     /**
      * Displays the next upcoming matches page.
      * @returns {void}
      */
-    static ndc8NextUpcoming() {
+    static ndc9NextUpcoming() {
         const upcomingCount = NDRace.data.upcomingMatches.length;
 
         if (upcomingCount > 0) {
-            const $tbody = document.querySelector("#season-8 .upcoming tbody");
+            const $tbody = document.querySelector("#season-9 .upcoming tbody");
             let ix, match;
 
-            document.querySelector("#season-8 .results").classList.add("hidden");
-            document.querySelector("#season-8 .upcoming").classList.remove("hidden");
+            document.querySelector("#season-9 .results").classList.add("hidden");
+            document.querySelector("#season-9 .upcoming").classList.remove("hidden");
 
             while ($tbody.firstChild) {
                 $tbody.removeChild($tbody.firstChild);
@@ -198,29 +198,30 @@ class NDRace {
         }
 
         if (upcomingCount > 0) {
-            NDRace.statsTimeout = setTimeout(NDRace.ndc8Next, NDRace.delay);
+            NDRace.statsTimeout = setTimeout(NDRace.ndc9Next, NDRace.delay);
         } else {
-            NDRace.ndc8Next();
+            NDRace.ndc9Next();
         }
     }
 
     //          #         ##   #  #               #
     //          #        #  #  ## #               #
-    // ###    ###   ##    ##   ## #   ##   #  #  ###
-    // #  #  #  #  #     #  #  # ##  # ##   ##    #
-    // #  #  #  #  #     #  #  # ##  ##     ##    #
+    // ###    ###   ##   #  #  ## #   ##   #  #  ###
+    // #  #  #  #  #      ###  # ##  # ##   ##    #
+    // #  #  #  #  #        #  # ##  ##     ##    #
     // #  #   ###   ##    ##   #  #   ##   #  #    ##
+
     /**
      * Displays the next page.
      * @returns {void}
      */
-    static ndc8Next() {
+    static ndc9Next() {
         switch (NDRace.status) {
             case 0:
-                NDRace.ndc8NextResults();
+                NDRace.ndc9NextResults();
                 break;
             case 1:
-                NDRace.ndc8NextUpcoming();
+                NDRace.ndc9NextUpcoming();
                 break;
         }
     }
@@ -272,6 +273,7 @@ class NDRace {
 
                             document.getElementById("matchup").classList.remove("hidden");
                             document.getElementById("thanks").classList.add("hidden");
+                            document.getElementById("brb").classList.add("hidden");
                             document.getElementById("countdown").classList.remove("hidden");
 
                             Spotify.playPlaylist("spotify:user:1211227601:playlist:2IU5xZkAV0ZPnhEItPTrsB", false);
@@ -285,11 +287,26 @@ class NDRace {
                             Spotify.setSpotifyVolume(33);
                             NDRace.obs.send("SetCurrentScene", {"scene-name": "CoNDOR - Race"});
                             break;
+                        case "nd-brb":
+                            title.innerText = `Crypt of the NecroDancer\n${data.event}\nCawmunity Cast`;
+
+                            document.getElementById("matchup").classList.add("hidden");
+                            document.getElementById("thanks").classList.add("hidden");
+                            document.getElementById("brb").classList.remove("hidden");
+                            document.getElementById("countdown").classList.add("hidden");
+
+                            bumper.classList.remove("hidden");
+                            race.classList.add("hidden");
+
+                            Spotify.setSpotifyVolume(100);
+                            NDRace.obs.send("SetCurrentScene", {"scene-name": "CoNDOR - Bumper"});
+                            break;
                         case "nd-thanks":
                             title.innerText = `Crypt of the NecroDancer\n${data.event}\nCawmunity Cast`;
 
                             document.getElementById("matchup").classList.add("hidden");
                             document.getElementById("thanks").classList.remove("hidden");
+                            document.getElementById("brb").classList.add("hidden");
                             document.getElementById("countdown").classList.add("hidden");
 
                             bumper.classList.remove("hidden");
@@ -305,23 +322,22 @@ class NDRace {
                         case "none":
                             document.getElementById("no-event").classList.remove("hidden");
                             break;
-                        case "ndc8":
+                        case "ndc9": {
                             document.getElementById("no-event").classList.add("hidden");
-                            document.querySelector("#season-8 .results").classList.add("hidden");
-                            document.querySelector("#season-8 .upcoming").classList.add("hidden");
-                            document.getElementById("season-8").classList.remove("hidden");
-                            {
-                                const x = new XMLHttpRequest();
-                                x.onreadystatechange = function() {
-                                    if (x.readyState === 4 && x.status === 200) {
-                                        NDRace.ndc8Start(JSON.parse(x.responseText));
-                                    }
-                                };
-                                x.open("GET", "api/necrodancerCondor8", true);
-                                x.send();
-                            }
+                            document.querySelector("#season-9 .results").classList.add("hidden");
+                            document.querySelector("#season-9 .upcoming").classList.add("hidden");
+                            document.getElementById("season-9").classList.remove("hidden");
+                            const x = new XMLHttpRequest();
+                            x.onreadystatechange = function() {
+                                if (x.readyState === 4 && x.status === 200) {
+                                    NDRace.ndc9Start(JSON.parse(x.responseText));
+                                }
+                            };
+                            x.open("GET", "api/necrodancerCondor9", true);
+                            x.send();
 
                             break;
+                        }
                         default:
                             break;
                     }
@@ -418,7 +434,7 @@ class NDRace {
      */
     static printTime(className) {
         const time = NDRace.time + (NDRace.timer ? new Date().getTime() - NDRace.timerStart.getTime() : 0),
-            timeStr = `${new Date(time).toLocaleTimeString("en-us", {timeZone: "GMT", hour12: false})}.${new Intl.NumberFormat("en", {minimumIntegerDigits: 2, maximumFractionDigits: 0}).format(Math.floor(time % 1000 / 10))}`.replace(/^(?:0(?:0:)?)?/, ""),
+            timeStr = `${new Date(time).toLocaleTimeString("en-us", {timeZone: "GMT", hourCycle: "h23"})}.${new Intl.NumberFormat("en", {minimumIntegerDigits: 2, maximumFractionDigits: 0}).format(Math.floor(time % 1000 / 10))}`.replace(/^(?:0(?:0:)?)?/, ""),
             timer = document.getElementById("timer");
 
         timer.className = className;
@@ -499,7 +515,7 @@ class NDRace {
             return;
         }
 
-        countdown.innerText = timeLeft.toLocaleDateString("en-us", {timeZone: "UTC", hour12: false, hour: "2-digit", minute: "2-digit", second: "2-digit"}).split(" ")[1];
+        countdown.innerText = timeLeft.toLocaleDateString("en-us", {timeZone: "UTC", hourCycle: "h23", hour: "2-digit", minute: "2-digit", second: "2-digit"}).split(" ")[1];
 
         setTimeout(() => {
             NDRace.updateCountdown();

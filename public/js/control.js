@@ -319,11 +319,11 @@ class Control {
             }));
         };
 
-        document.getElementById("nd-scene-countdown-ndc8").onclick = function() {
+        document.getElementById("nd-scene-countdown-ndc9").onclick = function() {
             Control.ws.send(JSON.stringify({
                 type: "scene",
                 scene: "nd-countdown",
-                stats: "ndc8",
+                stats: "ndc9",
                 event: Control.event,
                 time: document.getElementById("nd-start-time").value,
                 finish: document.getElementById("nd-finish-text").value
@@ -340,6 +340,24 @@ class Control {
             }));
         };
 
+        document.getElementById("nd-scene-brb-no-event").onclick = function() {
+            Control.ws.send(JSON.stringify({
+                type: "scene",
+                scene: "nd-brb",
+                stats: "none",
+                event: Control.event
+            }));
+        };
+
+        document.getElementById("nd-scene-brb-ndc9").onclick = function() {
+            Control.ws.send(JSON.stringify({
+                type: "scene",
+                scene: "nd-brb",
+                stats: "ndc9",
+                event: Control.event
+            }));
+        };
+
         document.getElementById("nd-scene-thanks-no-event").onclick = function() {
             Control.ws.send(JSON.stringify({
                 type: "scene",
@@ -349,11 +367,11 @@ class Control {
             }));
         };
 
-        document.getElementById("nd-scene-thanks-ndc8").onclick = function() {
+        document.getElementById("nd-scene-thanks-ndc9").onclick = function() {
             Control.ws.send(JSON.stringify({
                 type: "scene",
                 scene: "nd-thanks",
-                stats: "ndc8",
+                stats: "ndc9",
                 event: Control.event
             }));
         };
@@ -401,7 +419,7 @@ class Control {
         };
 
         document.getElementById("nd-open-streams").onclick = function() {
-            window.open("http://localhost:60577/ndracetwitch.htm?player1=" + document.getElementById("nd-player-1").value + "&player2=" + document.getElementById("nd-player-2").value);
+            prompt("Copy this URL.", "http://localhost:60577/ndracetwitch.htm?player1=" + document.getElementById("nd-player-1").value + "&player2=" + document.getElementById("nd-player-2").value);
         };
 
         document.getElementById("nd-start-time").onblur = function() {
