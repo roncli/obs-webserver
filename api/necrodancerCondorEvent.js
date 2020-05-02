@@ -38,7 +38,7 @@ class NecrodancerCondorEvent {
 
             res.status(200);
             res.send({
-                name: data.event_name || "Season 9",
+                name: data.event_name || (data.schema_name ? data.schema_name.replace("_", " ") : void 0) || "CoNDOR",
                 previousResults: data.matches.filter((m) => +m.racer_1_wins + +m.racer_2_wins !== 0).map((m) => ({
                     player1: m.racer_1_twitch,
                     player2: m.racer_2_twitch,
