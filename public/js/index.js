@@ -265,6 +265,9 @@ class Index {
                     innerEl = document.createElement("div");
                     innerEl.classList.add("panel");
                     innerEl.classList.add("panel-primary");
+                    if (line.charAt(0) === "-") {
+                        innerEl.classList.add("hidden");
+                    }
 
                     el = document.createElement("div");
                     el.classList.add("panel-heading");
