@@ -1,0 +1,8 @@
+#error {
+    color: white;
+    font-size: 24px;
+}
+
+#error .text {
+    padding: 10px;
+}

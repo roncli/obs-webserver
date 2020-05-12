@@ -60,10 +60,6 @@ typings/
 # VS Code
 .vscode/
 
-# Graph SVG
-graph.svg
-
 # Sensitive stuff
-roncli.com-*.json
 config.json
 settings.js

@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "checkJs": true,
+        "esModuleInterop": true,
+        "lib": ["esnext"],
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "outDir": "./.vscode/ts",
+        "resolveJsonModule": true,
+        "target": "esnext"
+    },
+    "exclude": [
+        "public/js/**/*"
+    ],
+    "include": [
+        "**/*.d.ts",
+        "**/*.js"
+    ]
+}
