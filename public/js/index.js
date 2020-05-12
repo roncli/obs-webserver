@@ -1,4 +1,4 @@
-/* global config, OBSWebSocket, Spotify */
+/* global settings, OBSWebSocket, Spotify */
 
 const slideshowImages = [
     "images/crypt.png",
@@ -732,7 +732,7 @@ class Index {
             }
         };
 
-        Index.obs.connect(config.websocket);
+        Index.obs.connect(settings.websocket);
     }
 
     //             ####        ##    ##

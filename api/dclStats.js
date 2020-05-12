@@ -1,4 +1,4 @@
-const request = require("request"),
+const request = require("@root/request"),
     {promisify} = require("util");
 
 //  ####           ##     ###    #             #
@@ -23,7 +23,7 @@ class DclStats {
      * Returns stats for the DCL.
      * @param {object} req The request object.
      * @param {object} res The response object.
-     * @returns {void}
+     * @returns {Promise} A promise that resolves when the DCL stats have been retrieved.
      */
     static async get(req, res) {
         try {

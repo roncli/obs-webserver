@@ -1,6 +1,6 @@
 const steam = require("steam-api"),
-    config = require("../config"),
-    steamPlayer = new steam.Player(config.steam.apikey, "76561197996696153");
+    settings = require("../settings"),
+    steamPlayer = new steam.Player(settings.steam.apikey, "76561197996696153");
 
 //   ###    #
 //  #   #   #
@@ -24,7 +24,7 @@ class Steam {
      * Returns stats from Steam.
      * @param {object} req The request object.
      * @param {object} res The response object.
-     * @returns {void}
+     * @returns {Promise} A promise that resolves when the stats have been retrieved.
      */
     static async get(req, res) {
         try {

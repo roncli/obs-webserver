@@ -1,4 +1,4 @@
-const config = require("./config"),
+const settings = require("./settings"),
     SpotifyApi = require("spotify-web-api-node");
 let accessTokenValid = false;
 
@@ -28,7 +28,7 @@ class Spotify {
      */
     static async getSpotifyToken() {
         if (!Spotify.spotify) {
-            Spotify.spotify = new SpotifyApi(config.spotify);
+            Spotify.spotify = new SpotifyApi(settings.spotify);
         }
 
         if (accessTokenValid) {
@@ -103,5 +103,11 @@ class Spotify {
         }, 2500);
     }
 }
+
+/** @type {SpotifyApi} */
+Spotify.spotify = void 0;
+
+/** @type {NodeJS.Timer} */
+Spotify.stopTimeout = void 0;
 
 module.exports = Spotify;

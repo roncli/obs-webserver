@@ -1,4 +1,4 @@
 const Db = require("node-database"),
-    config = require("./config.js");
+    settings = require("./settings.js");
 
-module.exports = new Db(config.database);
+module.exports = new Db(settings.database);

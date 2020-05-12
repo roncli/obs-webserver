@@ -1,6 +1,5 @@
-const request = require("request"),
-    {promisify} = require("util"),
-    config = require("../config"),
+const request = require("@root/request"),
+    settings = require("../settings"),
     PubSubClient = require("twitch-pubsub-client");
 
 //  #        #            #
@@ -46,7 +45,7 @@ class Listen {
 Listen.clients = [];
 
 setTimeout(async() => {
-    const response = await promisify(request)(`https://twitchtokengenerator.com/api/refresh/${config.twitch.refreshToken}`);
+    const response = await request(`https://twitchtokengenerator.com/api/refresh/${settings.twitch.refreshToken}`);
     this.accessToken = JSON.parse(response.body).token;
 
     this.pubSubClient = new PubSubClient.BasicPubSubClient();

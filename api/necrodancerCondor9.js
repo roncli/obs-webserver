@@ -1,4 +1,4 @@
-const request = require("request"),
+const request = require("@root/request"),
     {promisify} = require("util");
 
 const leagues = {
@@ -53,7 +53,7 @@ class NecrodancerCondor9 {
                     cawmentary: matchData.commentary,
                     winner: +matchData.racer_1_wins + +matchData.racer_2_wins < (matchData.league_tag === "coh" ? 2 : 3) ? "Pending" : +matchData.racer_1_wins > +matchData.racer_2_wins ? matchData.racer_1_twitch : +matchData.racer_1_wins < +matchData.racer_2_wins ? matchData.racer_2_twitch : "Tie",
                     score: +matchData.racer_1_wins > +matchData.racer_2_wins ? `${matchData.racer_1_wins}-${matchData.racer_2_wins}` : `${matchData.racer_2_wins}-${matchData.racer_1_wins}`
-                }
+                };
 
                 if (match.date && match.date.getTime() < new Date().getTime()) {
                     apiReturn.races.previousResults.push(match);

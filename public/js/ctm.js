@@ -1,4 +1,4 @@
-/* global config, OBSWebSocket, Spotify */
+/* global settings, OBSWebSocket, Spotify */
 
 //   ###   #####  #   #
 //  #   #    #    #   #
@@ -544,7 +544,7 @@ class CTM {
             }
         };
 
-        CTM.obs.connect(config.websocket);
+        CTM.obs.connect(settings.websocket);
     }
 
     // ###    ##   #  #   ##                #                 #    #                    #           #

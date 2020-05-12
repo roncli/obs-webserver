@@ -1,4 +1,4 @@
-/* global config, OBSWebSocket, Spotify */
+/* global settings, OBSWebSocket, Spotify */
 
 const numMatch = /[0-9]/;
 
@@ -402,7 +402,7 @@ class NDRace {
             }
         };
 
-        NDRace.obs.connect(config.websocket);
+        NDRace.obs.connect(settings.websocket);
     }
 
     //                #         #          ###    #

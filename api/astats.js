@@ -1,8 +1,8 @@
-const request = require("request"),
+const request = require("@root/request"),
     {promisify} = require("util"),
     {JSDOM} = require("jsdom"),
     $ = require("jquery")(new JSDOM().window),
-    steamGameInfoMatch = /Steam_Game_Info\.php\?Tab=2&AppID=(\d+)&/;
+    steamGameInfoMatch = /Steam_Game_Info\.php\?Tab=2&AppID=(?<appId>\d+)&/;
 
 //    #            #             #
 //   # #           #             #
@@ -26,7 +26,7 @@ class Astats {
      * Returns stats from Astats.
      * @param {object} req The request object.
      * @param {object} res The response object.
-     * @returns {void}
+     * @returns {Promise} A promise that resolves when stats have been retrieved.
      */
     static async get(req, res) {
         try {
@@ -42,7 +42,7 @@ class Astats {
             res.status(200);
             res.send(JSON.stringify($.makeArray($($(body).find("table")[1]).find("tbody tr").map((index, el) => {
                 const $el = $(el);
-                return {id: +steamGameInfoMatch.exec($($el.find("td")[0]).find("a").attr("href"))[1], percent: +$($el.find("td")[5]).text().replace("%", "")};
+                return {id: +steamGameInfoMatch.exec($($el.find("td")[0]).find("a").attr("href")).groups.appId, percent: +$($el.find("td")[5]).text().replace("%", "")};
             }))));
             res.end();
         } catch (err) {

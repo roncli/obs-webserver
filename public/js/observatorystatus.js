@@ -1,4 +1,4 @@
-/* global config */
+/* global settings */
 
 //   ###   #                                          #                           ###    #             #
 //  #   #  #                                          #                          #   #   #             #
@@ -119,7 +119,7 @@ class ObservatoryStatus {
      */
     static startWebsockets() {
         ObservatoryStatus.ws = new WebSocket(`ws://${document.location.hostname}:${document.location.port || "80"}/ws/listen`);
-        ObservatoryStatus.obsws = new WebSocket(config.observatoryWsUrl);
+        ObservatoryStatus.obsws = new WebSocket(settings.observatoryWsUrl);
 
         ObservatoryStatus.messages = [];
 

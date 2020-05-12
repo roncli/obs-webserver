@@ -3,7 +3,7 @@ const path = require("path"),
     express = require("express"),
     bodyParser = require("body-parser"),
 
-    config = require("./config"),
+    settings = require("./settings"),
 
     app = express();
 
@@ -28,8 +28,8 @@ app.use("/js/obs-websocket.js", (req, res) => {
     res.download(path.join(__dirname, "node_modules/obs-websocket-js/dist/obs-websocket.js"));
 });
 
-app.listen(config.express.port);
-console.log(`Listening on port ${config.express.port}.`);
+app.listen(settings.express.port);
+console.log(`Listening on port ${settings.express.port}.`);
 
 process.on("unhandledRejection", (err) => {
     console.log(err);

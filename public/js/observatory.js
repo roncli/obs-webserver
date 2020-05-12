@@ -1,4 +1,4 @@
-/* global config, OBSWebSocket, Spotify */
+/* global settings, OBSWebSocket, Spotify */
 
 //   ###   #                                          #
 //  #   #  #                                          #
@@ -1421,7 +1421,7 @@ class Observatory {
     static startWebsockets() {
         Observatory.ws = new WebSocket(`ws://${document.location.hostname}:${document.location.port || "80"}/ws/listen`);
         Observatory.obs = new OBSWebSocket();
-        Observatory.obsws = new WebSocket(config.observatoryWsUrl);
+        Observatory.obsws = new WebSocket(settings.observatoryWsUrl);
 
         Observatory.ws.onmessage = (ev) => {
             const data = JSON.parse(ev.data),
@@ -1655,7 +1655,7 @@ class Observatory {
             }
         };
 
-        Observatory.obs.connect(config.websocket);
+        Observatory.obs.connect(settings.websocket);
     }
 
     //               #     ##    #                 #    ###    #
