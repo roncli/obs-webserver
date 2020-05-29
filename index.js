@@ -104,10 +104,3 @@ const compression = require("compression"),
 process.on("unhandledRejection", (reason) => {
     Log.exception("Unhandled promise rejection caught.", reason);
 });
-
-
-const Twitch = require("./src/twitch");
-
-Twitch.events.on("redemption", (message) => {
-    console.log(message);
-});

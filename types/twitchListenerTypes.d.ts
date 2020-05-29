@@ -93,6 +93,7 @@ declare namespace TwitchListenerTypes {
     }
 
     type SubEvent = {
+        channel: string
         user: string
         isPrime: boolean
         message?: string
@@ -128,10 +129,17 @@ declare namespace TwitchListenerTypes {
         tier: string
     }
 
+    type SubGiftCommunityPayForwardEvent = {
+        channel: string
+        user: string
+        originalGifter: string
+    }
+
     type SubGiftPayForwardEvent = {
         channel: string
         user: string
         originalGifter: string
+        recipient: string
     }
 
     type SubGiftUpgradeEvent = {
@@ -139,13 +147,6 @@ declare namespace TwitchListenerTypes {
         user: string
         gifter: string
         tier: string
-    }
-
-    type SubPayForwardEvent = {
-        channel: string
-        user: string
-        originalGifter: string
-        recipient: string
     }
 
     type SubPrimeUpgradedEvent = {

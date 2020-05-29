@@ -16,9 +16,9 @@
  * @typedef {import("../../types/twitchListenerTypes").SubExtendEvent} TwitchListenerTypes.SubExtendEvent
  * @typedef {import("../../types/twitchListenerTypes").SubGiftEvent} TwitchListenerTypes.SubGiftEvent
  * @typedef {import("../../types/twitchListenerTypes").SubGiftCommunityEvent} TwitchListenerTypes.SubGiftCommunityEvent
+ * @typedef {import("../../types/twitchListenerTypes").SubGiftCommunityPayForwardEvent} TwitchListenerTypes.SubGiftCommunityPayForwardEvent
  * @typedef {import("../../types/twitchListenerTypes").SubGiftPayForwardEvent} TwitchListenerTypes.SubGiftPayForwardEvent
  * @typedef {import("../../types/twitchListenerTypes").SubGiftUpgradeEvent} TwitchListenerTypes.SubGiftUpgradeEvent
- * @typedef {import("../../types/twitchListenerTypes").SubPayForwardEvent} TwitchListenerTypes.SubPayForwardEvent
  * @typedef {import("../../types/twitchListenerTypes").SubPrimeUpgradedEvent} TwitchListenerTypes.SubPrimeUpgradedEvent
  * @typedef {import("../../types/twitchListenerTypes").WhisperEvent} TwitchListenerTypes.WhisperEvent
  */
@@ -49,7 +49,8 @@ class TwitchListener {
      * @returns {void}
      */
     static action(ev) {
-
+        if (ev.channel === settings.twitch.channelName) {
+        }
     }
 
     // #      #     #
@@ -108,7 +109,9 @@ class TwitchListener {
      * @returns {void}
      */
     static giftPrime(ev) {
-        Notifications.add("giftPrime", ev);
+        if (ev.channel === settings.twitch.channelName) {
+            Notifications.add("giftPrime", ev);
+        }
     }
 
     // #                   #
@@ -123,7 +126,8 @@ class TwitchListener {
      * @returns {void}
      */
     static host(ev) {
-
+        if (ev.channel === settings.twitch.channelName) {
+        }
     }
 
     // #                   #             #
@@ -154,7 +158,8 @@ class TwitchListener {
      * @returns {void}
      */
     static message(ev) {
-
+        if (ev.channel === settings.twitch.channelName) {
+        }
     }
 
     //         #     #   ##     #
@@ -184,7 +189,7 @@ class TwitchListener {
      */
     static raided(ev) {
         if (ev.channel === settings.twitch.channelName) {
-            Notifications.add("hosted", ev);
+            Notifications.add("raided", ev);
         }
     }
 
@@ -216,7 +221,9 @@ class TwitchListener {
      * @returns {void}
      */
     static resub(ev) {
-        Notifications.add("resub", ev);
+        if (ev.channel === settings.twitch.channelName) {
+            Notifications.add("resub", ev);
+        }
     }
 
     //        #     #                ##
@@ -231,7 +238,8 @@ class TwitchListener {
      * @returns {void}
      */
     static ritual(ev) {
-
+        if (ev.channel === settings.twitch.channelName) {
+        }
     }
 
     //         #
@@ -261,7 +269,9 @@ class TwitchListener {
      * @returns {void}
      */
     static sub(ev) {
-        Notifications.add("sub", ev);
+        if (ev.channel === settings.twitch.channelName) {
+            Notifications.add("sub", ev);
+        }
     }
 
     //              #     ####         #                   #
@@ -276,7 +286,9 @@ class TwitchListener {
      * @returns {void}
      */
     static subExtend(ev) {
-        Notifications.add("subExtend", ev);
+        if (ev.channel === settings.twitch.channelName) {
+            Notifications.add("subExtend", ev);
+        }
     }
 
     //              #      ##    #      #    #
@@ -291,7 +303,9 @@ class TwitchListener {
      * @returns {void}
      */
     static subGift(ev) {
-        Notifications.add("subGift", ev);
+        if (ev.channel === settings.twitch.channelName) {
+            Notifications.add("subGift", ev);
+        }
     }
 
     //              #      ##    #      #    #     ##                                  #     #
@@ -307,7 +321,27 @@ class TwitchListener {
      * @returns {void}
      */
     static subGiftCommunity(ev) {
-        Notifications.add("subGiftCommunity", ev);
+        if (ev.channel === settings.twitch.channelName) {
+            Notifications.add("subGiftCommunity", ev);
+        }
+    }
+
+    //              #      ##    #      #    #     ##                                  #     #          ###               ####                                   #
+    //              #     #  #         # #   #    #  #                                       #          #  #              #                                      #
+    //  ###   #  #  ###   #     ##     #    ###   #      ##   # #   # #   #  #  ###   ##    ###   #  #  #  #   ###  #  #  ###    ##   ###   #  #   ###  ###    ###
+    // ##     #  #  #  #  # ##   #    ###    #    #     #  #  ####  ####  #  #  #  #   #     #    #  #  ###   #  #  #  #  #     #  #  #  #  #  #  #  #  #  #  #  #
+    //   ##   #  #  #  #  #  #   #     #     #    #  #  #  #  #  #  #  #  #  #  #  #   #     #     # #  #     # ##   # #  #     #  #  #     ####  # ##  #     #  #
+    // ###     ###  ###    ###  ###    #      ##   ##    ##   #  #  #  #   ###  #  #  ###     ##    #   #      # #    #   #      ##   #     ####   # #  #      ###
+    //                                                                                             #                 #
+    /**
+     * Handles when a sub gifted to the community was payed forward by the recipient.
+     * @param {TwitchListenerTypes.SubGiftCommunityPayForwardEvent} ev The sub gift pay forward event.
+     * @returns {void}
+     */
+    static subGiftCommunityPayForward(ev) {
+        if (ev.channel === settings.twitch.channelName) {
+            Notifications.add("subGiftCommunityPayForward", ev);
+        }
     }
 
     //              #      ##    #      #    #    ###               ####                                   #
@@ -318,12 +352,14 @@ class TwitchListener {
     // ###     ###  ###    ###  ###    #      ##  #      # #    #   #      ##   #     ####   # #  #      ###
     //                                                         #
     /**
-     * Handles when a sub gifted to the community was payed forward by the recipient.
-     * @param {TwitchListenerTypes.SubGiftPayForwardEvent} ev The sub gift pay forward event.
+     * Handles when a sub gifted to a user was payed forward.
+     * @param {TwitchListenerTypes.SubGiftPayForwardEvent} ev The sub pay forward event.
      * @returns {void}
      */
     static subGiftPayForward(ev) {
-        Notifications.add("subGiftPayForward", ev);
+        if (ev.channel === settings.twitch.channelName) {
+            Notifications.add("subGiftPayForward", ev);
+        }
     }
 
     //              #      ##    #      #    #    #  #                             #
@@ -339,23 +375,9 @@ class TwitchListener {
      * @returns {void}
      */
     static subGiftUpgrade(ev) {
-        Notifications.add("subGiftUpgrade", ev);
-    }
-
-    //              #     ###               ####                                   #
-    //              #     #  #              #                                      #
-    //  ###   #  #  ###   #  #   ###  #  #  ###    ##   ###   #  #   ###  ###    ###
-    // ##     #  #  #  #  ###   #  #  #  #  #     #  #  #  #  #  #  #  #  #  #  #  #
-    //   ##   #  #  #  #  #     # ##   # #  #     #  #  #     ####  # ##  #     #  #
-    // ###     ###  ###   #      # #    #   #      ##   #     ####   # #  #      ###
-    //                                 #
-    /**
-     * Handles when a sub gifted to a user was payed forward.
-     * @param {TwitchListenerTypes.SubPayForwardEvent} ev The sub pay forward event.
-     * @returns {void}
-     */
-    static subPayForward(ev) {
-        Notifications.add("subPayForward", ev);
+        if (ev.channel === settings.twitch.channelName) {
+            Notifications.add("subGiftUpgrade", ev);
+        }
     }
 
     //              #     ###          #                #  #                             #           #
@@ -371,7 +393,9 @@ class TwitchListener {
      * @returns {void}
      */
     static subPrimeUpgraded(ev) {
-        Notifications.add("subPrimeUpgraded", ev);
+        if (ev.channel === settings.twitch.channelName) {
+            Notifications.add("subPrimeUpgraded", ev);
+        }
     }
 
     //       #      #

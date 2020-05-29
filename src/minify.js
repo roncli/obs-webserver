@@ -48,7 +48,7 @@ class Minify {
         const key = `${settings.redisPrefix}:minify:${req.query.files}`;
 
         if (settings.minify.cache && outputCache[key]) {
-            res.status(200).send(outputCache[key]);
+            res.status(200).type(".css").send(outputCache[key]);
             return void 0;
         }
 
@@ -82,7 +82,7 @@ class Minify {
                 outputCache[key] = output.css;
             }
 
-            res.status(200).contentType(".css").send(output.css);
+            res.status(200).type(".css").send(output.css);
             return void 0;
         } catch (err) {
             return next(err);
@@ -111,7 +111,7 @@ class Minify {
         const key = `${settings.redisPrefix}:minify:${req.query.files}`;
 
         if (settings.minify.cache && outputCache[key]) {
-            res.status(200).send(outputCache[key]);
+            res.status(200).type(".js").send(outputCache[key]);
             return void 0;
         }
 
@@ -156,7 +156,7 @@ class Minify {
                 outputCache[key] = output.code;
             }
 
-            res.status(200).contentType(".js").send(output.code);
+            res.status(200).type(".js").send(output.code);
             return void 0;
         } catch (err) {
             return next(err);

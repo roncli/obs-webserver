@@ -1,10 +1,10 @@
-const Common = require("../includes/common"),
-    HomeView = require("../../public/views/home");
-
 /**
  * @typedef {import("express").Request} Express.Request
  * @typedef {import("express").Response} Express.Response
  */
+
+const Common = require("../includes/common"),
+    HomeView = require("../../public/views/home");
 
 //  #   #
 //  #   #
@@ -33,7 +33,7 @@ class Home {
     static get(req, res) {
         res.status(200).send(Common.page(
             "",
-            {css: ["/css/home.css"], js: ["/js/home.js"]},
+            {css: ["/css/home.css"], js: ["/js/spotify.js", "/js/home.js"]},
             HomeView.get({})
         ));
     }

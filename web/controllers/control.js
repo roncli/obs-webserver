@@ -1,12 +1,12 @@
-const ConfigFile = require("../../src/configFile"),
-    Common = require("../includes/common"),
-    ControlView = require("../../public/views/control"),
-    Twitch = require("../../src/twitch");
-
 /**
  * @typedef {import("express").Request} Express.Request
  * @typedef {import("express").Response} Express.Response
  */
+
+const ConfigFile = require("../../src/configFile"),
+    Common = require("../includes/common"),
+    ControlView = require("../../public/views/control"),
+    Twitch = require("../../src/twitch");
 
 //   ###                  #                    ##
 //  #   #                 #                     #
@@ -40,7 +40,7 @@ class Control {
 
         res.status(200).send(Common.page(
             "",
-            {css: ["/css/control.css"], js: ["/js/common.js", "/js/control.js"]},
+            {css: ["/css/control.css"], js: ["/js/control.js"]},
             ControlView.get({
                 discordChannels: ConfigFile.get("discordChannels") || [],
                 spotifyPlaylists: ConfigFile.get("spotifyPlaylists") || [],

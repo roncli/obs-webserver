@@ -1,9 +1,8 @@
 declare namespace ViewTypes {
     type Action = {
         name?: string
-        reward?: string
+        overlay?: string
         soundPath?: string
-        imagePath?: string
         imageLocation?: string
     }
 
@@ -18,6 +17,10 @@ declare namespace ViewTypes {
         guildId?: string
         channelId?: string
     }
+    
+    type HomeViewParameters = {
+        // TODO
+    }
 
     type IndexViewParameters = {
         head: string
@@ -27,6 +30,11 @@ declare namespace ViewTypes {
     type Option = {
         text?: string
         value: string
+    }
+
+    type RoncliGaming = {
+        title: string
+        info: string
     }
 
     type SpotifyPlaylist = {

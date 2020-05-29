@@ -9,83 +9,6 @@
  * A class that provides functions for the control page.
  */
 class Control {
-    //         #                 #    #  #        #                        #            #
-    //         #                 #    #  #        #                        #            #
-    //  ###   ###    ###  ###   ###   #  #   ##   ###    ###    ##    ##   # #    ##   ###
-    // ##      #    #  #  #  #   #    ####  # ##  #  #  ##     #  #  #     ##    # ##   #
-    //   ##    #    # ##  #      #    ####  ##    #  #    ##   #  #  #     # #   ##     #
-    // ###      ##   # #  #       ##  #  #   ##   ###   ###     ##    ##   #  #   ##     ##
-    /**
-     * Starts the WebSocket connection.
-     * @returns {void}
-     */
-    static startWebsocket() {
-        /**  @type {WebSocket} */
-        Control.ws = new WebSocket("ws://" + document.location.hostname + ":" + (document.location.port || "80") + "/");
-
-        Control.ws.onmessage = (ev) => {
-            const data = JSON.parse(ev.data);
-
-            switch (data.type) {
-                case "settings":
-                    switch (data.data.type) {
-                        case "actions": {
-                            /** @type {HTMLSelectElement} */
-                            const select = document.getElementById("action-list");
-
-                            select.innerHTML = "";
-
-                            for (const action of data.data.data) {
-                                const option = new Option(action.name);
-                                option.classList.add("action");
-                                option.dataset.soundPath = action.soundPath;
-                                option.dataset.imagePath = action.imagePath;
-                                option.dataset.imageLocation = action.imageLocation;
-                                option.dataset.reward = action.reward;
-                                select.add(option);
-                            }
-                            break;
-                        }
-                        case "discordChannels": {
-                            /** @type {HTMLSelectElement} */
-                            const select = document.getElementById("channel-list");
-
-                            select.innerHTML = "";
-
-                            for (const channel of data.data.data) {
-                                const option = new Option(channel.name);
-                                option.classList.add("channel");
-                                option.dataset.guildId = channel.guildId;
-                                option.dataset.channelId = channel.channelId;
-                                select.add(option);
-                            }
-                            break;
-                        }
-                        case "spotifyPlaylists": {
-                            /** @type {HTMLSelectElement} */
-                            const select = document.getElementById("music-list");
-
-                            select.innerHTML = "";
-
-                            for (const music of data.data.data) {
-                                const option = new Option(music.name);
-                                option.classList.add("music");
-                                option.dataset.uri = music.uri;
-                                select.add(option);
-                            }
-                            break;
-                        }
-                    }
-                    break;
-                case "error":
-
-                    break;
-                default:
-                    break;
-            }
-        };
-    }
-
     // ###    ##   #  #   ##                #                 #    #                    #           #
     // #  #  #  #  ####  #  #               #                 #    #                    #           #
     // #  #  #  #  ####  #      ##   ###   ###    ##   ###   ###   #      ##    ###   ###   ##    ###
@@ -111,7 +34,7 @@ class Control {
 
                 await window.Common.loadTemplate(scene.dataset.path, scene.dataset.class);
 
-                await window.Common.loadDataIntoTemplate(null, "#scene", window[scene.dataset.class].get);
+                await window.Common.loadDataIntoTemplate(scene.dataset.api || null, "#scene", window[scene.dataset.class].get);
 
                 Control.ws.send(JSON.stringify({
                     type: "scene",
@@ -121,6 +44,41 @@ class Control {
                 }));
             }
         });
+
+        document.getElementById("scene").addEventListener("click", (ev) => {
+            /** @type {HTMLButtonElement} */
+            const button = ev.target;
+
+            if (button && button.matches("button.scene")) {
+                Control.ws.send(JSON.stringify({
+                    type: "transition",
+                    data: {
+                        scene: button.dataset.transition
+                    }
+                }));
+            }
+        });
+
+        document.getElementById("scene").addEventListener("focusout", async (ev) => {
+            if (ev.target && (ev.target.matches("textarea.setting") || ev.target.matches("input:text.setting"))) {
+                /** @type {HTMLTextAreaElement} */
+                const parent = ev.target.parentElement,
+                    api = parent.dataset.api,
+                    objects = {};
+
+                parent.querySelectorAll(".setting").forEach((el) => {
+                    objects[el.dataset.type] = el.value;
+                });
+
+                await fetch(api, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(objects)
+                });
+            }
+        }, false);
 
         document.getElementById("discord").addEventListener("click", (ev) => {
             /** @type {HTMLButtonElement} */
@@ -188,24 +146,8 @@ class Control {
                     type: "action",
                     data: {
                         name: action.value,
-                        soundPath: action.dataset.soundPath,
-                        imagePath: action.dataset.imagePath,
-                        imageLocation: action.dataset.imageLocation,
-                        reward: action.dataset.reward
-                    }
-                }));
-            }
-        });
-
-        document.getElementById("scene").addEventListener("click", (ev) => {
-            /** @type {HTMLButtonElement} */
-            const button = ev.target;
-
-            if (button && button.matches("button.scene")) {
-                Control.ws.send(JSON.stringify({
-                    type: "transition",
-                    data: {
-                        scene: button.dataset.transition
+                        overlay: action.dataset.overlay,
+                        soundPath: action.dataset.soundPath
                     }
                 }));
             }
@@ -348,9 +290,84 @@ class Control {
             selected = null;
         });
     }
+
+    //         #                 #    #  #        #                        #            #
+    //         #                 #    #  #        #                        #            #
+    //  ###   ###    ###  ###   ###   #  #   ##   ###    ###    ##    ##   # #    ##   ###
+    // ##      #    #  #  #  #   #    ####  # ##  #  #  ##     #  #  #     ##    # ##   #
+    //   ##    #    # ##  #      #    ####  ##    #  #    ##   #  #  #     # #   ##     #
+    // ###      ##   # #  #       ##  #  #   ##   ###   ###     ##    ##   #  #   ##     ##
+    /**
+     * Starts the WebSocket connection.
+     * @returns {void}
+     */
+    static startWebsocket() {
+        /** @type {WebSocket} */
+        Control.ws = new WebSocket("ws://" + document.location.hostname + ":" + (document.location.port || "80") + "/");
+
+        Control.ws.onmessage = (ev) => {
+            const data = JSON.parse(ev.data);
+
+            switch (data.type) {
+                case "settings":
+                    switch (data.data.type) {
+                        case "actions": {
+                            /** @type {HTMLSelectElement} */
+                            const select = document.getElementById("action-list");
+
+                            select.innerHTML = "";
+
+                            for (const action of data.data.data) {
+                                const option = new Option(action.name);
+                                option.classList.add("action");
+                                option.dataset.overlay = action.overlay;
+                                option.dataset.soundPath = action.soundPath;
+                                select.add(option);
+                            }
+                            break;
+                        }
+                        case "discordChannels": {
+                            /** @type {HTMLSelectElement} */
+                            const select = document.getElementById("channel-list");
+
+                            select.innerHTML = "";
+
+                            for (const channel of data.data.data) {
+                                const option = new Option(channel.name);
+                                option.classList.add("channel");
+                                option.dataset.guildId = channel.guildId;
+                                option.dataset.channelId = channel.channelId;
+                                select.add(option);
+                            }
+                            break;
+                        }
+                        case "spotifyPlaylists": {
+                            /** @type {HTMLSelectElement} */
+                            const select = document.getElementById("music-list");
+
+                            select.innerHTML = "";
+
+                            for (const music of data.data.data) {
+                                const option = new Option(music.name);
+                                option.classList.add("music");
+                                option.dataset.uri = music.uri;
+                                select.add(option);
+                            }
+                            break;
+                        }
+                    }
+                    break;
+                case "error":
+
+                    break;
+                default:
+                    break;
+            }
+        };
+    }
 }
 
-/**  @type {WebSocket} */
+/** @type {WebSocket} */
 Control.ws = void 0;
 
 document.addEventListener("DOMContentLoaded", Control.DOMContentLoaded);

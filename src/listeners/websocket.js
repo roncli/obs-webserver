@@ -2,6 +2,8 @@
  * @typedef {import("ws").Data} WebSocket.Data
  */
 
+const Websocket = require("../websocket");
+
 //  #   #         #                           #              #     #        #            #
 //  #   #         #                           #              #     #                     #
 //  #   #   ###   # ##    ###    ###    ###   #   #   ###   ####   #       ##     ###   ####    ###   # ##    ###   # ##
@@ -26,6 +28,18 @@ class WebsocketListener {
     static message(data) {
         // TODO: Handle websocket.
         console.log("Incoming to server.", data);
+
+        switch (data.type) {
+            case "action":
+                Websocket.broadcast({
+                    type: "overlay",
+                    data: {
+                        type: data.data.overlay,
+                        soundPath: data.data.soundPath
+                    }
+                });
+                break;
+        }
     }
 }
 

@@ -31,13 +31,8 @@ class ActionView {
                     <span draggable="true" class="draggable emoji">↕</span>
                 `}
                 Name: <input type="text" data-field="name" value="${ActionView.Common.htmlEncode(action.name)}" />
+                Overlay Trigger: <input type="text" data-field="overlay" value="${ActionView.Common.htmlEncode(action.overlay)}" />
                 Sound Path: <input type="text" data-field="soundPath" value="${ActionView.Common.htmlEncode(action.soundPath)}" />
-                Image Path: <input type="text" data-field="imagePath" value="${ActionView.Common.htmlEncode(action.imagePath)}" />
-                Image Location:
-                <select data-field="imageLocation">
-                    ${ActionView.Common.generateOptions([{value: "Webcam"}], action.imageLocation, true)}
-                </select>
-                Reward: <input type="text" data-field="reward" value="${ActionView.Common.htmlEncode(action.reward)}" />
                 <button class="emoji ${add ? "add" : "remove"}">${add ? "➕" : "❌"}</button>
             </div>
         `;

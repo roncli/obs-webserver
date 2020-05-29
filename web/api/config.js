@@ -66,7 +66,7 @@ class ConfigApi {
             }
         });
 
-        res.status(204).send();
+        res.sendStatus(204);
     }
 }
 

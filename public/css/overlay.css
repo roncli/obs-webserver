@@ -1,0 +1,66 @@
+body {
+    overflow: hidden;
+    background-color: black;
+}
+
+div#scene {
+    position: absolute;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+}
+
+div#stinger {
+    position: absolute;
+    width: 1920px;
+    height: 1080px;
+}
+
+.stinger {
+    animation: fader 2s linear;
+}
+
+div#fire {
+    position: absolute;
+    top: 972px;
+    width: 384px;
+    height: 108px;
+    opacity: 0;
+    mask-image: linear-gradient(to top, rgba(0, 0, 0, 1.0), transparent);
+}
+
+.fire {
+    animation: fire 10s linear;
+}
+
+@keyframes fader {
+    0% {
+        opacity: 1;
+    }
+
+    75% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes fire {
+    0% {
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 1;
+    }
+
+    80% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}

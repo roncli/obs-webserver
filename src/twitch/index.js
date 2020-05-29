@@ -235,7 +235,7 @@ class Twitch {
         });
 
         chat.client.onCommunityPayForward((channel, user, forwardInfo) => {
-            eventEmitter.emit("subGiftPayForward", {
+            eventEmitter.emit("subGiftCommunityPayForward", {
                 channel,
                 user,
                 originalGifter: forwardInfo.originalGifterDisplayName
@@ -301,11 +301,12 @@ class Twitch {
             });
         });
 
-        chat.client.onPrivmsg((channel, user, message) => {
+        chat.client.onPrivmsg((channel, user, message, msg) => {
             eventEmitter.emit("message", {
                 channel,
                 user,
-                message
+                message,
+                msg // TODO: Implement this.
             });
         });
 
@@ -339,7 +340,7 @@ class Twitch {
         });
 
         chat.client.onStandardPayForward((channel, user, forwardInfo) => {
-            eventEmitter.emit("subPayForward", {
+            eventEmitter.emit("subGiftPayForward", {
                 channel,
                 user,
                 originalGifter: forwardInfo.originalGifterDisplayName,

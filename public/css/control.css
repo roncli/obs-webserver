@@ -1,5 +1,5 @@
 * {
-    font-size: 12px;
+    font-size: 14px;
 }
 
 body {
@@ -7,17 +7,14 @@ body {
 }
 
 select {
-    font-size: 12px;
     padding: 5px;
 }
 
 input {
-    font-size: 12px;
     margin: 5px;
 }
 
 button {
-    font-size: 12px;
     padding: 5px;
     margin: 5px;
     -webkit-appearance: none;
@@ -63,4 +60,9 @@ button.emoji {
 
 .hidden {
     display: none;
+}
+
+input, select, textarea, button {
+    background-color: #191935;
+    color:white;
 }

@@ -1,10 +1,10 @@
-const Common = require("../includes/common"),
-    MethodNotAllowedView = require("../../public/views/405");
-
 /**
  * @typedef {import("express").Request} Express.Request
  * @typedef {import("express").Response} Express.Response
  */
+
+const Common = require("../includes/common"),
+    MethodNotAllowedView = require("../../public/views/405");
 
 //  #   #          #     #                 #  #   #          #       #     ##     ##                             #
 //  #   #          #     #                 #  #   #          #      # #     #      #                             #

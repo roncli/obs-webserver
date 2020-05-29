@@ -1,11 +1,168 @@
+body {
+    overflow: hidden;
+}
+
 div#scene {
     position: absolute;
-    
     width: 1920px;
     height: 1080px;
     overflow: hidden;
 }
 
-.hidden {
-    display: none;
+div#game {
+    position: absolute;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    background-image: url("../images/background.png");
+    background-size: 1920px 1080px;
+}
+
+div#game .header {
+    color: white;
+}
+
+div#game .text {
+    color: #7a7aff;
+}
+
+div#game div#spotify {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+}
+
+div#game div#spotify div {
+    display: inline-block;
+    vertical-align: top;
+}
+
+div#game div#spotify .now-playing {
+    color: white;
+    font-size: 22px;
+    max-width: 426px;
+    text-align: right;
+}
+
+div#game div#spotify .artwork {
+    margin-left: 10px;
+}
+
+div#game div#spotify .artwork img {
+    width: 64px;
+    height: 64px;
+}
+
+div#game div#title {
+    position: absolute;
+    width: 1920px;
+    text-align: center;
+}
+
+div#game div#title div.header {
+    font-size: 56px;
+}
+
+div#game div#title div.text {
+    font-size: 48px;
+}
+
+div#game div#info {
+    position: absolute;
+    top: 138px;
+    width: 384px;
+    font-size: 22px;
+}
+
+div#game div#info div.header,
+div#game div#info div.text {
+    margin: 0 7px;
+}
+
+div#game div#info div.header {
+    margin-bottom: 5px;
+}
+
+div#game div#support {
+    position: absolute;
+    left: 614px;
+    top: 980px;
+}
+
+div#game div#support div.support {
+    display: grid;
+    font-size: 22px;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(4, auto);
+    column-gap: 20px;
+    row-gap: 3px;
+}
+
+div#game div#recent {
+    position: absolute;
+    right: 7px;
+    top: 980px;
+    text-align: right;
+}
+
+div#game div#recent div.recent {
+    display: grid;
+    font-size: 22px;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(4, auto);
+    column-gap: 20px;
+    row-gap: 3px;
+}
+
+div#game div#notification {
+    position: absolute;
+    display: grid;
+    left: 614px;
+    top: 980px;
+    width: 1306px;
+}
+
+div#game div#notification div.notification {
+    display: grid;
+    font-size: 36px;
+    grid-template-rows: 93px;
+    grid-template-columns: repeat(2, fit-content(1200px));
+    column-gap: 20px;
+    align-self: center;
+    justify-self: center;
+    align-items: center;
+    justify-items: center;
+}
+
+div#game div#notification div.notification .message {
+    font-size: 16px;
+}
+
+.fade-out {
+    animation: fader 0.5s linear;
+    opacity: 0;
+}
+
+.ease-in {
+    animation: easer 0.5s ease-in;
+}
+
+@keyframes fader {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes easer {
+    0% {
+        margin-top: 100px;
+    }
+    
+    100% {
+        margin-top: 0;
+    }
 }

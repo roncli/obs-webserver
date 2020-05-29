@@ -63,6 +63,9 @@ typings/
 # Graph SVG
 graph.svg
 
+# MP4s
+*.mp4
+
 # Sensitive stuff
 roncli.com-*.json
 config.json

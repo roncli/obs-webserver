@@ -1,11 +1,11 @@
-const Common = require("../includes/common"),
-    ServerErrorView = require("../../public/views/500"),
-    Twitch = require("../../src/twitch");
-
 /**
  * @typedef {import("express").Request} Express.Request
  * @typedef {import("express").Response} Express.Response
  */
+
+const Common = require("../includes/common"),
+    ServerErrorView = require("../../public/views/500"),
+    Twitch = require("../../src/twitch");
 
 //   ###     #            #     #
 //  #   #   # #           #     #

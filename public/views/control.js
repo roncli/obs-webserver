@@ -30,7 +30,7 @@ class ControlView {
             <div id="scenes">
                 OBS Scenes<br />
                 <select id="scene-list">
-                    <option class="scene" data-scene="roncli Gaming v2" data-path="/views/control/roncli-gaming.js" data-class="RoncliGamingView">roncli Gaming</button>
+                    <option class="scene" data-scene="roncli Gaming v2" data-path="/views/control/roncli-gaming.js" data-class="RoncliGamingView" data-api="/api/config/roncliGaming">roncli Gaming</button>
                 </select>
                 <button id="scene-go">Go</button>
             </div>
@@ -59,7 +59,7 @@ class ControlView {
                 Actions<br />
                 <select id="action-list">
                     ${data.actions.map((a) => /* html */`
-                        <option class="action" data-sound-path="${ControlView.Common.htmlEncode(a.soundPath)}" data-image-path="${ControlView.Common.htmlEncode(a.imagePath)}" data-image-location="${ControlView.Common.htmlEncode(a.imageLocation)}" data-reward="${ControlView.Common.htmlEncode(a.reward)}">${a.name}</option>
+                        <option class="action" data-overlay="${ControlView.Common.htmlEncode(a.overlay)}" data-sound-path="${ControlView.Common.htmlEncode(a.soundPath)}">${a.name}</option>
                     `).join("")}
                 </select>
                 <button id="action-go">Go</button>

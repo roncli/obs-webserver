@@ -10,6 +10,8 @@ let notificationReady = Deferred.promise(),
 // Notification cooldown starts resolved.
 notificationCooldown.resolve();
 
+notificationReady.resolve();
+
 //  #   #          #       #      ##     #                   #       #
 //  #   #          #             #  #                        #
 //  ##  #   ###   ####    ##     #      ##     ###    ###   ####    ##     ###   # ##    ###
