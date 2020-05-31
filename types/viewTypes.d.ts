@@ -17,7 +17,7 @@ declare namespace ViewTypes {
         guildId?: string
         channelId?: string
     }
-    
+
     type HomeViewParameters = {
         // TODO
     }

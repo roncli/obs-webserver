@@ -38,7 +38,7 @@ class DiscordChannelsView {
 
 /** @type {typeof import("./discord-channel")} */
 // @ts-ignore
-DiscordChannelsView.DiscordChannelView = typeof Common === "undefined" ? require("./discord-channels") : DiscordChannelView; // eslint-disable-line no-undef
+DiscordChannelsView.DiscordChannelView = typeof DiscordChannelView === "undefined" ? require("./discord-channels") : DiscordChannelView; // eslint-disable-line no-undef
 
 if (typeof module === "undefined") {
     window.DiscordChannelsView = DiscordChannelsView;

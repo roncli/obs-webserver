@@ -123,7 +123,7 @@ class Game {
     //   ##    #    # ##  #      #
     // ###      ##   # #  #       ##
     /**
-     * Starts the intro scene.
+     * Starts the game scene.
      * @returns {void}
      */
     static start() {
@@ -148,7 +148,7 @@ class Game {
                         }) : void 0;
 
                         if (lastTrack !== Game.lastTrack) {
-                            document.getElementById("spotify").innerHTML = window.GameSpotifyView.get(ev.track);
+                            document.getElementById("spotify").innerHTML = window.SpotifyView.get(ev.track);
                         }
 
                         Game.lastTrack = lastTrack;
@@ -701,6 +701,8 @@ class Game {
         };
     }
 }
+
+Game.lastTrack = "";
 
 /** @type {NodeJS.Timeout} */
 Game.notifyTimeout = void 0;

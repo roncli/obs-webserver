@@ -9,48 +9,139 @@ div#scene {
     overflow: hidden;
 }
 
-div#game {
-    position: absolute;
-    width: 1920px;
-    height: 1080px;
-    overflow: hidden;
-    background-image: url("../images/background.png");
-    background-size: 1920px 1080px;
-}
-
-div#game .header {
-    color: white;
-}
-
-div#game .text {
-    color: #7a7aff;
-}
-
-div#game div#spotify {
+div#spotify {
     position: absolute;
     top: 7px;
     right: 7px;
 }
 
-div#game div#spotify div {
+div#spotify div {
     display: inline-block;
     vertical-align: top;
 }
 
-div#game div#spotify .now-playing {
+div#spotify .now-playing {
     color: white;
     font-size: 22px;
     max-width: 426px;
     text-align: right;
 }
 
-div#game div#spotify .artwork {
+div#spotify .artwork {
     margin-left: 10px;
 }
 
-div#game div#spotify .artwork img {
+div#spotify .artwork img {
     width: 64px;
     height: 64px;
+}
+
+div#frame {
+    position: absolute;
+    width: 1920px;
+    height: 1080px;
+}
+
+div#frame div#fire {
+    position: absolute;
+    width: 1920px;
+    height: 1080px;
+}
+
+div#frame div#frame-image {
+    position: absolute;
+    width: 1920px;
+    height: 1080px;
+    background: url("/images/frame.png") 1920px 1080px;
+}
+
+div#frame div#content {
+    position: absolute;
+    width: 1728px;
+    height: 972px;
+    left: 96px;
+    top: 54px;
+    overflow: hidden;
+}
+
+div#frame div#content div#roncli-gaming {
+    position: absolute;
+    width: 1482px;
+    height: 590px;
+    left: 123px;
+    top: 191px;
+    background: url("/images/roncliGaming.png") 1482px 590px;
+}
+
+div#frame div#content div#you-know-it {
+    position: absolute;
+    width: 112px;
+    height: 112px;
+    left: 808px;
+    top: 212px;
+    background: url("/images/roncliYouKnowIt-112.png") 112px 112px;
+}
+
+div#frame div#content div#roncli-gaming-small {
+    position: absolute;
+    width: 741px;
+    height: 295px;
+    left: 493.5px;
+    top: 338.5px;
+    background: url("/images/roncliGaming.png") 741px 295px;
+    background-size: 741px 295px;
+}
+
+div#frame div#content div#whatever {
+    position: absolute;
+    width: 112px;
+    height: 112px;
+    left: 1122px;
+    top: 307px;
+    background: url("/images/roncliWhatever-112.png") 112px 112px;
+}
+
+div#frame div#content div#brb-text {
+    position: absolute;
+    width: 1728px;
+    top: 633.5px;
+    font-size: 72px;
+    text-align: center;
+}
+
+div#frame div#content div#roncli-gaming-tiny {
+    position: absolute;
+    width: 494px;
+    height: 196.666px;
+    left: 7px;
+    top: 7px;
+    background: url("/images/roncliGaming.png") 494px 196.666px;
+    background-size: 494px 196.666px;
+}
+
+div#frame div#content div#rip {
+    position: absolute;
+    width: 112px;
+    height: 112px;
+    right: 7px;
+    top: 7px;
+    background: url("/images/roncliRip-112.png") 112px 112px;
+}
+
+div#frame div#content div#crawler {
+    position: absolute;
+    top: 486px;
+    width: 1728px;
+    text-align: center;
+    font-size: 36px;
+}
+
+div#game {
+    position: absolute;
+    width: 1920px;
+    height: 1080px;
+    background-image: url("../images/background.png");
+    background-size: 1920px 1080px;
 }
 
 div#game div#title {
@@ -136,6 +227,14 @@ div#game div#notification div.notification {
 
 div#game div#notification div.notification .message {
     font-size: 16px;
+}
+
+.header {
+    color: white;
+}
+
+.text {
+    color: #7a7aff;
 }
 
 .fade-out {

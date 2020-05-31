@@ -28,11 +28,18 @@ class Home {
             Home.startWebsocket();
             Home.spotify = false;
 
-            await window.Common.loadTemplate("/js/?files=/views/home/game/spotify.js,/views/home/game/title.js,/views/home/game/info.js,/views/home/game/support.js,/views/home/game/recent.js,/views/home/game/notification.js,/views/home/game.js,/js/home/game.js", "GameView");
+            // await window.Common.loadTemplate("/js/?files=/views/home/spotify.js,/views/home/game/title.js,/views/home/game/info.js,/views/home/game/support.js,/views/home/game/recent.js,/views/home/game/notification.js,/views/home/game.js,/js/home/game.js", "GameView");
 
-            await window.Common.loadDataIntoTemplate("/api/config/roncliGaming", "#scene", window.GameView.get);
+            // await window.Common.loadDataIntoTemplate("/api/config/roncliGaming", "#scene", window.GameView.get);
 
-            window.Game.start();
+            // window.Game.start();
+
+            await window.Common.loadTemplate("/js/?files=/views/home/spotify.js,/views/home/frame.js,/js/home/frame.js", "FrameView");
+
+            document.getElementById("scene").innerHTML = window.FrameView.get(true);
+
+            window.Frame.start();
+
         }, 5000);
     }
 

@@ -40,7 +40,7 @@ class SpotifyPlaylistsView {
 
 /** @type {typeof import("./spotify-playlist")} */
 // @ts-ignore
-SpotifyPlaylistsView.SpotifyPlaylistView = typeof Common === "undefined" ? require("./spotify-playlist") : SpotifyPlaylistView; // eslint-disable-line no-undef
+SpotifyPlaylistsView.SpotifyPlaylistView = typeof SpotifyPlaylistView === "undefined" ? require("./spotify-playlist") : SpotifyPlaylistView; // eslint-disable-line no-undef
 
 if (typeof module === "undefined") {
     window.SpotifyPlaylistsView = SpotifyPlaylistsView;

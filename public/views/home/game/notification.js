@@ -29,7 +29,7 @@ class GameNotificationView {
                 <div>
                     <img src="${image}" />
                     ${sound ? /* html */`
-                        <audio autoplay>
+                        <audio autoplay="autoplay">
                             <source src="${sound}" type="audio/ogg">
                         </audio>
                     ` : ""}

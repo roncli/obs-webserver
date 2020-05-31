@@ -38,7 +38,7 @@ class ActionsView {
 
 /** @type {typeof import("./action")} */
 // @ts-ignore
-ActionsView.ActionView = typeof Common === "undefined" ? require("./action") : ActionView; // eslint-disable-line no-undef
+ActionsView.ActionView = typeof ActionView === "undefined" ? require("./action") : ActionView; // eslint-disable-line no-undef
 
 if (typeof module === "undefined") {
     window.ActionsView = ActionsView;

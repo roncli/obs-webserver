@@ -26,7 +26,7 @@ class GameView {
     static get(data) {
         return /* html */`
             <div id="game">
-                <div id="spotify">${GameView.GameSpotifyView.get()}</div>
+                <div id="spotify">${GameView.SpotifyView.get()}</div>
                 <div id="title">${GameView.GameTitleView.get(data.data.title)}</div>
                 <div id="info">${GameView.GameInfoView.get(data.data.info)}</div>
                 <div id="support">${GameView.GameSupportView.get()}</div>
@@ -39,19 +39,19 @@ class GameView {
 
 /** @type {typeof import("./game/info")} */
 // @ts-ignore
-GameView.GameInfoView = typeof Common === "undefined" ? require("./game/info") : GameInfoView; // eslint-disable-line no-undef
+GameView.GameInfoView = typeof GameInfoView === "undefined" ? require("./game/info") : GameInfoView; // eslint-disable-line no-undef
 /** @type {typeof import("./game/recent")} */
 // @ts-ignore
-GameView.GameRecentView = typeof Common === "undefined" ? require("./game/recent") : this.GameRecentView; // eslint-disable-line no-undef
-/** @type {typeof import("./game/spotify")} */
+GameView.GameRecentView = typeof GameRecentView === "undefined" ? require("./game/recent") : this.GameRecentView; // eslint-disable-line no-undef
+/** @type {typeof import("./spotify")} */
 // @ts-ignore
-GameView.GameSpotifyView = typeof Common === "undefined" ? require("./game/spotify") : this.GameSpotifyView; // eslint-disable-line no-undef
+GameView.SpotifyView = typeof SpotifyView === "undefined" ? require("./game/spotify") : this.SpotifyView; // eslint-disable-line no-undef
 /** @type {typeof import("./game/support")} */
 // @ts-ignore
-GameView.GameSupportView = typeof Common === "undefined" ? require("./game/support") : GameSupportView; // eslint-disable-line no-undef
+GameView.GameSupportView = typeof GameSupportView === "undefined" ? require("./game/support") : GameSupportView; // eslint-disable-line no-undef
 /** @type {typeof import("./game/title")} */
 // @ts-ignore
-GameView.GameTitleView = typeof Common === "undefined" ? require("./game/title") : GameTitleView; // eslint-disable-line no-undef
+GameView.GameTitleView = typeof GameTitleView === "undefined" ? require("./game/title") : GameTitleView; // eslint-disable-line no-undef
 
 if (typeof module === "undefined") {
     window.GameView = GameView;

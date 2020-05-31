@@ -20,10 +20,7 @@ class Intro {
      * @returns {void}
      */
     static start() {
-        /** @type {HTMLVideoElement} */
-        const videoIntro = document.getElementById("video-intro");
-
-        videoIntro.play();
+        window.handleMessage = void 0;
     }
 }
 

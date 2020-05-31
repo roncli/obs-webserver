@@ -31,6 +31,7 @@ class IndexView {
         return /* html */`
             <html>
                 <head>
+                    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgo=">
                     <title>roncli Gaming</title>
                     ${head}
                 </head>

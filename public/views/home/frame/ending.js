@@ -1,0 +1,115 @@
+//  #####                              #####             #    #                  #   #    #
+//  #                                  #                 #                       #   #
+//  #      # ##    ###   ## #    ###   #      # ##    ## #   ##    # ##    ## #  #   #   ##     ###   #   #
+//  ####   ##  #      #  # # #  #   #  ####   ##  #  #  ##    #    ##  #  #  #    # #     #    #   #  #   #
+//  #      #       ####  # # #  #####  #      #   #  #   #    #    #   #   ##     # #     #    #####  # # #
+//  #      #      #   #  # # #  #      #      #   #  #  ##    #    #   #  #       # #     #    #      # # #
+//  #      #       ####  #   #   ###   #####  #   #   ## #   ###   #   #   ###     #     ###    ###    # #
+//                                                                        #   #
+//                                                                         ###
+/**
+ * A class that represents the frame ending view.
+ */
+class FrameEndingView {
+    //              #
+    //              #
+    //  ###   ##   ###
+    // #  #  # ##   #
+    //  ##   ##     #
+    // #      ##     ##
+    //  ###
+    /**
+     * Gets the rendered page template.
+     * @returns {string} An HTML string of the page.
+     */
+    static get() {
+        const data = FrameEndingView.Home && FrameEndingView.Home.data || {};
+
+        let followers = [];
+        if (data.follow) {
+            followers = Object.keys(data.follow).map((f) => data.follow[f].name).sort();
+        }
+
+        let hosts = [];
+        if (data.hosted) {
+            hosts = Object.keys(data.hosted).map((h) => data.hsoted[h].user).sort();
+        }
+
+        let raids = [];
+        if (data.raided) {
+            raids = Object.keys(data.raided).map((r) => data.raided[r].user).sort();
+        }
+
+        let cheers = [];
+        if (data.cheers) {
+            cheers = Object.keys(data.bits).map((b) => data.bits[b].name).sort();
+        }
+
+        let subs = [];
+        if (data.sub) {
+            subs = Object.keys(data.sub).map((s) => data.sub[s].name).sort();
+        }
+
+        let primeGifts = [];
+        if (data.giftPrime) {
+            primeGifts = Object.keys(data.giftPrime).map((g) => data.giftPrime[g].name).sort();
+        }
+
+        let giftSubs = [];
+        if (data.subGift) {
+            giftSubs = Object.keys(data.subGift).map((s) => data.subGift[s].name).sort();
+        }
+
+        return /* html */`
+            <div id="crawler">
+                ${followers.length + hosts.length + raids.length + cheers.length + subs.length === 0 ? /* html */`
+                    Thanks to everyone for watching!
+                ` : /* html */`
+                    Thanks to everyone for watching, and an extra thanks to those who supported the stream today!
+                    ${followers.length === 0 ? "" : /* html */`
+                        <br /><br />New Followers:<br />${followers.map((f) => /* html */`<span class="text">${FrameEndingView.Common.htmlEncode(f)}</span>`).join("<br />")}
+                    `}
+                    ${hosts.length === 0 ? "" : /* html */`
+                        <br /><br />Hosts:<br />${hosts.map((h) => /* html */`<span class="text">${FrameEndingView.Common.htmlEncode(h)}</span>`).join("<br />")}
+                    `}
+                    ${raids.length === 0 ? "" : /* html */`
+                        <br /><br />Raids:<br />${raids.map((r) => /* html */`<span class="text">${FrameEndingView.Common.htmlEncode(r)}</span>`).join("<br />")}
+                    `}
+                    ${cheers.length === 0 ? "" : /* html */`
+                        <br /><br />Cheers:<br />${cheers.map((c) => /* html */`<span class="text">${FrameEndingView.Common.htmlEncode(c)}</span>`).join("<br />")}
+                    `}
+                    ${subs.length === 0 ? "" : /* html */`
+                        <br /><br />Subscriptions:<br />${subs.map((s) => /* html */`<span class="text">${FrameEndingView.Common.htmlEncode(s)}</span>`).join("<br />")}
+                    `}
+                `}
+                ${primeGifts.length + giftSubs.length === 0 ? "" : /* html */`
+                    <br /><br />Much love and appreciating to those supporting the Boom Team!
+                    ${giftSubs.length === 0 ? "" : /* html */`
+                        <br /><br />Gift Subscriptions From:<br />${giftSubs.map((g) => /* html */`<span class="text">${FrameEndingView.Common.htmlEncode(g)}</span>`).join("<br />")}
+                    `}
+                    ${primeGifts.length === 0 ? "" : /* html */`
+                        <br /><br />Prime Gifts From:<br />${primeGifts.map((p) => /* html */`<span class="text">${FrameEndingView.Common.htmlEncode(p)}</span>`).join("<br />")}
+                    `}
+                `}<br /><br /><br /><br />
+                Special thanks:<br /><br />
+                Gromfalloon for the awesome Noita-themed emotes!<br /><br />
+                Solitha_the_Mean_and_Evil for continuing to let me do this, and for not killing me on stream!<br /><br /><br /><br />
+                See you next time!
+            </div>
+            <div id="roncli-gaming-tiny"></div>
+            <div id="rip"></div>
+        `;
+    }
+}
+
+// @ts-ignore
+FrameEndingView.Home = typeof Home === "undefined" ? void 0 : Home; // eslint-disable-line no-undef
+/** @type {typeof import("../../../../web/includes/common")} */
+// @ts-ignore
+FrameEndingView.Common = typeof Common === "undefined" ? require("../../../../web/includes/common") : Common; // eslint-disable-line no-undef
+
+if (typeof module === "undefined") {
+    window.FrameEndingView = FrameEndingView;
+} else {
+    module.exports = FrameEndingView; // eslint-disable-line no-undef
+}
