@@ -48,6 +48,12 @@ class Control {
                     scene: button.dataset.transition
                 }));
             }
+
+            if (button && button.matches("button#update-twitch")) {
+                Control.ws.send(JSON.stringify({
+                    type: "update-twitch"
+                }));
+            }
         });
 
         document.getElementById("scene").addEventListener("focusout", async (ev) => {

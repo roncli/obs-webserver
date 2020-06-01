@@ -206,6 +206,37 @@ class Twitch {
         }, 24 * 60 * 60 * 1000); // TODO: Test with a lower time.
     }
 
+    //               #     ##
+    //               #    #  #
+    //  ###    ##   ###   #      ###  # #    ##
+    // ##     # ##   #    # ##  #  #  ####  # ##
+    //   ##   ##     #    #  #  # ##  #  #  ##
+    // ###     ##     ##   ###   # #  #  #   ##
+    /**
+     * Sets the stream game.
+     * @param {string} game The stream's game.
+     * @returns {Promise} A promise taht resolves when the stream's game has been set.
+     */
+    static async setGame(game) {
+        await twitchClient.kraken.channels.updateChannel(settings.twitch.userId, {game});
+    }
+
+    //               #     ##    #                            ###           #
+    //               #    #  #   #                             #           # #
+    //  ###    ##   ###    #    ###   ###    ##    ###  # #    #    ###    #     ##
+    // ##     # ##   #      #    #    #  #  # ##  #  #  ####   #    #  #  ###   #  #
+    //   ##   ##     #    #  #   #    #     ##    # ##  #  #   #    #  #   #    #  #
+    // ###     ##     ##   ##     ##  #      ##    # #  #  #  ###   #  #   #     ##
+    /**
+     * Sets the stream's title and game.
+     * @param {string} title The title of the stream.
+     * @param {string} game The game.
+     * @returns {Promise} A promise that resolves when the stream's info has been set.
+     */
+    static async setStreamInfo(title, game) {
+        await twitchClient.kraken.channels.updateChannel(settings.twitch.userId, {status: title, game});
+    }
+
     //               #                 ##   #            #
     //               #                #  #  #            #
     //  ###    ##   ###   #  #  ###   #     ###    ###  ###

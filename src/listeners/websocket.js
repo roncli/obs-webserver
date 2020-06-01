@@ -2,7 +2,11 @@
  * @typedef {import("ws").Data} WebSocket.Data
  */
 
-const OBSWebsocket = require("../obsWebsocket"),
+const ConfigFile = require("../configFile"),
+    Log = require("../logging/log"),
+    OBSWebsocket = require("../obsWebsocket"),
+    Spotify = require("../spotify"),
+    Twitch = require("../twitch"),
     Websocket = require("../websocket");
 
 //  #   #         #                           #              #     #        #            #
@@ -57,6 +61,73 @@ class WebsocketListener {
                     }
                 });
                 break;
+            case "discord":
+                if (WebsocketListener.data.phase === "game") {
+                    await OBSWebsocket.startDiscord("game");
+                }
+                Websocket.broadcast(data);
+                break;
+            case "update-twitch":
+                {
+                    const roncliGaming = ConfigFile.get("roncliGaming"),
+                        title = roncliGaming.title.replace(/\n/g, " - "),
+                        game = roncliGaming.game;
+
+                    await Twitch.setStreamInfo(title, game);
+                }
+                break;
+            case "music":
+                switch (data.data.command) {
+                    case "play":
+                        {
+                            let okToSend = false;
+
+                            try {
+                                await Spotify.getSpotifyToken();
+                                await Spotify.spotify.setVolume(data.data.volume);
+                                await Spotify.spotify.play({uris: data.data.track ? [data.data.track] : void 0, "context_uri": data.data.uri});
+
+                                okToSend = true;
+                            } catch (err) {
+                                Log.exception("There was an error playing Spotify.", err);
+                            }
+
+                            if (okToSend) {
+                                Websocket.broadcast({
+                                    type: "updateSpotify"
+                                });
+                            }
+                        }
+
+                        break;
+                    case "stop":
+                        {
+                            let okToSend = false;
+
+                            try {
+                                await Spotify.getSpotifyToken();
+                                await Spotify.spotify.pause();
+
+                                okToSend = true;
+                            } catch (err) {
+                                if (err.statusCode === 403) {
+                                    // Forbidden from the Spotify API means that the player is already paused, which is fine.
+
+                                    okToSend = true;
+                                } else {
+                                    Log.exception("There was an error pausing Spotify.", err);
+                                }
+                            }
+
+                            if (okToSend) {
+                                Websocket.broadcast({
+                                    type: "clearSpotify"
+                                });
+                            }
+                        }
+                        break;
+                }
+                break;
             case "transition":
                 await OBSWebsocket.start();
 
@@ -67,9 +138,14 @@ class WebsocketListener {
 
                             let until = Date.now();
 
+                            await OBSWebsocket.switchScene("roncli Gaming");
                             OBSWebsocket.stopWebcam("frame");
                             OBSWebsocket.stopWebcam("game");
                             OBSWebsocket.stopDisplay();
+                            OBSWebsocket.stopDiscord("game");
+                            until += 5000;
+                            await WebsocketListener.sleep(until - Date.now());
+
                             // OBSWebsocket.startStreaming();
 
                             Websocket.broadcast({
@@ -176,9 +252,10 @@ class WebsocketListener {
                                         phase: "webcam"
                                     });
 
+                                    OBSWebsocket.startWebcam("frame");
                                     OBSWebsocket.stopWebcam("game");
                                     OBSWebsocket.stopDisplay();
-                                    OBSWebsocket.startWebcam("frame");
+                                    OBSWebsocket.stopDiscord("game");
                                 }
                                 break;
                         }
@@ -207,9 +284,10 @@ class WebsocketListener {
                                         type: "scene",
                                         scene: "game"
                                     });
+                                    OBSWebsocket.startWebcam("game");
                                     OBSWebsocket.stopWebcam("frame");
                                     OBSWebsocket.startDisplay();
-                                    OBSWebsocket.startWebcam("game");
+                                    OBSWebsocket.stopDiscord("game");
                                 }
                                 break;
                         }
@@ -255,6 +333,7 @@ class WebsocketListener {
                                     OBSWebsocket.stopWebcam("game");
                                     OBSWebsocket.stopDisplay();
                                     OBSWebsocket.stopWebcam("frame");
+                                    OBSWebsocket.stopDiscord("game");
                                 }
                                 break;
                         }
@@ -266,7 +345,72 @@ class WebsocketListener {
                             case "ending":
                                 return;
                             default:
-                                WebsocketListener.data.phase = "ending";
+                                {
+                                    let until = Date.now();
+
+                                    WebsocketListener.data.phase = "ending";
+
+                                    if (["brb", "webcam"].indexOf(WebsocketListener.data.phase) === -1) {
+                                        Websocket.broadcast({
+                                            type: "overlay",
+                                            data: {
+                                                type: "stinger"
+                                            }
+                                        });
+                                        until += 425;
+                                        await WebsocketListener.sleep(until - Date.now());
+
+                                        OBSWebsocket.stopDisplay();
+                                        OBSWebsocket.stopDiscord("game");
+                                        OBSWebsocket.startWebcam("frame");
+                                        OBSWebsocket.stopWebcam("game");
+                                        Websocket.broadcast({
+                                            type: "scene",
+                                            scene: "frame"
+                                        });
+                                        until += 200;
+                                        await WebsocketListener.sleep(until - Date.now());
+
+                                    } else {
+                                        OBSWebsocket.startWebcam("frame");
+                                    }
+
+                                    Websocket.broadcast({
+                                        type: "phase",
+                                        phase: "webcam"
+                                    });
+                                    until += 1250;
+                                    await WebsocketListener.sleep(until - Date.now());
+
+                                    Websocket.broadcast({
+                                        type: "overlay",
+                                        data: {
+                                            soundPath: "/media/boom-bitches-ending.ogg"
+                                        }
+                                    });
+                                    until += 18750;
+                                    await WebsocketListener.sleep(until - Date.now());
+
+                                    Websocket.broadcast({
+                                        type: "overlay",
+                                        data: {
+                                            type: "stinger"
+                                        }
+                                    });
+                                    until += 425;
+                                    await WebsocketListener.sleep(until - Date.now());
+                                    OBSWebsocket.stopWebcam("frame");
+
+                                    Websocket.broadcast({
+                                        type: "phase",
+                                        phase: "ending"
+                                    });
+                                    until += 65000;
+                                    await WebsocketListener.sleep(until - Date.now());
+
+                                    OBSWebsocket.stopStreaming();
+                                    OBSWebsocket.switchScene("Off Air");
+                                }
 
                                 break;
                         }

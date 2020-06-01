@@ -57,7 +57,6 @@ class Frame {
                             window.Home.stopSpotify();
                             break;
                         case "webcam":
-                            document.getElementById("content").innerHTML = "";
                             window.Home.stopSpotify();
                             break;
                         case "brb":
@@ -117,7 +116,7 @@ class Frame {
                 top: ["486px", `${486 - height}px`],
                 offset: [0, 1]
             }, {
-                duration: Math.min(10000, 10000 * height / 972),
+                duration: Math.min(40000, 10000 * height / 972),
                 fill: "forwards"
             });
         }, 5000);

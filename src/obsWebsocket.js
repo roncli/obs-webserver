@@ -47,6 +47,28 @@ class OBSWebsocket {
         await obs.connect(settings.obsws);
     }
 
+    //         #                 #    ###    #                                #
+    //         #                 #    #  #                                    #
+    //  ###   ###    ###  ###   ###   #  #  ##     ###    ##    ##   ###    ###
+    // ##      #    #  #  #  #   #    #  #   #    ##     #     #  #  #  #  #  #
+    //   ##    #    # ##  #      #    #  #   #      ##   #     #  #  #     #  #
+    // ###      ##   # #  #       ##  ###   ###   ###     ##    ##   #      ###
+    /**
+     * Starts the Discord at the specified location.
+     * @param {string} location The location to start the webcam at.
+     * @returns {Promise} A promise that resolves when Discord is started.
+     */
+    static async startDiscord(location) {
+        await obs.send("SetSceneItemProperties", {
+            item: `Discord - ${location}`,
+            visible: true,
+            bounds: {},
+            scale: {},
+            crop: {},
+            position: {}
+        });
+    }
+
     //         #                 #    ###    #                 ##
     //         #                 #    #  #                      #
     //  ###   ###    ###  ###   ###   #  #  ##     ###   ###    #     ###  #  #
@@ -99,6 +121,29 @@ class OBSWebsocket {
         obs.send("SetSceneItemProperties", {
             item: `Webcam - ${location}`,
             visible: true,
+            bounds: {},
+            scale: {},
+            crop: {},
+            position: {}
+        });
+    }
+
+    //         #                ###    #                                #
+    //         #                #  #                                    #
+    //  ###   ###    ##   ###   #  #  ##     ###    ##    ##   ###    ###
+    // ##      #    #  #  #  #  #  #   #    ##     #     #  #  #  #  #  #
+    //   ##    #    #  #  #  #  #  #   #      ##   #     #  #  #     #  #
+    // ###      ##   ##   ###   ###   ###   ###     ##    ##   #      ###
+    //                    #
+    /**
+     * Stops the Discord at the specified location.
+     * @param {string} location The location to start the webcam at.
+     * @returns {void}
+     */
+    static stopDiscord(location) {
+        obs.send("SetSceneItemProperties", {
+            item: `Discord - ${location}`,
+            visible: false,
             bounds: {},
             scale: {},
             crop: {},
@@ -164,6 +209,21 @@ class OBSWebsocket {
             crop: {},
             position: {}
         });
+    }
+
+    //               #     #          #      ##
+    //                     #          #     #  #
+    //  ###   #  #  ##    ###    ##   ###    #     ##    ##   ###    ##
+    // ##     #  #   #     #    #     #  #    #   #     # ##  #  #  # ##
+    //   ##   ####   #     #    #     #  #  #  #  #     ##    #  #  ##
+    // ###    ####  ###     ##   ##   #  #   ##    ##    ##   #  #   ##
+    /**
+     * Switches to the specified scene.
+     * @param {string} scene The scene to switch to
+     * @returns {Promise} A promise that resolves when the scene has been switched.
+     */
+    static async switchScene(scene) {
+        await obs.send("SetCurrentScene", {"scene-name": scene});
     }
 }
 

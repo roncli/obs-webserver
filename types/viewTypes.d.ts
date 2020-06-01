@@ -34,6 +34,7 @@ declare namespace ViewTypes {
 
     type RoncliGaming = {
         title: string
+        game: string
         info: string
     }
 
