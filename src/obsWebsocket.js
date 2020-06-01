@@ -59,14 +59,16 @@ class OBSWebsocket {
      * @returns {Promise} A promise that resolves when Discord is started.
      */
     static async startDiscord(location) {
-        await obs.send("SetSceneItemProperties", {
-            item: `Discord - ${location}`,
-            visible: true,
-            bounds: {},
-            scale: {},
-            crop: {},
-            position: {}
-        });
+        try {
+            await obs.send("SetSceneItemProperties", {
+                item: `Discord - ${location}`,
+                visible: true,
+                bounds: {},
+                scale: {},
+                crop: {},
+                position: {}
+            });
+        } finally {}
     }
 
     //         #                 #    ###    #                 ##
@@ -78,17 +80,19 @@ class OBSWebsocket {
     //                                                   #                  #
     /**
      * Starts the display.
-     * @returns {void}
+     * @returns {Promise} A promise that resolves when the display is started.
      */
-    static startDisplay() {
-        obs.send("SetSceneItemProperties", {
-            item: "Display",
-            visible: true,
-            bounds: {},
-            scale: {},
-            crop: {},
-            position: {}
-        });
+    static async startDisplay() {
+        try {
+            await obs.send("SetSceneItemProperties", {
+                item: "Display",
+                visible: true,
+                bounds: {},
+                scale: {},
+                crop: {},
+                position: {}
+            });
+        } finally {}
     }
 
     //         #                 #     ##    #                             #
@@ -100,10 +104,12 @@ class OBSWebsocket {
     //                                                                                 ###
     /**
      * Starts OBS streaming.
-     * @returns {void}
+     * @returns {Promise} A promise that resolves when streaming starts.
      */
-    static startStreaming() {
-        obs.send("StartStreaming", void 0);
+    static async startStreaming() {
+        try {
+            await obs.send("StartStreaming", void 0);
+        } finally {}
     }
 
     //         #                 #    #  #        #
@@ -115,17 +121,19 @@ class OBSWebsocket {
     /**
      * Starts the webcam at the specified location.
      * @param {string} location The location to start the webcam at.
-     * @returns {void}
+     * @returns {Promise} A promise that resolves when the webcam is started.
      */
-    static startWebcam(location) {
-        obs.send("SetSceneItemProperties", {
-            item: `Webcam - ${location}`,
-            visible: true,
-            bounds: {},
-            scale: {},
-            crop: {},
-            position: {}
-        });
+    static async startWebcam(location) {
+        try {
+            await obs.send("SetSceneItemProperties", {
+                item: `Webcam - ${location}`,
+                visible: true,
+                bounds: {},
+                scale: {},
+                crop: {},
+                position: {}
+            });
+        } finally {}
     }
 
     //         #                ###    #                                #
@@ -138,17 +146,19 @@ class OBSWebsocket {
     /**
      * Stops the Discord at the specified location.
      * @param {string} location The location to start the webcam at.
-     * @returns {void}
+     * @returns {Promise} A promise that resolves when Discord is stopped.
      */
-    static stopDiscord(location) {
-        obs.send("SetSceneItemProperties", {
-            item: `Discord - ${location}`,
-            visible: false,
-            bounds: {},
-            scale: {},
-            crop: {},
-            position: {}
-        });
+    static async stopDiscord(location) {
+        try {
+            await obs.send("SetSceneItemProperties", {
+                item: `Discord - ${location}`,
+                visible: false,
+                bounds: {},
+                scale: {},
+                crop: {},
+                position: {}
+            });
+        } finally {}
     }
 
     //         #                ###    #                 ##
@@ -160,17 +170,19 @@ class OBSWebsocket {
     //                    #                        #                  #
     /**
      * Stops the display.
-     * @returns {void}
+     * @returns {Promise} A promise that resolves when the display is stopped.
      */
-    static stopDisplay() {
-        obs.send("SetSceneItemProperties", {
-            item: "Display",
-            visible: false,
-            bounds: {},
-            scale: {},
-            crop: {},
-            position: {}
-        });
+    static async stopDisplay() {
+        try {
+            await obs.send("SetSceneItemProperties", {
+                item: "Display",
+                visible: false,
+                bounds: {},
+                scale: {},
+                crop: {},
+                position: {}
+            });
+        } finally {}
     }
 
     //         #                 ##    #                             #
@@ -182,10 +194,12 @@ class OBSWebsocket {
     //                    #                                                      ###
     /**
      * Stops OBS streaming.
-     * @returns {void}
+     * @returns {Promise} A promise that resolves when OBS stops streaming.
      */
-    static stopStreaming() {
-        obs.send("StopStreaming", void 0);
+    static async stopStreaming() {
+        try {
+            await obs.send("StopStreaming", void 0);
+        } finally {}
     }
 
     //         #                #  #        #
@@ -198,17 +212,19 @@ class OBSWebsocket {
     /**
      * Stops the webcam at the specified location.
      * @param {string} location The location to stop the webcam at.
-     * @returns {void}
+     * @returns {Promise} A promise that resolves when the webcam is stopped.
      */
-    static stopWebcam(location) {
-        obs.send("SetSceneItemProperties", {
-            item: `Webcam - ${location}`,
-            visible: false,
-            bounds: {},
-            scale: {},
-            crop: {},
-            position: {}
-        });
+    static async stopWebcam(location) {
+        try {
+            await obs.send("SetSceneItemProperties", {
+                item: `Webcam - ${location}`,
+                visible: false,
+                bounds: {},
+                scale: {},
+                crop: {},
+                position: {}
+            });
+        } finally {}
     }
 
     //               #     #          #      ##

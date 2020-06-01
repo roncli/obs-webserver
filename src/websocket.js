@@ -48,7 +48,7 @@ class Websocket {
      * @returns {void}
      */
     static broadcast(message) {
-        console.log("Outgoing to client.", message);
+        // console.log("Outgoing to client.", message);
 
         const str = JSON.stringify(message);
 

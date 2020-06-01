@@ -49,7 +49,7 @@ class WebsocketListener {
      * @returns {Promise} A promise that resolves when the message is handled.
      */
     static async message(data) {
-        console.log("Incoming to server.", data);
+        // console.log("Incoming to server.", data);
 
         switch (data.type) {
             case "action":
@@ -89,7 +89,9 @@ class WebsocketListener {
 
                                 okToSend = true;
                             } catch (err) {
-                                Log.exception("There was an error playing Spotify.", err);
+                                if (err.statusCode !== 404) {
+                                    Log.exception("There was an error playing Spotify.", err);
+                                }
                             }
 
                             if (okToSend) {

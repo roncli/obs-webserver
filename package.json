@@ -1,6 +1,6 @@
 {
     "name": "obs-webserver",
-    "version": "2.0.0-alpha.2020.05.07",
+    "version": "2.0.0-alpha.2020.06.01",
     "description": "roncli Gaming webserver for OBS.",
     "license": "None",
     "author": {
