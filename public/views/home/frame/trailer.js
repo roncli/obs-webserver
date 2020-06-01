@@ -24,7 +24,11 @@ class FrameTrailerView {
         return /* html */`
             <div id="roncli-gaming"></div>
             <div id="you-know-it"></div>
-            <div id="trailer"></div>
+            <div id="trailer">
+                <video id="video-trailer" width="1728" height="972">
+                    <source src="/media/trailer.mp4" type="video/mp4" />
+                </video>
+            </div>
         `;
     }
 }

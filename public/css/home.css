@@ -82,6 +82,12 @@ div#frame div#content div#you-know-it {
     background: url("/images/roncliYouKnowIt-112.png") 112px 112px;
 }
 
+div#frame div#content div#trailer {
+    position: absolute;
+    width: 1728px;
+    height: 972px;
+}
+
 div#frame div#content div#roncli-gaming-small {
     position: absolute;
     width: 741px;

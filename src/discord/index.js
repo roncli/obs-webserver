@@ -269,7 +269,7 @@ class Discord {
         }
 
         if (!embed.color) {
-            embed.setColor(0xFF6600);
+            embed.setColor(0x191935);
         }
 
         if (!embed.timestamp) {

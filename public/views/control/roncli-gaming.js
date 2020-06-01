@@ -31,8 +31,7 @@ class RoncliGamingView {
                 roncli Gaming<br />
                 <button class="transition" data-transition="Start Stream">Start Stream</button>
                 <button class="transition" data-transition="Webcam">Webcam</button>
-                <button class="transition" data-transition="Main">Main</button>
-                <button class="transition" data-transition="Wild Wednesday">Wild Wednesday</button>
+                <button class="transition" data-transition="Game">Game</button>
                 <button class="transition" data-transition="BRB">BRB</button>
                 <button class="transition" data-transition="End Stream">End Stream</button><br />
                 <div data-api="/api/config/roncliGaming">

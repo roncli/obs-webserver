@@ -23,7 +23,7 @@ class IntroView {
     static get() {
         return /* html */`
             <div id="intro">
-                <video autoplay="autoplay"  id="video-intro" width="1920" height="1080">
+                <video id="video-intro" width="1920" height="1080">
                     <source src="/media/intro.mp4" type="video/mp4" />
                 </video>
             </div>

@@ -699,6 +699,8 @@ class Game {
                     break;
             }
         };
+
+        window.Home.startSpotify();
     }
 }
 

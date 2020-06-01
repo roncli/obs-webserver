@@ -153,10 +153,9 @@ class Log {
                                 },
                                 json: true
                             });
-                            const body = JSON.parse(res.body);
 
-                            if (body.id) {
-                                await Discord.queue(`Error occurred, see ${body.url}.`, /** @type {DiscordJs.TextChannel} */ (Discord.findChannelByName("botcli-errors"))); // eslint-disable-line no-extra-parens
+                            if (res.body.id) {
+                                await Discord.queue(`Error occurred, see ${res.body.url}.`, /** @type {DiscordJs.TextChannel} */ (Discord.findChannelByName("botcli-errors"))); // eslint-disable-line no-extra-parens
                             } else {
                                 await Discord.queue("Error occurred, problem sending log, see http://logger.roncli.com.", /** @type {DiscordJs.TextChannel} */ (Discord.findChannelByName("botcli-errors"))); // eslint-disable-line no-extra-parens
                             }
@@ -240,7 +239,7 @@ class Log {
             value = value.substring(1024);
         }
 
-        value = `Error while writing to logging database: ${util.inspect(err)}`;
+        value = `${util.inspect(err)}`;
         continued = false;
 
         while (value.length > 0) {
@@ -253,7 +252,7 @@ class Log {
                     timestamp: log.date
                 });
 
-                message.setDescription(log.message);
+                message.setDescription("Error while writing to logging database.");
 
                 message.fields.push({
                     name: "Message",

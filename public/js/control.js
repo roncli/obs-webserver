@@ -35,13 +35,6 @@ class Control {
                 await window.Common.loadTemplate(scene.dataset.path, scene.dataset.class);
 
                 await window.Common.loadDataIntoTemplate(scene.dataset.api || null, "#scene", window[scene.dataset.class].get);
-
-                Control.ws.send(JSON.stringify({
-                    type: "scene",
-                    data: {
-                        scene: scene.dataset.scene
-                    }
-                }));
             }
         });
 
@@ -49,18 +42,16 @@ class Control {
             /** @type {HTMLButtonElement} */
             const button = ev.target;
 
-            if (button && button.matches("button.scene")) {
+            if (button && button.matches("button.transition")) {
                 Control.ws.send(JSON.stringify({
                     type: "transition",
-                    data: {
-                        scene: button.dataset.transition
-                    }
+                    scene: button.dataset.transition
                 }));
             }
         });
 
         document.getElementById("scene").addEventListener("focusout", async (ev) => {
-            if (ev.target && (ev.target.matches("textarea.setting") || ev.target.matches("input:text.setting"))) {
+            if (ev.target && (ev.target.matches("textarea.setting") || ev.target.matches("input[type=\"text\"].setting"))) {
                 /** @type {HTMLTextAreaElement} */
                 const parent = ev.target.parentElement,
                     api = parent.dataset.api,

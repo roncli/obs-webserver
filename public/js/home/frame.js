@@ -19,46 +19,63 @@ class Frame {
      * Starts the frame scene.
      * @returns {void}
      */
-    static async start() {
-        window.handleMessage = (ev) => {
-            if (document.getElementById("spotify")) {
-                switch (ev.type) {
-                    case "updateSpotify":
-                        {
-                            const lastTrack = ev.track ? JSON.stringify({
-                                artist: ev.track.artist,
-                                title: ev.track.title,
-                                imageUrl: ev.track.imageUrl
-                            }) : void 0;
+    static start() {
+        window.handleMessage = async (ev) => {
+            switch (ev.type) {
+                case "updateSpotify":
+                    if (document.getElementById("spotify")) {
+                        const lastTrack = ev.track ? JSON.stringify({
+                            artist: ev.track.artist,
+                            title: ev.track.title,
+                            imageUrl: ev.track.imageUrl
+                        }) : void 0;
 
-                            if (lastTrack !== Frame.lastTrack) {
-                                document.getElementById("spotify").innerHTML = window.SpotifyView.get(ev.track);
-                            }
-
-                            Frame.lastTrack = lastTrack;
+                        if (lastTrack !== Frame.lastTrack) {
+                            document.getElementById("spotify").innerHTML = window.SpotifyView.get(ev.track);
                         }
-                        break;
-                }
+
+                        Frame.lastTrack = lastTrack;
+                    }
+                    break;
+                case "phase":
+                    switch (ev.phase) {
+                        case "trailer":
+                            {
+                                /** @type {HTMLVideoElement} */
+                                const video = document.getElementById("video-trailer");
+                                video.play();
+                            }
+                            window.Home.stopSpotify();
+                            break;
+                        case "trailer-done":
+                            {
+                                /** @type {HTMLVideoElement} */
+                                const video = document.getElementById("video-trailer");
+                                video.classList.add("hidden");
+                                document.getElementById("content").animate({opacity: [0, 1, 1], transform: ["scale(0.6)", "scale(0.68)", "scale(1)"], offset: [0, 0.2, 1]}, {duration: 5000, easing: "ease-in-out"});
+                            }
+                            window.Home.stopSpotify();
+                            break;
+                        case "webcam":
+                            document.getElementById("content").innerHTML = "";
+                            window.Home.stopSpotify();
+                            break;
+                        case "brb":
+                            await Frame.startBRB();
+                            window.Home.startSpotify();
+                            break;
+                        case "ending":
+                            await Frame.startEnding();
+                            window.Home.stopSpotify();
+                            break;
+                        case "intro":
+                            await Frame.startIntro();
+                            window.Home.stopSpotify();
+                            break;
+                    }
+                    break;
             }
         };
-
-        await Frame.startIntro();
-    }
-
-    //         #                 #    ###          #
-    //         #                 #     #           #
-    //  ###   ###    ###  ###   ###    #    ###   ###   ###    ##
-    // ##      #    #  #  #  #   #     #    #  #   #    #  #  #  #
-    //   ##    #    # ##  #      #     #    #  #   #    #     #  #
-    // ###      ##   # #  #       ##  ###   #  #    ##  #      ##
-    /**
-     * Starts the intro frame.
-     * @returns {Promise} A promise that resolves when the intro frame is shown.
-     */
-    static async startIntro() {
-        await window.Common.loadTemplate("/js/?files=/views/home/frame/trailer.js", "FrameTrailerView");
-
-        await window.Common.loadDataIntoTemplate(void 0, "#content", window.FrameTrailerView.get);
     }
 
     //         #                 #    ###   ###   ###
@@ -104,6 +121,22 @@ class Frame {
                 fill: "forwards"
             });
         }, 5000);
+    }
+
+    //         #                 #    ###          #
+    //         #                 #     #           #
+    //  ###   ###    ###  ###   ###    #    ###   ###   ###    ##
+    // ##      #    #  #  #  #   #     #    #  #   #    #  #  #  #
+    //   ##    #    # ##  #      #     #    #  #   #    #     #  #
+    // ###      ##   # #  #       ##  ###   #  #    ##  #      ##
+    /**
+     * Starts the intro frame.
+     * @returns {Promise} A promise that resolves when the intro frame is shown.
+     */
+    static async startIntro() {
+        await window.Common.loadTemplate("/js/?files=/views/home/frame/trailer.js", "FrameTrailerView");
+
+        await window.Common.loadDataIntoTemplate(void 0, "#content", window.FrameTrailerView.get);
     }
 }
 

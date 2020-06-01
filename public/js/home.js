@@ -24,23 +24,62 @@ class Home {
      * @returns {void}
      */
     static DOMContentLoaded() {
-        setTimeout(async () => {
-            Home.startWebsocket();
-            Home.spotify = false;
+        Home.startWebsocket();
+        Home.spotify = false;
+    }
 
-            // await window.Common.loadTemplate("/js/?files=/views/home/spotify.js,/views/home/game/title.js,/views/home/game/info.js,/views/home/game/support.js,/views/home/game/recent.js,/views/home/game/notification.js,/views/home/game.js,/js/home/game.js", "GameView");
+    //         #                 #    ####
+    //         #                 #    #
+    //  ###   ###    ###  ###   ###   ###   ###    ###  # #    ##
+    // ##      #    #  #  #  #   #    #     #  #  #  #  ####  # ##
+    //   ##    #    # ##  #      #    #     #     # ##  #  #  ##
+    // ###      ##   # #  #       ##  #     #      # #  #  #   ##
+    /**
+     * Starts the frame scene.
+     * @returns {Promise} A promise that resolves when the frame scene has been started.
+     */
+    static async startFrame() {
+        await window.Common.loadTemplate("/js/?files=/views/home/frame.js,/js/home/frame.js", "FrameView");
 
-            // await window.Common.loadDataIntoTemplate("/api/config/roncliGaming", "#scene", window.GameView.get);
+        document.getElementById("scene").innerHTML = window.FrameView.get(true);
 
-            // window.Game.start();
+        window.Frame.start();
+    }
 
-            await window.Common.loadTemplate("/js/?files=/views/home/spotify.js,/views/home/frame.js,/js/home/frame.js", "FrameView");
+    //         #                 #     ##
+    //         #                 #    #  #
+    //  ###   ###    ###  ###   ###   #      ###  # #    ##
+    // ##      #    #  #  #  #   #    # ##  #  #  ####  # ##
+    //   ##    #    # ##  #      #    #  #  # ##  #  #  ##
+    // ###      ##   # #  #       ##   ###   # #  #  #   ##
+    /**
+     * Starts the game scene.
+     * @returns {Promise} A promise taht resolves when the game scene has been started.
+     */
+    static async startGame() {
+        await window.Common.loadTemplate("/js/?files=/views/home/game/title.js,/views/home/game/info.js,/views/home/game/support.js,/views/home/game/recent.js,/views/home/game/notification.js,/views/home/game.js,/js/home/game.js", "GameView");
 
-            document.getElementById("scene").innerHTML = window.FrameView.get(true);
+        await window.Common.loadDataIntoTemplate("/api/config/roncliGaming", "#scene", window.GameView.get);
 
-            window.Frame.start();
+        window.Game.start();
+    }
 
-        }, 5000);
+    //         #                 #    ###          #
+    //         #                 #     #           #
+    //  ###   ###    ###  ###   ###    #    ###   ###   ###    ##
+    // ##      #    #  #  #  #   #     #    #  #   #    #  #  #  #
+    //   ##    #    # ##  #      #     #    #  #   #    #     #  #
+    // ###      ##   # #  #       ##  ###   #  #    ##  #      ##
+    /**
+     * Starts the intro scene.
+     * @returns {Promise} A promise that resolves when the intro scene has been started.
+     */
+    static async startIntro() {
+        await window.Common.loadTemplate("/js/?files=/views/home/intro.js,/js/home/intro.js", "IntroView");
+
+        document.getElementById("scene").innerHTML = window.IntroView.get();
+
+        window.Intro.start();
     }
 
     //         #                 #     ##                #     #      #
@@ -78,7 +117,7 @@ class Home {
         /** @type {WebSocket} */
         Home.ws = new WebSocket("ws://" + document.location.hostname + ":" + (document.location.port || "80") + "/");
 
-        Home.ws.onmessage = (ev) => {
+        Home.ws.onmessage = async (ev) => {
             const data = JSON.parse(ev.data);
 
             switch (data.type) {
@@ -89,6 +128,19 @@ class Home {
                     return;
                 case "clearSpotify":
                     Home.spotifyTrack = void 0;
+                    break;
+                case "scene":
+                    switch (data.scene) {
+                        case "intro":
+                            await Home.startIntro();
+                            break;
+                        case "frame":
+                            await Home.startFrame();
+                            break;
+                        case "game":
+                            await Home.startGame();
+                            break;
+                    }
                     break;
             }
 
