@@ -184,9 +184,17 @@ class Control {
                             /** @type {HTMLInputElement} */
                             const inputEl = child;
 
-                            obj[inputEl.dataset.field] = inputEl.value;
+                            switch (inputEl.type) {
+                                case "text":
+                                    obj[inputEl.dataset.field] = inputEl.value;
+                                    inputEl.value = "";
+                                    break;
+                                case "checkbox":
+                                    obj[inputEl.dataset.field] = inputEl.checked;
+                                    inputEl.checked = false;
+                                    break;
+                            }
 
-                            inputEl.value = "";
                         } else if (child instanceof HTMLSelectElement) {
                             /** @type {HTMLSelectElement} */
                             const selectEl = child;
@@ -218,7 +226,14 @@ class Control {
                                     /** @type {HTMLInputElement} */
                                     const inputEl = child;
 
-                                    obj[inputEl.dataset.field] = inputEl.value;
+                                    switch (inputEl.type) {
+                                        case "text":
+                                            obj[inputEl.dataset.field] = inputEl.value;
+                                            break;
+                                        case "checkbox":
+                                            obj[inputEl.dataset.field] = inputEl.checked;
+                                            break;
+                                    }
                                 } else if (child instanceof HTMLSelectElement) {
                                     /** @type {HTMLSelectElement} */
                                     const selectEl = child;

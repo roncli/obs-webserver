@@ -2,7 +2,7 @@
  * @typedef {import("twitch").default} TwitchClient
  */
 
-const TwitchChat = require("twitch-chat-client").default,
+const ChatClient = require("twitch-chat-client").default,
 
     settings = require("../../settings");
 
@@ -16,7 +16,7 @@ const TwitchChat = require("twitch-chat-client").default,
 /**
  * A class that handles Twitch chat.
  */
-class PubSub {
+class Chat {
     //                           #                       #
     //                           #                       #
     //  ##    ##   ###    ###   ###   ###   #  #   ##   ###    ##   ###
@@ -28,7 +28,7 @@ class PubSub {
      * @param {TwitchClient} twitchClient The twitch client.
      */
     constructor(twitchClient) {
-        this.client = TwitchChat.forTwitchClient(twitchClient, {
+        this.client = ChatClient.forTwitchClient(twitchClient, {
             channels: [settings.twitch.channelName],
             requestMembershipEvents: true
         });
@@ -36,4 +36,4 @@ class PubSub {
     }
 }
 
-module.exports = PubSub;
+module.exports = Chat;

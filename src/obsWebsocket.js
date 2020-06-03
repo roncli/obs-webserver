@@ -95,6 +95,29 @@ class OBSWebsocket {
         } finally {}
     }
 
+    //         #                 #    #  #   #
+    //         #                 #    ####
+    //  ###   ###    ###  ###   ###   ####  ##     ##
+    // ##      #    #  #  #  #   #    #  #   #    #
+    //   ##    #    # ##  #      #    #  #   #    #
+    // ###      ##   # #  #       ##  #  #  ###    ##
+    /**
+     * Starts the microphone.
+     * @returns {Promise} A promise that resolves when the microphone is started.
+     */
+    static async startMic() {
+        try {
+            await obs.send("SetSceneItemProperties", {
+                item: "Audio Input Capture - Microphone",
+                visible: true,
+                bounds: {},
+                scale: {},
+                crop: {},
+                position: {}
+            });
+        } finally {}
+    }
+
     //         #                 #     ##    #                             #
     //         #                 #    #  #   #
     //  ###   ###    ###  ###   ###    #    ###   ###    ##    ###  # #   ##    ###    ###
@@ -176,6 +199,30 @@ class OBSWebsocket {
         try {
             await obs.send("SetSceneItemProperties", {
                 item: "Display",
+                visible: false,
+                bounds: {},
+                scale: {},
+                crop: {},
+                position: {}
+            });
+        } finally {}
+    }
+
+    //         #                #  #   #
+    //         #                ####
+    //  ###   ###    ##   ###   ####  ##     ##
+    // ##      #    #  #  #  #  #  #   #    #
+    //   ##    #    #  #  #  #  #  #   #    #
+    // ###      ##   ##   ###   #  #  ###    ##
+    //                    #
+    /**
+     * Stops the microphone.
+     * @returns {Promise} A promise that resolves when the microphone is stopped.
+     */
+    static async stopMic() {
+        try {
+            await obs.send("SetSceneItemProperties", {
+                item: "Audio Input Capture - Microphone",
                 visible: false,
                 bounds: {},
                 scale: {},

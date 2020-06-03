@@ -23,6 +23,20 @@ class Overlay {
      */
     static DOMContentLoaded() {
         Overlay.startWebsocket();
+
+        document.getElementById("video-stinger").addEventListener("playing", () => {
+            setTimeout(() => {
+                const stinger = document.getElementById("stinger");
+
+                stinger.classList.remove("hidden");
+                stinger.classList.add("stinger");
+
+                setTimeout(() => {
+                    stinger.classList.remove("stinger");
+                    stinger.classList.add("hidden");
+                }, 2000);
+            }, 33);
+        });
     }
 
     //         #                 #    ####   #
@@ -54,23 +68,10 @@ class Overlay {
     //                                                         ###
     /**
      * Starts the stinger transition.
-     * @returns {void}
+     * @returns {Promise} A promise that resolves when the stinger has started.
      */
     static startStinger() {
-        /** @type {HTMLVideoElement} */
-        const video = document.getElementById("video-stinger"),
-            stinger = document.getElementById("stinger");
-
-        stinger.classList.remove("hidden");
-        stinger.classList.add("stinger");
-
-        video.currentTime = 0;
-        video.play();
-
-        setTimeout(() => {
-            stinger.classList.remove("stinger");
-            stinger.classList.add("hidden");
-        }, 2000);
+        document.getElementById("video-stinger").play();
     }
 
     //         #                 #    #  #        #                        #            #

@@ -21,10 +21,17 @@
  * @typedef {import("../../types/twitchListenerTypes").SubGiftUpgradeEvent} TwitchListenerTypes.SubGiftUpgradeEvent
  * @typedef {import("../../types/twitchListenerTypes").SubPrimeUpgradedEvent} TwitchListenerTypes.SubPrimeUpgradedEvent
  * @typedef {import("../../types/twitchListenerTypes").WhisperEvent} TwitchListenerTypes.WhisperEvent
+ * @typedef {import("../../types/viewTypes").Command} ViewTypes.Command
  */
 
-const Notifications = require("../notifications"),
+const ConfigFile = require("../configFile"),
+    Notifications = require("../notifications"),
+    Twitch = require("../twitch"),
+
     settings = require("../../settings");
+
+/** @type {{[x: string]: boolean}} */
+const cooldown = {};
 
 //  #####           #     #            #      #        #            #
 //    #                   #            #      #                     #
@@ -159,6 +166,27 @@ class TwitchListener {
      */
     static message(ev) {
         if (ev.channel === settings.twitch.channelName) {
+            const enteredCommand = ev.message.split(" ")[0].substr(1).toLowerCase();
+
+            if (cooldown[enteredCommand]) {
+                return;
+            }
+
+            /** @type {ViewTypes.Command[]} */
+            const commands = ConfigFile.get("commands"),
+                command = commands.find((c) => c.name === enteredCommand);
+
+            if (!command) {
+                return;
+            }
+
+            cooldown[enteredCommand] = true;
+
+            setTimeout(() => {
+                delete cooldown[enteredCommand];
+            }, 60000);
+
+            Twitch.twitchChatClient.say(settings.twitch.channelName, command.text);
         }
     }
 

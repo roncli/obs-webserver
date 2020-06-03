@@ -6,6 +6,12 @@ declare namespace ViewTypes {
         imageLocation?: string
     }
 
+    type Command = {
+        name?: string
+        text?: string
+        enabled?: boolean
+    }
+
     type ControlViewParameters = {
         discordChannels: DiscordChannel[]
         spotifyPlaylists: SpotifyPlaylist[]

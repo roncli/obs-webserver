@@ -69,6 +69,7 @@ class ControlView {
                 <button class="setting" data-settings="Discord Channels" data-path="/js/?files=/views/control/discord-channel.js,/views/control/discord-channels.js" data-class="DiscordChannelsView" data-subclass="DiscordChannelView" data-api="/api/config/discordChannels">Discord Channels</button>
                 <button class="setting" data-settings="Spotify Playlists" data-path="/js/?files=/views/control/spotify-playlist.js,/views/control/spotify-playlists.js" data-class="SpotifyPlaylistsView" data-subclass="SpotifyPlaylistView" data-api="/api/config/spotifyPlaylists">Spotify Playlists</button>
                 <button class="setting" data-settings="Actions" data-path="/js/?files=/views/control/action.js,/views/control/actions.js" data-class="ActionsView" data-subclass="ActionView" data-api="/api/config/actions">Actions</button>
+                <button class="setting" data-settings="Commands" data-path="/js/?files=/views/control/command.js,/views/control/commands.js" data-class="CommandsView" data-subclass="CommandView" data-api="/api/config/commands">Commands</button>
             </div><br />
             <div id="setting"></div>
         `;

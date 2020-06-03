@@ -170,7 +170,7 @@ class WebsocketListener {
                                     soundPath: "/media/boom-bitches.ogg"
                                 }
                             });
-                            until += 58750;
+                            until += 58700;
                             await WebsocketListener.sleep(until - Date.now());
 
                             Websocket.broadcast({
@@ -179,7 +179,7 @@ class WebsocketListener {
                                     type: "stinger"
                                 }
                             });
-                            until += 425;
+                            until += 475;
                             await WebsocketListener.sleep(until - Date.now());
 
                             Websocket.broadcast({
@@ -203,6 +203,7 @@ class WebsocketListener {
                             until += 20000;
                             await WebsocketListener.sleep(until - Date.now());
 
+                            OBSWebsocket.startMic();
                             Websocket.broadcast({
                                 type: "phase",
                                 phase: "trailer-done"
@@ -223,6 +224,7 @@ class WebsocketListener {
                             case "webcam":
                                 return;
                             case "brb":
+                                OBSWebsocket.startMic();
                                 OBSWebsocket.startWebcam("frame");
                                 Websocket.broadcast({
                                     type: "phase",
@@ -254,6 +256,7 @@ class WebsocketListener {
                                         phase: "webcam"
                                     });
 
+                                    OBSWebsocket.startMic();
                                     OBSWebsocket.startWebcam("frame");
                                     OBSWebsocket.stopWebcam("game");
                                     OBSWebsocket.stopDisplay();
@@ -286,6 +289,7 @@ class WebsocketListener {
                                         type: "scene",
                                         scene: "game"
                                     });
+                                    OBSWebsocket.startMic();
                                     OBSWebsocket.startWebcam("game");
                                     OBSWebsocket.stopWebcam("frame");
                                     OBSWebsocket.startDisplay();
@@ -302,6 +306,7 @@ class WebsocketListener {
                             case "brb":
                                 return;
                             case "webcam":
+                                OBSWebsocket.stopMic();
                                 OBSWebsocket.stopWebcam("frame");
                                 Websocket.broadcast({
                                     type: "phase",
@@ -332,6 +337,7 @@ class WebsocketListener {
                                         type: "phase",
                                         phase: "brb"
                                     });
+                                    OBSWebsocket.stopMic();
                                     OBSWebsocket.stopWebcam("game");
                                     OBSWebsocket.stopDisplay();
                                     OBSWebsocket.stopWebcam("frame");
@@ -377,6 +383,7 @@ class WebsocketListener {
                                         OBSWebsocket.startWebcam("frame");
                                     }
 
+                                    OBSWebsocket.startMic();
                                     Websocket.broadcast({
                                         type: "phase",
                                         phase: "webcam"
@@ -393,6 +400,7 @@ class WebsocketListener {
                                     until += 18750;
                                     await WebsocketListener.sleep(until - Date.now());
 
+                                    OBSWebsocket.stopMic();
                                     Websocket.broadcast({
                                         type: "overlay",
                                         data: {

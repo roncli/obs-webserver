@@ -1,6 +1,8 @@
 interface Window {
     ActionView: import("../public/views/control/action")
     ActionsView: import("../public/views/control/actions")
+    CommandView: import("../public/views/control/command")
+    CommandsView: import("../public/views/control/commands")
     ControlView: import("../public/views/control")
     DiscordChannelView: import("../public/views/control/discord-channel")
     DiscordChannelsView: import("../public/views/control/discord-channels")

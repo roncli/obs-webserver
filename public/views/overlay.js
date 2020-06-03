@@ -29,7 +29,7 @@ class OverlayView {
                     <img src="images/fire.gif" width="384" height="108" />                
                 </div>
                 <div id="stinger" class="hidden">
-                    <video id="video-stinger" width="1920" height="1080">
+                    <video id="video-stinger" preload="auto" width="1920" height="1080">
                         <source src="/media/stinger.mp4" type="video/mp4" />
                     </video>
                 </div>
