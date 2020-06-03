@@ -36,6 +36,48 @@ div#spotify .artwork img {
     height: 64px;
 }
 
+div#social {
+    position: absolute;
+    width: 209px;
+    height: 67px;
+}
+
+div#social div {
+    position: absolute;
+}
+
+div#social div div#discord-icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 25px;
+    height: 25px;
+    background: url("/images/discord.png") 25px 25px;
+}
+
+div#social div div#discord {
+    position: absolute;
+    left: 29px;
+    top: 2px;
+    font-size: 21px;
+}
+
+div#social div div#twitter-icon {
+    position: absolute;
+    left: 0;
+    top: 42px;
+    width: 25px;
+    height: 25px;
+    background: url("/images/twitter.png") 25px 25px;
+}
+
+div#social div div#twitter {
+    position: absolute;
+    left: 29px;
+    top: 44px;
+    font-size: 21px;
+}
+
 div#frame {
     position: absolute;
     width: 1920px;
@@ -142,6 +184,12 @@ div#frame div#content div#crawler {
     font-size: 36px;
 }
 
+div#frame div#social {
+    bottom: 0;
+    padding: 7px;
+    background-color: black;
+}
+
 div#game {
     position: absolute;
     width: 1920px;
@@ -233,6 +281,11 @@ div#game div#notification div.notification {
 
 div#game div#notification div.notification .message {
     font-size: 16px;
+}
+
+div#game div#social {
+    left: 383px;
+    top: 996px;
 }
 
 .header {

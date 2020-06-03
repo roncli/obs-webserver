@@ -33,12 +33,14 @@ class RoncliGamingView {
                 <button class="transition" data-transition="Webcam">Webcam</button>
                 <button class="transition" data-transition="Game">Game</button>
                 <button class="transition" data-transition="BRB">BRB</button>
-                <button class="transition" data-transition="End Stream">End Stream</button><br />
+                <button class="transition" data-transition="End Stream">End Stream</button>
                 <div data-api="/api/config/roncliGaming">
-                    Title <textarea class="setting" data-type="title" style="width: 300px; height: 57px;">${RoncliGamingView.Common.htmlEncode(data.data.title)}</textarea><br />
-                    Game <input class="setting" data-type="game" style="width: 300px;" value="${RoncliGamingView.Common.htmlEncode(data.data.game)}"><br />
-                    <button id="update-twitch">Update Twitch</button><br />
-                    Info <textarea class="setting" data-type="info" style="width: 300px; height: 400px;">${RoncliGamingView.Common.htmlEncode(data.data.info)}</textarea><br />
+                    <div>
+                        Title <textarea class="setting" data-type="title" style="width: 300px; height: 57px;">${RoncliGamingView.Common.htmlEncode(data.data.title)}</textarea><br />
+                        Game <input class="setting" data-type="game" style="width: 300px;" value="${RoncliGamingView.Common.htmlEncode(data.data.game)}"><br />
+                        <button id="update-twitch">Update Twitch</button>
+                    </div>
+                    Info <textarea class="setting" data-type="info" style="width: 300px; height: 400px;">${RoncliGamingView.Common.htmlEncode(data.data.info)}</textarea>
                 </div>
             </div>
         `;

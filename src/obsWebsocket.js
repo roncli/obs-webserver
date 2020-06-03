@@ -68,7 +68,7 @@ class OBSWebsocket {
                 crop: {},
                 position: {}
             });
-        } finally {}
+        } catch (err) {} finally {}
     }
 
     //         #                 #    ###    #                 ##
@@ -92,7 +92,7 @@ class OBSWebsocket {
                 crop: {},
                 position: {}
             });
-        } finally {}
+        } catch (err) {} finally {}
     }
 
     //         #                 #    #  #   #
@@ -115,7 +115,7 @@ class OBSWebsocket {
                 crop: {},
                 position: {}
             });
-        } finally {}
+        } catch (err) {} finally {}
     }
 
     //         #                 #     ##    #                             #
@@ -132,7 +132,7 @@ class OBSWebsocket {
     static async startStreaming() {
         try {
             await obs.send("StartStreaming", void 0);
-        } finally {}
+        } catch (err) {} finally {}
     }
 
     //         #                 #    #  #        #
@@ -156,7 +156,7 @@ class OBSWebsocket {
                 crop: {},
                 position: {}
             });
-        } finally {}
+        } catch (err) {} finally {}
     }
 
     //         #                ###    #                                #
@@ -181,7 +181,7 @@ class OBSWebsocket {
                 crop: {},
                 position: {}
             });
-        } finally {}
+        } catch (err) {} finally {}
     }
 
     //         #                ###    #                 ##
@@ -205,7 +205,7 @@ class OBSWebsocket {
                 crop: {},
                 position: {}
             });
-        } finally {}
+        } catch (err) {} finally {}
     }
 
     //         #                #  #   #
@@ -229,7 +229,7 @@ class OBSWebsocket {
                 crop: {},
                 position: {}
             });
-        } finally {}
+        } catch (err) {} finally {}
     }
 
     //         #                 ##    #                             #
@@ -246,7 +246,7 @@ class OBSWebsocket {
     static async stopStreaming() {
         try {
             await obs.send("StopStreaming", void 0);
-        } finally {}
+        } catch (err) {} finally {}
     }
 
     //         #                #  #        #
@@ -271,7 +271,7 @@ class OBSWebsocket {
                 crop: {},
                 position: {}
             });
-        } finally {}
+        } catch (err) {} finally {}
     }
 
     //               #     #          #      ##
@@ -286,7 +286,9 @@ class OBSWebsocket {
      * @returns {Promise} A promise that resolves when the scene has been switched.
      */
     static async switchScene(scene) {
-        await obs.send("SetCurrentScene", {"scene-name": scene});
+        try {
+            await obs.send("SetCurrentScene", {"scene-name": scene});
+        } catch (err) {} finally {}
     }
 }
 

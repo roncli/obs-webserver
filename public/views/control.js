@@ -33,8 +33,8 @@ class ControlView {
                     <option class="scene" data-scene="roncli Gaming v2" data-path="/views/control/roncli-gaming.js" data-class="RoncliGamingView" data-api="/api/config/roncliGaming">roncli Gaming</button>
                 </select>
                 <button id="scene-go">Go</button>
+                <button id="reset">Reset</button>
             </div>
-            <div id="scene"></div>
             <div id="discord">
                 Discord Overlay<br />
                 <select id="channel-list">
@@ -71,6 +71,7 @@ class ControlView {
                 <button class="setting" data-settings="Actions" data-path="/js/?files=/views/control/action.js,/views/control/actions.js" data-class="ActionsView" data-subclass="ActionView" data-api="/api/config/actions">Actions</button>
                 <button class="setting" data-settings="Commands" data-path="/js/?files=/views/control/command.js,/views/control/commands.js" data-class="CommandsView" data-subclass="CommandView" data-api="/api/config/commands">Commands</button>
             </div><br />
+            <div id="scene"></div>
             <div id="setting"></div>
         `;
     }

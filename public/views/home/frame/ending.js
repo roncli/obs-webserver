@@ -98,6 +98,14 @@ class FrameEndingView {
             </div>
             <div id="roncli-gaming-tiny"></div>
             <div id="rip"></div>
+            <div id="social">
+                <div>
+                    <div id="discord-icon"></div>
+                    <div id="discord">https://ronc.li/discord</div>
+                    <div id="twitter-icon"></div>
+                    <div id="twitter">https://twitter.com/roncli</div>
+                </div>
+            </div>
         `;
     }
 }

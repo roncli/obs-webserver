@@ -121,6 +121,9 @@ class Home {
             const data = JSON.parse(ev.data);
 
             switch (data.type) {
+                case "reset":
+                    window.location.reload();
+                    break;
                 case "updateSpotify":
                     if (Home.spotify) {
                         Home.startSpotify();

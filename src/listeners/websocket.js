@@ -4,6 +4,7 @@
 
 const ConfigFile = require("../configFile"),
     Log = require("../logging/log"),
+    Notifications = require("../notifications"),
     OBSWebsocket = require("../obsWebsocket"),
     Spotify = require("../spotify"),
     Twitch = require("../twitch"),
@@ -65,6 +66,10 @@ class WebsocketListener {
                 if (WebsocketListener.data.phase === "game") {
                     await OBSWebsocket.startDiscord("game");
                 }
+                Websocket.broadcast(data);
+                break;
+            case "reset":
+                WebsocketListener.reset = true;
                 Websocket.broadcast(data);
                 break;
             case "update-twitch":
@@ -140,6 +145,7 @@ class WebsocketListener {
 
                             let until = Date.now();
 
+                            Notifications.stop();
                             await OBSWebsocket.switchScene("roncli Gaming");
                             OBSWebsocket.stopWebcam("frame");
                             OBSWebsocket.stopWebcam("game");
@@ -147,6 +153,10 @@ class WebsocketListener {
                             OBSWebsocket.stopDiscord("game");
                             until += 5000;
                             await WebsocketListener.sleep(until - Date.now());
+                            if (WebsocketListener.reset) {
+                                WebsocketListener.reset = false;
+                                return;
+                            }
 
                             // OBSWebsocket.startStreaming();
 
@@ -156,6 +166,10 @@ class WebsocketListener {
                             });
                             until += 5000;
                             await WebsocketListener.sleep(until - Date.now());
+                            if (WebsocketListener.reset) {
+                                WebsocketListener.reset = false;
+                                return;
+                            }
 
                             Websocket.broadcast({
                                 type: "phase",
@@ -163,6 +177,10 @@ class WebsocketListener {
                             });
                             until += 1250;
                             await WebsocketListener.sleep(until - Date.now());
+                            if (WebsocketListener.reset) {
+                                WebsocketListener.reset = false;
+                                return;
+                            }
 
                             Websocket.broadcast({
                                 type: "overlay",
@@ -172,6 +190,10 @@ class WebsocketListener {
                             });
                             until += 58700;
                             await WebsocketListener.sleep(until - Date.now());
+                            if (WebsocketListener.reset) {
+                                WebsocketListener.reset = false;
+                                return;
+                            }
 
                             Websocket.broadcast({
                                 type: "overlay",
@@ -181,6 +203,10 @@ class WebsocketListener {
                             });
                             until += 475;
                             await WebsocketListener.sleep(until - Date.now());
+                            if (WebsocketListener.reset) {
+                                WebsocketListener.reset = false;
+                                return;
+                            }
 
                             Websocket.broadcast({
                                 type: "scene",
@@ -188,6 +214,10 @@ class WebsocketListener {
                             });
                             until += 200;
                             await WebsocketListener.sleep(until - Date.now());
+                            if (WebsocketListener.reset) {
+                                WebsocketListener.reset = false;
+                                return;
+                            }
 
                             Websocket.broadcast({
                                 type: "phase",
@@ -195,6 +225,10 @@ class WebsocketListener {
                             });
                             until += 625;
                             await WebsocketListener.sleep(until - Date.now());
+                            if (WebsocketListener.reset) {
+                                WebsocketListener.reset = false;
+                                return;
+                            }
 
                             Websocket.broadcast({
                                 type: "phase",
@@ -202,6 +236,10 @@ class WebsocketListener {
                             });
                             until += 20000;
                             await WebsocketListener.sleep(until - Date.now());
+                            if (WebsocketListener.reset) {
+                                WebsocketListener.reset = false;
+                                return;
+                            }
 
                             OBSWebsocket.startMic();
                             Websocket.broadcast({
@@ -210,6 +248,10 @@ class WebsocketListener {
                             });
                             until += 5000;
                             await WebsocketListener.sleep(until - Date.now());
+                            if (WebsocketListener.reset) {
+                                WebsocketListener.reset = false;
+                                return;
+                            }
 
                             OBSWebsocket.startWebcam("frame");
                         }
@@ -224,6 +266,7 @@ class WebsocketListener {
                             case "webcam":
                                 return;
                             case "brb":
+                                Notifications.stop();
                                 OBSWebsocket.startMic();
                                 OBSWebsocket.startWebcam("frame");
                                 Websocket.broadcast({
@@ -243,6 +286,10 @@ class WebsocketListener {
                                     });
                                     until += 425;
                                     await WebsocketListener.sleep(until - Date.now());
+                                    if (WebsocketListener.reset) {
+                                        WebsocketListener.reset = false;
+                                        return;
+                                    }
 
                                     Websocket.broadcast({
                                         type: "scene",
@@ -250,12 +297,17 @@ class WebsocketListener {
                                     });
                                     until += 200;
                                     await WebsocketListener.sleep(until - Date.now());
+                                    if (WebsocketListener.reset) {
+                                        WebsocketListener.reset = false;
+                                        return;
+                                    }
 
                                     Websocket.broadcast({
                                         type: "phase",
                                         phase: "webcam"
                                     });
 
+                                    Notifications.stop();
                                     OBSWebsocket.startMic();
                                     OBSWebsocket.startWebcam("frame");
                                     OBSWebsocket.stopWebcam("game");
@@ -284,11 +336,16 @@ class WebsocketListener {
                                     });
                                     until += 625;
                                     await WebsocketListener.sleep(until - Date.now());
+                                    if (WebsocketListener.reset) {
+                                        WebsocketListener.reset = false;
+                                        return;
+                                    }
 
                                     Websocket.broadcast({
                                         type: "scene",
                                         scene: "game"
                                     });
+                                    Notifications.start();
                                     OBSWebsocket.startMic();
                                     OBSWebsocket.startWebcam("game");
                                     OBSWebsocket.stopWebcam("frame");
@@ -306,6 +363,7 @@ class WebsocketListener {
                             case "brb":
                                 return;
                             case "webcam":
+                                Notifications.stop();
                                 OBSWebsocket.stopMic();
                                 OBSWebsocket.stopWebcam("frame");
                                 Websocket.broadcast({
@@ -317,6 +375,7 @@ class WebsocketListener {
                                 {
                                     let until = Date.now();
 
+                                    Notifications.stop();
                                     Websocket.broadcast({
                                         type: "overlay",
                                         data: {
@@ -325,6 +384,10 @@ class WebsocketListener {
                                     });
                                     until += 425;
                                     await WebsocketListener.sleep(until - Date.now());
+                                    if (WebsocketListener.reset) {
+                                        WebsocketListener.reset = false;
+                                        return;
+                                    }
 
                                     Websocket.broadcast({
                                         type: "scene",
@@ -332,6 +395,10 @@ class WebsocketListener {
                                     });
                                     until += 200;
                                     await WebsocketListener.sleep(until - Date.now());
+                                    if (WebsocketListener.reset) {
+                                        WebsocketListener.reset = false;
+                                        return;
+                                    }
 
                                     Websocket.broadcast({
                                         type: "phase",
@@ -356,6 +423,7 @@ class WebsocketListener {
                                 {
                                     let until = Date.now();
 
+                                    Notifications.stop();
                                     WebsocketListener.data.phase = "ending";
 
                                     if (["brb", "webcam"].indexOf(WebsocketListener.data.phase) === -1) {
@@ -367,6 +435,10 @@ class WebsocketListener {
                                         });
                                         until += 425;
                                         await WebsocketListener.sleep(until - Date.now());
+                                        if (WebsocketListener.reset) {
+                                            WebsocketListener.reset = false;
+                                            return;
+                                        }
 
                                         OBSWebsocket.stopDisplay();
                                         OBSWebsocket.stopDiscord("game");
@@ -378,7 +450,10 @@ class WebsocketListener {
                                         });
                                         until += 200;
                                         await WebsocketListener.sleep(until - Date.now());
-
+                                        if (WebsocketListener.reset) {
+                                            WebsocketListener.reset = false;
+                                            return;
+                                        }
                                     } else {
                                         OBSWebsocket.startWebcam("frame");
                                     }
@@ -390,6 +465,10 @@ class WebsocketListener {
                                     });
                                     until += 1250;
                                     await WebsocketListener.sleep(until - Date.now());
+                                    if (WebsocketListener.reset) {
+                                        WebsocketListener.reset = false;
+                                        return;
+                                    }
 
                                     Websocket.broadcast({
                                         type: "overlay",
@@ -399,6 +478,10 @@ class WebsocketListener {
                                     });
                                     until += 18750;
                                     await WebsocketListener.sleep(until - Date.now());
+                                    if (WebsocketListener.reset) {
+                                        WebsocketListener.reset = false;
+                                        return;
+                                    }
 
                                     OBSWebsocket.stopMic();
                                     Websocket.broadcast({
@@ -409,14 +492,22 @@ class WebsocketListener {
                                     });
                                     until += 425;
                                     await WebsocketListener.sleep(until - Date.now());
-                                    OBSWebsocket.stopWebcam("frame");
+                                    if (WebsocketListener.reset) {
+                                        WebsocketListener.reset = false;
+                                        return;
+                                    }
 
+                                    OBSWebsocket.stopWebcam("frame");
                                     Websocket.broadcast({
                                         type: "phase",
                                         phase: "ending"
                                     });
                                     until += 65000;
                                     await WebsocketListener.sleep(until - Date.now());
+                                    if (WebsocketListener.reset) {
+                                        WebsocketListener.reset = false;
+                                        return;
+                                    }
 
                                     OBSWebsocket.stopStreaming();
                                     OBSWebsocket.switchScene("Off Air");
@@ -440,5 +531,7 @@ class WebsocketListener {
 WebsocketListener.data = {
     phase: ""
 };
+
+WebsocketListener.reset = false;
 
 module.exports = WebsocketListener;

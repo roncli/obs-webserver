@@ -92,6 +92,9 @@ class Overlay {
             const data = JSON.parse(ev.data);
 
             switch (data.type) {
+                case "reset":
+                    window.location.reload();
+                    break;
                 case "overlay":
                     switch (data.data.type) {
                         case "fire":

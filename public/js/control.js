@@ -36,6 +36,12 @@ class Control {
 
                 await window.Common.loadDataIntoTemplate(scene.dataset.api || null, "#scene", window[scene.dataset.class].get);
             }
+
+            if (button && button.matches("button#reset")) {
+                Control.ws.send(JSON.stringify({
+                    type: "reset"
+                }));
+            }
         });
 
         document.getElementById("scene").addEventListener("click", (ev) => {
@@ -321,6 +327,9 @@ class Control {
             const data = JSON.parse(ev.data);
 
             switch (data.type) {
+                case "reset":
+                    window.location.reload();
+                    break;
                 case "settings":
                     switch (data.data.type) {
                         case "actions": {
