@@ -159,13 +159,13 @@ class WebsocketListener {
                                 return;
                             }
 
-                            // OBSWebsocket.startStreaming();
+                            OBSWebsocket.startStreaming();
 
                             Websocket.broadcast({
                                 type: "scene",
                                 scene: "intro"
                             });
-                            until += 5000;
+                            until += 15000;
                             await WebsocketListener.sleep(until - Date.now());
                             if (WebsocketListener.reset) {
                                 WebsocketListener.reset = false;

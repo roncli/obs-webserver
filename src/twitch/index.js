@@ -17,7 +17,7 @@ const events = require("events"),
 let chatAccessToken;
 
 /** @type {TwitchClient} */
-let twitchChatClient;
+let twitchBotClient;
 
 /** @type {string} */
 let accessToken;
@@ -30,6 +30,9 @@ let twitchClient;
 
 /** @type {Chat} */
 let chat;
+
+/** @type {Chat} */
+let botChat;
 
 /** @type {PubSub} */
 let pubsub;
@@ -67,18 +70,18 @@ class Twitch {
         return eventEmitter;
     }
 
-    //  #           #     #          #      ##   #            #     ##   ##     #                 #
-    //  #                 #          #     #  #  #            #    #  #   #                       #
-    // ###   #  #  ##    ###    ##   ###   #     ###    ###  ###   #      #    ##     ##   ###   ###
-    //  #    #  #   #     #    #     #  #  #     #  #  #  #   #    #      #     #    # ##  #  #   #
-    //  #    ####   #     #    #     #  #  #  #  #  #  # ##   #    #  #   #     #    ##    #  #   #
-    //   ##  ####  ###     ##   ##   #  #   ##   #  #   # #    ##   ##   ###   ###    ##   #  #    ##
+    //  #           #     #          #     ###          #     ##   ##     #                 #
+    //  #                 #          #     #  #         #    #  #   #                       #
+    // ###   #  #  ##    ###    ##   ###   ###    ##   ###   #      #    ##     ##   ###   ###
+    //  #    #  #   #     #    #     #  #  #  #  #  #   #    #      #     #    # ##  #  #   #
+    //  #    ####   #     #    #     #  #  #  #  #  #   #    #  #   #     #    ##    #  #   #
+    //   ##  ####  ###     ##   ##   #  #  ###    ##     ##   ##   ###   ###    ##   #  #    ##
     /**
-     * Gets the current Twitch chat client.
-     * @returns {ChatClient} The current Twitch chat client.
+     * Gets the current Twitch bot client.
+     * @returns {ChatClient} The current Twitch bot client.
      */
-    static get twitchChatClient() {
-        return chat.client;
+    static get twitchBotClient() {
+        return botChat.client;
     }
 
     //  #           #     #          #      ##   ##     #                 #
@@ -151,13 +154,13 @@ class Twitch {
         accessToken = accessToken || ConfigFile.get("accessToken");
         refreshToken = refreshToken || ConfigFile.get("refreshToken");
 
-        if (!accessToken || !refreshToken || !twitchClient || !twitchChatClient) {
+        if (!accessToken || !refreshToken || !twitchClient || !twitchBotClient) {
             return false;
         }
 
         try {
             await twitchClient.refreshAccessToken();
-            await twitchChatClient.refreshAccessToken();
+            await twitchBotClient.refreshAccessToken();
         } catch (err) {
             return false;
         }
@@ -194,7 +197,7 @@ class Twitch {
             preAuth: true
         });
 
-        twitchChatClient = TwitchClient.withCredentials(settings.twitch.clientId, chatAccessToken, settings.twitch.chatScopes, {
+        twitchBotClient = TwitchClient.withCredentials(settings.twitch.clientId, chatAccessToken, settings.twitch.chatScopes, {
             clientSecret: settings.twitch.clientSecret,
             refreshToken: settings.twitch.chatRefreshToken,
             onRefresh: (token) => chatAccessToken = token.accessToken
@@ -210,7 +213,7 @@ class Twitch {
         refreshInterval = setInterval(async () => {
             try {
                 await twitchClient.refreshAccessToken();
-                await twitchChatClient.refreshAccessToken();
+                await twitchBotClient.refreshAccessToken();
             } catch (err) {
                 eventEmitter.emit("error", {
                     message: "Error refreshing twitch client tokens.",
@@ -222,21 +225,6 @@ class Twitch {
             await Twitch.setupPubSub();
             await Twitch.setupWebhooks();
         }, 24 * 60 * 60 * 1000); // TODO: Test with a lower time.
-    }
-
-    //               #     ##
-    //               #    #  #
-    //  ###    ##   ###   #      ###  # #    ##
-    // ##     # ##   #    # ##  #  #  ####  # ##
-    //   ##   ##     #    #  #  # ##  #  #  ##
-    // ###     ##     ##   ###   # #  #  #   ##
-    /**
-     * Sets the stream game.
-     * @param {string} game The stream's game.
-     * @returns {Promise} A promise taht resolves when the stream's game has been set.
-     */
-    static async setGame(game) {
-        await twitchClient.kraken.channels.updateChannel(settings.twitch.userId, {game});
     }
 
     //               #     ##    #                            ###           #
@@ -270,10 +258,18 @@ class Twitch {
         if (chat && chat.client) {
             try {
                 await chat.client.quit();
-            } finally {}
+            } catch (err) {} finally {}
         }
 
-        chat = new Chat(twitchChatClient);
+        chat = new Chat(twitchClient);
+
+        if (botChat && botChat.client) {
+            try {
+                await botChat.client.quit();
+            } catch (err) {} finally {}
+        }
+
+        botChat = new Chat(twitchBotClient);
 
         chat.client.onAction((channel, user, message) => {
             eventEmitter.emit("action", {

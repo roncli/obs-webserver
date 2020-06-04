@@ -65,7 +65,7 @@ class Control {
         document.getElementById("scene").addEventListener("focusout", async (ev) => {
             if (ev.target && (ev.target.matches("textarea.setting") || ev.target.matches("input[type=\"text\"].setting"))) {
                 /** @type {HTMLTextAreaElement} */
-                const parent = ev.target.parentElement,
+                const parent = ev.target.closest("div.api"),
                     api = parent.dataset.api,
                     objects = {};
 

@@ -34,7 +34,7 @@ class RoncliGamingView {
                 <button class="transition" data-transition="Game">Game</button>
                 <button class="transition" data-transition="BRB">BRB</button>
                 <button class="transition" data-transition="End Stream">End Stream</button>
-                <div data-api="/api/config/roncliGaming">
+                <div class="api" data-api="/api/config/roncliGaming">
                     <div>
                         Title <textarea class="setting" data-type="title" style="width: 300px; height: 57px;">${RoncliGamingView.Common.htmlEncode(data.data.title)}</textarea><br />
                         Game <input class="setting" data-type="game" style="width: 300px;" value="${RoncliGamingView.Common.htmlEncode(data.data.game)}"><br />
