@@ -48,7 +48,21 @@ class GameSupportView {
             giftedTier2Subs = data.subGifts ? Object.keys(data.subGifts).reduce((prev, cur) => prev + data.subGifts[cur].gifts.filter((gift) => gift.tier === "2000").length, 0) : 0,
             giftedTier3Subs = data.subGifts ? Object.keys(data.subGifts).reduce((prev, cur) => prev + data.subGifts[cur].gifts.filter((gift) => gift.tier === "3000").length, 0) : 0;
 
-        if (bits + followers + primeGifts + hosts + hostedViewers + raids + raiders + primeSubs + tier1Subs + tier2Subs + tier3Subs + giftedTier1Subs + giftedTier2Subs + giftedTier3Subs === 0) {
+        const donations = data.donation ? Object.keys(data.donation).reduce((prev, cur) => {
+            Object.keys(data.donation[cur]).forEach((currency) => {
+                if (!prev[currency]) {
+                    prev[currency] = 0;
+                }
+
+                prev[currency] += data.donation[cur][currency];
+            });
+
+            return prev;
+        }, {}) : {};
+
+        const donation = Object.keys(donations).map((d) => ({currency: d, amount: donations[d]})).sort((a, b) => a.currency === b.currency ? 0 : a.currency === "USD" ? -1 : b.currency === "USD" ? 1 : a.currency.localeCompare(b.currency));
+
+        if (bits + followers + primeGifts + hosts + hostedViewers + raids + raiders + primeSubs + tier1Subs + tier2Subs + tier3Subs + giftedTier1Subs + giftedTier2Subs + giftedTier3Subs + donation.length === 0) {
             return "";
         }
 
@@ -60,6 +74,9 @@ class GameSupportView {
                 ${bits ? /* html */`
                     <div class="text">${format(bits)} ${bits === 1 ? "Bit" : "Bits"}</div>
                 ` : ""}
+                ${donation ? donation.map((d) => /* html */`
+                    <div class="text">${Intl.NumberFormat("en-US", {style: "currency", currency: d.currency}).format(d.amount)}${d.currency === "USD" ? "" : ` ${d.currency}`} Donations</div>
+                `).join("") : ""}
                 ${followers ? /* html */`
                     <div class="text">${format(followers)} ${followers === 1 ? "Follower" : "Followers"}</div>
                 ` : ""}

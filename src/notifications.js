@@ -36,8 +36,8 @@ class Notifications {
      * @returns {void}
      */
     static add(type, data) {
-        queue.push(() => {
-            Notifications.send(type, data);
+        queue.push(async () => {
+            await Notifications.send(type, data);
         });
     }
 

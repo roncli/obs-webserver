@@ -45,6 +45,11 @@ class FrameEndingView {
             cheers = Object.keys(data.bits).map((b) => data.bits[b].name).sort();
         }
 
+        let donations = [];
+        if (data.donation) {
+            donations = Object.keys(data.donation).sort();
+        }
+
         let subs = [];
         if (data.sub) {
             subs = Object.keys(data.sub).map((s) => data.sub[s].name).sort();
@@ -62,7 +67,7 @@ class FrameEndingView {
 
         return /* html */`
             <div id="crawler">
-                ${followers.length + hosts.length + raids.length + cheers.length + subs.length === 0 ? /* html */`
+                ${followers.length + hosts.length + raids.length + cheers.length + donations.length + subs.length === 0 ? /* html */`
                     Thanks to everyone for watching!
                 ` : /* html */`
                     Thanks to everyone for watching, and an extra thanks to those who supported the stream today!
@@ -77,6 +82,9 @@ class FrameEndingView {
                     `}
                     ${cheers.length === 0 ? "" : /* html */`
                         <br /><br />Cheers:<br />${cheers.map((c) => /* html */`<span class="text">${FrameEndingView.Common.htmlEncode(c)}</span>`).join("<br />")}
+                    `}
+                    ${donations.length === 0 ? "" : /* html */`
+                        <br /><br />Donations:<br />${donations.map((d) => /* html */`<span class="text">${FrameEndingView.Common.htmlEncode(d)}</span>`).join("<br />")}
                     `}
                     ${subs.length === 0 ? "" : /* html */`
                         <br /><br />Subscriptions:<br />${subs.map((s) => /* html */`<span class="text">${FrameEndingView.Common.htmlEncode(s)}</span>`).join("<br />")}

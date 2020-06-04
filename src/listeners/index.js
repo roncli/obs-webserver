@@ -1,4 +1,6 @@
-const Twitch = require("../twitch"),
+const Streamlabs = require("../streamlabs"),
+    StreamlabsListener = require("./streamlabs"),
+    Twitch = require("../twitch"),
     TwitchListener = require("./twitch"),
     Websocket = require("../websocket"),
     WebsocketListener = require("./websocket");
@@ -26,7 +28,13 @@ class Listeners {
      * @returns {void}
      */
     static setup() {
-        Object.getOwnPropertyNames(TwitchListener).filter((property) => typeof TwitchListener[property] === "function").forEach((property) => {
+        Streamlabs.start();
+
+        Object.getOwnPropertyNames(StreamlabsListener).filter((property) => typeof StreamlabsListener[property] === "function").forEach((property) => {
+            Streamlabs.client.on(property, StreamlabsListener[property]);
+        });
+
+        Object.getOwnPropertyNames(TwitchListener).filter((property) => typeof TwitchListener[property] === "function" && property !== "getTierName").forEach((property) => {
             Twitch.events.on(property, TwitchListener[property]);
         });
 

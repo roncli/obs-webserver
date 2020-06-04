@@ -198,7 +198,40 @@ class Game {
                                     <span class="header">${format(ev.data.data.bits)}</span>
                                     <span class="text">bits${ev.data.data.totalBits ? /* html */`, for a total of</span>
                                     <span class="header">${format(ev.data.data.totalBits)}` : ""}!</span>${ev.data.data.message ? /* html */`<br />
-                                    <span class="message">${window.common.htmlEncode(ev.data.data.message)}</span>` : ""}
+                                    <span class="message">${window.Common.htmlEncode(ev.data.data.message)}</span>` : ""}
+                                </div>
+                            `);
+
+                            break;
+                        case "donation":
+                            if (!window.Home.data.donation) {
+                                window.Home.data.donation = {};
+                            }
+
+                            if (!window.Home.data.donation[ev.data.data.from]) {
+                                window.Home.data.donation[ev.data.data.from] = {};
+                            }
+
+                            if (!window.Home.data.donation[ev.data.data.from][ev.data.data.currency]) {
+                                window.Home.data.donation[ev.data.data.from][ev.data.data.currency] = 0;
+                            }
+
+                            window.Home.data.donation[ev.data.data.from][ev.data.data.currency] += ev.data.data.amount;
+
+                            window.Home.data.recent.push(/* html */`
+                                <div>
+                                    <span class="header">${window.Common.htmlEncode(ev.data.data.from)}</span>
+                                    <span class="text">Donation</span>
+                                    <span class="header">${window.Common.htmlEncode(ev.data.data.formattedAmount)}</span>
+                                </div>
+                            `);
+
+                            Game.notify("/images/roncliYouKnowIt-56.png", "/media/bits.ogg", /* html */`
+                                <div>
+                                    <span class="header">${window.Common.htmlEncode(ev.data.data.from)}</span>
+                                    <span class="text">has donated</span>
+                                    <span class="header">${window.Common.htmlEncode(ev.data.data.formattedAmount)}!</span>${ev.data.data.message ? /* html */`<br />
+                                    <span class="message">${window.Common.htmlEncode(ev.data.data.message)}</span>` : ""}
                                 </div>
                             `);
 
@@ -329,7 +362,7 @@ class Game {
                                             <span class="header">${Game.cost(ev.data.data.cost)}</span>
                                             <span class="text">to say hi to</span>
                                             <span class="header">Steve.</span>${ev.data.data.message ? /* html */`<br />
-                                            <span class="message">${window.common.htmlEncode(ev.data.data.message)}</span>` : ""}
+                                            <span class="message">${window.Common.htmlEncode(ev.data.data.message)}</span>` : ""}
                                         </div>
                                     `);
 
@@ -342,7 +375,7 @@ class Game {
                                             <span class="header">${Game.cost(ev.data.data.cost)}</span>
                                             <span class="text">to</span>
                                             <span class="header">turn up the heat.</span>${ev.data.data.message ? /* html */`<br />
-                                            <span class="message">${window.common.htmlEncode(ev.data.data.message)}</span>` : ""}
+                                            <span class="message">${window.Common.htmlEncode(ev.data.data.message)}</span>` : ""}
                                         </div>
                                     `);
 
@@ -363,7 +396,7 @@ class Game {
                                             <span class="header">${Game.cost(ev.data.data.cost)}</span>
                                             <span class="text">to become a</span>
                                             <span class="header">Channel VIP!</span>${ev.data.data.message ? /* html */`<br />
-                                            <span class="message">${window.common.htmlEncode(ev.data.data.message)}</span>` : ""}
+                                            <span class="message">${window.Common.htmlEncode(ev.data.data.message)}</span>` : ""}
                                         </div>
                                     `);
 
@@ -375,7 +408,7 @@ class Game {
                                             <span class="text">has spent</span>
                                             <span class="header">${Game.cost(ev.data.data.cost)}.</span>
                                             <span class="header">You know it!</span>${ev.data.data.message ? /* html */`<br />
-                                            <span class="message">${window.common.htmlEncode(ev.data.data.message)}</span>` : ""}
+                                            <span class="message">${window.Common.htmlEncode(ev.data.data.message)}</span>` : ""}
                                         </div>
                                     `);
 
@@ -388,7 +421,7 @@ class Game {
                                             <span class="header">${Game.cost(ev.data.data.cost)}</span>
                                             <span class="text">for</span>
                                             <span class="header">${ev.data.data.reward}!</span>${ev.data.data.message ? /* html */`<br />
-                                            <span class="message">${window.common.htmlEncode(ev.data.data.message)}</span>` : ""}
+                                            <span class="message">${window.Common.htmlEncode(ev.data.data.message)}</span>` : ""}
                                         </div>
                                     `);
 
@@ -428,7 +461,7 @@ class Game {
                                     <span class="text">for</span>
                                     <span class="header">${ev.data.data.months}</span>
                                     <span class="text">months` : ""}!</span>${ev.data.data.message ? /* html */`<br />
-                                    <span class="message">${window.common.htmlEncode(ev.data.data.message)}</span>` : ""}
+                                    <span class="message">${window.Common.htmlEncode(ev.data.data.message)}</span>` : ""}
                                 </div>
                             `);
 
@@ -466,7 +499,7 @@ class Game {
                                     <span class="text">for</span>
                                     <span class="header">${ev.data.data.months}</span>
                                     <span class="text">months` : ""}!</span>${ev.data.data.message ? /* html */`<br />
-                                    <span class="message">${window.common.htmlEncode(ev.data.data.message)}</span>` : ""}
+                                    <span class="message">${window.Common.htmlEncode(ev.data.data.message)}</span>` : ""}
                                 </div>
                             `);
 
@@ -547,7 +580,7 @@ class Game {
                                     <span class="header">${window.Common.htmlEncode(ev.data.data.user)}</span>
                                     <span class="text">a</span>
                                     <span class="header">${Game.getTierName(ev.data.data.tier, ev.data.data.isPrime)}!</span>${ev.data.data.message ? /* html */`<br />
-                                    <span class="message">${window.common.htmlEncode(ev.data.data.message)}</span>` : ""}
+                                    <span class="message">${window.Common.htmlEncode(ev.data.data.message)}</span>` : ""}
                                 </div>
                             `);
 
