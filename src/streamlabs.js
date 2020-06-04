@@ -47,6 +47,10 @@ class Streamlabs {
         });
 
         Streamlabs.client.on("error", (ev) => {
+            if (ev.message.indexOf("event.message must be an array") !== -1) {
+                // Common error, return.
+                return;
+            }
             console.log("error", ev, ev.message);
         });
 

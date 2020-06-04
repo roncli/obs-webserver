@@ -35,7 +35,7 @@ class Overlay {
                     stinger.classList.remove("stinger");
                     stinger.classList.add("hidden");
                 }, 2000);
-            }, 33);
+            }, 100);
         });
     }
 
@@ -71,7 +71,10 @@ class Overlay {
      * @returns {Promise} A promise that resolves when the stinger has started.
      */
     static startStinger() {
-        document.getElementById("video-stinger").play();
+        /** @type {HTMLVideoElement} */
+        const stinger = document.getElementById("video-stinger");
+        stinger.volume = 0.75;
+        stinger.play();
     }
 
     //         #                 #    #  #        #                        #            #

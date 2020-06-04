@@ -69,6 +69,7 @@ class WebsocketListener {
                 Websocket.broadcast(data);
                 break;
             case "reset":
+                Notifications.stop();
                 WebsocketListener.reset = true;
                 Websocket.broadcast(data);
                 break;
@@ -463,13 +464,6 @@ class WebsocketListener {
                                         type: "phase",
                                         phase: "webcam"
                                     });
-                                    until += 1250;
-                                    await WebsocketListener.sleep(until - Date.now());
-                                    if (WebsocketListener.reset) {
-                                        WebsocketListener.reset = false;
-                                        return;
-                                    }
-
                                     Websocket.broadcast({
                                         type: "overlay",
                                         data: {
