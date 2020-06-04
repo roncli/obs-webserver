@@ -1,12 +1,16 @@
 {
     "name": "obs-webserver",
-    "version": "2.0.0-alpha.2020.06.01",
+    "version": "2.0.0",
     "description": "roncli Gaming webserver for OBS.",
     "license": "None",
     "author": {
         "name": "Ronald M. Clifford",
         "email": "roncli@roncli.com",
         "url": "http://www.roncli.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/roncli/obs-webserver.git"
     },
     "dependencies": {
         "@root/request": "1.6.1",
