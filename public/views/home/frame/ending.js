@@ -32,16 +32,16 @@ class FrameEndingView {
 
         let hosts = [];
         if (data.hosted) {
-            hosts = Object.keys(data.hosted).map((h) => data.hsoted[h].user).sort();
+            hosts = Object.keys(data.hosted).map((h) => data.hsoted[h].name).sort();
         }
 
         let raids = [];
         if (data.raided) {
-            raids = Object.keys(data.raided).map((r) => data.raided[r].user).sort();
+            raids = Object.keys(data.raided).map((r) => data.raided[r].name).sort();
         }
 
         let cheers = [];
-        if (data.cheers) {
+        if (data.bits) {
             cheers = Object.keys(data.bits).map((b) => data.bits[b].name).sort();
         }
 

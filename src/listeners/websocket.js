@@ -71,6 +71,7 @@ class WebsocketListener {
             case "reset":
                 Notifications.stop();
                 WebsocketListener.reset = true;
+                WebsocketListener.data.phase = "";
                 Websocket.broadcast(data);
                 break;
             case "update-twitch":
@@ -159,7 +160,7 @@ class WebsocketListener {
                                 return;
                             }
 
-                            OBSWebsocket.startStreaming();
+                            // OBSWebsocket.startStreaming();
 
                             Websocket.broadcast({
                                 type: "scene",
@@ -425,7 +426,6 @@ class WebsocketListener {
                                     let until = Date.now();
 
                                     Notifications.stop();
-                                    WebsocketListener.data.phase = "ending";
 
                                     if (["brb", "webcam"].indexOf(WebsocketListener.data.phase) === -1) {
                                         Websocket.broadcast({
@@ -459,6 +459,7 @@ class WebsocketListener {
                                         OBSWebsocket.startWebcam("frame");
                                     }
 
+                                    WebsocketListener.data.phase = "ending";
                                     OBSWebsocket.startMic();
                                     Websocket.broadcast({
                                         type: "phase",

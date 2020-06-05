@@ -1,6 +1,6 @@
 {
     "name": "obs-webserver",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "description": "roncli Gaming webserver for OBS.",
     "license": "None",
     "author": {
@@ -40,7 +40,7 @@
         "@types/express": "4.17.6",
         "@types/express-ws": "3.0.0",
         "@types/nconf": "0.10.0",
-        "@types/node": "^14.0.9"
+        "@types/node": "14.0.9"
     },
     "engines": {
         "node": ">=14.0.0"

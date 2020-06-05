@@ -1,4 +1,4 @@
-/** @typedef {express.Router} Express.Router */
+/** @typedef {import("express").Router} Express.Router */
 
 const compression = require("compression"),
     express = require("express"),
@@ -68,6 +68,13 @@ const compression = require("compression"),
     // Setup JS/CSS handlers.
     app.get("/css", Minify.cssHandler);
     app.get("/js", Minify.jsHandler);
+
+    // tsconfig.json is not meant to be served, 404 it if it's requested directly.
+    app.use("/tsconfig.json", (req, res, next) => {
+        req.method = "GET";
+        req.url = "/404";
+        router(req, res, next);
+    });
 
     // 500 is an internal route, 404 it if it's requested directly.
     app.use("/500", (req, res, next) => {
