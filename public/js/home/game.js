@@ -168,16 +168,16 @@ class Game {
                                 const bits = window.Home.data.bits;
 
                                 if (ev.data.data.isAnonymous) {
-                                    ev.data.data.userId = "Anonymous";
+                                    ev.data.data.user = "Anonymous";
                                     ev.data.data.name = "Anonymous";
                                     ev.data.data.totalBits = void 0;
                                 }
 
-                                if (!bits[ev.data.data.userId]) {
-                                    bits[ev.data.data.userId] = {};
+                                if (!bits[ev.data.data.user]) {
+                                    bits[ev.data.data.user] = {};
                                 }
 
-                                const user = bits[ev.data.data.userId];
+                                const user = bits[ev.data.data.user];
 
                                 user.name = ev.data.data.name;
                                 user.bits = (user.bits || 0) + ev.data.data.bits;
@@ -241,7 +241,7 @@ class Game {
                                 window.Home.data.follow = {};
                             }
 
-                            window.Home.data.follow[ev.data.data.userId] = ev.data.data;
+                            window.Home.data.follow[ev.data.data.user] = ev.data.data;
 
                             window.Home.data.recent.push(/* html */`
                                 <div>
@@ -273,26 +273,23 @@ class Game {
                                 const user = giftPrime[ev.data.data.user];
 
                                 user.push({
-                                    name: ev.data.data.gifter,
-                                    recipient: ev.data.data.user,
+                                    name: ev.data.data.name,
                                     gift: ev.data.data.gift
                                 });
                             }
 
                             window.Home.data.recent.push(/* html */`
                                 <div>
-                                    <span class="header">${window.Common.htmlEncode(ev.data.data.gifter)}</span>
-                                    <span class="text">Prime Gift to</span>
-                                    <span class="header">${window.Common.htmlEncode(ev.data.data.user)}</span>
+                                    <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
+                                    <span class="text">Prime Gift</span>
                                 </div>
                             `);
 
                             Game.notify("/images/roncliHype-56.png", "/media/prime-gift.ogg", /* html */`
                                 <div>
-                                    <span class="header">${window.Common.htmlEncode(ev.data.data.gifter)}</span>
-                                    <span class="text">gave</span>
-                                    <span class="header">${window.Common.htmlEncode(ev.data.data.user)}</span>
-                                    <span class="text">a Prime Gift!</span>
+                                    <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
+                                    <span class="text">gifted the community a</span>
+                                    <span class="header">Prime Gift!</span>
                                 </div>
                             `);
 
@@ -303,21 +300,21 @@ class Game {
                             }
 
                             window.Home.data.hosted[ev.data.data.user] = {
-                                name: ev.data.data.user,
+                                name: ev.data.data.name,
                                 viewerCount: ev.data.data.viewerCount,
                                 auto: ev.data.data.auto
                             };
 
                             window.Home.data.recent.push(/* html */`
                                 <div>
-                                    <span class="header">${window.Common.htmlEncode(ev.data.data.user)}</span>
+                                    <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
                                     <span class="text">Hosted${ev.data.data.viewerCount ? ` x${ev.data.data.viewerCount}` : ""}</span>
                                 </div>
                             `);
 
                             Game.notify("/images/roncliYouKnowIt-56.png", "/media/host-raid.ogg", /* html */`
                                 <div>
-                                    <span class="header">${window.Common.htmlEncode(ev.data.data.user)}</span>
+                                    <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
                                     <span class="text">is ${ev.data.data.auto ? "auto-" : ""}hosting the channel${ev.data.data.viewerCount ? /* html */` with</span>
                                     <span class="header">${format(ev.data.data.viewerCount)}</span>
                                     <span class="text">${ev.data.data.viewerCount === 1 ? "viewer" : "viewers"}` : ""}!</span>
@@ -331,20 +328,20 @@ class Game {
                             }
 
                             window.Home.data.raided[ev.data.data.user] = {
-                                name: ev.data.data.user,
+                                name: ev.data.data.name,
                                 viewerCount: ev.data.data.viewerCount
                             };
 
                             window.Home.data.recent.push(/* html */`
                                 <div>
-                                    <span class="header">${window.Common.htmlEncode(ev.data.data.user)}</span>
+                                    <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
                                     <span class="text">Raided${ev.data.data.viewerCount ? ` x${ev.data.data.viewerCount}` : ""}</span>
                                 </div>
                             `);
 
                             Game.notify("/images/roncliYouKnowIt-56.png", "/media/host-raid.ogg", /* html */`
                                 <div>
-                                    <span class="header">${window.Common.htmlEncode(ev.data.data.user)}</span>
+                                    <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
                                     <span class="text">is raiding the channel${ev.data.data.viewerCount ? /* html */` with</span>
                                     <span class="header">${format(ev.data.data.viewerCount)}</span>
                                     <span class="text">${ev.data.data.viewerCount === 1 ? "raider" : "raiders"}` : ""}!</span>
@@ -434,7 +431,7 @@ class Game {
                             }
 
                             window.Home.data.sub[ev.data.data.user] = {
-                                name: ev.data.data.user,
+                                name: ev.data.data.name,
                                 isPrime: ev.data.data.isPrime,
                                 months: ev.data.data.months,
                                 streak: ev.data.data.streak,
@@ -443,14 +440,14 @@ class Game {
 
                             window.Home.data.recent.push(/* html */`
                                 <div>
-                                    <span class="header">${window.Common.htmlEncode(ev.data.data.user)}</span>
+                                    <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
                                     <span class="text">Resub${ev.data.data.months ? ` x${ev.data.data.months}` : ""}</span>
                                 </div>
                             `);
 
                             Game.notify("/images/roncliGetRekt-56.png", "/media/sub.ogg", /* html */`
                                 <div>
-                                    <span class="header">${window.Common.htmlEncode(ev.data.data.user)}</span>
+                                    <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
                                     <span class="text">has ${ev.data.data.months && ev.data.data.months > 1 ? "been" : "become"} a</span>
                                     <span class="header">${Game.getTierName(ev.data.data.tier, ev.data.data.isPrime)}${ev.data.data.streak && ev.data.data.streak > 1 ? /* html */`</span>
                                     <span class="text">for</span>
@@ -472,7 +469,7 @@ class Game {
                             }
 
                             window.Home.data.sub[ev.data.data.user] = {
-                                name: ev.data.data.user,
+                                name: ev.data.data.name,
                                 isPrime: ev.data.data.isPrime,
                                 months: ev.data.data.months,
                                 streak: ev.data.data.streak,
@@ -481,14 +478,14 @@ class Game {
 
                             window.Home.data.recent.push(/* html */`
                                 <div>
-                                    <span class="header">${window.Common.htmlEncode(ev.data.data.user)}</span>
+                                    <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
                                     <span class="text">Sub${ev.data.data.months ? ` x${ev.data.data.months}` : ""}</span>
                                 </div>
                             `);
 
                             Game.notify("/images/roncliGetRekt-56.png", "/media/sub.ogg", /* html */`
                                 <div>
-                                    <span class="header">${window.Common.htmlEncode(ev.data.data.user)}</span>
+                                    <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
                                     <span class="text">has ${ev.data.data.months && ev.data.data.months > 1 ? "been" : "become"} a</span>
                                     <span class="header">${Game.getTierName(ev.data.data.tier, ev.data.data.isPrime)}${ev.data.data.streak && ev.data.data.streak > 1 ? /* html */`</span>
                                     <span class="text">for</span>
@@ -510,7 +507,7 @@ class Game {
                             }
 
                             window.Home.data.sub[ev.data.data.user] = {
-                                name: ev.data.data.user,
+                                name: ev.data.data.name,
                                 isPrime: false,
                                 months: ev.data.data.months,
                                 streak: void 0,
@@ -519,14 +516,14 @@ class Game {
 
                             window.Home.data.recent.push(/* html */`
                                 <div>
-                                    <span class="header">${window.Common.htmlEncode(ev.data.data.user)}</span>
+                                    <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
                                     <span class="text">Sub${ev.data.data.months ? ` x${ev.data.data.months}` : ""}</span>
                                 </div>
                             `);
 
                             Game.notify("/images/roncliGetRekt-56.png", "/media/sub.ogg", /* html */`
                                 <div>
-                                    <span class="header">${window.Common.htmlEncode(ev.data.data.user)}</span>
+                                    <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
                                     <span class="text">has ${ev.data.data.months && ev.data.data.months > 1 ? "been" : "become"} a</span>
                                     <span class="header">${Game.getTierName(ev.data.data.tier, ev.data.data.isPrime)}${ev.data.data.months && ev.data.data.months > 1 ? /* html */`</span>
                                     <span class="text">for</span>
@@ -557,7 +554,7 @@ class Game {
 
                                 user.gifts.push({
                                     name: ev.data.data.gifter,
-                                    recipient: ev.data.data.user,
+                                    recipient: ev.data.data.name,
                                     isPrime: ev.data.data.isPrime,
                                     months: ev.data.data.months,
                                     streak: ev.data.data.streak,
@@ -569,7 +566,7 @@ class Game {
                                 <div>
                                     <span class="header">${window.Common.htmlEncode(ev.data.data.gifter)}</span>
                                     <span class="text">Gift Subbed</span>
-                                    <span class="header">${window.Common.htmlEncode(ev.data.data.user)}</span>
+                                    <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
                                 </div>
                             `);
 
@@ -577,7 +574,7 @@ class Game {
                                 <div>
                                     <span class="header">${window.Common.htmlEncode(ev.data.data.gifter)}</span>
                                     <span class="text">has made</span>
-                                    <span class="header">${window.Common.htmlEncode(ev.data.data.user)}</span>
+                                    <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
                                     <span class="text">a</span>
                                     <span class="header">${Game.getTierName(ev.data.data.tier, ev.data.data.isPrime)}!</span>${ev.data.data.message ? /* html */`<br />
                                     <span class="message">${window.Common.htmlEncode(ev.data.data.message)}</span>` : ""}
@@ -595,6 +592,7 @@ class Game {
 
                                 if (!subGift[ev.data.data.user]) {
                                     subGift[ev.data.data.user] = {
+                                        name: ev.data.data.name,
                                         gifts: [],
                                         total: void 0
                                     };
@@ -607,14 +605,14 @@ class Game {
 
                             window.Home.data.recent.push(/* html */`
                                 <div>
-                                    <span class="header">${window.Common.htmlEncode(ev.data.data.user)}</span>
+                                    <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
                                     <span class="text">Gifted Subs${ev.data.data.giftCount ? ` x${ev.data.data.giftCount}` : ""}</span>
                                 </div>
                             `);
 
                             Game.notify("/images/roncliHype-56.png", "/media/sub-gift.ogg", /* html */`
                                 <div>
-                                    <span class="header">${window.Common.htmlEncode(ev.data.data.user)}</span>
+                                    <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
                                     <span class="text">has created</span>
                                     <span class="header">${ev.data.data.giftCount} ${Game.getTierName(ev.data.data.tier, ev.data.data.isPrime)}${ev.data.data.giftCount === 1 ? "" : "s"}${ev.data.data.totalGiftCount ? /* html */`</span>
                                     <span class="text">for a total of</span>
@@ -626,7 +624,7 @@ class Game {
                         case "subGiftCommunityPayForward":
                             window.Home.data.recent.push(/* html */`
                                 <div>
-                                    <span class="header">${window.Common.htmlEncode(ev.data.data.user)}</span>
+                                    <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
                                     <span class="text">Paid Forward Gift Sub from</span>
                                     <span class="header">${window.Common.htmlEncode(ev.data.data.originalGifter)}</span>
                                 </div>
@@ -634,7 +632,7 @@ class Game {
 
                             Game.notify("/images/roncliHype-56.png", "/media/sub-gift.ogg", /* html */`
                                 <div>
-                                    <span class="header">${window.Common.htmlEncode(ev.data.data.user)}</span>
+                                    <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
                                     <span class="text">is seeking out another</span>
                                     <span class="header">Demolitionist</span>
                                     <span class="text">for</span>
@@ -646,7 +644,7 @@ class Game {
                         case "subGiftPayForward":
                             window.Home.data.recent.push(/* html */`
                                 <div>
-                                    <span class="header">${window.Common.htmlEncode(ev.data.data.user)}</span>
+                                    <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
                                     <span class="text">Paid Forward Gifted Sub from</span>
                                     <span class="header">${window.Common.htmlEncode(ev.data.data.originalGifter)}</span>
                                     <span class="text">to</span>
@@ -656,7 +654,7 @@ class Game {
 
                             Game.notify("/images/roncliHype-56.png", "/media/sub-gift.ogg", /* html */`
                                 <div>
-                                    <span class="header">${window.Common.htmlEncode(ev.data.data.user)}</span>
+                                    <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
                                     <span class="text">has made</span>
                                     <span class="header">${window.Common.htmlEncode(ev.data.data.recipient)}</span>
                                     <span class="text">a</span>
@@ -673,7 +671,7 @@ class Game {
                             }
 
                             window.Home.data.sub[ev.data.data.user] = {
-                                name: ev.data.data.user,
+                                name: ev.data.data.name,
                                 isPrime: false,
                                 months: void 0,
                                 streak: void 0,
@@ -682,7 +680,7 @@ class Game {
 
                             window.Home.data.recent.push(/* html */`
                                 <div>
-                                    <span class="header">${window.Common.htmlEncode(ev.data.data.user)}</span>
+                                    <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
                                     <span class="text">Continued Gift Sub from</span>
                                     <span class="header">${window.Common.htmlEncode(ev.data.data.gifter)}</span>
                                 </div>
@@ -690,7 +688,7 @@ class Game {
 
                             Game.notify("/images/roncliGetRekt-56.png", "/media/sub.ogg", /* html */`
                                 <div>
-                                    <span class="header">${window.Common.htmlEncode(ev.data.data.user)}</span>
+                                    <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
                                     <span class="text">has chosen to remain a</span>
                                     <span class="header">${Game.getTierName(ev.data.data.tier)}</span>
                                     <span class="text">for</span>
@@ -705,7 +703,7 @@ class Game {
                             }
 
                             window.Home.data.sub[ev.data.data.user] = {
-                                name: ev.data.data.user,
+                                name: ev.data.data.name,
                                 isPrime: false,
                                 months: void 0,
                                 streak: void 0,
@@ -714,14 +712,14 @@ class Game {
 
                             window.Home.data.recent.push(/* html */`
                                 <div>
-                                    <span class="header">${window.Common.htmlEncode(ev.data.data.user)}</span>
+                                    <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
                                     <span class="text">Upgraded from Prime Sub</span>
                                 </div>
                             `);
 
                             Game.notify("/images/roncliGetRekt-56.png", "/media/sub.ogg", /* html */`
                                 <div>
-                                    <span class="header">${window.Common.htmlEncode(ev.data.data.user)}</span>
+                                    <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
                                     <span class="text">is now a full</span>
                                     <span class="header">${Game.getTierName(ev.data.data.tier)}!</span>
                                 </div>

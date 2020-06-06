@@ -160,7 +160,7 @@ class WebsocketListener {
                                 return;
                             }
 
-                            // OBSWebsocket.startStreaming();
+                            OBSWebsocket.startStreaming();
 
                             Websocket.broadcast({
                                 type: "scene",

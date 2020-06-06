@@ -271,10 +271,11 @@ class Twitch {
 
         botChat = new Chat(twitchBotClient);
 
-        chat.client.onAction((channel, user, message) => {
+        chat.client.onAction((channel, user, message, msg) => {
             eventEmitter.emit("action", {
                 channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
                 user,
+                name: msg.userInfo.displayName,
                 message
             });
         });
@@ -283,6 +284,7 @@ class Twitch {
             eventEmitter.emit("subGiftCommunityPayForward", {
                 channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
                 user,
+                name: forwardInfo.displayName,
                 originalGifter: forwardInfo.originalGifterDisplayName
             });
         });
@@ -291,6 +293,7 @@ class Twitch {
             eventEmitter.emit("subGiftCommunity", {
                 channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
                 user,
+                name: subInfo.gifterDisplayName,
                 giftCount: subInfo.count,
                 totalGiftCount: subInfo.gifterGiftCount,
                 tier: subInfo.plan
@@ -307,23 +310,36 @@ class Twitch {
             eventEmitter.emit("subGiftUpgrade", {
                 channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
                 user,
+                name: subInfo.displayName,
                 gifter: subInfo.gifterDisplayName,
                 tier: subInfo.plan
             });
         });
 
-        chat.client.onHost((channel, target, viewers) => {
+        chat.client.onHost(async (channel, target, viewers) => {
+            let user;
+            try {
+                user = (await Twitch.twitchClient.kraken.search.searchChannels(target)).find((c) => c.displayName === target);
+            } catch (err) {} finally {}
+
             eventEmitter.emit("host", {
                 channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
-                user: target,
+                user: user ? user.name : target,
+                name: target,
                 viewerCount: viewers
             });
         });
 
-        chat.client.onHosted((channel, byChannel, auto, viewers) => {
+        chat.client.onHosted(async (channel, byChannel, auto, viewers) => {
+            let user;
+            try {
+                user = (await Twitch.twitchClient.kraken.search.searchChannels(byChannel)).find((c) => c.displayName === byChannel);
+            } catch (err) {} finally {}
+
             eventEmitter.emit("hosted", {
                 channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
-                user: byChannel.charAt(0) === "#" ? byChannel.substr(1) : byChannel,
+                user: user ? user.name : byChannel,
+                name: byChannel.charAt(0) === "#" ? byChannel.substr(1) : byChannel,
                 auto,
                 viewerCount: viewers
             });
@@ -332,8 +348,8 @@ class Twitch {
         chat.client.onPrimeCommunityGift((channel, user, subInfo) => {
             eventEmitter.emit("giftPrime", {
                 channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
-                user,
-                gifter: subInfo.gifterDisplayName,
+                user: subInfo.gifter,
+                name: subInfo.gifterDisplayName,
                 gift: subInfo.name
             });
         });
@@ -342,6 +358,7 @@ class Twitch {
             eventEmitter.emit("subPrimeUpgraded", {
                 channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
                 user,
+                name: subInfo.displayName,
                 tier: subInfo.plan
             });
         });
@@ -350,6 +367,7 @@ class Twitch {
             eventEmitter.emit("message", {
                 channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
                 user,
+                name: msg.userInfo.displayName,
                 message,
                 msg // TODO: Implement this.
             });
@@ -359,6 +377,7 @@ class Twitch {
             eventEmitter.emit("raided", {
                 channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
                 user,
+                name: raidInfo.displayName,
                 viewerCount: raidInfo.viewerCount
             });
         });
@@ -367,6 +386,7 @@ class Twitch {
             eventEmitter.emit("resub", {
                 channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
                 user,
+                name: subInfo.displayName,
                 isPrime: subInfo.isPrime,
                 message: subInfo.message,
                 months: subInfo.months,
@@ -375,10 +395,11 @@ class Twitch {
             });
         });
 
-        chat.client.onRitual((channel, user, ritualInfo) => {
+        chat.client.onRitual((channel, user, ritualInfo, msg) => {
             eventEmitter.emit("ritual", {
                 channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
                 user,
+                name: msg.userInfo.displayName,
                 message: ritualInfo.message,
                 ritual: ritualInfo.ritualName
             });
@@ -388,6 +409,7 @@ class Twitch {
             eventEmitter.emit("subGiftPayForward", {
                 channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
                 user,
+                name: forwardInfo.displayName,
                 originalGifter: forwardInfo.originalGifterDisplayName,
                 recipient: forwardInfo.recipientDisplayName
             });
@@ -397,6 +419,7 @@ class Twitch {
             eventEmitter.emit("sub", {
                 channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
                 user,
+                name: subInfo.displayName,
                 isPrime: subInfo.isPrime,
                 message: subInfo.message,
                 months: subInfo.months,
@@ -409,6 +432,7 @@ class Twitch {
             eventEmitter.emit("subExtend", {
                 channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
                 user,
+                displayName: subInfo.displayName,
                 months: subInfo.months,
                 tier: subInfo.plan
             });
@@ -418,6 +442,7 @@ class Twitch {
             eventEmitter.emit("subGift", {
                 channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
                 user,
+                name: subInfo.displayName,
                 gifter: subInfo.gifterDisplayName,
                 totalGiftCount: subInfo.gifterGiftCount,
                 isPrime: subInfo.isPrime,
@@ -428,9 +453,10 @@ class Twitch {
             });
         });
 
-        chat.client.onWhisper((user, message) => {
+        chat.client.onWhisper((user, message, msg) => {
             eventEmitter.emit("whisper", {
                 user,
+                name: msg.userInfo.displayName,
                 message
             });
         });
@@ -455,6 +481,7 @@ class Twitch {
         pubsub.client.onBits(settings.twitch.userId, async (message) => {
             eventEmitter.emit("bits", {
                 userId: message.userId,
+                user: message.userName,
                 name: (await message.getUser()).displayName,
                 bits: message.bits,
                 totalBits: message.totalBits,
@@ -466,6 +493,7 @@ class Twitch {
         pubsub.client.onRedemption(settings.twitch.userId, (message) => {
             eventEmitter.emit("redemption", {
                 userId: message.userId,
+                user: message.userName,
                 name: message.userDisplayName,
                 message: message.message,
                 date: message.redemptionDate,
@@ -498,9 +526,10 @@ class Twitch {
 
         await webhooks.setup(twitchClient);
 
-        webhooks.listener.subscribeToFollowsToUser(settings.twitch.userId, (follow) => {
+        webhooks.listener.subscribeToFollowsToUser(settings.twitch.userId, async (follow) => {
             eventEmitter.emit("follow", {
                 userId: follow.userId,
+                user: (await follow.getUser()).name,
                 name: follow.userDisplayName,
                 date: follow.followDate
             });

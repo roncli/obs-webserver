@@ -2,11 +2,13 @@ declare namespace TwitchListenerTypes {
     type ActionEvent = {
         channel: string
         user: string
+        name: string
         message: string
     }
 
     type BitsEvent = {
         userId: string
+        user: string
         name: string
         bits: number
         totalBits: number
@@ -21,6 +23,7 @@ declare namespace TwitchListenerTypes {
 
     type FollowEvent = {
         userId: string
+        user: string
         name: string
         date: Date
     }
@@ -28,19 +31,21 @@ declare namespace TwitchListenerTypes {
     type GiftPrimeEvent = {
         channel: string
         user: string
-        gifter: string
+        name: string
         gift: string
     }
 
     type HostEvent = {
         channel: string
         user: string
+        name: string
         viewerCount: number
     }
 
     type HostedEvent = {
         channel: string
         user: string
+        name: string
         auto: boolean
         viewerCount: number
     }
@@ -48,17 +53,20 @@ declare namespace TwitchListenerTypes {
     type MessageEvent = {
         channel: string
         user: string
+        name: StringConstructor
         message: string
     }
 
     type RaidedEvent = {
         channel: string
         user: string
+        name: string
         viewerCount: number
     }
 
     type RedemptionEvent = {
         userId: string
+        user: string
         name: string
         message: string
         date: Date
@@ -70,6 +78,7 @@ declare namespace TwitchListenerTypes {
     type ResubEvent = {
         channel: string
         user: string
+        name: string
         isPrime: boolean
         message?: string
         months: number
@@ -80,6 +89,7 @@ declare namespace TwitchListenerTypes {
     type RitualEvent = {
         channel: string
         user: string
+        name: string
         message: string
         ritual: string
     }
@@ -95,6 +105,7 @@ declare namespace TwitchListenerTypes {
     type SubEvent = {
         channel: string
         user: string
+        name: string
         isPrime: boolean
         message?: string
         months: number
@@ -105,6 +116,7 @@ declare namespace TwitchListenerTypes {
     type SubExtendEvent = {
         channel: string
         user: string
+        name: string
         months: number
         tier: string
     }
@@ -112,6 +124,7 @@ declare namespace TwitchListenerTypes {
     type SubGiftEvent = {
         channel: string
         user: string
+        name: string
         gifter?: string
         totalGiftCount?: number
         isPrime: boolean
@@ -124,6 +137,7 @@ declare namespace TwitchListenerTypes {
     type SubGiftCommunityEvent = {
         channel: string
         user: string
+        name: string
         giftCount: number
         totalGiftCount?: number
         tier: string
@@ -132,12 +146,14 @@ declare namespace TwitchListenerTypes {
     type SubGiftCommunityPayForwardEvent = {
         channel: string
         user: string
+        name: string
         originalGifter: string
     }
 
     type SubGiftPayForwardEvent = {
         channel: string
         user: string
+        name: string
         originalGifter: string
         recipient: string
     }
@@ -145,6 +161,7 @@ declare namespace TwitchListenerTypes {
     type SubGiftUpgradeEvent = {
         channel: string
         user: string
+        name: string
         gifter: string
         tier: string
     }
@@ -152,11 +169,13 @@ declare namespace TwitchListenerTypes {
     type SubPrimeUpgradedEvent = {
         channel: string
         user: string
+        name: string
         tier: string
     }
 
     type WhisperEvent = {
         user: string
+        name: string
         message: string
     }
 }

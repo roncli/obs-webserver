@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "allowJs": true,
+        "alwaysStrict": true,
         "checkJs": true,
         "esModuleInterop": true,
         "lib": ["esnext"],

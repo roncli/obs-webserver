@@ -37,7 +37,7 @@ class RoncliGamingView {
                 <div class="api" data-api="/api/config/roncliGaming">
                     <div>
                         Title <textarea class="setting" data-type="title" style="width: 300px; height: 57px;">${RoncliGamingView.Common.htmlEncode(data.data.title)}</textarea><br />
-                        Game <input class="setting" data-type="game" style="width: 300px;" value="${RoncliGamingView.Common.htmlEncode(data.data.game)}"><br />
+                        Game <input type="text" class="setting" data-type="game" style="width: 300px;" value="${RoncliGamingView.Common.htmlEncode(data.data.game)}"><br />
                         <button id="update-twitch">Update Twitch</button>
                     </div>
                     Info <textarea class="setting" data-type="info" style="width: 300px; height: 400px;">${RoncliGamingView.Common.htmlEncode(data.data.info)}</textarea>
