@@ -35,7 +35,7 @@ class GameSupportView {
 
         const bits = data.bits ? Object.keys(data.bits).reduce((prev, cur) => prev + data.bits[cur].bits, 0) : 0,
             followers = data.follow ? Object.keys(data.follow).length : 0,
-            primeGifts = data.giftPrime ? Object.keys(data.giftPrime).reduce((prev, cur) => prev + data.giftPrime[cur].length, 0) : 0,
+            primeGifts = data.giftPrime ? Object.keys(data.giftPrime).reduce((prev, cur) => prev + data.giftPrime[cur].gifts.length, 0) : 0,
             hosts = data.hosted ? Object.keys(data.hosted).length : 0,
             hostedViewers = data.hosted ? Object.keys(data.hosted).reduce((prev, cur) => prev + data.hosted[cur].viewerCount, 0) : 0,
             raids = data.raided ? Object.keys(data.raided).length : 0,

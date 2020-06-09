@@ -275,15 +275,16 @@ class Game {
                                 const giftPrime = window.Home.data.giftPrime;
 
                                 if (!giftPrime[ev.data.data.user]) {
-                                    giftPrime[ev.data.data.user] = [];
+                                    giftPrime[ev.data.data.user] = {
+                                        gifts: []
+                                    };
                                 }
 
                                 const user = giftPrime[ev.data.data.user];
 
-                                user.push({
-                                    name: ev.data.data.name,
-                                    gift: ev.data.data.gift
-                                });
+                                user.name = ev.data.data.name;
+
+                                user.gifts.push(ev.data.data.gift);
                             }
 
                             window.Home.data.recent.push(/* html */`
@@ -558,6 +559,7 @@ class Game {
 
                                 const user = subGift[ev.data.data.gifterUser];
 
+                                user.name = ev.data.data.gifterName;
                                 user.total = ev.data.data.totalGiftCount || user.total;
 
                                 user.gifts.push({
