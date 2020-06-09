@@ -32,7 +32,6 @@ class Chat {
             channels: [settings.twitch.channelName],
             requestMembershipEvents: true
         });
-        this.client.connect();
     }
 }
 

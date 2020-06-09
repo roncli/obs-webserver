@@ -32,6 +32,7 @@ class GameView {
                 <div id="support">${GameView.GameSupportView.get()}</div>
                 <div id="recent">${GameView.GameRecentView.get()}</div>
                 <div id="notification"></div>
+                <div id="elapsed"></div>
                 <div id="social">
                     <div>
                         <div id="discord-icon"></div>

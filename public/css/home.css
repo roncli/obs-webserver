@@ -231,7 +231,7 @@ div#game div#info div.header {
 div#game div#support {
     position: absolute;
     left: 614px;
-    top: 980px;
+    top: 984px;
 }
 
 div#game div#support div.support {
@@ -240,13 +240,13 @@ div#game div#support div.support {
     grid-auto-flow: column;
     grid-template-rows: repeat(4, auto);
     column-gap: 20px;
-    row-gap: 3px;
+    row-gap: 2px;
 }
 
 div#game div#recent {
     position: absolute;
     right: 7px;
-    top: 980px;
+    top: 984px;
     text-align: right;
 }
 
@@ -256,14 +256,14 @@ div#game div#recent div.recent {
     grid-auto-flow: column;
     grid-template-rows: repeat(4, auto);
     column-gap: 20px;
-    row-gap: 3px;
+    row-gap: 2px;
 }
 
 div#game div#notification {
     position: absolute;
     display: grid;
     left: 614px;
-    top: 980px;
+    top: 984px;
     width: 1306px;
 }
 
@@ -285,7 +285,16 @@ div#game div#notification div.notification .message {
 
 div#game div#social {
     left: 383px;
-    top: 996px;
+    top: 998px;
+}
+
+div#game div#elapsed {
+    position: absolute;
+    top: 724px;
+    width: 374px;
+    text-align: center;
+    color: white;
+    font-size: 72px;
 }
 
 .header {

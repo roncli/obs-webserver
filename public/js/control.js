@@ -135,6 +135,17 @@ class Control {
             }
         });
 
+        document.getElementById("timer").addEventListener("click", (ev) => {
+            /** @type {HTMLButtonElement} */
+            const button = ev.target;
+
+            if (button && button.matches("button.timer")) {
+                Control.ws.send(JSON.stringify({
+                    type: "elapsed"
+                }));
+            }
+        });
+
         document.getElementById("actions").addEventListener("click", (ev) => {
             /** @type {HTMLButtonElement} */
             const button = ev.target;

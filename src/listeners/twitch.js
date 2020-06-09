@@ -102,7 +102,7 @@ class TwitchListener {
         if (ev.isAnonymous) {
             Twitch.twitchBotClient.say(settings.twitch.channelName, `There has been an anonymous cheer of ${ev.name} bit${ev.bits === 1 ? "" : "s"}!`);
         } else {
-            Twitch.twitchBotClient.say(settings.twitch.channelName, `Thanks ${ev.name} for cheering with ${ev.bits} bit${ev.bits === 1 ? "" : "s"}!${ev.totalBits && ev.totalBits !== ev.bits ? `  They have cheered a total of ${ev.bits} bits!` : ""}`);
+            Twitch.twitchBotClient.say(settings.twitch.channelName, `Thanks ${ev.name} for cheering with ${ev.bits} bit${ev.bits === 1 ? "" : "s"}!${ev.totalBits && ev.totalBits !== ev.bits ? `  They have cheered a total of ${ev.totalBits} bits!` : ""}`);
         }
     }
 
@@ -370,7 +370,7 @@ class TwitchListener {
     static subGift(ev) {
         if (ev.channel === settings.twitch.channelName) {
             Notifications.add("subGift", ev);
-            Twitch.twitchBotClient.say(settings.twitch.channelName, `Thanks ${ev.gifter} for making ${ev.name} a ${TwitchListener.getTierName(ev.tier, false)}!`);
+            Twitch.twitchBotClient.say(settings.twitch.channelName, `Thanks ${ev.gifterName} for making ${ev.name} a ${TwitchListener.getTierName(ev.tier, false)}!`);
         }
     }
 

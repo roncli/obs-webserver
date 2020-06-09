@@ -44,9 +44,9 @@ class GameSupportView {
             tier1Subs = data.sub ? Object.keys(data.sub).filter((sub) => !data.sub[sub].isPrime && data.sub[sub].tier === "1000").length : 0,
             tier2Subs = data.sub ? Object.keys(data.sub).filter((sub) => !data.sub[sub].isPrime && data.sub[sub].tier === "2000").length : 0,
             tier3Subs = data.sub ? Object.keys(data.sub).filter((sub) => !data.sub[sub].isPrime && data.sub[sub].tier === "3000").length : 0,
-            giftedTier1Subs = data.subGifts ? Object.keys(data.subGifts).reduce((prev, cur) => prev + data.subGifts[cur].gifts.filter((gift) => gift.tier === "1000").length, 0) : 0,
-            giftedTier2Subs = data.subGifts ? Object.keys(data.subGifts).reduce((prev, cur) => prev + data.subGifts[cur].gifts.filter((gift) => gift.tier === "2000").length, 0) : 0,
-            giftedTier3Subs = data.subGifts ? Object.keys(data.subGifts).reduce((prev, cur) => prev + data.subGifts[cur].gifts.filter((gift) => gift.tier === "3000").length, 0) : 0;
+            giftedTier1Subs = data.subGift ? Object.keys(data.subGift).reduce((prev, cur) => prev + data.subGift[cur].gifts.filter((gift) => gift.tier === "1000").length, 0) : 0,
+            giftedTier2Subs = data.subGift ? Object.keys(data.subGift).reduce((prev, cur) => prev + data.subGift[cur].gifts.filter((gift) => gift.tier === "2000").length, 0) : 0,
+            giftedTier3Subs = data.subGift ? Object.keys(data.subGift).reduce((prev, cur) => prev + data.subGift[cur].gifts.filter((gift) => gift.tier === "3000").length, 0) : 0;
 
         const donations = data.donation ? Object.keys(data.donation).reduce((prev, cur) => {
             Object.keys(data.donation[cur]).forEach((currency) => {

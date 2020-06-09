@@ -33,7 +33,7 @@ class Home {
     static get(req, res) {
         res.status(200).send(Common.page(
             "",
-            {css: ["/css/home.css"], js: ["/js/spotify.js", "/js/home.js", "/views/home/spotify.js"]},
+            {css: ["/css/home.css"], js: ["/js/spotify.js", "/js/home.js", "/views/home/spotify.js", "/js/common/elapsed.js"]},
             HomeView.get({})
         ));
     }

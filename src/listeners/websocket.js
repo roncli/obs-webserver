@@ -74,6 +74,11 @@ class WebsocketListener {
                 WebsocketListener.data.phase = "";
                 Websocket.broadcast(data);
                 break;
+            case "elapsed":
+                Websocket.broadcast({
+                    type: "elapsed"
+                });
+                break;
             case "update-twitch":
                 {
                     const roncliGaming = ConfigFile.get("roncliGaming"),

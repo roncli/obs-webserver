@@ -55,6 +55,10 @@ class ControlView {
                 <button class="music-play" data-volume="50">50%</button>
                 <button id="music-stop">Stop</button>
             </div>
+            <div id="timer">
+                Timer<br />
+                <button class="timer" data-type="elapsed">Elapsed</button>
+            </div>
             <div id="actions">
                 Actions<br />
                 <select id="action-list">

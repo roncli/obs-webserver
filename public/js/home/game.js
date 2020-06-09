@@ -127,6 +127,10 @@ class Game {
      * @returns {void}
      */
     static start() {
+        if (window.Home.data.elapsedStart) {
+            new window.Elapsed(window.Home.data.elapsedStart, document.getElementById("elapsed"));
+        }
+
         window.handleMessage = (ev) => {
             const format = Intl.NumberFormat().format;
 
@@ -156,6 +160,10 @@ class Game {
                     break;
                 case "clearSpotify":
                     document.getElementById("spotify").innerHTML = "";
+                    break;
+                case "elapsed":
+                    window.Home.data.elapsedStart = new Date();
+                    new window.Elapsed(window.Home.data.elapsedStart, document.getElementById("elapsed"));
                     break;
                 case "notification":
                     switch (ev.data.type) {
@@ -541,19 +549,19 @@ class Game {
                             {
                                 const subGift = window.Home.data.subGift;
 
-                                if (!subGift[ev.data.data.gifter]) {
-                                    subGift[ev.data.data.gifter] = {
+                                if (!subGift[ev.data.data.gifterUser]) {
+                                    subGift[ev.data.data.gifterUser] = {
                                         gifts: [],
                                         total: void 0
                                     };
                                 }
 
-                                const user = subGift[ev.data.data.gifter];
+                                const user = subGift[ev.data.data.gifterUser];
 
                                 user.total = ev.data.data.totalGiftCount || user.total;
 
                                 user.gifts.push({
-                                    name: ev.data.data.gifter,
+                                    name: ev.data.data.gifterName,
                                     recipient: ev.data.data.name,
                                     isPrime: ev.data.data.isPrime,
                                     months: ev.data.data.months,
@@ -562,17 +570,9 @@ class Game {
                                 });
                             }
 
-                            window.Home.data.recent.push(/* html */`
-                                <div>
-                                    <span class="header">${window.Common.htmlEncode(ev.data.data.gifter)}</span>
-                                    <span class="text">Gift Subbed</span>
-                                    <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
-                                </div>
-                            `);
-
                             Game.notify("/images/roncliHype-56.png", "/media/sub-gift.ogg", /* html */`
                                 <div>
-                                    <span class="header">${window.Common.htmlEncode(ev.data.data.gifter)}</span>
+                                    <span class="header">${window.Common.htmlEncode(ev.data.data.gifterName)}</span>
                                     <span class="text">has made</span>
                                     <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
                                     <span class="text">a</span>

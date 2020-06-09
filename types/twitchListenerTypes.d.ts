@@ -125,7 +125,8 @@ declare namespace TwitchListenerTypes {
         channel: string
         user: string
         name: string
-        gifter?: string
+        gifterUser?: string
+        gifterName?: string
         totalGiftCount?: number
         isPrime: boolean
         message?: string

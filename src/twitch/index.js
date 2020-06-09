@@ -8,6 +8,7 @@ const events = require("events"),
 
     Chat = require("./chat"),
     ConfigFile = require("../configFile"),
+    Log = require("../logging/log"),
     PubSub = require("./pubsub"),
     Webhooks = require("./webhooks"),
 
@@ -300,7 +301,11 @@ class Twitch {
             });
         });
 
-        chat.client.onDisconnect(async (manually) => {
+        chat.client.onDisconnect(async (manually, reason) => {
+            if (reason) {
+                Log.exception("The streamer's Twitch chat disconnected.", reason);
+            }
+
             if (!manually) {
                 await Twitch.setupChat();
             }
@@ -443,7 +448,8 @@ class Twitch {
                 channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
                 user,
                 name: subInfo.displayName,
-                gifter: subInfo.gifterDisplayName,
+                gifterUser: subInfo.gifter,
+                gifterName: subInfo.gifterDisplayName,
                 totalGiftCount: subInfo.gifterGiftCount,
                 isPrime: subInfo.isPrime,
                 message: subInfo.message,
@@ -460,6 +466,19 @@ class Twitch {
                 message
             });
         });
+
+        botChat.client.onDisconnect(async (manually, reason) => {
+            if (reason) {
+                Log.exception("The bot's Twitch chat disconnected.", reason);
+            }
+
+            if (!manually) {
+                await Twitch.setupChat();
+            }
+        });
+
+        chat.client.connect();
+        botChat.client.connect();
     }
 
     //               #                ###         #      ##         #
