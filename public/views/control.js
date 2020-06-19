@@ -68,6 +68,12 @@ class ControlView {
                 </select>
                 <button id="action-go">Go</button>
             </div>
+            <div id="twitch">
+                Twitch<br />
+                <button class="api" data-api="/api/twitch/refresh" data-method="POST">Refresh Tokens</button>
+                <button class="twitch hidden" data-path="/views/control/bit-leaderboard.js" data-class="BitLeaderboardView" data-api="/api/twitch/bit-leaderboard">Bit Leaderboard</button>
+                <button class="twitch hidden" data-path="/views/control/events.js" data-class="EventsView" data-api="/api/twitch/events">Events</button>
+            </div>
             <div id="settings">
                 Settings<br />
                 <button class="setting" data-settings="Discord Channels" data-path="/js/?files=/views/control/discord-channel.js,/views/control/discord-channels.js" data-class="DiscordChannelsView" data-subclass="DiscordChannelView" data-api="/api/config/discordChannels">Discord Channels</button>
@@ -77,6 +83,7 @@ class ControlView {
             </div><br />
             <div id="scene"></div>
             <div id="setting"></div>
+            <div id="twitch"></div>
         `;
     }
 }

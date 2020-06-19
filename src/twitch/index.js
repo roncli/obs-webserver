@@ -1,5 +1,6 @@
 /**
  * @typedef {import("twitch-chat-client").default} ChatClient
+ * @typedef {import("twitch-webhooks").Subscription} WebhooksSubscriptions
  */
 
 const events = require("events"),
@@ -41,6 +42,9 @@ let pubsub;
 /** @type {Webhooks} */
 let webhooks;
 
+/** @type {WebhooksSubscriptions[]} */
+const webhookSubscriptions = [];
+
 /** @type {NodeJS.Timeout} */
 let refreshInterval;
 
@@ -57,6 +61,24 @@ const eventEmitter = new events.EventEmitter();
  * Handles Twitch integration.
  */
 class Twitch {
+    //        ##
+    //         #
+    //  ###    #     ##    ##   ###
+    // ##      #    # ##  # ##  #  #
+    //   ##    #    ##    ##    #  #
+    // ###    ###    ##    ##   ###
+    //                          #
+    /**
+     * Sleeps the thread for the specified time.
+     * @param {number} ms The number of milliseconds to sleep for.
+     * @returns {Promise} A promise that resolves when the sleep period has completed.
+     */
+    static sleep(ms) {
+        return new Promise((resolve) => {
+            setTimeout(resolve, ms);
+        });
+    }
+
     //                          #
     //                          #
     //  ##   # #    ##   ###   ###    ###
@@ -211,21 +233,33 @@ class Twitch {
         await Twitch.setupPubSub();
         await Twitch.setupWebhooks();
 
-        refreshInterval = setInterval(async () => {
-            try {
-                await twitchClient.refreshAccessToken();
-                await twitchBotClient.refreshAccessToken();
-            } catch (err) {
-                eventEmitter.emit("error", {
-                    message: "Error refreshing twitch client tokens.",
-                    err
-                });
-            }
+        refreshInterval = setInterval(Twitch.refreshTokens, 24 * 60 * 60 * 1000);
+    }
 
-            await Twitch.setupChat();
-            await Twitch.setupPubSub();
-            await Twitch.setupWebhooks();
-        }, 24 * 60 * 60 * 1000); // TODO: Test with a lower time.
+    //               #                      #     ###         #
+    //              # #                     #      #          #
+    // ###    ##    #    ###    ##    ###   ###    #     ##   # #    ##   ###    ###
+    // #  #  # ##  ###   #  #  # ##  ##     #  #   #    #  #  ##    # ##  #  #  ##
+    // #     ##     #    #     ##      ##   #  #   #    #  #  # #   ##    #  #    ##
+    // #      ##    #    #      ##   ###    #  #   #     ##   #  #   ##   #  #  ###
+    /**
+     * Refreshes Twitch tokens.
+     * @returns {Promise} A promsie that resolves when the tokens are refreshed.
+     */
+    static async refreshTokens() {
+        try {
+            await twitchClient.refreshAccessToken();
+            await twitchBotClient.refreshAccessToken();
+        } catch (err) {
+            eventEmitter.emit("error", {
+                message: "Error refreshing twitch client tokens.",
+                err
+            });
+        }
+
+        await Twitch.setupChat();
+        await Twitch.setupPubSub();
+        await Twitch.setupWebhooks();
     }
 
     //               #     ##    #                            ###           #
@@ -536,25 +570,26 @@ class Twitch {
      */
     static async setupWebhooks() {
         if (webhooks && webhooks.listener) {
-            try {
-                webhooks.listener.unlisten();
-            } finally {}
+            // TODO: Fix this.  Just stopping the subscriptions is not enough.
+            return;
         }
+
+        await Twitch.sleep(1000);
 
         webhooks = new Webhooks();
 
         await webhooks.setup(twitchClient);
 
-        webhooks.listener.subscribeToFollowsToUser(settings.twitch.userId, async (follow) => {
+        webhookSubscriptions.push(await webhooks.listener.subscribeToFollowsToUser(settings.twitch.userId, async (follow) => {
             eventEmitter.emit("follow", {
                 userId: follow.userId,
                 user: (await follow.getUser()).name,
                 name: follow.userDisplayName,
                 date: follow.followDate
             });
-        });
+        }));
 
-        webhooks.listener.subscribeToStreamChanges(settings.twitch.userId, async (stream) => {
+        webhookSubscriptions.push(await webhooks.listener.subscribeToStreamChanges(settings.twitch.userId, async (stream) => {
             if (stream) {
                 const game = await stream.getGame();
 
@@ -568,7 +603,7 @@ class Twitch {
             } else {
                 eventEmitter.emit("offline");
             }
-        });
+        }));
     }
 }
 

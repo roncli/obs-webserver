@@ -37,7 +37,7 @@ class StreamlabsListener {
             currency: data.currency,
             message: data.message
         });
-        Twitch.twitchChatClient.say(settings.twitch.channelName, `Thank you ${data.name} for your generous donation of ${data.formatted_amount}${!data.currency || data.currency.length === 0 || data.currency === "USD" ? "" : ` ${data.currency}`}!`);
+        Twitch.twitchBotClient.say(settings.twitch.channelName, `Thank you ${data.name} for your generous donation of ${data.formatted_amount}${!data.currency || data.currency.length === 0 || data.currency === "USD" ? "" : ` ${data.currency}`}!`);
     }
 }
 

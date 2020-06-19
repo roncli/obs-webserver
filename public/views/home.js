@@ -22,10 +22,9 @@ class HomeView {
     //  ###
     /**
      * Gets the rendered page template.
-     * @param {ViewTypes.HomeViewParameters} data The data to render the page with.
      * @returns {string} An HTML string of the page.
      */
-    static get(data) {
+    static get() {
         return /* html */`
             <div id="scene"></div>
             <div id="preload-media" class="hidden">

@@ -41,8 +41,9 @@ class OAuth {
             res.status(500).send(Common.page(
                 "",
                 {css: ["/css/error.css"]},
-                ServerErrorView.get()
+                ServerErrorView.get(true)
             ));
+            return;
         }
 
         res.redirect("/control");

@@ -1,6 +1,6 @@
 {
     "name": "obs-webserver",
-    "version": "2.0.4",
+    "version": "2.0.5",
     "description": "roncli Gaming webserver for OBS.",
     "license": "None",
     "author": {
@@ -31,16 +31,16 @@
         "steam-api": "1.1.3",
         "streamlabs-ws-client": "1.0.0",
         "terser": "4.7.0",
-        "twitch": "4.0.10",
-        "twitch-chat-client": "4.0.10",
-        "twitch-pubsub-client": "4.0.10",
-        "twitch-webhooks": "4.0.10"
+        "twitch": "4.1.0-pre.11",
+        "twitch-chat-client": "4.1.0-pre.11",
+        "twitch-pubsub-client": "4.1.0-pre.11",
+        "twitch-webhooks": "4.1.0-pre.11"
     },
     "devDependencies": {
         "@types/express": "4.17.6",
         "@types/express-ws": "3.0.0",
         "@types/nconf": "0.10.0",
-        "@types/node": "14.0.9"
+        "@types/node": "14.0.13"
     },
     "engines": {
         "node": ">=14.0.0"

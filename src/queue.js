@@ -1,3 +1,8 @@
+/**
+ * @callback QueuedFunction
+ * @returns {void | PromiseLike<void>}
+ */
+
 //   ###
 //  #   #
 //  #   #  #   #   ###   #   #   ###
@@ -32,7 +37,7 @@ class Queue {
     // #
     /**
      * Adds a function to the queue.
-     * @param {function} fx The function to add to the queue.
+     * @param {QueuedFunction} fx The function to add to the queue.
      * @returns {void}
      */
     push(fx) {

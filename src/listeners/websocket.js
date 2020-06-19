@@ -352,12 +352,15 @@ class WebsocketListener {
                                         type: "scene",
                                         scene: "game"
                                     });
-                                    Notifications.start();
                                     OBSWebsocket.startMic();
                                     OBSWebsocket.startWebcam("game");
                                     OBSWebsocket.stopWebcam("frame");
                                     OBSWebsocket.startDisplay();
                                     OBSWebsocket.stopDiscord("game");
+                                    until += 2000;
+                                    await WebsocketListener.sleep(until - Date.now());
+
+                                    Notifications.start();
                                 }
                                 break;
                         }
@@ -511,6 +514,7 @@ class WebsocketListener {
 
                                     OBSWebsocket.stopStreaming();
                                     OBSWebsocket.switchScene("Off Air");
+                                    Notifications.reset();
                                 }
 
                                 break;

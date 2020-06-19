@@ -1,16 +1,13 @@
 const Deferred = require("./deferred"),
     Queue = require("./queue"),
-    Websocket = require("./websocket"),
+    Websocket = require("./websocket");
 
-    queue = new Queue();
-
-let notificationReady = Deferred.promise(),
+let queue = new Queue(),
+    notificationReady = Deferred.promise(),
     notificationCooldown = Deferred.promise();
 
 // Notification cooldown starts resolved.
 notificationCooldown.resolve();
-
-notificationReady.resolve();
 
 //  #   #          #       #      ##     #                   #       #
 //  #   #          #             #  #                        #
@@ -80,6 +77,7 @@ class Notifications {
      */
     static start() {
         notificationReady.resolve();
+        notificationCooldown.resolve();
     }
 
     //         #
@@ -95,6 +93,29 @@ class Notifications {
      */
     static stop() {
         notificationReady = Deferred.promise();
+    }
+
+    //                           #
+    //                           #
+    // ###    ##    ###    ##   ###
+    // #  #  # ##  ##     # ##   #
+    // #     ##      ##   ##     #
+    // #      ##   ###     ##     ##
+    /**
+     * Resets the notification system.
+     * @returns {void}
+     */
+    static reset() {
+        // Flush current notifications.
+        Notifications.start();
+
+        // Reset queue and notification triggers.
+        queue = new Queue();
+        notificationReady = Deferred.promise();
+        notificationCooldown = Deferred.promise();
+
+        // Notification cooldown starts resolved.
+        notificationCooldown.resolve();
     }
 }
 

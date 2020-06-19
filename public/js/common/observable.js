@@ -1,16 +1,25 @@
+/* eslint-disable max-classes-per-file */
+
 /**
- * A thing.
+ * @typedef {EventTarget & function} ObservableEventTarget
  */
-class ObservableEvent extends Event { // eslint-disable-line max-classes-per-file
+
+/**
+ * An event that occurs when something in an observable object changes.
+ */
+class ObservableEvent extends Event {
     /**
-     * A thing.
-     * @param {string} type A thing.
-     * @param {object} obj A thing.
-     * @param {string} key A thing.
-     * @param {object} value A thing.
+     * Creates the ObservableEvent object.
+     * @param {"set" | "delete" | "change"} type The type of event.
+     * @param {object} obj The raw object that got changed.
+     * @param {string} key The key that got changed, hierarchy separated by dot notation.
+     * @param {object} [value] The value that the key got changed to.  Not passed for deletions.
      */
     constructor(type, obj, key, value) {
+        // This is an Event object, so call the Event's constructor.
         super(type);
+
+        // Set properties specific to the event.
         this.obj = obj;
         this.key = key;
         this.value = value;
@@ -18,77 +27,103 @@ class ObservableEvent extends Event { // eslint-disable-line max-classes-per-fil
 }
 
 /**
- * A thing.
+ * A class to create an observable object from an object.
+ *
+ * @example
+ * (() => {
+ *     "use strict";
+ *     const car = Observable.createFrom({});
+ *     car.addEventListener("set", (ev) => {console.log("I got a property set!", ev);})
+ *     car.addEventListener("delete", (ev) => {console.log("I got a property deleted!", ev);})
+ *     car().make = "BMW";
+ *     car().model = "i128";
+ *     try {
+ *         car.color = "Silver";
+ *     } catch (err) {
+ *         console.log("Oops!  We have to set properties of our observable object on car(), not on car itself!  Also, this error won't throw unless you are in strict mode!");
+ *     }
+ *     car().color = "Silver";
+ * })();
  */
-class ObservableEventTarget extends EventTarget {
+class Observable {
     /**
-     * A thing.
-     * @param {object} obj A thing.
-     * @returns {object} A thing.
+     * Creates an observable object from the object passed into it.
+     * @param {object} obj The object to make observable.
+     * @returns {ObservableEventTarget} The observable object.
      */
-    observe(obj) {
-        if (this.observing) {
-            throw Error("This ObserverEventTarget is already observing an object.  Create a new ObserverEventTarget to observe a new object.");
-        }
+    static createFrom(obj) {
+        /**
+         * Creates the return function.
+         * @returns {Proxy} The proxy to the object to be observed.
+         */
+        const fx = () => fx._proxy;
 
-        this.observing = true;
+        // Create an EventTarget object which will listen to changes on the object.
+        fx._eventTarget = new EventTarget();
 
         /**
-         * A thing.
-         * @param {string} prefix A thing.
-         * @returns {ProxyHandler} A thing.
+         * Creates proxy handlers.
+         * @param {string} prefix A prefix to use for nested objects in the observable object.
+         * @returns {ProxyHandler} The proxy handlers.
          */
         const handlers = (prefix) => ({
             set: (target, key, value) => {
                 target[key] = value;
-                this.dispatchEvent(new ObservableEvent("set", target, `${prefix}${key}`, value));
+                fx._eventTarget.dispatchEvent(new ObservableEvent("set", target, `${prefix}${key}`, value));
+                fx._eventTarget.dispatchEvent(new ObservableEvent("change", target, `${prefix}${key}`, value));
+                return true;
             },
 
             deleteProperty: (target, key) => {
                 delete target[key];
-                this.dispatchEvent(new ObservableEvent("delete", target, `${prefix}${key}`));
+                fx._eventTarget.dispatchEvent(new ObservableEvent("delete", target, `${prefix}${key}`));
+                fx._eventTarget.dispatchEvent(new ObservableEvent("change", target, `${prefix}${key}`));
+                return true;
             },
 
             get: (target, key) => {
                 const value = Reflect.get(target, key);
-                return typeof value === "function" ? value.bind(target) : typeof value === "object" && value !== null ? new Proxy(value, handlers(`${prefix}${key}.`)) : value;
+                return typeof value === "function" ? target[key] : typeof value === "object" && value !== null ? new Proxy(value, handlers(`${prefix}${key}.`)) : value;
             }
         });
 
-        return new Proxy(obj, handlers(""));
+        // Create our Proxy object.
+        fx._proxy = new Proxy(obj, handlers(""));
+
+        /**
+         * Retrieves the methods from an object.
+         * @param {object} parent The parent object.  We will look for methods on it and its children.
+         * @returns {string[]} A list of methods on the object.
+         */
+        const getMethods = (parent) => {
+            const properties = new Set();
+
+            let currentObj = parent;
+
+            do {
+                Object.getOwnPropertyNames(currentObj).map((item) => properties.add(item));
+                currentObj = Object.getPrototypeOf(currentObj);
+            } while (currentObj);
+            return [...properties.keys()].filter((item) => ["caller", "callee", "arguments"].indexOf(item) === -1 && typeof parent[item] === "function");
+        };
+
+        // Get the methods for a default function and the methods on the EventTarget object we just created.
+        const defaultMethods = getMethods(() => {}),
+            eventTargetMethods = getMethods(fx._eventTarget);
+
+        // For each method on the EventTarget object, create a stub on the return function that mimics the EventTarget method.
+        for (const method of eventTargetMethods) {
+            if (defaultMethods.indexOf(method) === -1) {
+                fx[method] = (...args) => fx._eventTarget[method](...args);
+            }
+        }
+
+        // Seal the return function so that it cannot be tampered with.  This prevents simple mistakes like trying to set a property on the return function and not the observable object from going undetected for long.
+        Object.seal(fx);
+
+        // Return the function, which now doubles as an EventTarget object.
+        return fx;
     }
 }
 
-const a = new ObservableEventTarget();
-
-a.addEventListener("set", (ev) => {
-    console.log(ev);
-});
-
-a.addEventListener("delete", (ev) => {
-    console.log(ev);
-});
-
-const b = {};
-
-const c = a.observe(b);
-
-c.a = 1;
-c.b = 2;
-c.c = () => {
-    console.log("HI!");
-};
-c.d = {a: 1};
-c.d.b = 2;
-delete c.b;
-
-c.c();
-
-const d = [];
-
-const e = a.observe(d);
-
-e.push(1);
-e.push(2);
-e.push(3);
-e[1] = 4;
+window.Observble = Observable;

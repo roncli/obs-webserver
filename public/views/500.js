@@ -18,12 +18,16 @@ class ServerErrorView {
     //  ###
     /**
      * Gets the rendered server error template.
+     * @param {boolean} [control] Determines whether to display a link to return to the control page.
      * @returns {string} An HTML string of the server error view.
      */
-    static get() {
+    static get(control) {
         return /* html */`
             <div id="error">
                 <div class="section">500 - Server Error</div>
+                ${control ? /* html */`
+                    <a href="/control">Return to Control page</a>
+                ` : ""}
             </div>
         `;
     }
