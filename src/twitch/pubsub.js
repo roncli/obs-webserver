@@ -1,8 +1,8 @@
 /**
- * @typedef {import("twitch").default} TwitchClient
+ * @typedef {import("twitch").ApiClient} TwitchClient
  */
 
-const TwitchPubSub = require("twitch-pubsub-client").default;
+const TwitchPubSub = require("twitch-pubsub-client").PubSubClient;
 
 //  ####          #       ###          #
 //  #   #         #      #   #         #

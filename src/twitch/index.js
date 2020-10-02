@@ -1,11 +1,13 @@
 /**
- * @typedef {import("twitch-chat-client").default} ChatClient
+ * @typedef {import("twitch").AuthProvider} AuthProvider
+ * @typedef {import("twitch-chat-client").ChatClient} ChatClient
  * @typedef {import("twitch-webhooks").Subscription} WebhooksSubscriptions
  */
 
 const events = require("events"),
     request = require("@root/request"),
-    TwitchClient = require("twitch").default,
+    TwitchAuth = require("twitch-auth"),
+    TwitchClient = require("twitch").ApiClient,
 
     Chat = require("./chat"),
     ConfigFile = require("../configFile"),
@@ -16,37 +18,43 @@ const events = require("events"),
     settings = require("../../settings");
 
 /** @type {string} */
-let chatAccessToken;
+let accessToken;
 
-/** @type {TwitchClient} */
-let twitchBotClient;
+/** @type {AuthProvider} */
+let authProvider;
+
+/** @type {AuthProvider} */
+let botAuthProvider;
+
+/** @type {Chat} */
+let botChat;
+
+/** @type {Chat} */
+let chat;
 
 /** @type {string} */
-let accessToken;
+let chatAccessToken;
+
+/** @type {PubSub} */
+let pubsub;
+
+/** @type {NodeJS.Timeout} */
+let refreshInterval;
 
 /** @type {string} */
 let refreshToken;
 
 /** @type {TwitchClient} */
+let twitchBotClient;
+
+/** @type {TwitchClient} */
 let twitchClient;
-
-/** @type {Chat} */
-let chat;
-
-/** @type {Chat} */
-let botChat;
-
-/** @type {PubSub} */
-let pubsub;
 
 /** @type {Webhooks} */
 let webhooks;
 
 /** @type {WebhooksSubscriptions[]} */
 const webhookSubscriptions = [];
-
-/** @type {NodeJS.Timeout} */
-let refreshInterval;
 
 const eventEmitter = new events.EventEmitter();
 
@@ -177,13 +185,13 @@ class Twitch {
         accessToken = accessToken || ConfigFile.get("accessToken");
         refreshToken = refreshToken || ConfigFile.get("refreshToken");
 
-        if (!accessToken || !refreshToken || !twitchClient || !twitchBotClient) {
+        if (!accessToken || !refreshToken || !twitchClient || !twitchBotClient || !authProvider || !botAuthProvider) {
             return false;
         }
 
         try {
-            await twitchClient.refreshAccessToken();
-            await twitchBotClient.refreshAccessToken();
+            await authProvider.refresh();
+            await botAuthProvider.refresh();
         } catch (err) {
             return false;
         }
@@ -211,20 +219,34 @@ class Twitch {
         accessToken = tokens.accessToken;
         refreshToken = tokens.refreshToken;
 
-        twitchClient = TwitchClient.withCredentials(settings.twitch.clientId, accessToken, settings.twitch.scopes, {
-            clientSecret: settings.twitch.clientSecret,
-            refreshToken,
-            onRefresh: (token) => accessToken = token.accessToken
-        }, {
+        authProvider = new TwitchAuth.RefreshableAuthProvider(
+            new TwitchAuth.StaticAuthProvider(settings.twitch.clientId, accessToken, settings.twitch.scopes, "user"),
+            {
+                clientSecret: settings.twitch.clientSecret,
+                expiry: null,
+                refreshToken,
+                onRefresh: (token) => accessToken = token.accessToken
+            }
+        );
+
+        twitchClient = new TwitchClient({
+            authProvider,
             initialScopes: settings.twitch.scopes,
             preAuth: true
         });
 
-        twitchBotClient = TwitchClient.withCredentials(settings.twitch.clientId, chatAccessToken, settings.twitch.chatScopes, {
-            clientSecret: settings.twitch.clientSecret,
-            refreshToken: settings.twitch.chatRefreshToken,
-            onRefresh: (token) => chatAccessToken = token.accessToken
-        }, {
+        botAuthProvider = new TwitchAuth.RefreshableAuthProvider(
+            new TwitchAuth.StaticAuthProvider(settings.twitch.clientId, chatAccessToken, settings.twitch.chatScopes, "user"),
+            {
+                clientSecret: settings.twitch.clientSecret,
+                expiry: null,
+                refreshToken: settings.twitch.chatRefreshToken,
+                onRefresh: (token) => chatAccessToken = token.accessToken
+            }
+        );
+
+        twitchBotClient = new TwitchClient({
+            authProvider: botAuthProvider,
             initialScopes: settings.twitch.chatScopes,
             preAuth: true
         });
@@ -233,7 +255,8 @@ class Twitch {
         await Twitch.setupPubSub();
         await Twitch.setupWebhooks();
 
-        refreshInterval = setInterval(Twitch.refreshTokens, 24 * 60 * 60 * 1000);
+        // TODO: Should work, but needs investigation to see if it's needed.
+        // refreshInterval = setInterval(Twitch.refreshTokens, 24 * 60 * 60 * 1000);
     }
 
     //               #                      #     ###         #
@@ -248,8 +271,8 @@ class Twitch {
      */
     static async refreshTokens() {
         try {
-            await twitchClient.refreshAccessToken();
-            await twitchBotClient.refreshAccessToken();
+            await authProvider.refresh();
+            await botAuthProvider.refresh();
         } catch (err) {
             eventEmitter.emit("error", {
                 message: "Error refreshing twitch client tokens.",
@@ -295,7 +318,6 @@ class Twitch {
                 await chat.client.quit();
             } catch (err) {} finally {}
         }
-
         chat = new Chat(twitchClient);
 
         if (botChat && botChat.client) {
@@ -570,8 +592,9 @@ class Twitch {
      */
     static async setupWebhooks() {
         if (webhooks && webhooks.listener) {
-            // TODO: Fix this.  Just stopping the subscriptions is not enough.
-            return;
+            for (const sub of webhookSubscriptions) {
+                await sub.stop();
+            }
         }
 
         await Twitch.sleep(1000);

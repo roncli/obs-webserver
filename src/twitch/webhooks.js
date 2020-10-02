@@ -1,8 +1,10 @@
 /**
- * @typedef {import("twitch").default} TwitchClient
+ * @typedef {import("twitch").ApiClient} TwitchClient
  */
 
-const TwitchWebhooks = require("twitch-webhooks").default,
+const PublicIP = require("public-ip"),
+    TwitchWebhooks = require("twitch-webhooks").WebHookListener,
+    SimpleAdapter = require("twitch-webhooks").SimpleAdapter,
 
     settings = require("../../settings");
 
@@ -30,7 +32,11 @@ class Webhooks {
      * @returns {Promise} A promise that resolves when the webhooks are setup.
      */
     async setup(twitchClient) {
-        this.listener = await TwitchWebhooks.create(twitchClient, {port: settings.twitch.webhooksPort});
+        this.listener = new TwitchWebhooks(twitchClient, new SimpleAdapter({
+            hostName: await PublicIP.v4(),
+            listenerPort: settings.twitch.webhooksPort
+        }));
+
         this.listener.listen();
     }
 }

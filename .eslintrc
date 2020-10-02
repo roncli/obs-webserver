@@ -7,7 +7,7 @@
         "sourceType": "module",
         "ecmaVersion": 7
     },
-    "parser": "C:\\Users\\roncli\\AppData\\Roaming\\npm\\node_modules\\babel-eslint",
+    "parser": "babel-eslint",
     "extends": "eslint:all",
     "rules": {
         "array-element-newline": "off",

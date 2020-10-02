@@ -143,12 +143,13 @@ class Minify {
                 return next(err);
             }
 
-            const output = terser.minify(code, {nameCache});
+            const output = await terser.minify(code, {nameCache});
 
-            if (output.error) {
-                Log.exception("An uglify-js error occurred.", output.error);
+            if (!output.code) {
+                const err = new Error("An terser error occurred.");
 
-                next(output.error);
+                Log.exception("An terser error occurred.", err);
+                next(err);
                 return void 0;
             }
 

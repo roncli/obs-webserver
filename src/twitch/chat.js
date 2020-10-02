@@ -1,8 +1,8 @@
 /**
- * @typedef {import("twitch").default} TwitchClient
+ * @typedef {import("twitch").AuthProvider} AuthProvider
  */
 
-const ChatClient = require("twitch-chat-client").default,
+const ChatClient = require("twitch-chat-client").ChatClient,
 
     settings = require("../../settings");
 
@@ -25,10 +25,10 @@ class Chat {
     //  ##    ##   #  #  ###      ##  #      ###   ##     ##   ##   #
     /**
      * Performs setup of Twitch chat.
-     * @param {TwitchClient} twitchClient The twitch client.
+     * @param {AuthProvider} authProvider The twitch client.
      */
-    constructor(twitchClient) {
-        this.client = ChatClient.forTwitchClient(twitchClient, {
+    constructor(authProvider) {
+        this.client = new ChatClient(authProvider, {
             channels: [settings.twitch.channelName],
             requestMembershipEvents: true
         });
