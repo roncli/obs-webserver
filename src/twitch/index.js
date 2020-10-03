@@ -5,7 +5,6 @@
  */
 
 const events = require("events"),
-    request = require("@root/request"),
     TwitchAuth = require("twitch-auth"),
     TwitchClient = require("twitch").ApiClient,
 
@@ -18,37 +17,40 @@ const events = require("events"),
     settings = require("../../settings");
 
 /** @type {string} */
-let accessToken;
-
-/** @type {AuthProvider} */
-let authProvider;
+let botAccessToken;
 
 /** @type {AuthProvider} */
 let botAuthProvider;
 
-/** @type {Chat} */
-let botChat;
+/** @type {string} */
+let botRefreshToken;
 
 /** @type {Chat} */
-let chat;
+let botChatClient;
+
+/** @type {TwitchClient} */
+let botTwitchClient;
 
 /** @type {string} */
-let chatAccessToken;
+let channelAccessToken;
+
+/** @type {AuthProvider} */
+let channelAuthProvider;
+
+/** @type {string} */
+let channelRefreshToken;
+
+/** @type {TwitchClient} */
+let channelTwitchClient;
+
+/** @type {Chat} */
+let channelChatClient;
 
 /** @type {PubSub} */
 let pubsub;
 
 /** @type {NodeJS.Timeout} */
 let refreshInterval;
-
-/** @type {string} */
-let refreshToken;
-
-/** @type {TwitchClient} */
-let twitchBotClient;
-
-/** @type {TwitchClient} */
-let twitchClient;
 
 /** @type {Webhooks} */
 let webhooks;
@@ -87,6 +89,34 @@ class Twitch {
         });
     }
 
+    // #            #     ##   #            #     ##   ##     #                 #
+    // #            #    #  #  #            #    #  #   #                       #
+    // ###    ##   ###   #     ###    ###  ###   #      #    ##     ##   ###   ###
+    // #  #  #  #   #    #     #  #  #  #   #    #      #     #    # ##  #  #   #
+    // #  #  #  #   #    #  #  #  #  # ##   #    #  #   #     #    ##    #  #   #
+    // ###    ##     ##   ##   #  #   # #    ##   ##   ###   ###    ##   #  #    ##
+    /**
+     * Gets the current Twitch bot client.
+     * @returns {ChatClient} The current Twitch bot client.
+     */
+    static get botChatClient() {
+        return botChatClient.client;
+    }
+
+    //       #                             ##    ###          #     #          #      ##   ##     #                 #
+    //       #                              #     #                 #          #     #  #   #                       #
+    //  ##   ###    ###  ###   ###    ##    #     #    #  #  ##    ###    ##   ###   #      #    ##     ##   ###   ###
+    // #     #  #  #  #  #  #  #  #  # ##   #     #    #  #   #     #    #     #  #  #      #     #    # ##  #  #   #
+    // #     #  #  # ##  #  #  #  #  ##     #     #    ####   #     #    #     #  #  #  #   #     #    ##    #  #   #
+    //  ##   #  #   # #  #  #  #  #   ##   ###    #    ####  ###     ##   ##   #  #   ##   ###   ###    ##   #  #    ##
+    /**
+     * Gets the current Twitch client.
+     * @returns {TwitchClient} The current Twitch client.
+     */
+    static get channelTwitchClient() {
+        return channelTwitchClient;
+    }
+
     //                          #
     //                          #
     //  ##   # #    ##   ###   ###    ###
@@ -101,75 +131,6 @@ class Twitch {
         return eventEmitter;
     }
 
-    //  #           #     #          #     ###          #     ##   ##     #                 #
-    //  #                 #          #     #  #         #    #  #   #                       #
-    // ###   #  #  ##    ###    ##   ###   ###    ##   ###   #      #    ##     ##   ###   ###
-    //  #    #  #   #     #    #     #  #  #  #  #  #   #    #      #     #    # ##  #  #   #
-    //  #    ####   #     #    #     #  #  #  #  #  #   #    #  #   #     #    ##    #  #   #
-    //   ##  ####  ###     ##   ##   #  #  ###    ##     ##   ##   ###   ###    ##   #  #    ##
-    /**
-     * Gets the current Twitch bot client.
-     * @returns {ChatClient} The current Twitch bot client.
-     */
-    static get twitchBotClient() {
-        return botChat.client;
-    }
-
-    //  #           #     #          #      ##   ##     #                 #
-    //  #                 #          #     #  #   #                       #
-    // ###   #  #  ##    ###    ##   ###   #      #    ##     ##   ###   ###
-    //  #    #  #   #     #    #     #  #  #      #     #    # ##  #  #   #
-    //  #    ####   #     #    #     #  #  #  #   #     #    ##    #  #   #
-    //   ##  ####  ###     ##   ##   #  #   ##   ###   ###    ##   #  #    ##
-    /**
-     * Gets the current Twitch client.
-     * @returns {TwitchClient} The current Twitch client.
-     */
-    static get twitchClient() {
-        return twitchClient;
-    }
-
-    //              #     ##                                   ###         #
-    //              #    #  #                                   #          #
-    //  ###   ##   ###   #  #   ##    ##    ##    ###    ###    #     ##   # #    ##   ###
-    // #  #  # ##   #    ####  #     #     # ##  ##     ##      #    #  #  ##    # ##  #  #
-    //  ##   ##     #    #  #  #     #     ##      ##     ##    #    #  #  # #   ##    #  #
-    // #      ##     ##  #  #   ##    ##    ##   ###    ###     #     ##   #  #   ##   #  #
-    //  ###
-    /**
-     * Gets the Twitch access token from the OAuth code and logs in.
-     * @param {string} code The code returned from the OAuth flow.
-     * @returns {Promise} A promise that resolves when the access token is retrieved.
-     */
-    static async getAccessToken(code) {
-        const res = await request.post(`https://id.twitch.tv/oauth2/token?client_id=${settings.twitch.clientId}&client_secret=${settings.twitch.clientSecret}&code=${code}&grant_type=authorization_code&redirect_uri=${encodeURIComponent(`http://localhost:${settings.express.port}/oauth`)}`);
-
-        const body = JSON.parse(res.body);
-
-        const chatRes = await request(`https://twitchtokengenerator.com/api/refresh/${settings.twitch.chatRefreshToken}`);
-
-        const chatBody = JSON.parse(chatRes.body);
-
-        chatAccessToken = chatBody.token;
-
-        await Twitch.login({accessToken: body.access_token, refreshToken: body.refresh_token});
-    }
-
-    //              #    ###            #   #                       #    #  #        ##
-    //              #    #  #           #                           #    #  #         #
-    //  ###   ##   ###   #  #   ##    ###  ##    ###    ##    ##   ###   #  #  ###    #
-    // #  #  # ##   #    ###   # ##  #  #   #    #  #  # ##  #      #    #  #  #  #   #
-    //  ##   ##     #    # #   ##    #  #   #    #     ##    #      #    #  #  #      #
-    // #      ##     ##  #  #   ##    ###  ###   #      ##    ##     ##   ##   #     ###
-    //  ###
-    /**
-     * Gets the redirect URL for logging into Twitch.
-     * @returns {string} The redirect URL to log into Twitch.
-     */
-    static getRedirectUrl() {
-        return `https://id.twitch.tv/oauth2/authorize?client_id=${settings.twitch.clientId}&redirect_uri=${encodeURIComponent(`http://localhost:${settings.express.port}/oauth`)}&response_type=code&scope=${encodeURIComponent(settings.twitch.scopes.join(" "))}`;
-    }
-
     //  #           ###                  #
     //              #  #                 #
     // ##     ###   #  #   ##    ###   ###  #  #
@@ -182,21 +143,20 @@ class Twitch {
      * @returns {Promise<boolean>} Returns whether the Twitch client is ready.
      */
     static async isReady() {
-        accessToken = accessToken || ConfigFile.get("accessToken");
-        refreshToken = refreshToken || ConfigFile.get("refreshToken");
+        channelAccessToken = channelAccessToken || ConfigFile.get("channelAccessToken");
+        channelRefreshToken = channelRefreshToken || ConfigFile.get("channelRefreshToken");
+        botAccessToken = botAccessToken || ConfigFile.get("botAccessToken");
+        botRefreshToken = botRefreshToken || ConfigFile.get("botRefreshToken");
 
-        if (!accessToken || !refreshToken || !twitchClient || !twitchBotClient || !authProvider || !botAuthProvider) {
+        if (!channelAccessToken || !channelRefreshToken || !botAccessToken || !botRefreshToken) {
             return false;
         }
 
-        try {
-            await authProvider.refresh();
-            await botAuthProvider.refresh();
-        } catch (err) {
-            return false;
+        if (!channelAuthProvider || !botAuthProvider) {
+            await Twitch.login();
         }
 
-        return true;
+        return !!(channelAuthProvider && botAuthProvider);
     }
 
     // ##                 #
@@ -208,46 +168,52 @@ class Twitch {
     //              ###
     /**
      * Logs in to Twitch and creates the Twitch client.
-     * @param {{accessToken: string, refreshToken: string}} tokens The tokens to login with.
      * @returns {Promise} A promise that resolves when login is complete.
      */
-    static async login(tokens) {
-        if (refreshInterval) {
-            clearInterval(refreshInterval);
-        }
-
-        accessToken = tokens.accessToken;
-        refreshToken = tokens.refreshToken;
-
-        authProvider = new TwitchAuth.RefreshableAuthProvider(
-            new TwitchAuth.StaticAuthProvider(settings.twitch.clientId, accessToken, settings.twitch.scopes, "user"),
+    static async login() {
+        channelAuthProvider = new TwitchAuth.RefreshableAuthProvider(
+            new TwitchAuth.StaticAuthProvider(settings.twitch.clientId, channelAccessToken, settings.twitch.channelScopes, "user"),
             {
                 clientSecret: settings.twitch.clientSecret,
                 expiry: null,
-                refreshToken,
-                onRefresh: (token) => accessToken = token.accessToken
+                refreshToken: channelRefreshToken,
+                onRefresh: async (token) => {
+                    channelAccessToken = token.accessToken;
+                    channelRefreshToken = token.refreshToken;
+                    await ConfigFile.set({
+                        channelAccessToken,
+                        channelRefreshToken
+                    });
+                }
             }
         );
 
-        twitchClient = new TwitchClient({
-            authProvider,
-            initialScopes: settings.twitch.scopes,
+        channelTwitchClient = new TwitchClient({
+            authProvider: channelAuthProvider,
+            initialScopes: settings.twitch.channelScopes,
             preAuth: true
         });
 
         botAuthProvider = new TwitchAuth.RefreshableAuthProvider(
-            new TwitchAuth.StaticAuthProvider(settings.twitch.clientId, chatAccessToken, settings.twitch.chatScopes, "user"),
+            new TwitchAuth.StaticAuthProvider(settings.twitch.clientId, botAccessToken, settings.twitch.botScopes, "user"),
             {
                 clientSecret: settings.twitch.clientSecret,
                 expiry: null,
-                refreshToken: settings.twitch.chatRefreshToken,
-                onRefresh: (token) => chatAccessToken = token.accessToken
+                refreshToken: botRefreshToken,
+                onRefresh: async (token) => {
+                    botAccessToken = token.accessToken;
+                    botRefreshToken = token.refreshToken;
+                    await ConfigFile.set({
+                        botAccessToken,
+                        botRefreshToken
+                    });
+                }
             }
         );
 
-        twitchBotClient = new TwitchClient({
+        botTwitchClient = new TwitchClient({
             authProvider: botAuthProvider,
-            initialScopes: settings.twitch.chatScopes,
+            initialScopes: settings.twitch.botScopes,
             preAuth: true
         });
 
@@ -271,7 +237,7 @@ class Twitch {
      */
     static async refreshTokens() {
         try {
-            await authProvider.refresh();
+            await channelAuthProvider.refresh();
             await botAuthProvider.refresh();
         } catch (err) {
             eventEmitter.emit("error", {
@@ -298,7 +264,7 @@ class Twitch {
      * @returns {Promise} A promise that resolves when the stream's info has been set.
      */
     static async setStreamInfo(title, game) {
-        await twitchClient.kraken.channels.updateChannel(settings.twitch.userId, {status: title, game});
+        await channelTwitchClient.kraken.channels.updateChannel(settings.twitch.userId, {status: title, game});
     }
 
     //               #                 ##   #            #
@@ -313,22 +279,22 @@ class Twitch {
      * @returns {Promise} A promise that resolves when the Twitch chat is setup.
      */
     static async setupChat() {
-        if (chat && chat.client) {
+        if (channelChatClient && channelChatClient.client) {
             try {
-                await chat.client.quit();
+                await channelChatClient.client.quit();
             } catch (err) {} finally {}
         }
-        chat = new Chat(twitchClient);
+        channelChatClient = new Chat(channelTwitchClient);
 
-        if (botChat && botChat.client) {
+        if (botChatClient && botChatClient.client) {
             try {
-                await botChat.client.quit();
+                await botChatClient.client.quit();
             } catch (err) {} finally {}
         }
 
-        botChat = new Chat(twitchBotClient);
+        botChatClient = new Chat(botTwitchClient);
 
-        chat.client.onAction((channel, user, message, msg) => {
+        channelChatClient.client.onAction((channel, user, message, msg) => {
             eventEmitter.emit("action", {
                 channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
                 user,
@@ -337,7 +303,7 @@ class Twitch {
             });
         });
 
-        chat.client.onCommunityPayForward((channel, user, forwardInfo) => {
+        channelChatClient.client.onCommunityPayForward((channel, user, forwardInfo) => {
             eventEmitter.emit("subGiftCommunityPayForward", {
                 channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
                 user,
@@ -346,7 +312,7 @@ class Twitch {
             });
         });
 
-        chat.client.onCommunitySub((channel, user, subInfo) => {
+        channelChatClient.client.onCommunitySub((channel, user, subInfo) => {
             eventEmitter.emit("subGiftCommunity", {
                 channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
                 user,
@@ -357,7 +323,7 @@ class Twitch {
             });
         });
 
-        chat.client.onDisconnect(async (manually, reason) => {
+        channelChatClient.client.onDisconnect(async (manually, reason) => {
             if (reason) {
                 Log.exception("The streamer's Twitch chat disconnected.", reason);
             }
@@ -367,7 +333,7 @@ class Twitch {
             }
         });
 
-        chat.client.onGiftPaidUpgrade((channel, user, subInfo) => {
+        channelChatClient.client.onGiftPaidUpgrade((channel, user, subInfo) => {
             eventEmitter.emit("subGiftUpgrade", {
                 channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
                 user,
@@ -377,10 +343,10 @@ class Twitch {
             });
         });
 
-        chat.client.onHost(async (channel, target, viewers) => {
+        channelChatClient.client.onHost(async (channel, target, viewers) => {
             let user;
             try {
-                user = (await Twitch.twitchClient.kraken.search.searchChannels(target)).find((c) => c.displayName === target);
+                user = (await channelTwitchClient.kraken.search.searchChannels(target)).find((c) => c.displayName === target);
             } catch (err) {} finally {}
 
             eventEmitter.emit("host", {
@@ -391,10 +357,10 @@ class Twitch {
             });
         });
 
-        chat.client.onHosted(async (channel, byChannel, auto, viewers) => {
+        channelChatClient.client.onHosted(async (channel, byChannel, auto, viewers) => {
             let user;
             try {
-                user = (await Twitch.twitchClient.kraken.search.searchChannels(byChannel)).find((c) => c.displayName === byChannel);
+                user = (await channelTwitchClient.kraken.search.searchChannels(byChannel)).find((c) => c.displayName === byChannel);
             } catch (err) {} finally {}
 
             eventEmitter.emit("hosted", {
@@ -406,7 +372,7 @@ class Twitch {
             });
         });
 
-        chat.client.onPrimeCommunityGift((channel, user, subInfo) => {
+        channelChatClient.client.onPrimeCommunityGift((channel, user, subInfo) => {
             eventEmitter.emit("giftPrime", {
                 channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
                 user: subInfo.gifter,
@@ -415,7 +381,7 @@ class Twitch {
             });
         });
 
-        chat.client.onPrimePaidUpgrade((channel, user, subInfo) => {
+        channelChatClient.client.onPrimePaidUpgrade((channel, user, subInfo) => {
             eventEmitter.emit("subPrimeUpgraded", {
                 channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
                 user,
@@ -424,7 +390,7 @@ class Twitch {
             });
         });
 
-        chat.client.onPrivmsg((channel, user, message, msg) => {
+        channelChatClient.client.onPrivmsg((channel, user, message, msg) => {
             eventEmitter.emit("message", {
                 channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
                 user,
@@ -434,7 +400,7 @@ class Twitch {
             });
         });
 
-        chat.client.onRaid((channel, user, raidInfo) => {
+        channelChatClient.client.onRaid((channel, user, raidInfo) => {
             eventEmitter.emit("raided", {
                 channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
                 user,
@@ -443,7 +409,7 @@ class Twitch {
             });
         });
 
-        chat.client.onResub((channel, user, subInfo) => {
+        channelChatClient.client.onResub((channel, user, subInfo) => {
             eventEmitter.emit("resub", {
                 channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
                 user,
@@ -456,7 +422,7 @@ class Twitch {
             });
         });
 
-        chat.client.onRitual((channel, user, ritualInfo, msg) => {
+        channelChatClient.client.onRitual((channel, user, ritualInfo, msg) => {
             eventEmitter.emit("ritual", {
                 channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
                 user,
@@ -466,7 +432,7 @@ class Twitch {
             });
         });
 
-        chat.client.onStandardPayForward((channel, user, forwardInfo) => {
+        channelChatClient.client.onStandardPayForward((channel, user, forwardInfo) => {
             eventEmitter.emit("subGiftPayForward", {
                 channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
                 user,
@@ -476,7 +442,7 @@ class Twitch {
             });
         });
 
-        chat.client.onSub((channel, user, subInfo) => {
+        channelChatClient.client.onSub((channel, user, subInfo) => {
             eventEmitter.emit("sub", {
                 channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
                 user,
@@ -489,7 +455,7 @@ class Twitch {
             });
         });
 
-        chat.client.onSubExtend((channel, user, subInfo) => {
+        channelChatClient.client.onSubExtend((channel, user, subInfo) => {
             eventEmitter.emit("subExtend", {
                 channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
                 user,
@@ -499,7 +465,7 @@ class Twitch {
             });
         });
 
-        chat.client.onSubGift((channel, user, subInfo) => {
+        channelChatClient.client.onSubGift((channel, user, subInfo) => {
             eventEmitter.emit("subGift", {
                 channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
                 user,
@@ -515,7 +481,7 @@ class Twitch {
             });
         });
 
-        chat.client.onWhisper((user, message, msg) => {
+        channelChatClient.client.onWhisper((user, message, msg) => {
             eventEmitter.emit("whisper", {
                 user,
                 name: msg.userInfo.displayName,
@@ -523,7 +489,7 @@ class Twitch {
             });
         });
 
-        botChat.client.onDisconnect(async (manually, reason) => {
+        botChatClient.client.onDisconnect(async (manually, reason) => {
             if (reason) {
                 Log.exception("The bot's Twitch chat disconnected.", reason);
             }
@@ -533,8 +499,8 @@ class Twitch {
             }
         });
 
-        chat.client.connect();
-        botChat.client.connect();
+        channelChatClient.client.connect();
+        botChatClient.client.connect();
     }
 
     //               #                ###         #      ##         #
@@ -551,7 +517,7 @@ class Twitch {
     static async setupPubSub() {
         pubsub = new PubSub();
 
-        await pubsub.setup(twitchClient);
+        await pubsub.setup(channelTwitchClient);
 
         pubsub.client.onBits(settings.twitch.userId, async (message) => {
             eventEmitter.emit("bits", {
@@ -601,7 +567,7 @@ class Twitch {
 
         webhooks = new Webhooks();
 
-        await webhooks.setup(twitchClient);
+        await webhooks.setup(channelTwitchClient);
 
         webhookSubscriptions.push(await webhooks.listener.subscribeToFollowsToUser(settings.twitch.userId, async (follow) => {
             eventEmitter.emit("follow", {

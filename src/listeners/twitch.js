@@ -25,6 +25,7 @@
  */
 
 const ConfigFile = require("../configFile"),
+    Log = require("../logging/log"),
     Notifications = require("../notifications"),
     Twitch = require("../twitch"),
 
@@ -100,9 +101,9 @@ class TwitchListener {
     static bits(ev) {
         Notifications.add("bits", ev);
         if (ev.isAnonymous) {
-            Twitch.twitchBotClient.say(settings.twitch.channelName, `There has been an anonymous cheer of ${ev.name} bit${ev.bits === 1 ? "" : "s"}!`);
+            Twitch.botChatClient.say(settings.twitch.channelName, `There has been an anonymous cheer of ${ev.name} bit${ev.bits === 1 ? "" : "s"}!`);
         } else {
-            Twitch.twitchBotClient.say(settings.twitch.channelName, `Thanks ${ev.name} for cheering with ${ev.bits} bit${ev.bits === 1 ? "" : "s"}!${ev.totalBits && ev.totalBits !== ev.bits ? `  They have cheered a total of ${ev.totalBits} bits!` : ""}`);
+            Twitch.botChatClient.say(settings.twitch.channelName, `Thanks ${ev.name} for cheering with ${ev.bits} bit${ev.bits === 1 ? "" : "s"}!${ev.totalBits && ev.totalBits !== ev.bits ? `  They have cheered a total of ${ev.totalBits} bits!` : ""}`);
         }
     }
 
@@ -116,7 +117,7 @@ class TwitchListener {
      * @returns {void}
      */
     static error(ev) {
-
+        Log.exception("An error event was received from Twitch.", ev);
     }
 
     //   #         ##    ##
@@ -132,7 +133,7 @@ class TwitchListener {
      */
     static follow(ev) {
         Notifications.add("follow", ev);
-        Twitch.twitchBotClient.say(settings.twitch.channelName, `Thank you for following roncli Gaming, ${ev.name}!`);
+        Twitch.botChatClient.say(settings.twitch.channelName, `Thank you for following roncli Gaming, ${ev.name}!`);
     }
 
     //        #      #    #    ###          #
@@ -150,7 +151,7 @@ class TwitchListener {
     static giftPrime(ev) {
         if (ev.channel === settings.twitch.channelName) {
             Notifications.add("giftPrime", ev);
-            Twitch.twitchBotClient.say(settings.twitch.channelName, `${ev.name} has gifted ${ev.gift}, a Prime gift, to the community!`);
+            Twitch.botChatClient.say(settings.twitch.channelName, `${ev.name} has gifted ${ev.gift}, a Prime gift, to the community!`);
         }
     }
 
@@ -183,7 +184,7 @@ class TwitchListener {
     static hosted(ev) {
         if (ev.channel === settings.twitch.channelName) {
             Notifications.add("hosted", ev);
-            Twitch.twitchBotClient.say(settings.twitch.channelName, `Thanks for the host, ${ev.name}!  Everyone, be sure to visit https://twitch.tv/${ev.user} to check out their stream!`);
+            Twitch.botChatClient.say(settings.twitch.channelName, `Thanks for the host, ${ev.name}!  Everyone, be sure to visit https://twitch.tv/${ev.user} to check out their stream!`);
         }
     }
 
@@ -219,7 +220,7 @@ class TwitchListener {
                 delete cooldown[enteredCommand];
             }, 60000);
 
-            Twitch.twitchBotClient.say(settings.twitch.channelName, command.text);
+            Twitch.botChatClient.say(settings.twitch.channelName, command.text);
         }
     }
 
@@ -251,7 +252,7 @@ class TwitchListener {
     static raided(ev) {
         if (ev.channel === settings.twitch.channelName) {
             Notifications.add("raided", ev);
-            Twitch.twitchBotClient.say(settings.twitch.channelName, `Thanks for the raid, ${ev.name}!  Everyone, be sure to visit https://twitch.tv/${ev.user} to check out their stream!`);
+            Twitch.botChatClient.say(settings.twitch.channelName, `Thanks for the raid, ${ev.name}!  Everyone, be sure to visit https://twitch.tv/${ev.user} to check out their stream!`);
         }
     }
 
@@ -285,7 +286,7 @@ class TwitchListener {
     static resub(ev) {
         if (ev.channel === settings.twitch.channelName) {
             Notifications.add("resub", ev);
-            Twitch.twitchBotClient.say(settings.twitch.channelName, `Thanks ${ev.name} for continuing to be a ${TwitchListener.getTierName(ev.tier, ev.isPrime)}!${ev.months && ev.months > 1 ? `  They have been subscribed for ${ev.months} months${ev.streak && ev.streak === ev.months ? " in a row!" : ""}${ev.streak && ev.streak > 1 && ev.streak !== ev.months ? ` and for ${ev.streak} months in a row!` : ""}!` : ""}`);
+            Twitch.botChatClient.say(settings.twitch.channelName, `Thanks ${ev.name} for continuing to be a ${TwitchListener.getTierName(ev.tier, ev.isPrime)}!${ev.months && ev.months > 1 ? `  They have been subscribed for ${ev.months} months${ev.streak && ev.streak === ev.months ? " in a row!" : ""}${ev.streak && ev.streak > 1 && ev.streak !== ev.months ? ` and for ${ev.streak} months in a row!` : ""}!` : ""}`);
         }
     }
 
@@ -334,7 +335,7 @@ class TwitchListener {
     static sub(ev) {
         if (ev.channel === settings.twitch.channelName) {
             Notifications.add("sub", ev);
-            Twitch.twitchBotClient.say(settings.twitch.channelName, `Thanks ${ev.name} for becoming a ${TwitchListener.getTierName(ev.tier, ev.isPrime)}!${ev.months && ev.months > 1 ? `  They have been subscribed for ${ev.months} months${ev.streak && ev.streak === ev.months ? " in a row!" : ""}${ev.streak && ev.streak > 1 && ev.streak !== ev.months ? ` and for ${ev.streak} months in a row!` : ""}!` : ""}`);
+            Twitch.botChatClient.say(settings.twitch.channelName, `Thanks ${ev.name} for becoming a ${TwitchListener.getTierName(ev.tier, ev.isPrime)}!${ev.months && ev.months > 1 ? `  They have been subscribed for ${ev.months} months${ev.streak && ev.streak === ev.months ? " in a row!" : ""}${ev.streak && ev.streak > 1 && ev.streak !== ev.months ? ` and for ${ev.streak} months in a row!` : ""}!` : ""}`);
         }
     }
 
@@ -352,7 +353,7 @@ class TwitchListener {
     static subExtend(ev) {
         if (ev.channel === settings.twitch.channelName) {
             Notifications.add("subExtend", ev);
-            Twitch.twitchBotClient.say(settings.twitch.channelName, `Thanks ${ev.name} for becoming a ${TwitchListener.getTierName(ev.tier, false)}!${ev.months && ev.months > 1 ? `  They have been subscribed for ${ev.months} months!` : ""}`);
+            Twitch.botChatClient.say(settings.twitch.channelName, `Thanks ${ev.name} for becoming a ${TwitchListener.getTierName(ev.tier, false)}!${ev.months && ev.months > 1 ? `  They have been subscribed for ${ev.months} months!` : ""}`);
         }
     }
 
@@ -370,7 +371,7 @@ class TwitchListener {
     static subGift(ev) {
         if (ev.channel === settings.twitch.channelName) {
             Notifications.add("subGift", ev);
-            Twitch.twitchBotClient.say(settings.twitch.channelName, `Thanks ${ev.gifterName} for making ${ev.name} a ${TwitchListener.getTierName(ev.tier, false)}!`);
+            Twitch.botChatClient.say(settings.twitch.channelName, `Thanks ${ev.gifterName} for making ${ev.name} a ${TwitchListener.getTierName(ev.tier, false)}!`);
         }
     }
 
@@ -389,7 +390,7 @@ class TwitchListener {
     static subGiftCommunity(ev) {
         if (ev.channel === settings.twitch.channelName) {
             Notifications.add("subGiftCommunity", ev);
-            Twitch.twitchBotClient.say(settings.twitch.channelName, `Thanks ${ev.name} for making ${ev.giftCount} new ${TwitchListener.getTierName(ev.tier, false)}s!${ev.totalGiftCount && ev.giftCount !== ev.totalGiftCount ? `  They have gifted ${ev.totalGiftCount} total subscriptions in the channel!` : ""}`);
+            Twitch.botChatClient.say(settings.twitch.channelName, `Thanks ${ev.name} for making ${ev.giftCount} new ${TwitchListener.getTierName(ev.tier, false)}s!${ev.totalGiftCount && ev.giftCount !== ev.totalGiftCount ? `  They have gifted ${ev.totalGiftCount} total subscriptions in the channel!` : ""}`);
         }
     }
 
@@ -408,7 +409,7 @@ class TwitchListener {
     static subGiftCommunityPayForward(ev) {
         if (ev.channel === settings.twitch.channelName) {
             Notifications.add("subGiftCommunityPayForward", ev);
-            Twitch.twitchBotClient.say(settings.twitch.channelName, `Thanks ${ev.name} for paying forward ${ev.originalGifter}'s gift subscription!`);
+            Twitch.botChatClient.say(settings.twitch.channelName, `Thanks ${ev.name} for paying forward ${ev.originalGifter}'s gift subscription!`);
         }
     }
 
@@ -427,7 +428,7 @@ class TwitchListener {
     static subGiftPayForward(ev) {
         if (ev.channel === settings.twitch.channelName) {
             Notifications.add("subGiftPayForward", ev);
-            Twitch.twitchBotClient.say(settings.twitch.channelName, `Thanks ${ev.name} for paying forward ${ev.originalGifter}'s gift subscription to ${ev.recipient}!`);
+            Twitch.botChatClient.say(settings.twitch.channelName, `Thanks ${ev.name} for paying forward ${ev.originalGifter}'s gift subscription to ${ev.recipient}!`);
         }
     }
 
@@ -446,7 +447,7 @@ class TwitchListener {
     static subGiftUpgrade(ev) {
         if (ev.channel === settings.twitch.channelName) {
             Notifications.add("subGiftUpgrade", ev);
-            Twitch.twitchBotClient.say(settings.twitch.channelName, `Thanks ${ev.name} for remaining a ${TwitchListener.getTierName(ev.tier, false)}, continuing the gift subscription from ${ev.gifter}!`);
+            Twitch.botChatClient.say(settings.twitch.channelName, `Thanks ${ev.name} for remaining a ${TwitchListener.getTierName(ev.tier, false)}, continuing the gift subscription from ${ev.gifter}!`);
         }
     }
 
@@ -465,7 +466,7 @@ class TwitchListener {
     static subPrimeUpgraded(ev) {
         if (ev.channel === settings.twitch.channelName) {
             Notifications.add("subPrimeUpgraded", ev);
-            Twitch.twitchBotClient.say(settings.twitch.channelName, `Thanks ${ev.name} for upgrading their Prime subscription and becoming a full ${TwitchListener.getTierName(ev.tier, false)}!`);
+            Twitch.botChatClient.say(settings.twitch.channelName, `Thanks ${ev.name} for upgrading their Prime subscription and becoming a full ${TwitchListener.getTierName(ev.tier, false)}!`);
         }
     }
 

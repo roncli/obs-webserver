@@ -33,7 +33,9 @@ class Notifications {
      * @returns {void}
      */
     static add(type, data) {
+        console.log(`Received notification ${type}.`);
         queue.push(async () => {
+            console.log(`Awaiting notification ${type}.`);
             await Notifications.send(type, data);
         });
     }
@@ -52,17 +54,22 @@ class Notifications {
      */
     static async send(type, data) {
         await notificationReady;
+        console.log("Notification system is ready.");
         await notificationCooldown;
+        console.log("Notification cooldown is ready.");
 
         notificationCooldown = Deferred.promise();
         setTimeout(() => {
             notificationCooldown.resolve();
+            console.log("Notification cooldown is complete.");
         }, 10 * 1000);
 
+        console.log(`Sending notification ${type}.`);
         Websocket.broadcast({
             type: "notification",
             data: {type, data}
         });
+        console.log("Notificaiton cooldown is beginning.");
     }
 
     //         #                 #
@@ -76,6 +83,7 @@ class Notifications {
      * @returns {void}
      */
     static start() {
+        console.log("Starting notification system.");
         notificationReady.resolve();
         notificationCooldown.resolve();
     }
@@ -92,6 +100,7 @@ class Notifications {
      * @returns {void}
      */
     static stop() {
+        console.log("Stopping notification system.");
         notificationReady = Deferred.promise();
     }
 
@@ -106,6 +115,8 @@ class Notifications {
      * @returns {void}
      */
     static reset() {
+        console.log("Resetting notification system.");
+
         // Flush current notifications.
         Notifications.start();
 

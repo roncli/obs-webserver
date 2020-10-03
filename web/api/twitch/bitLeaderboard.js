@@ -35,7 +35,7 @@ class BitLeaderboard {
         /** @type {HelixBitsLeaderboard} */
         let bits;
         try {
-            bits = await Twitch.twitchClient.helix.bits.getLeaderboard({
+            bits = await Twitch.channelTwitchClient.helix.bits.getLeaderboard({
                 count: 100,
                 period: "all"
             });

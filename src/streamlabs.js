@@ -1,5 +1,12 @@
+/**
+ * @typedef {import("streamlabs-ws-client").StreamlabsClient} StreamlabsWs.StreamlabsClient
+ */
+
 const StreamlabsWs = require("streamlabs-ws-client"),
     settings = require("../settings");
+
+/** @type {StreamlabsWs.StreamlabsClient} */
+let client = void 0;
 
 //   ###    #                                  ##           #
 //  #   #   #                                   #           #
@@ -10,8 +17,24 @@ const StreamlabsWs = require("streamlabs-ws-client"),
 //   ###     ##   #       ###    ####  #   #   ###    ####  # ##   ####
 /**
  * A class that handles connection to Streamlabs.
+ *
+ * @static
  */
 class Streamlabs {
+    //       ##     #                 #
+    //        #                       #
+    //  ##    #    ##     ##   ###   ###
+    // #      #     #    # ##  #  #   #
+    // #      #     #    ##    #  #   #
+    //  ##   ###   ###    ##   #  #    ##
+    /**
+     * The Streamlabs client.
+     * @returns {StreamlabsWs.StreamlabsClient} The Streamlabs client.
+     */
+    static get client() {
+        return client;
+    }
+
     //         #                 #
     //         #                 #
     //  ###   ###    ###  ###   ###
@@ -23,7 +46,7 @@ class Streamlabs {
      * @returns {void}
      */
     static start() {
-        Streamlabs.client = new StreamlabsWs.StreamlabsClient(settings.streamlabs);
+        client = new StreamlabsWs.StreamlabsClient(settings.streamlabs);
 
         Streamlabs.client.on("connect_error", (ev) => {
             console.log("connect_error", ev);
@@ -57,8 +80,5 @@ class Streamlabs {
         Streamlabs.client.connect();
     }
 }
-
-/** @type {StreamlabsWs.StreamlabsClient} */
-Streamlabs.client = void 0;
 
 module.exports = Streamlabs;

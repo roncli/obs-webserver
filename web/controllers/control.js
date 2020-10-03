@@ -6,6 +6,7 @@
 const ConfigFile = require("../../src/configFile"),
     Common = require("../includes/common"),
     ControlView = require("../../public/views/control"),
+    ServerErrorView = require("../../public/views/500"),
     Twitch = require("../../src/twitch");
 
 //   ###                  #                    ##
@@ -34,7 +35,11 @@ class Control {
      */
     static async get(req, res) {
         if (!await Twitch.isReady()) {
-            res.redirect(Twitch.getRedirectUrl());
+            res.status(500).send(Common.page(
+                "",
+                {css: ["/css/error.css"]},
+                ServerErrorView.get(true, "Twitch tokens are invalid.")
+            ));
             return;
         }
 

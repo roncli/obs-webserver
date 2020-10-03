@@ -7,6 +7,9 @@ const settings = require("../settings"),
 
 let accessTokenValid = false;
 
+/** @type {SpotifyApi} */
+let spotify = void 0;
+
 //   ###                  #       #      ##
 //  #   #                 #             #  #
 //  #      # ##    ###   ####    ##     #     #   #
@@ -20,6 +23,21 @@ let accessTokenValid = false;
  * Helper functions for Spotify.
  */
 class Spotify {
+    //                     #     #      #
+    //                     #           # #
+    //  ###   ###    ##   ###   ##     #    #  #
+    // ##     #  #  #  #   #     #    ###   #  #
+    //   ##   #  #  #  #   #     #     #     # #
+    // ###    ###    ##     ##  ###    #      #
+    //        #                              #
+    /**
+     * Returns the Spotify API client.
+     * @returns {SpotifyApi} The Spotify API client.
+     */
+    static get spotify() {
+        return spotify;
+    }
+
     //              #     ##                #     #      #         ###         #
     //              #    #  #               #           # #         #          #
     //  ###   ##   ###    #    ###    ##   ###   ##     #    #  #   #     ##   # #    ##   ###
@@ -32,21 +50,21 @@ class Spotify {
      * @returns {Promise} A promise that resolves when the access token has been retrieved.
      */
     static async getSpotifyToken() {
-        if (!Spotify.spotify) {
-            Spotify.spotify = new SpotifyApi(settings.spotify);
+        if (!spotify) {
+            spotify = new SpotifyApi(settings.spotify);
         }
 
         if (accessTokenValid) {
             return;
         }
 
-        const data = await Spotify.spotify.refreshAccessToken();
+        const data = await spotify.refreshAccessToken();
 
         setTimeout(() => {
             accessTokenValid = false;
         }, 3540000);
 
-        Spotify.spotify.setAccessToken(data.body.access_token);
+        spotify.setAccessToken(data.body.access_token);
     }
 
     //                   ###   ##                 #
@@ -63,7 +81,7 @@ class Spotify {
     static async nowPlaying() {
         await Spotify.getSpotifyToken();
 
-        const response = await Spotify.spotify.getMyCurrentPlayingTrack();
+        const response = await spotify.getMyCurrentPlayingTrack();
 
         if (response && response.body && response.body.item) {
             return {
@@ -79,11 +97,5 @@ class Spotify {
         return {};
     }
 }
-
-/** @type {SpotifyApi} */
-Spotify.spotify = void 0;
-
-/** @type {NodeJS.Timer} */
-Spotify.stopTimeout = void 0;
 
 module.exports = Spotify;
