@@ -372,6 +372,16 @@ class Twitch {
             });
         });
 
+        channelChatClient.client.onMessage((channel, user, message, msg) => {
+            eventEmitter.emit("message", {
+                channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
+                user,
+                name: msg.userInfo.displayName,
+                message,
+                msg // TODO: Implement this.
+            });
+        });
+
         channelChatClient.client.onPrimeCommunityGift((channel, user, subInfo) => {
             eventEmitter.emit("giftPrime", {
                 channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
@@ -387,16 +397,6 @@ class Twitch {
                 user,
                 name: subInfo.displayName,
                 tier: subInfo.plan
-            });
-        });
-
-        channelChatClient.client.onPrivmsg((channel, user, message, msg) => {
-            eventEmitter.emit("message", {
-                channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
-                user,
-                name: msg.userInfo.displayName,
-                message,
-                msg // TODO: Implement this.
             });
         });
 
