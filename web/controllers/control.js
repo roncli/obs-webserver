@@ -34,7 +34,7 @@ class Control {
      * @returns {Promise} A promise that resolves when the request has been processed.
      */
     static async get(req, res) {
-        if (!await Twitch.isReady()) {
+        if (!await Twitch.connect()) {
             res.status(500).send(Common.page(
                 "",
                 {css: ["/css/error.css"]},

@@ -5,6 +5,7 @@
  */
 
 const events = require("events"),
+    request = require("@root/request"),
     TwitchAuth = require("twitch-auth"),
     TwitchClient = require("twitch").ApiClient,
 
@@ -15,6 +16,9 @@ const events = require("events"),
     Webhooks = require("./webhooks"),
 
     settings = require("../../settings");
+
+/** @type {AuthProvider} */
+let apiAuthProvider;
 
 /** @type {string} */
 let botAccessToken;
@@ -131,18 +135,17 @@ class Twitch {
         return eventEmitter;
     }
 
-    //  #           ###                  #
-    //              #  #                 #
-    // ##     ###   #  #   ##    ###   ###  #  #
-    //  #    ##     ###   # ##  #  #  #  #  #  #
-    //  #      ##   # #   ##    # ##  #  #   # #
-    // ###   ###    #  #   ##    # #   ###    #
-    //                                       #
+    //                                      #
+    //                                      #
+    //  ##    ##   ###   ###    ##    ##   ###
+    // #     #  #  #  #  #  #  # ##  #      #
+    // #     #  #  #  #  #  #  ##    #      #
+    //  ##    ##   #  #  #  #   ##    ##     ##
     /**
-     * Checks if the Twitch client is ready.
+     * Connects to Twitch.
      * @returns {Promise<boolean>} Returns whether the Twitch client is ready.
      */
-    static async isReady() {
+    static async connect() {
         channelAccessToken = channelAccessToken || ConfigFile.get("channelAccessToken");
         channelRefreshToken = channelRefreshToken || ConfigFile.get("channelRefreshToken");
         botAccessToken = botAccessToken || ConfigFile.get("botAccessToken");
@@ -153,7 +156,14 @@ class Twitch {
         }
 
         if (!channelAuthProvider || !botAuthProvider) {
-            await Twitch.login();
+            Log.log("Logging into Twitch...");
+            try {
+                await Twitch.login();
+            } catch (err) {
+                Log.exception("Error connecting to Twitch.  You can try again by refreshing the control page.", err);
+            }
+
+            Log.log("Connected to Twitch.");
         }
 
         return !!(channelAuthProvider && botAuthProvider);
@@ -217,6 +227,8 @@ class Twitch {
             preAuth: true
         });
 
+        apiAuthProvider = new TwitchAuth.ClientCredentialsAuthProvider(settings.twitch.clientId, settings.twitch.clientSecret);
+
         await Twitch.setupChat();
         await Twitch.setupPubSub();
         await Twitch.setupWebhooks();
@@ -249,6 +261,32 @@ class Twitch {
         await Twitch.setupChat();
         await Twitch.setupPubSub();
         await Twitch.setupWebhooks();
+    }
+
+    //                                #      ##                     #      #            #
+    //                                #     #  #                    #                   #
+    //  ###    ##    ###  ###    ##   ###   #      ###  # #    ##   #     ##     ###   ###
+    // ##     # ##  #  #  #  #  #     #  #  # ##  #  #  ####  # ##  #      #    ##      #
+    //   ##   ##    # ##  #     #     #  #  #  #  # ##  #  #  ##    #      #      ##    #
+    // ###     ##    # #  #      ##   #  #   ###   # #  #  #   ##   ####  ###   ###      ##
+    /**
+     * Searches IGDB for a game.
+     * @param {string} search The game to search for.
+     * @returns {Promise<any>} The game from IGDB.
+     */
+    static async searchGameList(search) {
+        const res = await request({
+            body: `search "${search.replace(/\\/g, "\\\\").replace(/"/g, "\\\"")}"; fields name;`,
+            headers: {
+                Authorization: `Bearer ${(await apiAuthProvider.getAccessToken()).accessToken}`,
+                "Client-ID": settings.twitch.clientId,
+                "Content-Type": "text/plain"
+            },
+            method: "POST",
+            url: "https://api.igdb.com/v4/games"
+        });
+
+        return JSON.parse(res.body);
     }
 
     //               #     ##    #                            ###           #

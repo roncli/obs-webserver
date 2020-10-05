@@ -14,6 +14,8 @@ const queue = [];
 /** @type {typeof import("../discord")} */
 let Discord;
 
+let running = false;
+
 //  #
 //  #
 //  #       ###    ## #
@@ -104,67 +106,85 @@ class Log {
      * @returns {Promise} A promise that resolves when the output has been completed.
      */
     static async output() {
-        if (!Discord) {
-            Discord = require("../discord");
+        if (running) {
+            return;
         }
+        running = true;
 
-        if (Discord.isConnected()) {
+        try {
+            if (!Discord) {
+                Discord = require("../discord");
+            }
 
-            for (const log of queue) {
-                if (log.type === "exception") {
-                    if (log.obj) {
-                        if (log.obj.message && log.obj.innerError && log.obj.innerError.message && log.obj.innerError.code === "ETIMEOUT") {
-                            log.obj = `${log.obj.message} - ${log.obj.innerError.message} - ETIMEOUT`;
-                        }
+            if (Discord.isConnected()) {
+                for (const log of queue) {
+                    if (log.type === "exception") {
+                        if (log.obj) {
+                            if (log.obj.message && log.obj.innerError && log.obj.innerError.message && log.obj.innerError.code === "ETIMEOUT") {
+                                log.obj = `${log.obj.message} - ${log.obj.innerError.message} - ETIMEOUT`;
+                            }
 
-                        if (log.obj.message && log.obj.originalError && log.obj.originalError.message && log.obj.originalError.code === "ETIMEOUT") {
-                            log.obj = `${log.obj.message} - ${log.obj.originalError.message} - ETIMEOUT`;
-                        }
+                            if (log.obj.message && log.obj.originalError && log.obj.originalError.message && log.obj.originalError.code === "ETIMEOUT") {
+                                log.obj = `${log.obj.message} - ${log.obj.originalError.message} - ETIMEOUT`;
+                            }
 
-                        if (log.obj.message && log.obj.syscall && log.obj.code === "ETIMEDOUT") {
-                            log.obj = `${log.obj.message} - ${log.obj.syscall} - ETIMEDOUT`;
-                        }
+                            if (log.obj.message && log.obj.syscall && log.obj.code === "ETIMEDOUT") {
+                                log.obj = `${log.obj.message} - ${log.obj.syscall} - ETIMEDOUT`;
+                            }
 
-                        if (log.obj.name === "TimeoutError") {
-                            log.obj = `${log.obj.message} - TimeoutError`;
-                        }
+                            if (log.obj.name === "TimeoutError") {
+                                log.obj = `${log.obj.message} - TimeoutError`;
+                            }
 
-                        if (log.obj.innerError && log.obj.message && log.obj.innerError.name === "TimeoutError") {
-                            log.obj = `${log.obj.message} - TimeoutError`;
-                        }
+                            if (log.obj.innerError && log.obj.message && log.obj.innerError.name === "TimeoutError") {
+                                log.obj = `${log.obj.message} - TimeoutError`;
+                            }
 
-                        if (log.obj.error && log.obj.message && log.obj.error.syscall && log.obj.error.code === "ETIMEDOUT") {
-                            log.obj = `${log.obj.message} - ${log.obj.error.syscall} - ETIMEDOUT`;
-                        }
+                            if (log.obj.error && log.obj.message && log.obj.error.syscall && log.obj.error.code === "ETIMEDOUT") {
+                                log.obj = `${log.obj.message} - ${log.obj.error.syscall} - ETIMEDOUT`;
+                            }
 
-                        if (log.obj.message && log.obj.message === "Unexpected server response: 502") {
-                            log.obj = `${log.obj.message}`;
-                        }
+                            if (log.obj.message && log.obj.message === "Unexpected server response: 502") {
+                                log.obj = `${log.obj.message}`;
+                            }
 
-                        try {
-                            const res = await request.post({
-                                uri: settings.logger.url,
-                                body: {
-                                    key: settings.logger.key,
-                                    application: "roncli Gaming",
-                                    category: "exception",
-                                    message: `${log.message}\n${util.inspect(log.obj)}`,
-                                    date: new Date().getTime()
-                                },
-                                json: true
+                            try {
+                                const res = await request.post({
+                                    uri: settings.logger.url,
+                                    body: {
+                                        key: settings.logger.key,
+                                        application: "roncli Gaming",
+                                        category: "exception",
+                                        message: `${log.message}\n${util.inspect(log.obj)}`,
+                                        date: new Date().getTime()
+                                    },
+                                    json: true
+                                });
+
+                                if (res.body.id) {
+                                    await Discord.queue(`Error occurred, see ${res.body.url}.`, /** @type {DiscordJs.TextChannel} */ (Discord.findChannelByName("botcli-errors"))); // eslint-disable-line no-extra-parens
+                                } else {
+                                    await Discord.queue("Error occurred, problem sending log, see http://logger.roncli.com.", /** @type {DiscordJs.TextChannel} */ (Discord.findChannelByName("botcli-errors"))); // eslint-disable-line no-extra-parens
+                                }
+                            } catch (err) {
+                                await Log.outputToDiscord(log, err);
+                            }
+                        } else {
+                            const message = Discord.messageEmbed({
+                                color: 0xFF0000,
+                                fields: [],
+                                timestamp: log.date
                             });
 
-                            if (res.body.id) {
-                                await Discord.queue(`Error occurred, see ${res.body.url}.`, /** @type {DiscordJs.TextChannel} */ (Discord.findChannelByName("botcli-errors"))); // eslint-disable-line no-extra-parens
-                            } else {
-                                await Discord.queue("Error occurred, problem sending log, see http://logger.roncli.com.", /** @type {DiscordJs.TextChannel} */ (Discord.findChannelByName("botcli-errors"))); // eslint-disable-line no-extra-parens
+                            if (log.message) {
+                                message.setDescription(log.message);
                             }
-                        } catch (err) {
-                            await Log.outputToDiscord(log, err);
+
+                            await Discord.richQueue(message, /** @type {DiscordJs.TextChannel} */ (Discord.findChannelByName("botcli-errors"))); // eslint-disable-line no-extra-parens
                         }
                     } else {
                         const message = Discord.messageEmbed({
-                            color: 0xFF0000,
+                            color: log.type === "log" ? 0x80FF80 : log.type === "warning" ? 0xFFFF00 : 0xFF0000,
                             fields: [],
                             timestamp: log.date
                         });
@@ -173,26 +193,16 @@ class Log {
                             message.setDescription(log.message);
                         }
 
-                        await Discord.richQueue(message, /** @type {DiscordJs.TextChannel} */ (Discord.findChannelByName("botcli-errors"))); // eslint-disable-line no-extra-parens
+                        await Discord.richQueue(message, /** @type {DiscordJs.TextChannel} */ (Discord.findChannelByName("botcli-log"))); // eslint-disable-line no-extra-parens
                     }
-                } else {
-                    const message = Discord.messageEmbed({
-                        color: log.type === "log" ? 0x80FF80 : log.type === "warning" ? 0xFFFF00 : 0xFF0000,
-                        fields: [],
-                        timestamp: log.date
-                    });
-
-                    if (log.message) {
-                        message.setDescription(log.message);
-                    }
-
-                    await Discord.richQueue(message, /** @type {DiscordJs.TextChannel} */ (Discord.findChannelByName("botcli-log"))); // eslint-disable-line no-extra-parens
                 }
-            }
 
-            queue.splice(0, queue.length);
-        } else {
-            console.log(queue[queue.length - 1]);
+                queue.splice(0, queue.length);
+            } else {
+                console.log(queue[queue.length - 1]);
+            }
+        } finally {
+            running = false;
         }
     }
 

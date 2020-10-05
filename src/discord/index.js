@@ -93,8 +93,6 @@ class Discord {
      */
     static startup() {
         discord.on("ready", () => {
-            Log.log("Connected to Discord.");
-
             guild = discord.guilds.cache.find((g) => g.name === settings.guild);
 
             if (!readied) {
@@ -135,7 +133,7 @@ class Discord {
 
         try {
             await discord.login(settings.discord.token);
-            Log.log("Connected.");
+            Log.log("Connected to Discord.");
         } catch (err) {
             Log.exception("Error connecting to Discord, will automatically retry.", err);
         }

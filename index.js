@@ -10,7 +10,8 @@ const compression = require("compression"),
     Listeners = require("./src/listeners"),
     Log = require("./src/logging/log"),
     Router = require("./src/router"),
-    settings = require("./settings");
+    settings = require("./settings"),
+    Twitch = require("./src/twitch");
 
 //         #                 #
 //         #                 #
@@ -47,7 +48,7 @@ const compression = require("compression"),
     try {
         router = await Router.getRouter();
     } catch (err) {
-        console.log(err);
+        Log.exception("There was an error while getting the router.", err);
         return;
     }
 
@@ -57,6 +58,9 @@ const compression = require("compression"),
     // Startup Discord.
     Discord.startup();
     await Discord.connect();
+
+    // Startup Twitch.
+    await Twitch.connect();
 
     // Initialize middleware stack.
     app.use(express.json());
@@ -105,7 +109,7 @@ const compression = require("compression"),
     const port = process.env.PORT || settings.express.port;
 
     app.listen(port);
-    console.log(`Web server listening on port ${port}.`);
+    Log.log(`Web server listening on port ${port}.`);
 }());
 
 process.on("unhandledRejection", (reason) => {
