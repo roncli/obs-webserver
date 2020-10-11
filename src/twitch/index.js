@@ -53,9 +53,6 @@ let channelChatClient;
 /** @type {PubSub} */
 let pubsub;
 
-/** @type {NodeJS.Timeout} */
-let refreshInterval;
-
 /** @type {Webhooks} */
 let webhooks;
 
@@ -232,9 +229,6 @@ class Twitch {
         await Twitch.setupChat();
         await Twitch.setupPubSub();
         await Twitch.setupWebhooks();
-
-        // TODO: Should work, but needs investigation to see if it's needed.
-        // refreshInterval = setInterval(Twitch.refreshTokens, 24 * 60 * 60 * 1000);
     }
 
     //               #                      #     ###         #
