@@ -360,6 +360,18 @@ class Game {
                             break;
                         case "redemption":
                             switch (ev.data.data.reward) {
+                                case "Explosive Noise, Female Dogs":
+                                    Game.notify("/images/roncliBoom-56.png", "/media/explosive-noise-female-dogs.ogg", /* html */`
+                                        <div>
+                                            <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
+                                            <span class="text">has spent</span>
+                                            <span class="header">${Game.cost(ev.data.data.cost)}.</span>
+                                            <span class="header">Explosive noise, female dogs!</span>${ev.data.data.message ? /* html */`<br />
+                                            <span class="message">${window.Common.htmlEncode(ev.data.data.message)}</span>` : ""}
+                                        </div>
+                                    `);
+
+                                    break;
                                 case "Noita: Eh, Steve":
                                     Game.notify("/images/roncliWhatever-56.png", "/media/eh-steve.ogg", /* html */`
                                         <div>
