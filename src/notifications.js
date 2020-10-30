@@ -58,7 +58,9 @@ class Notifications {
         await notificationCooldown;
         console.log("Notification cooldown is ready.");
 
-        notificationCooldown = Deferred.promise();
+        if (!notificationCooldown || !notificationCooldown.isPending()) {
+            notificationCooldown = Deferred.promise();
+        }
         setTimeout(() => {
             notificationCooldown.resolve();
             console.log("Notification cooldown is complete.");
@@ -101,7 +103,9 @@ class Notifications {
      */
     static stop() {
         console.log("Stopping notification system.");
-        notificationReady = Deferred.promise();
+        if (!notificationReady || !notificationReady.isPending()) {
+            notificationReady = Deferred.promise();
+        }
     }
 
     //                           #
@@ -122,8 +126,12 @@ class Notifications {
 
         // Reset queue and notification triggers.
         queue = new Queue();
-        notificationReady = Deferred.promise();
-        notificationCooldown = Deferred.promise();
+        if (!notificationReady || !notificationReady.isPending()) {
+            notificationReady = Deferred.promise();
+        }
+        if (!notificationCooldown || !notificationCooldown.isPending()) {
+            notificationCooldown = Deferred.promise();
+        }
 
         // Notification cooldown starts resolved.
         notificationCooldown.resolve();

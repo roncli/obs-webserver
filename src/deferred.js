@@ -27,14 +27,29 @@ class Deferred {
     static promise() {
         let res, rej;
 
+        let isFulfilled = false;
+        let isPending = true;
+        let isRejected = false;
+
         /** @type {DeferredTypes.DeferredPromise} */
         const promise = new Promise((resolve, reject) => {
             res = resolve;
             rej = reject;
+        }).then((value) => {
+            isFulfilled = true;
+            isPending = false;
+            return value;
+        }).catch((err) => {
+            isRejected = true;
+            isPending = false;
+            throw err;
         });
 
         promise.resolve = res;
         promise.reject = rej;
+        promise.isFulfilled = () => isFulfilled;
+        promise.isPending = () => isPending;
+        promise.isRejected = () => isRejected;
 
         return promise;
     }
