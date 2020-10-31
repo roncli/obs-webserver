@@ -101,7 +101,7 @@ class Common {
             ` : ""}
             ${options.map((o) => /* html */`
                 <option value="${Common.htmlEncode(o.value)}"${selected === o.value ? " selected" : ""}>${Common.htmlEncode(o.text || o.value)}</option>
-            `)}
+            `).join("")}
         `;
     }
 
