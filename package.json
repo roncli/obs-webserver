@@ -24,6 +24,7 @@
         "express-ws": "4.0.0",
         "google-spreadsheet": "3.0.13",
         "html-minifier": "4.0.0",
+        "igdb-api-node": "5.0.0",
         "jquery": "3.5.1",
         "jsdom": "16.4.0",
         "nconf": "0.10.0",

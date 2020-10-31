@@ -5,7 +5,7 @@
  */
 
 const events = require("events"),
-    request = require("@root/request"),
+    IGDB = require("igdb-api-node"),
     TwitchAuth = require("twitch-auth"),
     TwitchClient = require("twitch").ApiClient,
 
@@ -269,18 +269,10 @@ class Twitch {
      * @returns {Promise<any>} The game from IGDB.
      */
     static async searchGameList(search) {
-        const res = await request({
-            body: `search "${search.replace(/\\/g, "\\\\").replace(/"/g, "\\\"")}"; fields name;`,
-            headers: {
-                Authorization: `Bearer ${(await apiAuthProvider.getAccessToken()).accessToken}`,
-                "Client-ID": settings.twitch.clientId,
-                "Content-Type": "text/plain"
-            },
-            method: "POST",
-            url: "https://api.igdb.com/v4/games"
-        });
+        const client = IGDB.default(apiAuthProvider.clientId, (await apiAuthProvider.getAccessToken()).accessToken),
+            res = await client.search(search).fields(["name"]).limit(50).request("/games");
 
-        return JSON.parse(res.body);
+        return res.data;
     }
 
     //               #     ##    #                            ###           #
