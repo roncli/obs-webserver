@@ -261,10 +261,42 @@ class WebsocketListener {
                             }
 
                             OBSWebsocket.startWebcam("frame");
+                            until += 13750;
+                            await WebsocketListener.sleep(until - Date.now());
+                            if (WebsocketListener.reset) {
+                                WebsocketListener.reset = false;
+                                return;
+                            }
+
+                            Websocket.broadcast({
+                                type: "overlay",
+                                data: {
+                                    type: "stinger"
+                                }
+                            });
+                            until += 625;
+                            await WebsocketListener.sleep(until - Date.now());
+                            if (WebsocketListener.reset) {
+                                WebsocketListener.reset = false;
+                                return;
+                            }
+
+                            Websocket.broadcast({
+                                type: "scene",
+                                scene: "game"
+                            });
+                            OBSWebsocket.startMic();
+                            OBSWebsocket.startWebcam("game");
+                            OBSWebsocket.stopWebcam("frame");
+                            OBSWebsocket.startDisplay();
+                            OBSWebsocket.stopDiscord("game");
+                            until += 2000;
+                            await WebsocketListener.sleep(until - Date.now());
+
+                            Notifications.start();
                         }
 
-                        WebsocketListener.data.phase = "webcam";
-
+                        WebsocketListener.data.phase = "game";
                         break;
                     case "Webcam":
                         switch (WebsocketListener.data.phase) {

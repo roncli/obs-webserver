@@ -1,6 +1,6 @@
 declare namespace CommonTypes {
     type Files = {
-        js?: string[],
+        js?: string[]
         css?: string[]
     }
 }
