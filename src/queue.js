@@ -26,6 +26,8 @@ class Queue {
      */
     constructor() {
         this.promise = Promise.resolve();
+        this.queued = 0;
+        this.complete = 0;
     }
 
     //                    #
@@ -41,7 +43,17 @@ class Queue {
      * @returns {void}
      */
     push(fx) {
-        this.promise = this.promise.then(() => {}).catch(() => {}).then(fx);
+        const queue = this;
+
+        this.queued++;
+        this.promise = this.promise.then(() => {}).catch(() => {}).then(async () => {
+            await fx();
+            queue.complete++;
+
+            if (queue.complete === queue.queued) {
+                queue.promise = Promise.resolve();
+            }
+        });
     }
 }
 
