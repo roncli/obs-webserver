@@ -4,6 +4,7 @@ interface Window {
     CommandView: import("../public/views/control/command")
     CommandsView: import("../public/views/control/commands")
     ControlView: import("../public/views/control")
+    CTMView: import("../public/views/home/ctm")
     DiscordChannelView: import("../public/views/control/discord-channel")
     DiscordChannelsView: import("../public/views/control/discord-channels")
     FrameView: import("../public/views/home/frame")

@@ -28,6 +28,25 @@ class Home {
         Home.spotify = false;
     }
 
+    //         #                 #     ##   ###   #  #
+    //         #                 #    #  #   #    ####
+    //  ###   ###    ###  ###   ###   #      #    ####
+    // ##      #    #  #  #  #   #    #      #    #  #
+    //   ##    #    # ##  #      #    #  #   #    #  #
+    // ###      ##   # #  #       ##   ##    #    #  #
+    /**
+     * Starts the CTM scene.
+     * @returns {Promise} A promise taht resolves when the ctm scene has been started.
+     */
+    static async startCTM() {
+        await window.Common.loadTemplate("/js/?files=/views/home/game/title.js,/views/home/game/info.js,/views/home/game/notification.js,/js/home/game.js", "Game");
+        await window.Common.loadTemplate("/js/?files=/views/home/ctm.js", "CTMView");
+
+        await window.Common.loadDataIntoTemplate("/api/config/roncliGaming", "#scene", window.CTMView.get);
+
+        window.Game.start();
+    }
+
     //         #                 #    ####
     //         #                 #    #
     //  ###   ###    ###  ###   ###   ###   ###    ###  # #    ##
@@ -57,7 +76,8 @@ class Home {
      * @returns {Promise} A promise taht resolves when the game scene has been started.
      */
     static async startGame() {
-        await window.Common.loadTemplate("/js/?files=/views/home/game/title.js,/views/home/game/info.js,/views/home/game/support.js,/views/home/game/recent.js,/views/home/game/notification.js,/views/home/game.js,/js/home/game.js", "GameView");
+        await window.Common.loadTemplate("/js/?files=/views/home/game/title.js,/views/home/game/info.js,/views/home/game/notification.js,/js/home/game.js", "Game");
+        await window.Common.loadTemplate("/js/?files=/views/home/game/support.js,/views/home/game/recent.js,/views/home/game.js", "GameView");
 
         await window.Common.loadDataIntoTemplate("/api/config/roncliGaming", "#scene", window.GameView.get);
 
@@ -142,6 +162,9 @@ class Home {
                             break;
                         case "game":
                             await Home.startGame();
+                            break;
+                        case "ctm":
+                            await Home.startCTM();
                             break;
                     }
                     break;

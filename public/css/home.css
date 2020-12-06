@@ -297,6 +297,81 @@ div#game div#elapsed {
     font-size: 72px;
 }
 
+div#ctm {
+    position: absolute;
+    right: 0;
+    width: 684px;
+    height: 1080px;
+    background-image: url("../images/ctmbackground.png");
+    background-size: 684px 1080px;
+}
+
+div#ctm div#title {
+    position: absolute;
+    top: 577px;
+    right: 24px;
+    width: 684px;
+    text-align: right;
+}
+
+div#ctm div#title div.header {
+    font-size: 48px;
+}
+
+div#ctm div#title div.text {
+    font-size: 40px;
+}
+
+div#ctm div#info {
+    position: absolute;
+    top: 712px;
+    left: 24px;
+    width: 636px;
+    font-size: 18px;
+}
+
+div#ctm div#info div.header,
+div#ctm div#info div.text {
+    margin: 0 5px;
+}
+
+div#ctm div#info div.header {
+    margin-bottom: 3px;
+}
+
+div#ctm div#notification {
+    position: absolute;
+    display: grid;
+    left: 24px;
+    top: 984px;
+    width: 636px;
+}
+
+div#ctm div#notification div.notification {
+    display: grid;
+    font-size: 36px;
+    grid-template-rows: 93px;
+    grid-template-columns: repeat(2, fit-content(530px));
+    column-gap: 20px;
+    align-self: center;
+    justify-self: center;
+    align-items: center;
+    justify-items: center;
+}
+
+div#ctm div#notification div.notification .message {
+    font-size: 16px;
+}
+
+div#ctm div#elapsed {
+    position: absolute;
+    top: 446px;
+    width: 636px;
+    text-align: center;
+    color: white;
+    font-size: 72px;
+}
+
 .header {
     color: white;
 }

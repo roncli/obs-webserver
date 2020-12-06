@@ -89,8 +89,12 @@ class Game {
             notification.classList.remove("fade-out");
             clearTimeout(Game.notifyTimeout);
         } else {
-            support.classList.add("fade-out");
-            recent.classList.add("fade-out");
+            if (support) {
+                support.classList.add("fade-out");
+            }
+            if (recent) {
+                recent.classList.add("fade-out");
+            }
             timeout = 500;
         }
 
@@ -103,11 +107,19 @@ class Game {
                 notification.classList.add("fade-out");
 
                 Game.notifyTimeout = setTimeout(() => {
-                    support.innerHTML = window.GameSupportView.get();
-                    recent.innerHTML = window.GameRecentView.get();
+                    if (support) {
+                        support.innerHTML = window.GameSupportView.get();
+                    }
+                    if (recent) {
+                        recent.innerHTML = window.GameRecentView.get();
+                    }
                     notification.innerHTML = "";
-                    support.classList.remove("fade-out");
-                    recent.classList.remove("fade-out");
+                    if (support) {
+                        support.classList.remove("fade-out");
+                    }
+                    if (recent) {
+                        recent.classList.remove("fade-out");
+                    }
                     notification.classList.remove("fade-out");
 
                     Game.notifyTimeout = void 0;

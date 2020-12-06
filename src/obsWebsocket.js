@@ -47,6 +47,29 @@ class OBSWebsocket {
         await obs.connect(settings.obsws);
     }
 
+    //         #                 #     ##   ###   #  #
+    //         #                 #    #  #   #    ####
+    //  ###   ###    ###  ###   ###   #      #    ####
+    // ##      #    #  #  #  #   #    #      #    #  #
+    //   ##    #    # ##  #      #    #  #   #    #  #
+    // ###      ##   # #  #       ##   ##    #    #  #
+    /**
+     * Starts CTM.
+     * @returns {Promise} A promise that resolves when CTM is started.
+     */
+    static async startCTM() {
+        try {
+            await obs.send("SetSceneItemProperties", {
+                item: "CTM Stencil",
+                visible: true,
+                bounds: {},
+                scale: {},
+                crop: {},
+                position: {}
+            });
+        } catch (err) {} finally {}
+    }
+
     //         #                 #    ###    #                                #
     //         #                 #    #  #                                    #
     //  ###   ###    ###  ###   ###   #  #  ##     ###    ##    ##   ###    ###
@@ -54,8 +77,8 @@ class OBSWebsocket {
     //   ##    #    # ##  #      #    #  #   #      ##   #     #  #  #     #  #
     // ###      ##   # #  #       ##  ###   ###   ###     ##    ##   #      ###
     /**
-     * Starts the Discord at the specified location.
-     * @param {string} location The location to start the webcam at.
+     * Starts Discord at the specified location.
+     * @param {string} location The location to start Discord at.
      * @returns {Promise} A promise that resolves when Discord is started.
      */
     static async startDiscord(location) {
@@ -159,6 +182,30 @@ class OBSWebsocket {
         } catch (err) {} finally {}
     }
 
+    //         #                 ##   ###   #  #
+    //         #                #  #   #    ####
+    //  ###   ###    ##   ###   #      #    ####
+    // ##      #    #  #  #  #  #      #    #  #
+    //   ##    #    #  #  #  #  #  #   #    #  #
+    // ###      ##   ##   ###    ##    #    #  #
+    //                    #
+    /**
+     * Stops CTM.
+     * @returns {Promise} A promise that resolves when CTM is stopped.
+     */
+    static async stopCTM() {
+        try {
+            await obs.send("SetSceneItemProperties", {
+                item: "CTM Stencil",
+                visible: false,
+                bounds: {},
+                scale: {},
+                crop: {},
+                position: {}
+            });
+        } catch (err) {} finally {}
+    }
+
     //         #                ###    #                                #
     //         #                #  #                                    #
     //  ###   ###    ##   ###   #  #  ##     ###    ##    ##   ###    ###
@@ -167,8 +214,8 @@ class OBSWebsocket {
     // ###      ##   ##   ###   ###   ###   ###     ##    ##   #      ###
     //                    #
     /**
-     * Stops the Discord at the specified location.
-     * @param {string} location The location to start the webcam at.
+     * Stops Discord at the specified location.
+     * @param {string} location The location to start Discord at.
      * @returns {Promise} A promise that resolves when Discord is stopped.
      */
     static async stopDiscord(location) {

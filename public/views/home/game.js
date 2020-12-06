@@ -51,10 +51,10 @@ class GameView {
 GameView.GameInfoView = typeof GameInfoView === "undefined" ? require("./game/info") : GameInfoView; // eslint-disable-line no-undef
 /** @type {typeof import("./game/recent")} */
 // @ts-ignore
-GameView.GameRecentView = typeof GameRecentView === "undefined" ? require("./game/recent") : this.GameRecentView; // eslint-disable-line no-undef
+GameView.GameRecentView = typeof GameRecentView === "undefined" ? require("./game/recent") : GameRecentView; // eslint-disable-line no-undef
 /** @type {typeof import("./spotify")} */
 // @ts-ignore
-GameView.SpotifyView = typeof SpotifyView === "undefined" ? require("./game/spotify") : this.SpotifyView; // eslint-disable-line no-undef
+GameView.SpotifyView = typeof SpotifyView === "undefined" ? require("./game/spotify") : SpotifyView; // eslint-disable-line no-undef
 /** @type {typeof import("./game/support")} */
 // @ts-ignore
 GameView.GameSupportView = typeof GameSupportView === "undefined" ? require("./game/support") : GameSupportView; // eslint-disable-line no-undef
