@@ -34,7 +34,7 @@ class Game {
     static async get(req, res) {
         let games;
         try {
-            games = await Twitch.searchGameList("Descent");
+            games = await Twitch.searchGameList("Desc");
         } catch (err) {
             Log.exception("There was an error retrieving the game list.", err);
             res.status(500).send();

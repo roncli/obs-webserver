@@ -270,7 +270,7 @@ class Twitch {
      */
     static async searchGameList(search) {
         const client = IGDB.default(apiAuthProvider.clientId, (await apiAuthProvider.getAccessToken()).accessToken),
-            res = await client.search(search).fields(["id", "name", "cover.url"]).limit(50).request("/games");
+            res = await client.where(`name ~ "${search.replace(/"/g, "\\\"")}"*`).fields(["id", "name", "cover.url"]).limit(50).request("/games");
 
         return res.data;
     }
