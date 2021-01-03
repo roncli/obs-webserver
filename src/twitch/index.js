@@ -257,6 +257,27 @@ class Twitch {
         await Twitch.setupWebhooks();
     }
 
+    //                    ##      #
+    //                   #  #     #
+    // ###   #  #  ###   #  #   ###
+    // #  #  #  #  #  #  ####  #  #
+    // #     #  #  #  #  #  #  #  #
+    // #      ###  #  #  #  #   ###
+    /**
+     * Runs an ad on Twitch.
+     * @returns {Promise} A promise that resolves when the ad has been started.
+     */
+    static async runAd() {
+        try {
+            await channelTwitchClient.helix.channels.startChannelCommercial(settings.twitch.userId, 120);
+        } catch (err) {
+            eventEmitter.emit("error", {
+                message: "Error running an ad.",
+                err
+            });
+        }
+    }
+
     //                                #      ##                     #      #            #
     //                                #     #  #                    #                   #
     //  ###    ##    ###  ###    ##   ###   #      ###  # #    ##   #     ##     ###   ###
@@ -269,10 +290,18 @@ class Twitch {
      * @returns {Promise<any>} The game from IGDB.
      */
     static async searchGameList(search) {
-        const client = IGDB.default(apiAuthProvider.clientId, (await apiAuthProvider.getAccessToken()).accessToken),
-            res = await client.where(`name ~ "${search.replace(/"/g, "\\\"")}"*`).fields(["id", "name", "cover.url"]).limit(50).request("/games");
+        try {
+            const client = IGDB.default(apiAuthProvider.clientId, (await apiAuthProvider.getAccessToken()).accessToken),
+                res = await client.where(`name ~ "${search.replace(/"/g, "\\\"")}"*`).fields(["id", "name", "cover.url"]).limit(50).request("/games");
 
-        return res.data;
+            return res.data;
+        } catch (err) {
+            eventEmitter.emit("error", {
+                message: "Error searching the game list.",
+                err
+            });
+            return [];
+        }
     }
 
     //               #     ##    #                            ###           #
@@ -349,7 +378,9 @@ class Twitch {
 
         channelChatClient.client.onDisconnect(async (manually, reason) => {
             if (reason) {
-                Log.exception("The streamer's Twitch chat disconnected.", reason);
+                if (!reason.message || reason.message.indexOf("1006") === -1) {
+                    Log.exception("The streamer's Twitch chat disconnected.", reason);
+                }
             }
 
             if (!manually) {
@@ -515,7 +546,9 @@ class Twitch {
 
         botChatClient.client.onDisconnect(async (manually, reason) => {
             if (reason) {
-                Log.exception("The bot's Twitch chat disconnected.", reason);
+                if (!reason.message || reason.message.indexOf("1006") === -1) {
+                    Log.exception("The bot's Twitch chat disconnected.", reason);
+                }
             }
 
             if (!manually) {
@@ -523,8 +556,13 @@ class Twitch {
             }
         });
 
-        channelChatClient.client.connect();
-        botChatClient.client.connect();
+        if (!channelChatClient.client.isConnected) {
+            channelChatClient.client.connect();
+        }
+
+        if (!botChatClient.client.isConnected) {
+            botChatClient.client.connect();
+        }
     }
 
     //               #                ###         #      ##         #

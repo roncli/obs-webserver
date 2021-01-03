@@ -39,10 +39,34 @@ class SpotifyApi {
                     const track = await Spotify.nowPlaying();
                     res.json(track);
                 } catch (err) {
-                    if ([503, 504].indexOf(err.statusCode) === -1) {
-                        // Do not log 503/504 errors, as they are common with Spotify's API due to their design.
-                        Log.exception("There was an error with getting the Spotify now playing list.", err);
+                    // Do not log certain errors.
+                    if ([502, 503, 504].indexOf(err.statusCode) === -1) {
+                        res.sendStatus(500);
+                        return;
                     }
+
+                    if (err.message && err.message.indexOf("ETIMEDOUT") !== -1) {
+                        res.sendStatus(500);
+                        return;
+                    }
+
+                    if (err.message && err.message.indexOf("ECONNRESET") !== -1) {
+                        res.sendStatus(500);
+                        return;
+                    }
+
+                    if (err.message && err.message.indexOf("Bad Gateway") !== -1) {
+                        res.sendStatus(500);
+                        return;
+                    }
+
+                    if (err.message && err.message.indexOf("Missing err.response.") !== -1) {
+                        res.sendStatus(500);
+                        return;
+                    }
+
+                    // Log other errors.
+                    Log.exception("There was an error with getting the Spotify now playing list.", err);
                     res.sendStatus(500);
                 }
                 break;

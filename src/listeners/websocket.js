@@ -456,13 +456,25 @@ class WebsocketListener {
                             case "brb":
                                 return;
                             case "webcam":
-                                Notifications.stop();
-                                OBSWebsocket.stopMic();
-                                OBSWebsocket.stopWebcam("frame");
-                                Websocket.broadcast({
-                                    type: "phase",
-                                    phase: "brb"
-                                });
+                                {
+                                    let until = Date.now();
+
+                                    Notifications.stop();
+                                    OBSWebsocket.stopMic();
+                                    OBSWebsocket.stopWebcam("frame");
+                                    Websocket.broadcast({
+                                        type: "phase",
+                                        phase: "brb"
+                                    });
+                                    until += 500;
+                                    await WebsocketListener.sleep(until - Date.now());
+                                    if (WebsocketListener.reset) {
+                                        WebsocketListener.reset = false;
+                                        return;
+                                    }
+
+                                    Twitch.runAd();
+                                }
                                 break;
                             default:
                                 {
