@@ -40,7 +40,7 @@ class SpotifyApi {
                     res.json(track);
                 } catch (err) {
                     // Do not log certain errors.
-                    if ([502, 503, 504].indexOf(err.statusCode) === -1) {
+                    if ([502, 503, 504].indexOf(err.statusCode) !== -1) {
                         res.sendStatus(500);
                         return;
                     }

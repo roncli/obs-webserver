@@ -146,9 +146,9 @@ class Minify {
             const output = await terser.minify(code, {nameCache});
 
             if (!output.code) {
-                const err = new Error("An terser error occurred.");
+                const err = new Error("A terser error occurred.");
 
-                Log.exception("An terser error occurred.", err);
+                Log.exception("A terser error occurred.", err);
                 next(err);
                 return void 0;
             }
