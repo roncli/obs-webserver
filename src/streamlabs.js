@@ -46,6 +46,9 @@ class Streamlabs {
      * @returns {void}
      */
     static start() {
+        // TODO: Fix Streamlabs.
+        return;
+
         client = new StreamlabsWs.StreamlabsClient(settings.streamlabs);
 
         Streamlabs.client.on("connect_error", (ev) => {
