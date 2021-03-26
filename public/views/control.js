@@ -31,6 +31,7 @@ class ControlView {
                 OBS Scenes<br />
                 <select id="scene-list">
                     <option class="scene" data-scene="roncli Gaming v2" data-path="/views/control/roncli-gaming.js" data-class="RoncliGamingView" data-api="/api/config/roncliGaming">roncli Gaming</button>
+                    <option class="scene" data-scene="roncli Gaming v2" data-path="/views/control/tetris.js" data-class="TetrisView" data-api="/api/tetris">Tetris</button>
                 </select>
                 <button id="scene-go">Go</button>
                 <button id="reset">Reset</button>

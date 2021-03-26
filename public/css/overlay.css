@@ -33,6 +33,14 @@ div#fire {
     animation: fire 10s linear;
 }
 
+div#topout {
+    position: absolute;
+    top: 0;
+    width: 1920px;
+    height: 0;
+    background: url(/images/topout.png) repeat;
+}
+
 @keyframes fader {
     0% {
         opacity: 1;

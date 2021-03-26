@@ -141,6 +141,27 @@ class OBSWebsocket {
         } catch (err) {} finally {}
     }
 
+    //         #                 #     ##                     ##                ####   #    ##     #
+    //         #                 #    #  #                     #                #            #     #
+    //  ###   ###    ###  ###   ###   #  #  # #    ##   ###    #     ###  #  #  ###   ##     #    ###    ##   ###
+    // ##      #    #  #  #  #   #    #  #  # #   # ##  #  #   #    #  #  #  #  #      #     #     #    # ##  #  #
+    //   ##    #    # ##  #      #    #  #  # #   ##    #      #    # ##   # #  #      #     #     #    ##    #
+    // ###      ##   # #  #       ##   ##    #     ##   #     ###    # #    #   #     ###   ###     ##   ##   #
+    //                                                                     #
+    /**
+     * Starts the overlay filter for the stinger.
+     * @returns {Promise} A promise that resolves when the filter is started.
+     */
+    static async startOverlayFilter() {
+        try {
+            await obs.send("SetSourceFilterVisibility", {
+                sourceName: "Browser - Overlay",
+                filterName: "Chroma Key",
+                filterEnabled: true
+            });
+        } catch (err) {} finally {}
+    }
+
     //         #                 #     ##    #                             #
     //         #                 #    #  #   #
     //  ###   ###    ###  ###   ###    #    ###   ###    ##    ###  # #   ##    ###    ###
@@ -155,6 +176,141 @@ class OBSWebsocket {
     static async startStreaming() {
         try {
             await obs.send("StartStreaming", void 0);
+        } catch (err) {} finally {}
+    }
+
+    //         #                 #    ###          #           #            ##   ###    #     ##
+    //         #                 #     #           #                       #  #  #  #  ##    #  #
+    //  ###   ###    ###  ###   ###    #     ##   ###   ###   ##     ###      #  #  #   #       #
+    // ##      #    #  #  #  #   #     #    # ##   #    #  #   #    ##       #   ###    #      #
+    //   ##    #    # ##  #      #     #    ##     #    #      #      ##    #    #      #     #
+    // ###      ##   # #  #       ##   #     ##     ##  #     ###   ###    ####  #     ###   ####
+    /**
+     * Starts the Tetris scene for players 1 and 2.
+     * @returns {Promise} A promise that resolves when the scene is started.
+     */
+    static async startTetris2P12() {
+        try {
+            await obs.send("SetSceneItemProperties", {
+                item: "Tetris - 2P - 1 & 2",
+                visible: true,
+                bounds: {},
+                scale: {},
+                crop: {},
+                position: {}
+            });
+        } catch (err) {} finally {}
+
+        try {
+            await obs.send("SetSceneItemProperties", {
+                item: "Tetris - 2P - 3 & 4",
+                visible: false,
+                bounds: {},
+                scale: {},
+                crop: {},
+                position: {}
+            });
+        } catch (err) {} finally {}
+
+        try {
+            await obs.send("SetSceneItemProperties", {
+                item: "Tetris - 4P",
+                visible: false,
+                bounds: {},
+                scale: {},
+                crop: {},
+                position: {}
+            });
+        } catch (err) {} finally {}
+    }
+
+    //         #                 #    ###          #           #            ##   ###   ####    #
+    //         #                 #     #           #                       #  #  #  #     #   ##
+    //  ###   ###    ###  ###   ###    #     ##   ###   ###   ##     ###      #  #  #   ##   # #
+    // ##      #    #  #  #  #   #     #    # ##   #    #  #   #    ##       #   ###      #  ####
+    //   ##    #    # ##  #      #     #    ##     #    #      #      ##    #    #     #  #    #
+    // ###      ##   # #  #       ##   #     ##     ##  #     ###   ###    ####  #      ##     #
+    /**
+     * Starts the Tetris scene for players 1 and 2.
+     * @returns {Promise} A promise that resolves when the scene is started.
+     */
+    static async startTetris2P34() {
+        try {
+            await obs.send("SetSceneItemProperties", {
+                item: "Tetris - 2P - 1 & 2",
+                visible: false,
+                bounds: {},
+                scale: {},
+                crop: {},
+                position: {}
+            });
+        } catch (err) {} finally {}
+
+        try {
+            await obs.send("SetSceneItemProperties", {
+                item: "Tetris - 2P - 3 & 4",
+                visible: true,
+                bounds: {},
+                scale: {},
+                crop: {},
+                position: {}
+            });
+        } catch (err) {} finally {}
+
+        try {
+            await obs.send("SetSceneItemProperties", {
+                item: "Tetris - 4P",
+                visible: false,
+                bounds: {},
+                scale: {},
+                crop: {},
+                position: {}
+            });
+        } catch (err) {} finally {}
+    }
+
+    //         #                 #    ###          #           #             #   ###
+    //         #                 #     #           #                        ##   #  #
+    //  ###   ###    ###  ###   ###    #     ##   ###   ###   ##     ###   # #   #  #
+    // ##      #    #  #  #  #   #     #    # ##   #    #  #   #    ##     ####  ###
+    //   ##    #    # ##  #      #     #    ##     #    #      #      ##     #   #
+    // ###      ##   # #  #       ##   #     ##     ##  #     ###   ###      #   #
+    /**
+     * Starts the Tetris scene for four players.
+     * @returns {Promise} A promise that resolves when the scene is started.
+     */
+    static async startTetris4P() {
+        try {
+            await obs.send("SetSceneItemProperties", {
+                item: "Tetris - 2P - 1 & 2",
+                visible: false,
+                bounds: {},
+                scale: {},
+                crop: {},
+                position: {}
+            });
+        } catch (err) {} finally {}
+
+        try {
+            await obs.send("SetSceneItemProperties", {
+                item: "Tetris - 2P - 3 & 4",
+                visible: false,
+                bounds: {},
+                scale: {},
+                crop: {},
+                position: {}
+            });
+        } catch (err) {} finally {}
+
+        try {
+            await obs.send("SetSceneItemProperties", {
+                item: "Tetris - 4P",
+                visible: true,
+                bounds: {},
+                scale: {},
+                crop: {},
+                position: {}
+            });
         } catch (err) {} finally {}
     }
 
@@ -279,6 +435,27 @@ class OBSWebsocket {
         } catch (err) {} finally {}
     }
 
+    //         #                 ##                     ##                ####   #    ##     #
+    //         #                #  #                     #                #            #     #
+    //  ###   ###    ##   ###   #  #  # #    ##   ###    #     ###  #  #  ###   ##     #    ###    ##   ###
+    // ##      #    #  #  #  #  #  #  # #   # ##  #  #   #    #  #  #  #  #      #     #     #    # ##  #  #
+    //   ##    #    #  #  #  #  #  #  # #   ##    #      #    # ##   # #  #      #     #     #    ##    #
+    // ###      ##   ##   ###    ##    #     ##   #     ###    # #    #   #     ###   ###     ##   ##   #
+    //                    #                                          #
+    /**
+     * Stops the overlay filter for the stinger.
+     * @returns {Promise} A promise that resolves when the filter is stopped.
+     */
+    static async stopOverlayFilter() {
+        try {
+            await obs.send("SetSourceFilterVisibility", {
+                sourceName: "Browser - Overlay",
+                filterName: "Chroma Key",
+                filterEnabled: false
+            });
+        } catch (err) {} finally {}
+    }
+
     //         #                 ##    #                             #
     //         #                #  #   #
     //  ###   ###    ##   ###    #    ###   ###    ##    ###  # #   ##    ###    ###
@@ -293,6 +470,52 @@ class OBSWebsocket {
     static async stopStreaming() {
         try {
             await obs.send("StopStreaming", void 0);
+        } catch (err) {} finally {}
+    }
+
+    //         #                ###          #           #
+    //         #                 #           #
+    //  ###   ###    ##   ###    #     ##   ###   ###   ##     ###
+    // ##      #    #  #  #  #   #    # ##   #    #  #   #    ##
+    //   ##    #    #  #  #  #   #    ##     #    #      #      ##
+    // ###      ##   ##   ###    #     ##     ##  #     ###   ###
+    //                    #
+    /**
+     * Stops the tetris scenes.
+     * @returns {Promise} A promise that resolves when the tetris scenes are stopped.
+     */
+    static async stopTetris() {
+        try {
+            await obs.send("SetSceneItemProperties", {
+                item: "Tetris - 2P - 1 & 2",
+                visible: false,
+                bounds: {},
+                scale: {},
+                crop: {},
+                position: {}
+            });
+        } catch (err) {} finally {}
+
+        try {
+            await obs.send("SetSceneItemProperties", {
+                item: "Tetris - 2P - 3 & 4",
+                visible: false,
+                bounds: {},
+                scale: {},
+                crop: {},
+                position: {}
+            });
+        } catch (err) {} finally {}
+
+        try {
+            await obs.send("SetSceneItemProperties", {
+                item: "Tetris - 4P",
+                visible: false,
+                bounds: {},
+                scale: {},
+                crop: {},
+                position: {}
+            });
         } catch (err) {} finally {}
     }
 

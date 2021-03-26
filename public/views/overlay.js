@@ -33,6 +33,11 @@ class OverlayView {
                         <source src="/media/stinger.mp4" type="video/mp4" />
                     </video>
                 </div>
+                <div id="topout" class="hidden">
+                    <audio id="audio-topout" preload="auto">
+                        <source src="/media/topout.mp3" type="audio/mpeg" />
+                    </audio>
+                </div>
                 <div id="sounds"></div>
             </div>
         `;

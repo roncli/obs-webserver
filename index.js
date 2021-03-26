@@ -9,6 +9,7 @@ const compression = require("compression"),
     Discord = require("./src/discord"),
     Listeners = require("./src/listeners"),
     Log = require("./src/logging/log"),
+    Redirects = require("./src/redirects"),
     Router = require("./src/router"),
     settings = require("./settings"),
     Twitch = require("./src/twitch");
@@ -72,6 +73,17 @@ const compression = require("compression"),
     // Setup JS/CSS handlers.
     app.get("/css", Minify.cssHandler);
     app.get("/js", Minify.jsHandler);
+
+    // Setup redirect routes.
+    app.get("*", (req, res, next) => {
+        const redirect = Redirects[req.path];
+        if (!redirect) {
+            next();
+            return;
+        }
+
+        res.status(200).contentType(redirect.contentType).sendFile(`${__dirname}/${redirect.path}`);
+    });
 
     // tsconfig.json is not meant to be served, 404 it if it's requested directly.
     app.use("/tsconfig.json", (req, res, next) => {

@@ -24,7 +24,9 @@ class Common {
      * @param {string} str The string.
      * @returns {string} The encoded string.
      */
-    static htmlEncode(str) {
+     static htmlEncode(str) {
+// TODO: Figure out why this fails for the control page (or fix it for the Tetris page).
+// return str && str.replace(/[\u0080-\uFFFF<>&]/gim, (i) => `&#${i.charCodeAt(0)};`).replace(/\r\n/gim, "<br />").replace(/[\r\n]/gim, "<br />") || "";
         return str && str.replace(/[\u0080-\uFFFF<>&]/gim, (i) => `&#${i.charCodeAt(0)};`) || "";
     }
 

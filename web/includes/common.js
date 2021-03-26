@@ -77,7 +77,7 @@ class Common {
      * @returns {string} The encoded string.
      */
     static htmlEncode(str) {
-        return str && str.replace(/[\u0080-\uFFFF<>&]/gim, (i) => `&#${i.charCodeAt(0)};`) || "";
+        return str && str.replace(/[\u0080-\uFFFF<>&]/gim, (i) => `&#${i.charCodeAt(0)};`).replace(/\r\n/gim, "<br />").replace(/[\r\n]/gim, "<br />") || "";
     }
 
     //                                      #           ##          #     #

@@ -123,6 +123,66 @@ class Home {
         Home.updateSpotify(5000);
     }
 
+    //         #                 #    ###          #           #
+    //         #                 #     #           #
+    //  ###   ###    ###  ###   ###    #     ##   ###   ###   ##     ###
+    // ##      #    #  #  #  #   #     #    # ##   #    #  #   #    ##
+    //   ##    #    # ##  #      #     #    ##     #    #      #      ##
+    // ###      ##   # #  #       ##   #     ##     ##  #     ###   ###
+    /**
+     * Starts the updating of Tetris.
+     * @param {{organization: string, title: string, color: string}} data The data for the view.
+     * @returns {void}
+     */
+    static async startTetris(data) {
+        await window.Common.loadTemplate("/js/?files=/js/home/tetris.js", "Tetris");
+        await window.Common.loadTemplate("/js/?files=/views/home/tetris.js", "TetrisView");
+
+        document.getElementById("scene").innerHTML = window.TetrisView.get(data);
+
+        window.Tetris.start();
+    }
+
+    //         #                 #    ###          #           #            ##   ###
+    //         #                 #     #           #                       #  #  #  #
+    //  ###   ###    ###  ###   ###    #     ##   ###   ###   ##     ###      #  #  #
+    // ##      #    #  #  #  #   #     #    # ##   #    #  #   #    ##       #   ###
+    //   ##    #    # ##  #      #     #    ##     #    #      #      ##    #    #
+    // ###      ##   # #  #       ##   #     ##     ##  #     ###   ###    ####  #
+    /**
+     * Starts the updating of Tetris 2P.
+     * @param {{event: {organization: string, title: string, status: string, color: string}, player1: {name: string, score: string, info: string}, player2: {name: string, score: string, info: string}}} data The data for the view.
+     * @returns {void}
+     */
+    static async startTetris2P(data) {
+        await window.Common.loadTemplate("/js/?files=/js/home/tetris2p.js", "Tetris2P");
+        await window.Common.loadTemplate("/js/?files=/views/home/tetris2p.js", "Tetris2PView");
+
+        document.getElementById("scene").innerHTML = window.Tetris2PView.get(data);
+
+        window.Tetris2P.start();
+    }
+
+    //         #                 #    ###          #           #             #   ###
+    //         #                 #     #           #                        ##   #  #
+    //  ###   ###    ###  ###   ###    #     ##   ###   ###   ##     ###   # #   #  #
+    // ##      #    #  #  #  #   #     #    # ##   #    #  #   #    ##     ####  ###
+    //   ##    #    # ##  #      #     #    ##     #    #      #      ##     #   #
+    // ###      ##   # #  #       ##   #     ##     ##  #     ###   ###      #   #
+    /**
+     * Starts the updating of Tetris 4P.
+     * @param {{event: {organization: string, title: string, status: string, color: string}, player1: {name: string, score: string}, player2: {name: string, score: string}, player3: {name: string, score: string}, player4: {name: string, score: string}}} data The data for the view.
+     * @returns {void}
+     */
+    static async startTetris4P(data) {
+        await window.Common.loadTemplate("/js/?files=/js/home/tetris4p.js", "Tetris4P");
+        await window.Common.loadTemplate("/js/?files=/views/home/tetris4p.js", "Tetris4PView");
+
+        document.getElementById("scene").innerHTML = window.Tetris4PView.get(data);
+
+        window.Tetris4P.start();
+    }
+
     //         #                 #    #  #        #                        #            #
     //         #                 #    #  #        #                        #            #
     //  ###   ###    ###  ###   ###   #  #   ##   ###    ###    ##    ##   # #    ##   ###
@@ -165,6 +225,15 @@ class Home {
                             break;
                         case "ctm":
                             await Home.startCTM();
+                            break;
+                        case "tetris":
+                            await Home.startTetris(data.data);
+                            break;
+                        case "tetris2p":
+                            await Home.startTetris2P(data.data);
+                            break;
+                        case "tetris4p":
+                            await Home.startTetris4P(data.data);
                             break;
                     }
                     break;

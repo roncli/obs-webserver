@@ -397,6 +397,21 @@ class Game {
                                     `);
 
                                     break;
+                                case "Overload: Doing Lines":
+                                    Game.notify("/images/creeper-56.png", "/media/lines.ogg", /* html */`
+                                        <div>
+                                            <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
+                                            <span class="text">has spent</span>
+                                            <span class="header">${Game.cost(ev.data.data.cost)}</span>
+                                            <span class="text">and is</span>
+                                            <span class="header">doing lines</span>
+                                            <span class="text">of Mr. Bond brand</span>
+                                            <span class="header">creepy bois.</span>${ev.data.data.message ? /* html */`<br />
+                                            <span class="message">${window.Common.htmlEncode(ev.data.data.message)}</span>` : ""}
+                                        </div>
+                                    `);
+
+                                    break;
                                 case "This is fine":
                                     Game.notify("/images/roncliFine-56.png", void 0, /* html */`
                                         <div>

@@ -2,7 +2,9 @@
  * @typedef {import("ws").Data} WebSocket.Data
  */
 
-const ConfigFile = require("../configFile"),
+const childProcess = require("child_process"),
+
+    ConfigFile = require("../configFile"),
     Log = require("../logging/log"),
     Notifications = require("../notifications"),
     OBSWebsocket = require("../obsWebsocket"),
@@ -54,6 +56,8 @@ class WebsocketListener {
 
         switch (data.type) {
             case "action":
+                await OBSWebsocket.start();
+
                 Websocket.broadcast({
                     type: "overlay",
                     data: {
@@ -61,6 +65,12 @@ class WebsocketListener {
                         soundPath: data.data.soundPath
                     }
                 });
+
+                if (data.data.overlay === "topout") {
+                    OBSWebsocket.stopOverlayFilter();
+                    setTimeout(OBSWebsocket.startOverlayFilter, 3000);
+                }
+
                 break;
             case "discord":
                 if (WebsocketListener.data.phase === "game") {
@@ -87,6 +97,22 @@ class WebsocketListener {
 
                     await Twitch.setStreamInfo(title, game);
                 }
+                break;
+            case "load-tetris":
+                childProcess.spawn("streamlink", [
+                    "--twitch-disable-hosting",
+                    "--twitch-disable-ads",
+                    "--player", "C:\\Program Files\\VideoLAN\\VLC\\vlc.exe",
+                    "--player-args", `--no-one-instance --play-and-exit --input-title-format "Player ${data.player}" --qt-minimal-view --no-audio`,
+                    "--hls-live-edge", "3",
+                    "--hls-segment-threads", "1",
+                    "--retry-open", "1",
+                    "--retry-max", "5",
+                    "--retry-streams", "1",
+                    `twitch.tv/${data.name}`,
+                    "best"
+                ]);
+
                 break;
             case "music":
                 switch (data.data.command) {
@@ -160,6 +186,7 @@ class WebsocketListener {
                             OBSWebsocket.stopDisplay();
                             OBSWebsocket.stopCTM();
                             OBSWebsocket.stopDiscord("game");
+                            OBSWebsocket.stopTetris();
                             until += 5000;
                             await WebsocketListener.sleep(until - Date.now());
                             if (WebsocketListener.reset) {
@@ -618,6 +645,217 @@ class WebsocketListener {
 
                                 break;
                         }
+                        WebsocketListener.data.phase = "";
+                        break;
+                    case "Start Tetris":
+                        {
+                            WebsocketListener.data.phase = "tetris";
+
+                            let until = Date.now();
+
+                            Notifications.stop();
+                            await OBSWebsocket.switchScene("roncli Gaming");
+                            OBSWebsocket.stopWebcam("ctm");
+                            OBSWebsocket.stopWebcam("frame");
+                            OBSWebsocket.stopWebcam("game");
+                            OBSWebsocket.stopDisplay();
+                            OBSWebsocket.stopCTM();
+                            OBSWebsocket.stopDiscord("game");
+                            OBSWebsocket.stopTetris();
+
+                            until += 5000;
+                            await WebsocketListener.sleep(until - Date.now());
+                            if (WebsocketListener.reset) {
+                                WebsocketListener.reset = false;
+                                return;
+                            }
+
+                            OBSWebsocket.startStreaming();
+                            Websocket.broadcast({
+                                type: "scene",
+                                scene: "tetris",
+                                data: {
+                                    organization: data.organization,
+                                    title: data.title,
+                                    color: data.color
+                                }
+                            });
+
+                            WebsocketListener.data.phase = "Tetris BRB";
+                        }
+
+                        break;
+                    case "Tetris BRB":
+                        switch (WebsocketListener.data.phase) {
+                            case "2P12":
+                            case "2P34":
+                            case "4P":
+                                {
+                                    let until = Date.now();
+
+                                    Websocket.broadcast({
+                                        type: "overlay",
+                                        data: {
+                                            type: "topout"
+                                        }
+                                    });
+                                    OBSWebsocket.stopOverlayFilter();
+                                    setTimeout(OBSWebsocket.startOverlayFilter, 3000);
+
+                                    until += 1000;
+                                    await WebsocketListener.sleep(until - Date.now());
+                                    if (WebsocketListener.reset) {
+                                        WebsocketListener.reset = false;
+                                        return;
+                                    }
+                                }
+                                break;
+                        }
+
+                        Websocket.broadcast({
+                            type: "scene",
+                            scene: "tetris",
+                            data: {
+                                organization: data.organization,
+                                title: data.title,
+                                color: data.color
+                            }
+                        });
+                        OBSWebsocket.stopTetris();
+
+                        WebsocketListener.data.phase = "Tetris BRB";
+                        break;
+                    case "2P12":
+                        switch (WebsocketListener.data.phase) {
+                            case "Tetris BRB":
+                            case "2P34":
+                            case "4P":
+                                {
+                                    let until = Date.now();
+
+                                    Websocket.broadcast({
+                                        type: "overlay",
+                                        data: {
+                                            type: "topout"
+                                        }
+                                    });
+                                    OBSWebsocket.stopOverlayFilter();
+                                    setTimeout(OBSWebsocket.startOverlayFilter, 3000);
+
+                                    until += 1000;
+                                    await WebsocketListener.sleep(until - Date.now());
+                                    if (WebsocketListener.reset) {
+                                        WebsocketListener.reset = false;
+                                        return;
+                                    }
+                                }
+                                break;
+                        }
+
+                        Websocket.broadcast({
+                            type: "scene",
+                            scene: "tetris2p",
+                            data: {
+                                event: data.event,
+                                player1: data.player1,
+                                player2: data.player2
+                            }
+                        });
+                        OBSWebsocket.startTetris2P12();
+                        Websocket.broadcast({
+                            type: "players",
+                            data: {oneTwo: true}
+                        });
+                        WebsocketListener.data.phase = "2P12";
+                        break;
+                    case "2P34":
+                        switch (WebsocketListener.data.phase) {
+                            case "Tetris BRB":
+                            case "2P12":
+                            case "4P":
+                                {
+                                    let until = Date.now();
+
+                                    Websocket.broadcast({
+                                        type: "overlay",
+                                        data: {
+                                            type: "topout"
+                                        }
+                                    });
+                                    OBSWebsocket.stopOverlayFilter();
+                                    setTimeout(OBSWebsocket.startOverlayFilter, 3000);
+
+                                    until += 1000;
+                                    await WebsocketListener.sleep(until - Date.now());
+                                    if (WebsocketListener.reset) {
+                                        WebsocketListener.reset = false;
+                                        return;
+                                    }
+                                }
+                                break;
+                        }
+
+                        Websocket.broadcast({
+                            type: "scene",
+                            scene: "tetris2p",
+                            data: {
+                                event: data.event,
+                                player1: data.player1,
+                                player2: data.player2
+                            }
+                        });
+                        OBSWebsocket.startTetris2P34();
+                        Websocket.broadcast({
+                            type: "players",
+                            data: {oneTwo: false}
+                        });
+                        WebsocketListener.data.phase = "2P34";
+                        break;
+                    case "4P":
+                        switch (WebsocketListener.data.phase) {
+                            case "Tetris BRB":
+                            case "2P12":
+                            case "2P23":
+                                {
+                                    let until = Date.now();
+
+                                    Websocket.broadcast({
+                                        type: "overlay",
+                                        data: {
+                                            type: "topout"
+                                        }
+                                    });
+                                    OBSWebsocket.stopOverlayFilter();
+                                    setTimeout(OBSWebsocket.startOverlayFilter, 3000);
+
+                                    until += 1000;
+                                    await WebsocketListener.sleep(until - Date.now());
+                                    if (WebsocketListener.reset) {
+                                        WebsocketListener.reset = false;
+                                        return;
+                                    }
+                                }
+                                break;
+                        }
+
+                        Websocket.broadcast({
+                            type: "scene",
+                            scene: "tetris4p",
+                            data: {
+                                event: data.event,
+                                player1: data.player1,
+                                player2: data.player2,
+                                player3: data.player3,
+                                player4: data.player4
+                            }
+                        });
+                        OBSWebsocket.startTetris4P();
+                        WebsocketListener.data.phase = "4P";
+                        break;
+                    case "End Tetris":
+                        OBSWebsocket.stopStreaming();
+                        OBSWebsocket.switchScene("Off Air");
+                        Notifications.reset();
                         WebsocketListener.data.phase = "";
                         break;
                     default:

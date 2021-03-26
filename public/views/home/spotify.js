@@ -8,7 +8,7 @@
 //         #                                  #   #
 //         #                                   ###
 /**
- * A class that represents the game spotify view.
+ * A class that represents the spotify view.
  */
 class SpotifyView {
     //              #

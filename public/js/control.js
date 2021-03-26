@@ -49,10 +49,81 @@ class Control {
             const button = ev.target;
 
             if (button && button.matches("button.transition")) {
-                Control.ws.send(JSON.stringify({
+                const data = {
                     type: "transition",
                     scene: button.dataset.transition
-                }));
+                };
+
+                if (button.dataset.transition === "Start Tetris" || button.dataset.transition === "Tetris BRB") {
+                    data.organization = document.getElementById("event-organization").value;
+                    data.title = document.getElementById("event-title").value;
+                    data.color = document.getElementById("event-color").value;
+                }
+
+                if (button.dataset.transition === "2P12") {
+                    data.event = {
+                        organization: document.getElementById("event-organization").value,
+                        title: document.getElementById("event-title").value,
+                        status: document.getElementById("event-status").value,
+                        color: document.getElementById("event-color").value
+                    };
+                    data.player1 = {
+                        name: document.getElementById("player-1").value,
+                        score: document.getElementById("player-1-score").value,
+                        info: document.getElementById("player-1-info").value
+                    };
+                    data.player2 = {
+                        name: document.getElementById("player-2").value,
+                        score: document.getElementById("player-2-score").value,
+                        info: document.getElementById("player-2-info").value
+                    };
+                }
+
+                if (button.dataset.transition === "2P34") {
+                    data.event = {
+                        organization: document.getElementById("event-organization").value,
+                        title: document.getElementById("event-title").value,
+                        status: document.getElementById("event-status").value,
+                        color: document.getElementById("event-color").value
+                    };
+                    data.player1 = {
+                        name: document.getElementById("player-3").value,
+                        score: document.getElementById("player-3-score").value,
+                        info: document.getElementById("player-3-info").value
+                    };
+                    data.player2 = {
+                        name: document.getElementById("player-4").value,
+                        score: document.getElementById("player-4-score").value,
+                        info: document.getElementById("player-4-info").value
+                    };
+                }
+
+                if (button.dataset.transition === "4P") {
+                    data.event = {
+                        organization: document.getElementById("event-organization").value,
+                        title: document.getElementById("event-title").value,
+                        status: document.getElementById("event-status").value,
+                        color: document.getElementById("event-color").value
+                    };
+                    data.player1 = {
+                        name: document.getElementById("player-1").value,
+                        score: document.getElementById("player-1-score").value
+                    };
+                    data.player2 = {
+                        name: document.getElementById("player-2").value,
+                        score: document.getElementById("player-2-score").value
+                    };
+                    data.player3 = {
+                        name: document.getElementById("player-3").value,
+                        score: document.getElementById("player-3-score").value
+                    };
+                    data.player4 = {
+                        name: document.getElementById("player-4").value,
+                        score: document.getElementById("player-4-score").value
+                    };
+                }
+
+                Control.ws.send(JSON.stringify(data));
             }
 
             if (button && button.matches("button#update-twitch")) {
@@ -60,10 +131,42 @@ class Control {
                     type: "update-twitch"
                 }));
             }
+
+            if (button && button.matches("button#player-1-start")) {
+                Control.ws.send(JSON.stringify({
+                    type: "load-tetris",
+                    name: document.getElementById("player-1").value,
+                    player: 1
+                }));
+            }
+
+            if (button && button.matches("button#player-2-start")) {
+                Control.ws.send(JSON.stringify({
+                    type: "load-tetris",
+                    name: document.getElementById("player-2").value,
+                    player: 2
+                }));
+            }
+
+            if (button && button.matches("button#player-3-start")) {
+                Control.ws.send(JSON.stringify({
+                    type: "load-tetris",
+                    name: document.getElementById("player-3").value,
+                    player: 3
+                }));
+            }
+
+            if (button && button.matches("button#player-4-start")) {
+                Control.ws.send(JSON.stringify({
+                    type: "load-tetris",
+                    name: document.getElementById("player-4").value,
+                    player: 4
+                }));
+            }
         });
 
         document.getElementById("scene").addEventListener("focusout", async (ev) => {
-            if (ev.target && (ev.target.matches("textarea.setting") || ev.target.matches("input[type=\"text\"].setting"))) {
+            if (ev.target && (ev.target.matches("textarea.setting") || ev.target.matches("input[type=\"text\"].setting") || ev.target.matches("input[type=\"number\"].setting"))) {
                 /** @type {HTMLTextAreaElement} */
                 const parent = ev.target.closest("div.api"),
                     api = parent.dataset.api,

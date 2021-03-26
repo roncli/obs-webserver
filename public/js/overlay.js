@@ -39,6 +39,24 @@ class Overlay {
         });
     }
 
+    //        ##
+    //         #
+    //  ###    #     ##    ##   ###
+    // ##      #    # ##  # ##  #  #
+    //   ##    #    ##    ##    #  #
+    // ###    ###    ##    ##   ###
+    //                          #
+    /**
+     * Sleeps for a specified amount of time.
+     * @param {number} ms The number of milliseconds to sleep.
+     * @returns {Promise} A promise that resolves when the function is done sleeping.
+     */
+    static sleep(ms) {
+        return new Promise((resolve) => {
+            setTimeout(resolve, ms);
+        });
+    }
+
     //         #                 #    ####   #
     //         #                 #    #
     //  ###   ###    ###  ###   ###   ###   ##    ###    ##
@@ -68,13 +86,45 @@ class Overlay {
     //                                                         ###
     /**
      * Starts the stinger transition.
-     * @returns {Promise} A promise that resolves when the stinger has started.
+     * @returns {void}
      */
     static startStinger() {
         /** @type {HTMLVideoElement} */
         const stinger = document.getElementById("video-stinger");
         stinger.volume = 0.75;
         stinger.play();
+    }
+
+    //         #                 #    ###                            #
+    //         #                 #     #                             #
+    //  ###   ###    ###  ###   ###    #     ##   ###    ##   #  #  ###
+    // ##      #    #  #  #  #   #     #    #  #  #  #  #  #  #  #   #
+    //   ##    #    # ##  #      #     #    #  #  #  #  #  #  #  #   #
+    // ###      ##   # #  #       ##   #     ##   ###    ##    ###    ##
+    //                                            #
+    /**
+     * Starts the topout transition.
+     * @returns {Promise} A promise that resolves when the topout is complete.
+     */
+    static async startTopout() {
+        /** @type {HTMLAudioElement} */
+        const topout = document.getElementById("audio-topout"),
+            el = document.getElementById("topout");
+
+        topout.play();
+
+        el.classList.remove("hidden");
+        el.classList.add("stinger");
+
+        setTimeout(() => {
+            el.classList.add("hidden");
+            el.classList.remove("stinger");
+        }, 2000);
+
+        for (let i = 0; i < 1112; i += 32) {
+            el.style.height = `${i}px`;
+            await Overlay.sleep(20);
+        }
     }
 
     //         #                 #    #  #        #                        #            #
@@ -105,6 +155,9 @@ class Overlay {
                             break;
                         case "stinger":
                             Overlay.startStinger();
+                            break;
+                        case "topout":
+                            Overlay.startTopout();
                             break;
                     }
 

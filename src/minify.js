@@ -9,6 +9,7 @@ const csso = require("csso"),
     terser = require("terser"),
 
     Log = require("./logging/log"),
+    Redirects = require("./redirects"),
     settings = require("../settings");
 
 const nameCache = {},
@@ -59,11 +60,19 @@ class Minify {
 
             try {
                 for (const file of files) {
-                    const dir = path.join(__dirname, "..", "public"),
-                        filePath = path.join(__dirname, "..", "public", file);
+                    const redirect = Redirects[file];
 
-                    if (!filePath.startsWith(dir)) {
-                        return next();
+                    let filePath;
+
+                    if (redirect) {
+                        filePath = path.join(__dirname, "..", redirect.path);
+                    } else {
+                        const dir = path.join(__dirname, "..", "public");
+
+                        filePath = path.join(__dirname, "..", "public", file);
+                        if (!filePath.startsWith(dir)) {
+                            return next();
+                        }
                     }
 
                     str = `${str}${await fs.readFile(filePath, "utf8")}`;
@@ -124,11 +133,19 @@ class Minify {
             try {
                 code = await files.reduce(async (prev, cur) => {
                     const obj = await prev,
-                        dir = path.join(__dirname, "..", "public"),
-                        filePath = path.join(__dirname, "..", "public", cur);
+                        redirect = Redirects[cur];
 
-                    if (!filePath.startsWith(dir)) {
-                        return next();
+                    let filePath;
+
+                    if (redirect) {
+                        filePath = path.join(__dirname, "..", redirect.path);
+                    } else {
+                        const dir = path.join(__dirname, "..", "public");
+
+                        filePath = path.join(__dirname, "..", "public", cur);
+                        if (!filePath.startsWith(dir)) {
+                            return next();
+                        }
                     }
 
                     obj[cur] = await fs.readFile(filePath, "utf8");

@@ -28,4 +28,7 @@ interface Window {
     SpotifyView: import("../public/views/home/spotify")
     SpotifyPlaylistView: import("../public/views/control/spotify-playlist")
     SpotifyPlaylistsView: import("../public/views/control/spotify-playlists")
+    TetrisView: import("../public/views/control/tetris")
+    Tetris2PView: import("../public/views/home/tetris2p")
+    Tetris4PView: import("../public/views/home/tetris4p")
 }

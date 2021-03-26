@@ -101,7 +101,7 @@ class FrameEndingView {
                 `}<br /><br /><br /><br />
                 Special thanks:<br /><br />
                 Gromfalloon for the awesome Noita-themed emotes!<br /><br />
-                Solitha_the_Mean_and_Evil for continuing to let me do this, and for not killing me on stream!<br /><br /><br /><br />
+                Solitha for continuing to let me do this, and for not killing me on stream!<br /><br /><br /><br />
                 See you next time!
             </div>
             <div id="roncli-gaming-tiny"></div>

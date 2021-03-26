@@ -372,6 +372,276 @@ div#ctm div#elapsed {
     font-size: 72px;
 }
 
+div#tetris div,
+div#tetris2p div,
+div#tetris4p div {
+    font-family: "Press Start";
+    text-transform: uppercase;
+    font-size: 24px;
+}
+
+div#tetris {
+    position: absolute;
+    background: url("/images/tdm-background.png") 1920px 1080px;
+    width: 1920px;
+    height: 1080px;
+}
+
+div#tetris div#game {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1920px;
+    height: 1080px;
+    opacity: 0.5;
+}
+
+div#tetris div#organization {
+    position: absolute;
+    top: 300px;
+    left: 0;
+    display: grid;
+    justify-content: center;
+    width: 1920px;
+    font-size: 48px;
+}
+
+div#tetris div#title {
+    position: absolute;
+    top: 504px;
+    left: 0;
+    display: grid;
+    justify-content: center;
+    width: 1920px;
+    font-size: 72px;
+}
+
+div#tetris .blockrain-score {
+    display: none;
+}
+
+div#tetris2p {
+    position: absolute;
+    background: url("/images/tdm-background.png") 1920px 1080px;
+    width: 1920px;
+    height: 1080px;
+}
+
+div#tetris2p div#left-player {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: grid;
+    align-items: center;
+    justify-content: right;
+    width: 800px;
+    height: 125px;
+}
+
+div#tetris2p div#right-player {
+    position: absolute;
+    top: 0;
+    left: 1120px;
+    display: grid;
+    align-items: center;
+    width: 808px;
+    height: 125px;
+}
+
+div#tetris2p div#left-score {
+    position: absolute;
+    top: 0;
+    left: 814px;
+    font-size: 72px;
+    display: grid;
+    align-items: center;
+    justify-content: right;
+    width: 112px;
+    height: 125px;
+}
+
+div#tetris2p div#right-score {
+    position: absolute;
+    top: 0;
+    left: 1008px;
+    font-size: 72px;
+    display: grid;
+    align-items: center;
+    width: 112px;
+    height: 125px;
+}
+
+div#tetris2p div#left-text {
+    position: absolute;
+    left: 160px;
+    top: 415px;
+    font-size: 20px;
+    width: 373px;
+    height: 506px;
+}
+
+div#tetris2p div#right-text {
+    position: absolute;
+    left: 1388px;
+    top: 415px;
+    font-size: 20px;
+    width: 373px;
+    height: 506px;
+}
+
+div#tetris2p div#organization {
+    position: absolute;
+    top: 980px;
+    display: grid;
+    align-items: center;
+    width: 1920px;
+    height: 100px;
+}
+
+div#tetris2p div#title {
+    position: absolute;
+    top: 980px;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    width: 1920px;
+    height: 100px;
+}
+
+div#tetris2p div#status {
+    position: absolute;
+    top: 980px;
+    display: grid;
+    align-items: center;
+    justify-content: right;
+    width: 1920px;
+    height: 100px;
+}
+
+div#tetris4p {
+    position: absolute;
+    background: url("/images/tdm-background.png") 1920px 1080px;
+    width: 1920px;
+    height: 1080px;
+}
+
+div#tetris4p div#player-1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: grid;
+    align-items: center;
+    justify-content: right;
+    width: 428px;
+    height: 77px;
+}
+
+div#tetris4p div#player-2 {
+    position: absolute;
+    top: 0;
+    left: 506px;
+    display: grid;
+    align-items: center;
+    width: 428px;
+    height: 77px;
+}
+
+div#tetris4p div#player-3 {
+    position: absolute;
+    top: 0;
+    left: 984px;
+    display: grid;
+    align-items: center;
+    justify-content: right;
+    width: 428px;
+    height: 77px;
+}
+
+div#tetris4p div#player-4 {
+    position: absolute;
+    top: 0;
+    left: 1490px;
+    display: grid;
+    align-items: center;
+    width: 428px;
+    height: 77px;
+}
+
+div#tetris4p div#player-1-score {
+    position: absolute;
+    top: 56px;
+    left: 322px;
+    font-size: 72px;
+    display: grid;
+    align-items: center;
+    justify-content: right;
+    width: 112px;
+    height: 69px;
+}
+
+div#tetris4p div#player-2-score {
+    position: absolute;
+    top: 56px;
+    left: 506px;
+    font-size: 72px;
+    display: grid;
+    align-items: center;
+    width: 112px;
+    height: 69px;
+}
+
+div#tetris4p div#player-3-score {
+    position: absolute;
+    top: 56px;
+    left: 1306px;
+    font-size: 72px;
+    display: grid;
+    align-items: center;
+    justify-content: right;
+    width: 112px;
+    height: 69px;
+}
+
+div#tetris4p div#player-4-score {
+    position: absolute;
+    top: 56px;
+    left: 1490px;
+    font-size: 72px;
+    display: grid;
+    align-items: center;
+    width: 112px;
+    height: 69px;
+}
+
+div#tetris4p div#organization {
+    position: absolute;
+    top: 980px;
+    display: grid;
+    align-items: center;
+    width: 1920px;
+    height: 100px;
+}
+
+div#tetris4p div#title {
+    position: absolute;
+    top: 980px;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    width: 1920px;
+    height: 100px;
+}
+
+div#tetris4p div#status {
+    position: absolute;
+    top: 980px;
+    display: grid;
+    align-items: center;
+    justify-content: right;
+    width: 1920px;
+    height: 100px;
+}
+
 .header {
     color: white;
 }
