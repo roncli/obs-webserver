@@ -376,15 +376,11 @@ class Twitch {
             });
         });
 
-        channelChatClient.client.onDisconnect(async (manually, reason) => {
+        channelChatClient.client.onDisconnect((manually, reason) => {
             if (reason) {
                 if (!reason.message || reason.message.indexOf("1006") === -1) {
                     Log.exception("The streamer's Twitch chat disconnected.", reason);
                 }
-            }
-
-            if (!manually) {
-                await Twitch.setupChat();
             }
         });
 
