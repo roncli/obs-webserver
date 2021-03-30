@@ -546,10 +546,6 @@ class Twitch {
                     Log.exception("The bot's Twitch chat disconnected.", reason);
                 }
             }
-
-            if (!manually) {
-                await Twitch.setupChat();
-            }
         });
 
         if (!channelChatClient.client.isConnected) {
