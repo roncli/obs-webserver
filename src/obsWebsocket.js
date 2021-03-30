@@ -138,6 +138,11 @@ class OBSWebsocket {
                 crop: {},
                 position: {}
             });
+
+            await obs.send("SetMute", {
+                source: "Audio Input Capture - Microphone",
+                mute: false
+            });
         } catch (err) {} finally {}
     }
 
