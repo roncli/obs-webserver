@@ -1,6 +1,6 @@
 {
     "name": "obs-webserver",
-    "version": "2.1.1",
+    "version": "2.2.0",
     "description": "roncli Gaming webserver for OBS.",
     "license": "None",
     "author": {
@@ -13,7 +13,7 @@
         "url": "https://github.com/roncli/obs-webserver.git"
     },
     "dependencies": {
-        "@root/request": "1.6.1",
+        "@root/request": "1.7.0",
         "blockrain": "Aerolab/blockrain.js#ba6d4192370d2ce4f75ce31796f345eb5711b489",
         "body-parser": "1.19.0",
         "compression": "1.7.4",
@@ -24,29 +24,29 @@
         "google-spreadsheet": "3.1.15",
         "html-minifier": "4.0.0",
         "igdb-api-node": "5.0.0",
-        "jquery": "3.5.1",
-        "jsdom": "16.4.0",
-        "nconf": "0.11.0",
-        "node-database": "roncli/node-database#v1.2.3",
+        "jquery": "3.6.0",
+        "jsdom": "16.5.2",
+        "nconf": "0.11.2",
+        "node-database": "roncli/node-database#v1.2.4",
         "obs-websocket-js": "4.0.2",
         "public-ip": "4.0.3",
         "spotify-web-api-node": "yamadapc/spotify-web-api-node#21f203d9627dec86bffead5026478e8a25dadeed",
         "steam-api": "1.1.3",
         "streamlabs-ws-client": "1.0.0",
-        "terser": "5.5.1",
-        "twitch": "4.3.8",
-        "twitch-auth": "4.3.8",
-        "twitch-chat-client": "4.3.8",
-        "twitch-pubsub-client": "4.3.8",
-        "twitch-webhooks": "4.3.8"
+        "terser": "5.6.1",
+        "twitch": "4.5.3",
+        "twitch-auth": "4.5.3",
+        "twitch-chat-client": "4.5.3",
+        "twitch-pubsub-client": "4.5.3",
+        "twitch-webhooks": "4.5.3"
     },
     "devDependencies": {
-        "@babel/core": "7.12.10",
-        "@babel/eslint-parser": "7.12.1",
-        "@types/express": "4.17.9",
+        "@babel/core": "7.13.14",
+        "@babel/eslint-parser": "7.13.14",
+        "@types/express": "4.17.11",
         "@types/express-ws": "3.0.0",
         "@types/nconf": "0.10.0",
-        "@types/node": "14.14.19"
+        "@types/node": "14.14.37"
     },
     "engines": {
         "node": ">=14.0.0"
