@@ -38,7 +38,7 @@
         "twitch-auth": "4.5.3",
         "twitch-chat-client": "4.5.3",
         "twitch-pubsub-client": "4.5.3",
-        "twitch-webhooks": "4.5.3"
+        "twitch-webhooks": "4.6.1"
     },
     "devDependencies": {
         "@babel/core": "7.13.14",
