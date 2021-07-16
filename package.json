@@ -35,7 +35,7 @@
         "streamlabs-ws-client": "1.0.0",
         "terser": "5.6.1",
         "twitch": "4.5.3",
-        "twitch-auth": "4.5.3",
+        "twitch-auth": "4.6.2",
         "twitch-chat-client": "4.5.3",
         "twitch-pubsub-client": "4.5.3",
         "twitch-webhooks": "4.5.3"
