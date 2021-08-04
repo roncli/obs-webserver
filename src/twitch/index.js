@@ -337,7 +337,7 @@ class Twitch {
                 await channelChatClient.client.quit();
             } catch (err) {} finally {}
         }
-        channelChatClient = new Chat(channelTwitchClient);
+        channelChatClient = new Chat(channelAuthProvider);
 
         if (botChatClient && botChatClient.client) {
             try {
@@ -345,7 +345,7 @@ class Twitch {
             } catch (err) {} finally {}
         }
 
-        botChatClient = new Chat(botTwitchClient);
+        botChatClient = new Chat(botAuthProvider);
 
         channelChatClient.client.onAction((channel, user, message, msg) => {
             eventEmitter.emit("action", {
