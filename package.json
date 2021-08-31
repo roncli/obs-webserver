@@ -26,7 +26,7 @@
         "igdb-api-node": "5.0.0",
         "jquery": "3.6.0",
         "jsdom": "16.5.2",
-        "nconf": "0.11.2",
+        "nconf": "0.11.3",
         "node-database": "roncli/node-database#v1.2.4",
         "obs-websocket-js": "4.0.2",
         "public-ip": "4.0.4",
