@@ -29,7 +29,7 @@
         "nconf": "0.11.2",
         "node-database": "roncli/node-database#v1.2.4",
         "obs-websocket-js": "4.0.2",
-        "public-ip": "4.0.3",
+        "public-ip": "4.0.4",
         "spotify-web-api-node": "yamadapc/spotify-web-api-node#21f203d9627dec86bffead5026478e8a25dadeed",
         "steam-api": "1.1.3",
         "streamlabs-ws-client": "1.0.0",
