@@ -36,7 +36,7 @@
         "terser": "5.8.0",
         "twitch": "4.6.6",
         "twitch-auth": "4.6.7",
-        "twitch-chat-client": "4.6.6",
+        "twitch-chat-client": "4.6.7",
         "twitch-pubsub-client": "4.6.6",
         "twitch-webhooks": "4.6.7"
     },
