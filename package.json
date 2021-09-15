@@ -27,7 +27,7 @@
         "jquery": "3.6.0",
         "jsdom": "17.0.0",
         "nconf": "0.11.3",
-        "node-database": "roncli/node-database#v1.2.4",
+        "node-database": "roncli/node-database#v1.2.5",
         "obs-websocket-js": "4.0.3",
         "public-ip": "4.0.4",
         "spotify-web-api-node": "yamadapc/spotify-web-api-node#21f203d9627dec86bffead5026478e8a25dadeed",
