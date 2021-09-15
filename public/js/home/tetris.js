@@ -33,18 +33,33 @@ class Tetris {
 
         // Setup themes.
         for (let i = 0; i < 10; i++) {
-            window.BlockrainThemes[`level${i}`] = {
-                background: "#000000",
-                complexBlocks: {
-                    line: `/images/blockrain/level${i}/i.png`,
-                    square: `/images/blockrain/level${i}/o.png`,
-                    arrow: `/images/blockrain/level${i}/t.png`,
-                    rightHook: `/images/blockrain/level${i}/l.png`,
-                    leftHook: `/images/blockrain/level${i}/j.png`,
-                    rightZag: `/images/blockrain/level${i}/s.png`,
-                    leftZag: `/images/blockrain/level${i}/z.png`
-                }
-            };
+            if (i === 9) {
+                window.BlockrainThemes[`level${i}`] = {
+                    background: "#000000",
+                    complexBlocks: {
+                        line: `/images/blockrain/level${i}-ctm/i.png`,
+                        square: `/images/blockrain/level${i}-ctm/o.png`,
+                        arrow: `/images/blockrain/level${i}-ctm/t.png`,
+                        rightHook: `/images/blockrain/level${i}-ctm/l.png`,
+                        leftHook: `/images/blockrain/level${i}-ctm/j.png`,
+                        rightZag: `/images/blockrain/level${i}-ctm/s.png`,
+                        leftZag: `/images/blockrain/level${i}-ctm/z.png`
+                    }
+                };
+            } else {
+                window.BlockrainThemes[`level${i}`] = {
+                    background: "#000000",
+                    complexBlocks: {
+                        line: `/images/blockrain/level${i}/i.png`,
+                        square: `/images/blockrain/level${i}/o.png`,
+                        arrow: `/images/blockrain/level${i}/t.png`,
+                        rightHook: `/images/blockrain/level${i}/l.png`,
+                        leftHook: `/images/blockrain/level${i}/j.png`,
+                        rightZag: `/images/blockrain/level${i}/s.png`,
+                        leftZag: `/images/blockrain/level${i}/z.png`
+                    }
+                };
+            }
         }
 
         // Start game.
