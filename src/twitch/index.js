@@ -573,11 +573,13 @@ class Twitch {
 
         await pubsub.setup(channelTwitchClient._authProvider);
 
-        pubsub.client.onBits(settings.twitch.userId, (message) => {
+        pubsub.client.onBits(settings.twitch.userId, async (message) => {
+            const displayName = message.userId ? (await channelTwitchClient.users.getUserById(message.userId)).displayName : "";
+
             eventEmitter.emit("bits", {
                 userId: message.userId,
                 user: message.userName,
-                name: message.userName,
+                name: displayName,
                 bits: message.bits,
                 totalBits: message.totalBits,
                 message: message.message,
