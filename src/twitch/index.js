@@ -317,7 +317,14 @@ class Twitch {
      * @returns {Promise} A promise that resolves when the stream's info has been set.
      */
     static async setStreamInfo(title, game) {
-        await channelTwitchClient.channels.updateChannelInfo(settings.twitch.userId, {title, gameId: game});
+        let gameId;
+        try {
+            const gameData = await channelTwitchClient.games.getGameByName(game);
+
+            gameId = gameData.id;
+        } catch (err) {}
+
+        await channelTwitchClient.channels.updateChannelInfo(settings.twitch.userId, {title, gameId});
     }
 
     //               #                 ##   #            #
