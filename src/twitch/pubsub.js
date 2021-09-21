@@ -24,7 +24,7 @@ class PubSub {
     //                          #
     /**
      * Performs setup of Twitch PubSub.
-     * @param {AuthProvider} authProvider The twitch client.
+     * @param {AuthProvider} authProvider The auth provider.
      * @returns {Promise} A promise that resolves when the PubSub are setup.
      */
     async setup(authProvider) {

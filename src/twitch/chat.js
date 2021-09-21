@@ -25,7 +25,7 @@ class Chat {
     //  ##    ##   #  #  ###      ##  #      ###   ##     ##   ##   #
     /**
      * Performs setup of Twitch chat.
-     * @param {AuthProvider} authProvider The twitch client.
+     * @param {AuthProvider} authProvider The auth provider.
      */
     constructor(authProvider) {
         this.client = new ChatClient({
