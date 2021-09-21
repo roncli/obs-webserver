@@ -152,8 +152,11 @@ class WebsocketListener {
                             } catch (err) {
                                 if (err.statusCode === 403) {
                                     // Forbidden from the Spotify API means that the player is already paused, which is fine.
-
                                     okToSend = true;
+                                } else if (err.body && err.body.error && err.body.error.reason === "NO_ACTIVE_DEVICE") {
+                                    // Just ignore no active device because you can't pause if there's no active device.
+                                    okToSend = true;
+                                    return;
                                 } else {
                                     Log.exception("There was an error pausing Spotify.", err);
                                 }
