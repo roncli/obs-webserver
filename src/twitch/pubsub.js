@@ -1,8 +1,8 @@
 /**
- * @typedef {import("twitch").ApiClient} TwitchClient
+ * @typedef {import("@twurple/auth").AuthProvider} AuthProvider
  */
 
-const TwitchPubSub = require("twitch-pubsub-client").PubSubClient;
+const TwitchPubSub = require("@twurple/pubsub").PubSubClient;
 
 //  ####          #       ###          #
 //  #   #         #      #   #         #
@@ -24,12 +24,12 @@ class PubSub {
     //                          #
     /**
      * Performs setup of Twitch PubSub.
-     * @param {TwitchClient} twitchClient The twitch client.
+     * @param {AuthProvider} authProvider The twitch client.
      * @returns {Promise} A promise that resolves when the PubSub are setup.
      */
-    async setup(twitchClient) {
+    async setup(authProvider) {
         this.client = new TwitchPubSub();
-        await this.client.registerUserListener(twitchClient);
+        await this.client.registerUserListener(authProvider);
     }
 }
 

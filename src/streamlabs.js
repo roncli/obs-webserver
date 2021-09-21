@@ -1,11 +1,9 @@
-/**
- * @typedef {import("streamlabs-ws-client").StreamlabsClient} StreamlabsWs.StreamlabsClient
- */
+/** @typedef {import("socket.io-client")} SocketIOClient */
 
-const StreamlabsWs = require("streamlabs-ws-client"),
+const io = require("socket.io-client"),
     settings = require("../settings");
 
-/** @type {StreamlabsWs.StreamlabsClient} */
+/** @type {SocketIOClient.Socket} */
 let client = void 0;
 
 //   ###    #                                  ##           #
@@ -29,7 +27,7 @@ class Streamlabs {
     //  ##   ###   ###    ##   #  #    ##
     /**
      * The Streamlabs client.
-     * @returns {StreamlabsWs.StreamlabsClient} The Streamlabs client.
+     * @returns {SocketIOClient.Socket} The Streamlabs client.
      */
     static get client() {
         return client;
@@ -46,10 +44,7 @@ class Streamlabs {
      * @returns {void}
      */
     static start() {
-        // TODO: Fix Streamlabs.
-        return;
-
-        client = new StreamlabsWs.StreamlabsClient(settings.streamlabs);
+        client = io(`https://sockets.streamlabs.com/?token=${settings.streamlabs.token}`);
 
         Streamlabs.client.on("connect_error", (ev) => {
             console.log("connect_error", ev);
@@ -73,10 +68,6 @@ class Streamlabs {
         });
 
         Streamlabs.client.on("error", (ev) => {
-            if (ev.message.indexOf("event.message must be an array") !== -1) {
-                // Common error, return.
-                return;
-            }
             console.log("error", ev, ev.message);
         });
 

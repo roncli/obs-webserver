@@ -1,7 +1,7 @@
 /**
  * @typedef {import("express").Request} Express.Request
  * @typedef {import("express").Response} Express.Response
- * @typedef {import("twitch").HelixBitsLeaderboard} HelixBitsLeaderboard
+ * @typedef {import("@twurple/api").HelixBitsLeaderboard} HelixBitsLeaderboard
  */
 
 const Log = require("../../../src/logging/log"),

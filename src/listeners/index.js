@@ -30,10 +30,9 @@ class Listeners {
     static setup() {
         Streamlabs.start();
 
-        // TODO: Fix Streamlabs.
-        // Object.getOwnPropertyNames(StreamlabsListener).filter((property) => typeof StreamlabsListener[property] === "function").forEach((property) => {
-        //     Streamlabs.client.on(property, StreamlabsListener[property]);
-        // });
+        Object.getOwnPropertyNames(StreamlabsListener).filter((property) => typeof StreamlabsListener[property] === "function").forEach((property) => {
+            Streamlabs.client.on(property, StreamlabsListener[property]);
+        });
 
         Object.getOwnPropertyNames(TwitchListener).filter((property) => typeof TwitchListener[property] === "function" && property !== "getTierName").forEach((property) => {
             Twitch.events.on(property, TwitchListener[property]);

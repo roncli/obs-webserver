@@ -1,8 +1,8 @@
 /**
- * @typedef {import("twitch").AuthProvider} AuthProvider
+ * @typedef {import("@twurple/auth").AuthProvider} AuthProvider
  */
 
-const ChatClient = require("twitch-chat-client").ChatClient,
+const ChatClient = require("@twurple/chat").ChatClient,
 
     settings = require("../../settings");
 
@@ -28,7 +28,8 @@ class Chat {
      * @param {AuthProvider} authProvider The twitch client.
      */
     constructor(authProvider) {
-        this.client = new ChatClient(authProvider, {
+        this.client = new ChatClient({
+            authProvider,
             channels: [settings.twitch.channelName],
             requestMembershipEvents: true
         });

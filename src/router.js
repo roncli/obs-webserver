@@ -111,7 +111,7 @@ class Router {
             const classInfo = classes[filename];
 
             router.ws(classInfo.path, (ws, req) => {
-                ws.url = req.url.replace("/.websocket", "").replace(".websocket", "") || "/";
+                ws._url = req.url.replace("/.websocket", "").replace(".websocket", "") || "/";
 
                 classInfo.events.forEach((event) => {
                     ws.on(event, (...args) => {
