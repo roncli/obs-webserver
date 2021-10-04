@@ -55,6 +55,11 @@ class SpotifyApi {
                         return;
                     }
 
+                    if (err.message && err.message.indexOf("ECONNREFUSED") !== -1) {
+                        res.sendStatus(500);
+                        return;
+                    }
+
                     if (err.message && err.message.indexOf("Bad Gateway") !== -1) {
                         res.sendStatus(500);
                         return;
