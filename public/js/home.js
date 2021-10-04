@@ -294,6 +294,7 @@ class Home {
                     track: Home.spotifyTrack
                 });
             }
+        } catch (err) {
         } finally {
             Home.spotifyTimeout = setTimeout(() => {
                 Home.updateSpotify(interval);
