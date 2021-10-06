@@ -1,6 +1,6 @@
 {
     "name": "obs-webserver",
-    "version": "2.3.1",
+    "version": "2.3.2",
     "description": "roncli Gaming webserver for OBS.",
     "license": "None",
     "author": {
