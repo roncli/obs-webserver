@@ -8,6 +8,7 @@ const childProcess = require("child_process"),
     Log = require("../logging/log"),
     Notifications = require("../notifications"),
     OBSWebsocket = require("../obsWebsocket"),
+    pjson = require("../../package.json"),
     Spotify = require("../spotify"),
     Twitch = require("../twitch"),
     Websocket = require("../websocket");
@@ -632,7 +633,8 @@ class WebsocketListener {
                                     OBSWebsocket.stopWebcam("frame");
                                     Websocket.broadcast({
                                         type: "phase",
-                                        phase: "ending"
+                                        phase: "ending",
+                                        version: pjson.version
                                     });
                                     until += 65000;
                                     await WebsocketListener.sleep(until - Date.now());

@@ -20,9 +20,10 @@ class FrameEndingView {
     //  ###
     /**
      * Gets the rendered page template.
+     * @param {string} version The version.
      * @returns {string} An HTML string of the page.
      */
-    static get() {
+    static get(version) {
         const data = FrameEndingView.Home && FrameEndingView.Home.data || {};
 
         let followers = [];
@@ -99,6 +100,7 @@ class FrameEndingView {
                         <br /><br />Prime Gifts From:<br />${primeGifts.map((p) => /* html */`<span class="text">${FrameEndingView.Common.htmlEncode(p)}</span>`).join("<br />")}
                     `}
                 `}<br /><br /><br /><br />
+                Stream powered by https://github.com/roncli/obs-webserver version ${version}<br /><br /><br /><br />
                 Special thanks:<br /><br />
                 Gromfalloon for the awesome Noita-themed emotes!<br /><br />
                 Solitha for continuing to let me do this, and for not killing me on stream!<br /><br /><br /><br />

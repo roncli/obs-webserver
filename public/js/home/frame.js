@@ -64,7 +64,7 @@ class Frame {
                             window.Home.startSpotify();
                             break;
                         case "ending":
-                            await Frame.startEnding();
+                            await Frame.startEnding(ev.version);
                             window.Home.stopSpotify();
                             break;
                         case "intro":
@@ -102,12 +102,13 @@ class Frame {
     //                                                               ###
     /**
      * Starts the ending frame.
+     * @param {string} version The version.
      * @returns {Promise} A promise that resolves when the ending frame is shown.
      */
-    static async startEnding() {
+    static async startEnding(version) {
         await window.Common.loadTemplate("/js/?files=/views/home/frame/ending.js", "FrameEndingView");
 
-        await window.Common.loadDataIntoTemplate(void 0, "#content", window.FrameEndingView.get);
+        document.getElementById("content").innerHTML = window.FrameEndingView.get(version);
 
         const height = Math.floor(document.getElementById("crawler").getBoundingClientRect().height);
 
