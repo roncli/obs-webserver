@@ -232,6 +232,29 @@ class Twitch {
         await Twitch.setupPubSub();
     }
 
+    // ##                             #
+    //  #                             #
+    //  #     ##    ###   ##   #  #  ###
+    //  #    #  #  #  #  #  #  #  #   #
+    //  #    #  #   ##   #  #  #  #   #
+    // ###    ##   #      ##    ###    ##
+    //              ###
+    /**
+     * Logs out of Twitch.
+     * @returns {Promise} A promise that resolves when the logout is complete.
+     */
+    static async logout() {
+        try {
+            await channelChatClient.client.quit();
+        } catch (err) {}
+        channelChatClient = void 0;
+
+        try {
+            await botChatClient.client.quit();
+        } catch (err) {}
+        botChatClient = void 0;
+    }
+
     //               #                      #     ###         #
     //              # #                     #      #          #
     // ###    ##    #    ###    ##    ###   ###    #     ##   # #    ##   ###    ###
@@ -253,6 +276,9 @@ class Twitch {
             });
         }
 
+        await Twitch.logout();
+        await Twitch.connect();
+        await Twitch.login();
         await Twitch.setupChat();
         await Twitch.setupPubSub();
     }

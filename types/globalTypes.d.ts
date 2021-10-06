@@ -22,6 +22,7 @@ interface Window {
     IntroView: import("../public/views/home/intro")
     MethodNotAllowedView: import("../public/views/405")
     NotFoundView: import("../public/views/404")
+    OKView: import("../public/views/200")
     OverlayView: import("../public/views/overlay")
     RoncliGamingView: import("../public/views/control/roncli-gaming")
     ServerErrorView: import("../public/views/500")
