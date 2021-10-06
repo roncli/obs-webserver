@@ -28,8 +28,8 @@ class Tetris2PView {
                 <div id="right-player">${Tetris2PView.Common.htmlEncode(data && data.player2 && data.player2.name)}</div>
                 <div id="left-score">${Tetris2PView.Common.htmlEncode(data && data.player1 && data.player1.score)}</div>
                 <div id="right-score">${Tetris2PView.Common.htmlEncode(data && data.player2 && data.player2.score)}</div>
-                <div id="left-text">${Tetris2PView.Common.htmlEncode(data && data.player1 && data.player1.info)}</div>
-                <div id="right-text">${Tetris2PView.Common.htmlEncode(data && data.player2 && data.player2.info)}</div>
+                <div id="left-text">${Tetris2PView.Common.htmlEncode(data && data.player1 && data.player1.info).replace(/\r\n/g, "\r").replace(/[\r\n]/g, "<br />")}</div>
+                <div id="right-text">${Tetris2PView.Common.htmlEncode(data && data.player2 && data.player2.info).replace(/\r\n/g, "\r").replace(/[\r\n]/g, "<br />")}</div>
                 <div id="organization"${data && data.event && data.event.color ? ` style="color: ${data.event.color};"` : ""}>${Tetris2PView.Common.htmlEncode(data && data.event && data.event.organization)}</div>
                 <div id="title"${data && data.event && data.event.color ? ` style="color: ${data.event.color};"` : ""}>${Tetris2PView.Common.htmlEncode(data && data.event && data.event.title)}</div>
                 <div id="status"${data && data.event && data.event.color ? ` style="color: ${data.event.color};"` : ""}>${Tetris2PView.Common.htmlEncode(data && data.event && data.event.status)}</div>
