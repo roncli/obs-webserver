@@ -279,8 +279,6 @@ class Twitch {
         await Twitch.logout();
         await Twitch.connect();
         await Twitch.login();
-        await Twitch.setupChat();
-        await Twitch.setupPubSub();
     }
 
     //                    ##      #
