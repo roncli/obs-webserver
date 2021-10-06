@@ -41,7 +41,11 @@ class TwitchOAuth {
             state = req.query.state;
 
         if (state !== await ConfigFile.get("twitchOAuthState")) {
-            res.status(500).send("States don't match.  Try again.");
+            res.status(500).send(Common.page(
+                "",
+                {css: ["/css/error.css"]},
+                ServerErrorView.get(false, "States don't match.  Try again.")
+            ));
             return;
         }
 
