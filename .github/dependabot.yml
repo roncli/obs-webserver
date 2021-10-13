@@ -4,6 +4,8 @@ updates:
     directory: /
     schedule:
       interval: "daily"
+      time: "05:00"
+      timezone: "America/Los_Angeles"
     ignore:
       # socket.io-client needs to remain on version ^2.0.0 since StreamLabs's server is on socket.io v2.
       - dependency-name: "socket.io-client"
