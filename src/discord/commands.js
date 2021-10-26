@@ -92,6 +92,32 @@ class Commands {
 
         return await this[command](newMember, channel, newMessage) || void 0;
     }
+
+    //                           #
+    //
+    // # #    ##   ###    ###   ##     ##   ###
+    // # #   # ##  #  #  ##      #    #  #  #  #
+    // # #   ##    #       ##    #    #  #  #  #
+    //  #     ##   #     ###    ###    ##   #  #
+    /**
+     * Replies with the current version of the bot.
+     * @param {DiscordJs.GuildMember} member The user initiating the command.
+     * @param {DiscordJs.TextChannel} channel The channel the message was sent over.
+     * @param {string} message The text of the command.
+     * @returns {Promise<boolean>} A promise that returns whether the command completed successfully.
+     */
+    async version(member, channel, message) {
+        if (!Commands.checkChannelIsOnServer(channel)) {
+            return false;
+        }
+
+        if (message) {
+            return false;
+        }
+
+        await Discord.queue(`roncli Gaming.  Boom, bitches.  By roncli, Version ${pjson.version}.  Project is open source, visit https://github.com/roncli/obs-webserver.`, channel);
+        return true;
+    }
 }
 
 module.exports = Commands;
