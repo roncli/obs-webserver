@@ -47,10 +47,6 @@ class StreamlabsListener {
                 idTable.delete(message._id);
             }, 3600000);
 
-            if (message.isTest) {
-                return;
-            }
-
             switch (data.type) {
                 case "follow":
                     Notifications.add("follow", {
