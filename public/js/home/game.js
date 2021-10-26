@@ -397,6 +397,21 @@ class Game {
                                     `);
 
                                     break;
+                                case "Optimal Health":
+                                    Game.notify("/images/roncliFine-56.png", "/media/lines.ogg", /* html */`
+                                        <div>
+                                            <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
+                                            <span class="text">has spent</span>
+                                            <span class="header">${Game.cost(ev.data.data.cost)}</span>
+                                            <span class="text">to remind you it's not</span>
+                                            <span class="header">low health,</span>
+                                            <span class="text">it's</span>
+                                            <span class="header">optimal health.</span>${ev.data.data.message ? /* html */`<br />
+                                            <span class="message">${window.Common.htmlEncode(ev.data.data.message)}</span>` : ""}
+                                        </div>
+                                    `);
+
+                                    break;
                                 case "Overload: Doing Lines":
                                     Game.notify("/images/creeper-56.png", "/media/lines.ogg", /* html */`
                                         <div>
