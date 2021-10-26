@@ -4,7 +4,8 @@
  * @typedef {import("discord.js").User} DiscordJs.User
  */
 
-const settings = require("../../settings"),
+const pjson = require("../../package.json"),
+    settings = require("../../settings"),
     Warning = require("../logging/warning"),
 
     idMessageParse = /^<@!?(?<id>[0-9]+)> (?<command>[^ ]+)(?: (?<newMessage>.+))?$/;
@@ -39,7 +40,7 @@ class Commands {
      * @returns {boolean} Whether the channel is on the correct server.
      */
     static checkChannelIsOnServer(channel) {
-        return channel.type === "text" && channel.guild.name === settings.guild;
+        return channel.type === "GUILD_TEXT" && channel.guild.name === settings.guild;
     }
 
     //       #                 #     #  #              #                 ###           ##
