@@ -60,7 +60,7 @@ class OBSWebsocket {
     static async startCTM() {
         try {
             await obs.send("SetSceneItemProperties", {
-                item: "CTM Stencil",
+                item: {name: "CTM Stencil"},
                 visible: true,
                 bounds: {},
                 scale: {},
@@ -84,7 +84,7 @@ class OBSWebsocket {
     static async startDiscord(location) {
         try {
             await obs.send("SetSceneItemProperties", {
-                item: `Discord - ${location}`,
+                item: {name: `Discord - ${location}`},
                 visible: true,
                 bounds: {},
                 scale: {},
@@ -108,7 +108,7 @@ class OBSWebsocket {
     static async startDisplay() {
         try {
             await obs.send("SetSceneItemProperties", {
-                item: "Display",
+                item: {name: "Display"},
                 visible: true,
                 bounds: {},
                 scale: {},
@@ -131,7 +131,7 @@ class OBSWebsocket {
     static async startMic() {
         try {
             await obs.send("SetSceneItemProperties", {
-                item: "Audio Input Capture - Microphone",
+                item: {name: "Audio Input Capture - Microphone"},
                 visible: true,
                 bounds: {},
                 scale: {},
@@ -197,7 +197,7 @@ class OBSWebsocket {
     static async startTetris2P12() {
         try {
             await obs.send("SetSceneItemProperties", {
-                item: "Tetris - 2P - 1 & 2",
+                item: {name: "Tetris - 2P - 1 & 2"},
                 visible: true,
                 bounds: {},
                 scale: {},
@@ -208,7 +208,7 @@ class OBSWebsocket {
 
         try {
             await obs.send("SetSceneItemProperties", {
-                item: "Tetris - 2P - 3 & 4",
+                item: {name: "Tetris - 2P - 3 & 4"},
                 visible: false,
                 bounds: {},
                 scale: {},
@@ -219,7 +219,7 @@ class OBSWebsocket {
 
         try {
             await obs.send("SetSceneItemProperties", {
-                item: "Tetris - 4P",
+                item: {name: "Tetris - 4P"},
                 visible: false,
                 bounds: {},
                 scale: {},
@@ -242,7 +242,7 @@ class OBSWebsocket {
     static async startTetris2P34() {
         try {
             await obs.send("SetSceneItemProperties", {
-                item: "Tetris - 2P - 1 & 2",
+                item: {name: "Tetris - 2P - 1 & 2"},
                 visible: false,
                 bounds: {},
                 scale: {},
@@ -253,7 +253,7 @@ class OBSWebsocket {
 
         try {
             await obs.send("SetSceneItemProperties", {
-                item: "Tetris - 2P - 3 & 4",
+                item: {name: "Tetris - 2P - 3 & 4"},
                 visible: true,
                 bounds: {},
                 scale: {},
@@ -264,7 +264,7 @@ class OBSWebsocket {
 
         try {
             await obs.send("SetSceneItemProperties", {
-                item: "Tetris - 4P",
+                item: {name: "Tetris - 4P"},
                 visible: false,
                 bounds: {},
                 scale: {},
@@ -287,7 +287,7 @@ class OBSWebsocket {
     static async startTetris4P() {
         try {
             await obs.send("SetSceneItemProperties", {
-                item: "Tetris - 2P - 1 & 2",
+                item: {name: "Tetris - 2P - 1 & 2"},
                 visible: false,
                 bounds: {},
                 scale: {},
@@ -298,7 +298,7 @@ class OBSWebsocket {
 
         try {
             await obs.send("SetSceneItemProperties", {
-                item: "Tetris - 2P - 3 & 4",
+                item: {name: "Tetris - 2P - 3 & 4"},
                 visible: false,
                 bounds: {},
                 scale: {},
@@ -309,7 +309,7 @@ class OBSWebsocket {
 
         try {
             await obs.send("SetSceneItemProperties", {
-                item: "Tetris - 4P",
+                item: {name: "Tetris - 4P"},
                 visible: true,
                 bounds: {},
                 scale: {},
@@ -333,7 +333,7 @@ class OBSWebsocket {
     static async startWebcam(location) {
         try {
             await obs.send("SetSceneItemProperties", {
-                item: `Webcam - ${location}`,
+                item: {name: `Webcam - ${location}`},
                 visible: true,
                 bounds: {},
                 scale: {},
@@ -357,7 +357,7 @@ class OBSWebsocket {
     static async stopCTM() {
         try {
             await obs.send("SetSceneItemProperties", {
-                item: "CTM Stencil",
+                item: {name: "CTM Stencil"},
                 visible: false,
                 bounds: {},
                 scale: {},
@@ -382,7 +382,7 @@ class OBSWebsocket {
     static async stopDiscord(location) {
         try {
             await obs.send("SetSceneItemProperties", {
-                item: `Discord - ${location}`,
+                item: {name: `Discord - ${location}`},
                 visible: false,
                 bounds: {},
                 scale: {},
@@ -406,7 +406,7 @@ class OBSWebsocket {
     static async stopDisplay() {
         try {
             await obs.send("SetSceneItemProperties", {
-                item: "Display",
+                item: {name: "Display"},
                 visible: false,
                 bounds: {},
                 scale: {},
@@ -430,7 +430,7 @@ class OBSWebsocket {
     static async stopMic() {
         try {
             await obs.send("SetSceneItemProperties", {
-                item: "Audio Input Capture - Microphone",
+                item: {name: "Audio Input Capture - Microphone"},
                 visible: false,
                 bounds: {},
                 scale: {},
@@ -492,7 +492,7 @@ class OBSWebsocket {
     static async stopTetris() {
         try {
             await obs.send("SetSceneItemProperties", {
-                item: "Tetris - 2P - 1 & 2",
+                item: {name: "Tetris - 2P - 1 & 2"},
                 visible: false,
                 bounds: {},
                 scale: {},
@@ -503,7 +503,7 @@ class OBSWebsocket {
 
         try {
             await obs.send("SetSceneItemProperties", {
-                item: "Tetris - 2P - 3 & 4",
+                item: {name: "Tetris - 2P - 3 & 4"},
                 visible: false,
                 bounds: {},
                 scale: {},
@@ -514,7 +514,7 @@ class OBSWebsocket {
 
         try {
             await obs.send("SetSceneItemProperties", {
-                item: "Tetris - 4P",
+                item: {name: "Tetris - 4P"},
                 visible: false,
                 bounds: {},
                 scale: {},
@@ -539,7 +539,7 @@ class OBSWebsocket {
     static async stopWebcam(location) {
         try {
             await obs.send("SetSceneItemProperties", {
-                item: `Webcam - ${location}`,
+                item: {name: `Webcam - ${location}`},
                 visible: false,
                 bounds: {},
                 scale: {},
