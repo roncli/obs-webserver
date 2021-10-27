@@ -398,7 +398,7 @@ class Game {
 
                                     break;
                                 case "Optimal Health":
-                                    Game.notify("/images/roncliFine-56.png", "/media/lines.ogg", /* html */`
+                                    Game.notify("/images/roncliFine-56.png", "/media/1hp.ogg", /* html */`
                                         <div>
                                             <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
                                             <span class="text">has spent</span>
