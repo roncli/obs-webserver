@@ -21,7 +21,7 @@
         "blockrain": "Aerolab/blockrain.js#ba6d4192370d2ce4f75ce31796f345eb5711b489",
         "compression": "1.7.4",
         "csso": "4.2.0",
-        "discord.js": "13.2.0",
+        "discord.js": "13.3.1",
         "express": "4.17.1",
         "express-ws": "5.0.2",
         "html-minifier": "4.0.0",
