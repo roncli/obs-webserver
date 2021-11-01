@@ -14,7 +14,7 @@
     },
     "dependencies": {
         "@root/request": "1.8.0",
-        "@twurple/api": "5.0.7",
+        "@twurple/api": "5.0.8",
         "@twurple/auth": "5.0.8",
         "@twurple/chat": "5.0.7",
         "@twurple/pubsub": "5.0.8",
