@@ -200,6 +200,10 @@ class TwitchListener {
      */
     static message(ev) {
         if (ev.channel === settings.twitch.channelName) {
+            if (!ev.message.startsWith("!")) {
+                return;
+            }
+
             const enteredCommand = ev.message.split(" ")[0].substr(1).toLowerCase();
 
             if (cooldown[enteredCommand]) {
