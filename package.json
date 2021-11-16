@@ -17,7 +17,7 @@
         "@twurple/api": "5.0.8",
         "@twurple/auth": "5.0.8",
         "@twurple/chat": "5.0.8",
-        "@twurple/pubsub": "5.0.8",
+        "@twurple/pubsub": "5.0.9",
         "blockrain": "Aerolab/blockrain.js#ba6d4192370d2ce4f75ce31796f345eb5711b489",
         "compression": "1.7.4",
         "csso": "4.2.0",
@@ -30,7 +30,7 @@
         "obs-websocket-js": "4.0.3",
         "socket.io-client": "2.4.0",
         "spotify-web-api-node": "5.0.2",
-        "terser": "5.9.0"
+        "terser": "5.10.0"
     },
     "devDependencies": {
         "@babel/core": "7.16.0",
