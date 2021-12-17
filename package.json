@@ -22,7 +22,7 @@
         "compression": "1.7.4",
         "csso": "5.0.1",
         "discord.js": "13.3.1",
-        "express": "4.17.1",
+        "express": "4.17.2",
         "express-ws": "5.0.2",
         "html-minifier": "4.0.0",
         "igdb-api-node": "5.0.1",
