@@ -20,7 +20,7 @@
         "@twurple/pubsub": "5.0.12",
         "blockrain": "Aerolab/blockrain.js#ba6d4192370d2ce4f75ce31796f345eb5711b489",
         "compression": "1.7.4",
-        "csso": "5.0.1",
+        "csso": "5.0.2",
         "discord.js": "13.3.1",
         "express": "4.17.2",
         "express-ws": "5.0.2",
