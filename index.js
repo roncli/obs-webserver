@@ -124,6 +124,7 @@ const compression = require("compression"),
     Log.log(`Web server listening on port ${port}.`);
 }());
 
-process.on("unhandledRejection", (reason) => {
+process.on("unhandledRejection", (reason, promise) => {
     Log.exception("Unhandled promise rejection caught.", reason);
+    console.log(promise);
 });
