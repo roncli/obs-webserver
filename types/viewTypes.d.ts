@@ -42,6 +42,7 @@ declare namespace ViewTypes {
         title: string
         game: string
         info: string
+        analysis: string
     }
 
     type SpotifyPlaylist = {

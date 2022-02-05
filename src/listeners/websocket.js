@@ -76,7 +76,10 @@ class WebsocketListener {
             case "discord":
                 if (WebsocketListener.data.phase === "game") {
                     await OBSWebsocket.startDiscord("game");
+                } else if (WebsocketListener.data.phase === "analysis") {
+                    await OBSWebsocket.startDiscord("analysis");
                 }
+                await WebsocketListener.sleep(1000);
                 Websocket.broadcast(data);
                 break;
             case "reset":
@@ -177,6 +180,7 @@ class WebsocketListener {
 
                 switch (data.scene) {
                     case "Start Stream":
+                    case "Start Analysis":
                         {
                             WebsocketListener.data.phase = "intro";
 
@@ -187,9 +191,11 @@ class WebsocketListener {
                             OBSWebsocket.stopWebcam("ctm");
                             OBSWebsocket.stopWebcam("frame");
                             OBSWebsocket.stopWebcam("game");
+                            OBSWebsocket.stopWebcam("analysis");
                             OBSWebsocket.stopDisplay();
                             OBSWebsocket.stopCTM();
                             OBSWebsocket.stopDiscord("game");
+                            OBSWebsocket.stopDiscord("analysis");
                             OBSWebsocket.stopTetris();
                             until += 5000;
                             await WebsocketListener.sleep(until - Date.now());
@@ -316,22 +322,32 @@ class WebsocketListener {
 
                             Websocket.broadcast({
                                 type: "scene",
-                                scene: "game"
+                                scene: {"Start Stream": "game", "Start Analysis": "analysis"}[data.scene]
                             });
                             OBSWebsocket.startMic();
                             OBSWebsocket.stopWebcam("ctm");
                             OBSWebsocket.stopWebcam("frame");
-                            OBSWebsocket.startWebcam("game");
+                            switch (data.scene) {
+                                case "Start Stream":
+                                    OBSWebsocket.startWebcam("game");
+                                    OBSWebsocket.stopWebcam("analysis");
+                                    break;
+                                case "Start Analysis":
+                                    OBSWebsocket.stopWebcam("game");
+                                    OBSWebsocket.startWebcam("analysis");
+                                    break;
+                            }
                             OBSWebsocket.startDisplay();
                             OBSWebsocket.stopCTM();
                             OBSWebsocket.stopDiscord("game");
+                            OBSWebsocket.stopDiscord("analysis");
                             until += 2000;
                             await WebsocketListener.sleep(until - Date.now());
 
                             Notifications.start();
                         }
 
-                        WebsocketListener.data.phase = "game";
+                        WebsocketListener.data.phase = {"Start Stream": "game", "Start Analysis": "analysis"}[data.scene];
                         break;
                     case "Webcam":
                         switch (WebsocketListener.data.phase) {
@@ -386,9 +402,11 @@ class WebsocketListener {
                                     OBSWebsocket.stopWebcam("ctm");
                                     OBSWebsocket.startWebcam("frame");
                                     OBSWebsocket.stopWebcam("game");
+                                    OBSWebsocket.stopWebcam("analysis");
                                     OBSWebsocket.stopDisplay();
                                     OBSWebsocket.stopCTM();
                                     OBSWebsocket.stopDiscord("game");
+                                    OBSWebsocket.stopDiscord("analysis");
                                 }
                                 break;
                         }
@@ -425,9 +443,11 @@ class WebsocketListener {
                                     OBSWebsocket.stopWebcam("ctm");
                                     OBSWebsocket.stopWebcam("frame");
                                     OBSWebsocket.startWebcam("game");
+                                    OBSWebsocket.stopWebcam("analysis");
                                     OBSWebsocket.startDisplay();
                                     OBSWebsocket.stopCTM();
                                     OBSWebsocket.stopDiscord("game");
+                                    OBSWebsocket.stopDiscord("analysis");
                                     until += 2000;
                                     await WebsocketListener.sleep(until - Date.now());
 
@@ -436,6 +456,51 @@ class WebsocketListener {
                                 break;
                         }
                         WebsocketListener.data.phase = "game";
+                        break;
+                    case "Analysis":
+                        switch (WebsocketListener.data.phase) {
+                            case "intro":
+                            case "ending":
+                            case "analysis":
+                                return;
+                            default:
+                                {
+                                    let until = Date.now();
+
+                                    Websocket.broadcast({
+                                        type: "overlay",
+                                        data: {
+                                            type: "stinger"
+                                        }
+                                    });
+                                    until += 625;
+                                    await WebsocketListener.sleep(until - Date.now());
+                                    if (WebsocketListener.reset) {
+                                        WebsocketListener.reset = false;
+                                        return;
+                                    }
+
+                                    Websocket.broadcast({
+                                        type: "scene",
+                                        scene: "analysis"
+                                    });
+                                    OBSWebsocket.startMic();
+                                    OBSWebsocket.stopWebcam("ctm");
+                                    OBSWebsocket.stopWebcam("frame");
+                                    OBSWebsocket.stopWebcam("game");
+                                    OBSWebsocket.startWebcam("analysis");
+                                    OBSWebsocket.stopDisplay();
+                                    OBSWebsocket.stopCTM();
+                                    OBSWebsocket.stopDiscord("game");
+                                    OBSWebsocket.stopDiscord("analysis");
+                                    until += 2000;
+                                    await WebsocketListener.sleep(until - Date.now());
+
+                                    Notifications.start();
+                                }
+                                break;
+                        }
+                        WebsocketListener.data.phase = "analysis";
                         break;
                     case "CTM":
                         switch (WebsocketListener.data.phase) {
@@ -468,9 +533,11 @@ class WebsocketListener {
                                     OBSWebsocket.startWebcam("ctm");
                                     OBSWebsocket.stopWebcam("frame");
                                     OBSWebsocket.stopWebcam("game");
+                                    OBSWebsocket.stopWebcam("analysis");
                                     OBSWebsocket.stopDisplay();
                                     OBSWebsocket.startCTM();
                                     OBSWebsocket.stopDiscord("game");
+                                    OBSWebsocket.stopDiscord("analysis");
                                     until += 2000;
                                     await WebsocketListener.sleep(until - Date.now());
 
@@ -544,9 +611,11 @@ class WebsocketListener {
                                     OBSWebsocket.stopWebcam("ctm");
                                     OBSWebsocket.stopWebcam("frame");
                                     OBSWebsocket.stopWebcam("game");
+                                    OBSWebsocket.stopWebcam("analysis");
                                     OBSWebsocket.stopDisplay();
                                     OBSWebsocket.stopCTM();
                                     OBSWebsocket.stopDiscord("game");
+                                    OBSWebsocket.stopDiscord("analysis");
                                 }
                                 break;
                         }
@@ -580,9 +649,11 @@ class WebsocketListener {
                                         OBSWebsocket.stopDisplay();
                                         OBSWebsocket.stopCTM();
                                         OBSWebsocket.stopDiscord("game");
+                                        OBSWebsocket.stopDiscord("analysis");
                                         OBSWebsocket.stopWebcam("ctm");
                                         OBSWebsocket.startWebcam("frame");
                                         OBSWebsocket.stopWebcam("game");
+                                        OBSWebsocket.stopWebcam("analysis");
                                         Websocket.broadcast({
                                             type: "scene",
                                             scene: "frame"
@@ -663,9 +734,11 @@ class WebsocketListener {
                             OBSWebsocket.stopWebcam("ctm");
                             OBSWebsocket.stopWebcam("frame");
                             OBSWebsocket.stopWebcam("game");
+                            OBSWebsocket.stopWebcam("analysis");
                             OBSWebsocket.stopDisplay();
                             OBSWebsocket.stopCTM();
                             OBSWebsocket.stopDiscord("game");
+                            OBSWebsocket.stopDiscord("analysis");
                             OBSWebsocket.stopTetris();
 
                             until += 5000;

@@ -152,6 +152,9 @@ class Game {
                         case "roncliGaming":
                             document.getElementById("title").innerHTML = window.GameTitleView.get(ev.data.data.title);
                             document.getElementById("info").innerHTML = window.GameInfoView.get(ev.data.data.info);
+                            if (document.getElementById("analysis-info")) {
+                                document.getElementById("analysis-info").innerHTML = window.GameInfoView.get(ev.data.data.analysis);
+                            }
                             break;
                     }
                     break;

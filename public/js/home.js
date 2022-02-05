@@ -28,6 +28,29 @@ class Home {
         Home.spotify = false;
     }
 
+    //          #                    #       #                   ##                    #
+    //          #                    #      # #                   #
+    //   ###   ####    ###   # ##   ####   #   #  # ##    ###     #    #   #   ###    ##     ###
+    //  #       #         #  ##  #   #     #   #  ##  #      #    #    #   #  #        #    #
+    //   ###    #      ####  #       #     #####  #   #   ####    #    #  ##   ###     #     ###
+    //      #   #  #  #   #  #       #  #  #   #  #   #  #   #    #     ## #      #    #        #
+    //  ####     ##    ####  #        ##   #   #  #   #   ####   ###       #  ####    ###   ####
+    //                                                                 #   #
+    //                                                                  ###
+    /**
+     * Starts the analysis scene.
+     * @returns {Promise} A promise that resolves when the analysis scene has been started.
+     */
+    static async startAnalysis() {
+        await window.Common.loadTemplate("/js/?files=/views/home/game/title.js,/views/home/game/info.js,/views/home/game/notification.js,/js/home/game.js", "Game");
+        await window.Common.loadTemplate("/js/?files=/views/home/game/support.js,/views/home/game/recent.js,/views/home/analysis.js", "AnalysisView");
+
+        await window.Common.loadDataIntoTemplate("/api/config/roncliGaming", "#scene", window.AnalysisView.get);
+
+        window.Game.start();
+    }
+
+
     //         #                 #     ##   ###   #  #
     //         #                 #    #  #   #    ####
     //  ###   ###    ###  ###   ###   #      #    ####
@@ -36,7 +59,7 @@ class Home {
     // ###      ##   # #  #       ##   ##    #    #  #
     /**
      * Starts the CTM scene.
-     * @returns {Promise} A promise taht resolves when the ctm scene has been started.
+     * @returns {Promise} A promise that resolves when the ctm scene has been started.
      */
     static async startCTM() {
         await window.Common.loadTemplate("/js/?files=/views/home/game/title.js,/views/home/game/info.js,/views/home/game/notification.js,/js/home/game.js", "Game");
@@ -73,7 +96,7 @@ class Home {
     // ###      ##   # #  #       ##   ###   # #  #  #   ##
     /**
      * Starts the game scene.
-     * @returns {Promise} A promise taht resolves when the game scene has been started.
+     * @returns {Promise} A promise that resolves when the game scene has been started.
      */
     static async startGame() {
         await window.Common.loadTemplate("/js/?files=/views/home/game/title.js,/views/home/game/info.js,/views/home/game/notification.js,/js/home/game.js", "Game");
@@ -222,6 +245,9 @@ class Home {
                             break;
                         case "game":
                             await Home.startGame();
+                            break;
+                        case "analysis":
+                            await Home.startAnalysis();
                             break;
                         case "ctm":
                             await Home.startCTM();

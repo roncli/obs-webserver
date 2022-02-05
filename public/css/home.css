@@ -190,7 +190,8 @@ div#frame div#social {
     background-color: black;
 }
 
-div#game {
+div#game,
+div#analysis {
     position: absolute;
     width: 1920px;
     height: 1080px;
@@ -198,17 +199,20 @@ div#game {
     background-size: 1920px 1080px;
 }
 
-div#game div#title {
+div#game div#title,
+div#analysis div#title {
     position: absolute;
     width: 1920px;
     text-align: center;
 }
 
-div#game div#title div.header {
+div#game div#title div.header,
+div#analysis div#title div.header {
     font-size: 56px;
 }
 
-div#game div#title div.text {
+div#game div#title div.text,
+div#analysis div#title div.text {
     font-size: 48px;
 }
 
@@ -219,22 +223,44 @@ div#game div#info {
     font-size: 22px;
 }
 
+div#analysis div#info {
+    position: absolute;
+    top: 138px;
+    width: 789px;
+    font-size: 22px;
+}
+
+div#analysis div#analysis-info {
+    position: absolute;
+    top: 138px;
+    left: 800px;
+    font-size: 32px;
+}
+
 div#game div#info div.header,
-div#game div#info div.text {
+div#game div#info div.text,
+div#analysis div#info div.header,
+div#analysis div#info div.header,
+div#analysis div#analysis-info div.header,
+div#analysis div#analysis-info div.header {
     margin: 0 7px;
 }
 
-div#game div#info div.header {
+div#game div#info div.header,
+div#analysis div#info div.header,
+div#analysis div#analysis-info div.header {
     margin-bottom: 5px;
 }
 
-div#game div#support {
+div#game div#support,
+div#analysis div#support {
     position: absolute;
     left: 614px;
     top: 984px;
 }
 
-div#game div#support div.support {
+div#game div#support div.support,
+div#analysis div#support div.support {
     display: grid;
     font-size: 22px;
     grid-auto-flow: column;
@@ -243,14 +269,16 @@ div#game div#support div.support {
     row-gap: 2px;
 }
 
-div#game div#recent {
+div#game div#recent,
+div#analysis div#recent {
     position: absolute;
     right: 7px;
     top: 984px;
     text-align: right;
 }
 
-div#game div#recent div.recent {
+div#game div#recent div.recent,
+div#analysis div#recent div.recent {
     display: grid;
     font-size: 22px;
     grid-auto-flow: column;
@@ -259,7 +287,8 @@ div#game div#recent div.recent {
     row-gap: 2px;
 }
 
-div#game div#notification {
+div#game div#notification,
+div#analysis div#notification {
     position: absolute;
     display: grid;
     left: 614px;
@@ -267,7 +296,8 @@ div#game div#notification {
     width: 1306px;
 }
 
-div#game div#notification div.notification {
+div#game div#notification div.notification,
+div#analysis div#notification, div.notification {
     display: grid;
     font-size: 36px;
     grid-template-rows: 93px;
@@ -279,12 +309,18 @@ div#game div#notification div.notification {
     justify-items: center;
 }
 
-div#game div#notification div.notification .message {
+div#game div#notification div.notification .message,
+div#analysis div#notification div.notification .message {
     font-size: 16px;
 }
 
 div#game div#social {
     left: 383px;
+    top: 998px;
+}
+
+div#analysis div#social {
+    left: 10px;
     top: 998px;
 }
 

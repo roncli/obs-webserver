@@ -30,8 +30,10 @@ class RoncliGamingView {
             <div>
                 roncli Gaming<br />
                 <button class="transition" data-transition="Start Stream">Start Stream</button>
+                <button class="transition" data-transition="Start Analysis">Start Analysis</button>
                 <button class="transition" data-transition="Webcam">Webcam</button>
                 <button class="transition" data-transition="Game">Game</button>
+                <button class="transition" data-transition="Analysis">Analysis</button>
                 <button class="transition" data-transition="CTM">CTM</button>
                 <button class="transition" data-transition="BRB">BRB</button>
                 <button class="transition" data-transition="End Stream">End Stream</button>
@@ -42,6 +44,7 @@ class RoncliGamingView {
                         <button id="update-twitch">Update Twitch</button>
                     </div>
                     Info <textarea class="setting" data-type="info" style="width: 300px; height: 400px;">${RoncliGamingView.Common.htmlEncode(data.data.info).replace(/<br \/>/gi, "\r\n")}</textarea>
+                    Analysis <textarea class="setting" data-type="analysis" style="width: 300px; height: 400px;">${RoncliGamingView.Common.htmlEncode(data.data.analysis).replace(/<br \/>/gi, "\r\n")}</textarea>
                 </div>
             </div>
         `;
