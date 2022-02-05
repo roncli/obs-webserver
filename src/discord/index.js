@@ -162,7 +162,7 @@ class Discord {
      * Parses a message.
      * @param {DiscordJs.User} user The user who sent the message.
      * @param {string} message The text of the message.
-     * @param {DiscordJs.TextBasedChannels} channel The channel the message was sent on.
+     * @param {DiscordJs.TextBasedChannel} channel The channel the message was sent on.
      * @returns {Promise} A promise that resolves when the message is parsed.
      */
     static async message(user, message, channel) {

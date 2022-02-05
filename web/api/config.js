@@ -1,6 +1,7 @@
 /**
  * @typedef {import("express").Request} Express.Request
  * @typedef {import("express").Response} Express.Response
+ * @typedef {{[x: string]: string}} Settings
  */
 
 const ConfigFile = require("../../src/configFile"),
@@ -52,6 +53,7 @@ class ConfigApi {
      * @returns {void}
      */
     static post(req, res) {
+        /** @type {Settings} */
         const obj = {};
 
         obj[req.params.key] = req.body;
