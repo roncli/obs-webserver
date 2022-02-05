@@ -25,7 +25,7 @@ class FrameTrailerView {
             <div id="roncli-gaming"></div>
             <div id="you-know-it"></div>
             <div id="trailer">
-                <video id="video-trailer" width="1728" height="972">
+                <video id="video-trailer" preload="auto" width="1728" height="972">
                     <source src="/media/trailer.mp4" type="video/mp4" />
                 </video>
             </div>
