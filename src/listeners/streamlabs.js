@@ -55,6 +55,7 @@ class StreamlabsListener {
                         name: message.name,
                         date: message.created_at
                     });
+                    Twitch.botChatClient.say(settings.twitch.channelName, `Thank you for following roncli Gaming, ${message.name}!`);
                     break;
                 case "donation":
                     Notifications.add("donation", {
