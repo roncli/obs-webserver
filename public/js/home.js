@@ -333,7 +333,8 @@ class Home {
 
 /** @type {{[x: string]: object}} */
 Home.data = {
-    recent: []
+    recent: [],
+    achievements: []
 };
 
 Home.spotify = false;

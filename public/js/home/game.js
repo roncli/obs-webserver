@@ -451,6 +451,22 @@ class Game {
                                     }));
 
                                     break;
+                                case "Achievement Unlocked":
+                                    Game.notify("/images/roncli-10-56.png", "/media/achievement.ogg", /* html */`
+                                        <div class="achievement">
+                                            <span class="text">Achievement Unlocked!</span>${ev.data.data.message ? /* html */`
+                                            <span class="header">${window.Common.htmlEncode(ev.data.data.message)}</span>` : ""}
+                                        </div>
+                                    `);
+
+                                    window.Home.data.achievementPoints = (window.Home.data.achievementPoints || 0) + 10;
+
+                                    window.Home.data.achievements.push({
+                                        from: ev.data.data.name,
+                                        message: ev.data.data.message
+                                    });
+
+                                    break;
                                 case "VIP Badge":
                                     Game.notify("/images/roncliHype-56.png", "/media/redemption.ogg", /* html */`
                                         <div>

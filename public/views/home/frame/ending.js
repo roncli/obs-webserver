@@ -92,13 +92,16 @@ class FrameEndingView {
                     `}
                 `}
                 ${primeGifts.length + giftSubs.length === 0 ? "" : /* html */`
-                    <br /><br />Much love and appreciating to those supporting the Boom Team!
+                    <br /><br />Much love and appreciation to those supporting the Boom Team!
                     ${giftSubs.length === 0 ? "" : /* html */`
                         <br /><br />Gift Subscriptions From:<br />${giftSubs.map((g) => /* html */`<span class="text">${FrameEndingView.Common.htmlEncode(g)}</span>`).join("<br />")}
                     `}
                     ${primeGifts.length === 0 ? "" : /* html */`
                         <br /><br />Prime Gifts From:<br />${primeGifts.map((p) => /* html */`<span class="text">${FrameEndingView.Common.htmlEncode(p)}</span>`).join("<br />")}
                     `}
+                `}
+                ${data.achievements.length === 0 ? "" : /* html */`
+                    <br /><br /><br /><br />roncli earned the following achievements from chat this stream:<br />${data.achievements.map((a) => /* html */`<span class="text">${FrameEndingView.Common.htmlEncode(a.message)}</span> (from ${FrameEndingView.Common.htmlEncode(a.from)})`).join("<br />")}
                 `}<br /><br /><br /><br />
                 Stream powered by https://github.com/roncli/obs-webserver version ${version}<br /><br /><br /><br />
                 Special thanks:<br /><br />
