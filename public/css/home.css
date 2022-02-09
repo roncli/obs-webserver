@@ -159,12 +159,12 @@ div#frame div#content div#brb-text {
 
 div#frame div#content div#roncli-gaming-tiny {
     position: absolute;
-    width: 494px;
-    height: 196.666px;
-    left: 7px;
-    top: 7px;
-    background: url("/images/roncliGaming.png") 494px 196.666px;
-    background-size: 494px 196.666px;
+    width: 504px;
+    height: 207px;
+    left: 2px;
+    top: 2px;
+    background: url("/images/roncliGamingTiny.png") 504px 207px;
+    background-size: 504px 207px;
 }
 
 div#frame div#content div#rip {
