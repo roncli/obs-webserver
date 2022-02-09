@@ -43,7 +43,8 @@ class Home {
      */
     static async startAnalysis() {
         await window.Common.loadTemplate("/js/?files=/views/home/game/title.js,/views/home/game/info.js,/views/home/game/notification.js,/js/home/game.js", "Game");
-        await window.Common.loadTemplate("/js/?files=/views/home/game/support.js,/views/home/game/recent.js,/views/home/analysis.js", "AnalysisView");
+        await window.Common.loadTemplate("/js/?files=/views/home/game/support.js,/views/home/game/recent.js", "GameSupportView");
+        await window.Common.loadTemplate("/js/?files=/views/home/analysis.js", "AnalysisView");
 
         await window.Common.loadDataIntoTemplate("/api/config/roncliGaming", "#scene", window.AnalysisView.get);
 
@@ -100,7 +101,8 @@ class Home {
      */
     static async startGame() {
         await window.Common.loadTemplate("/js/?files=/views/home/game/title.js,/views/home/game/info.js,/views/home/game/notification.js,/js/home/game.js", "Game");
-        await window.Common.loadTemplate("/js/?files=/views/home/game/support.js,/views/home/game/recent.js,/views/home/game.js", "GameView");
+        await window.Common.loadTemplate("/js/?files=/views/home/game/support.js,/views/home/game/recent.js", "GameSupportView");
+        await window.Common.loadTemplate("/js/?files=/views/home/game.js", "GameView");
 
         await window.Common.loadDataIntoTemplate("/api/config/roncliGaming", "#scene", window.GameView.get);
 
