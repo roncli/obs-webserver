@@ -27,7 +27,7 @@ class OBSWebsocket {
      * @returns {Promise} A promise that resolves when the OBS websocket has been started.
      */
     static async start() {
-        if (obs) {
+        if (obs || !settings.obswsEnabled) {
             return;
         }
 
@@ -58,6 +58,10 @@ class OBSWebsocket {
      * @returns {Promise} A promise that resolves when CTM is started.
      */
     static async startCTM() {
+        if (!settings.obswsEnabled) {
+            return;
+        }
+
         try {
             await obs.send("SetSceneItemProperties", {
                 item: {name: "CTM Stencil"},
@@ -82,6 +86,10 @@ class OBSWebsocket {
      * @returns {Promise} A promise that resolves when Discord is started.
      */
     static async startDiscord(location) {
+        if (!settings.obswsEnabled) {
+            return;
+        }
+
         try {
             await obs.send("SetSceneItemProperties", {
                 item: {name: `Discord - ${location}`},
@@ -106,6 +114,10 @@ class OBSWebsocket {
      * @returns {Promise} A promise that resolves when the display is started.
      */
     static async startDisplay() {
+        if (!settings.obswsEnabled) {
+            return;
+        }
+
         try {
             await obs.send("SetSceneItemProperties", {
                 item: {name: "Display"},
@@ -129,6 +141,10 @@ class OBSWebsocket {
      * @returns {Promise} A promise that resolves when the microphone is started.
      */
     static async startMic() {
+        if (!settings.obswsEnabled) {
+            return;
+        }
+
         try {
             await obs.send("SetSceneItemProperties", {
                 item: {name: "Audio Input Capture - Microphone"},
@@ -158,6 +174,10 @@ class OBSWebsocket {
      * @returns {Promise} A promise that resolves when the filter is started.
      */
     static async startOverlayFilter() {
+        if (!settings.obswsEnabled) {
+            return;
+        }
+
         try {
             await obs.send("SetSourceFilterVisibility", {
                 sourceName: "Browser - Overlay",
@@ -179,6 +199,10 @@ class OBSWebsocket {
      * @returns {Promise} A promise that resolves when streaming starts.
      */
     static async startStreaming() {
+        if (!settings.obswsEnabled) {
+            return;
+        }
+
         try {
             await obs.send("StartStreaming", void 0);
         } catch (err) {} finally {}
@@ -195,6 +219,10 @@ class OBSWebsocket {
      * @returns {Promise} A promise that resolves when the scene is started.
      */
     static async startTetris2P12() {
+        if (!settings.obswsEnabled) {
+            return;
+        }
+
         try {
             await obs.send("SetSceneItemProperties", {
                 item: {name: "Tetris - 2P - 1 & 2"},
@@ -240,6 +268,10 @@ class OBSWebsocket {
      * @returns {Promise} A promise that resolves when the scene is started.
      */
     static async startTetris2P34() {
+        if (!settings.obswsEnabled) {
+            return;
+        }
+
         try {
             await obs.send("SetSceneItemProperties", {
                 item: {name: "Tetris - 2P - 1 & 2"},
@@ -285,6 +317,10 @@ class OBSWebsocket {
      * @returns {Promise} A promise that resolves when the scene is started.
      */
     static async startTetris4P() {
+        if (!settings.obswsEnabled) {
+            return;
+        }
+
         try {
             await obs.send("SetSceneItemProperties", {
                 item: {name: "Tetris - 2P - 1 & 2"},
@@ -331,6 +367,10 @@ class OBSWebsocket {
      * @returns {Promise} A promise that resolves when the webcam is started.
      */
     static async startWebcam(location) {
+        if (!settings.obswsEnabled) {
+            return;
+        }
+
         try {
             await obs.send("SetSceneItemProperties", {
                 item: {name: `Webcam - ${location}`},
@@ -355,6 +395,10 @@ class OBSWebsocket {
      * @returns {Promise} A promise that resolves when CTM is stopped.
      */
     static async stopCTM() {
+        if (!settings.obswsEnabled) {
+            return;
+        }
+
         try {
             await obs.send("SetSceneItemProperties", {
                 item: {name: "CTM Stencil"},
@@ -380,6 +424,10 @@ class OBSWebsocket {
      * @returns {Promise} A promise that resolves when Discord is stopped.
      */
     static async stopDiscord(location) {
+        if (!settings.obswsEnabled) {
+            return;
+        }
+
         try {
             await obs.send("SetSceneItemProperties", {
                 item: {name: `Discord - ${location}`},
@@ -404,6 +452,10 @@ class OBSWebsocket {
      * @returns {Promise} A promise that resolves when the display is stopped.
      */
     static async stopDisplay() {
+        if (!settings.obswsEnabled) {
+            return;
+        }
+
         try {
             await obs.send("SetSceneItemProperties", {
                 item: {name: "Display"},
@@ -428,6 +480,10 @@ class OBSWebsocket {
      * @returns {Promise} A promise that resolves when the microphone is stopped.
      */
     static async stopMic() {
+        if (!settings.obswsEnabled) {
+            return;
+        }
+
         try {
             await obs.send("SetSceneItemProperties", {
                 item: {name: "Audio Input Capture - Microphone"},
@@ -452,6 +508,10 @@ class OBSWebsocket {
      * @returns {Promise} A promise that resolves when the filter is stopped.
      */
     static async stopOverlayFilter() {
+        if (!settings.obswsEnabled) {
+            return;
+        }
+
         try {
             await obs.send("SetSourceFilterVisibility", {
                 sourceName: "Browser - Overlay",
@@ -473,6 +533,10 @@ class OBSWebsocket {
      * @returns {Promise} A promise that resolves when OBS stops streaming.
      */
     static async stopStreaming() {
+        if (!settings.obswsEnabled) {
+            return;
+        }
+
         try {
             await obs.send("StopStreaming", void 0);
         } catch (err) {} finally {}
@@ -490,6 +554,10 @@ class OBSWebsocket {
      * @returns {Promise} A promise that resolves when the tetris scenes are stopped.
      */
     static async stopTetris() {
+        if (!settings.obswsEnabled) {
+            return;
+        }
+
         try {
             await obs.send("SetSceneItemProperties", {
                 item: {name: "Tetris - 2P - 1 & 2"},
@@ -537,6 +605,10 @@ class OBSWebsocket {
      * @returns {Promise} A promise that resolves when the webcam is stopped.
      */
     static async stopWebcam(location) {
+        if (!settings.obswsEnabled) {
+            return;
+        }
+
         try {
             await obs.send("SetSceneItemProperties", {
                 item: {name: `Webcam - ${location}`},
@@ -561,6 +633,10 @@ class OBSWebsocket {
      * @returns {Promise} A promise that resolves when the scene has been switched.
      */
     static async switchScene(scene) {
+        if (!settings.obswsEnabled) {
+            return;
+        }
+
         try {
             await obs.send("SetCurrentScene", {"scene-name": scene});
         } catch (err) {} finally {}
