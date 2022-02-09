@@ -331,13 +331,14 @@ class WebsocketListener {
                                 case "Start Stream":
                                     OBSWebsocket.startWebcam("game");
                                     OBSWebsocket.stopWebcam("analysis");
+                                    OBSWebsocket.startDisplay();
                                     break;
                                 case "Start Analysis":
                                     OBSWebsocket.stopWebcam("game");
                                     OBSWebsocket.startWebcam("analysis");
+                                    OBSWebsocket.stopDisplay();
                                     break;
                             }
-                            OBSWebsocket.startDisplay();
                             OBSWebsocket.stopCTM();
                             OBSWebsocket.stopDiscord("game");
                             OBSWebsocket.stopDiscord("analysis");
