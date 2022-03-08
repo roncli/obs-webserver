@@ -109,6 +109,34 @@ class Home {
         window.Game.start();
     }
 
+    //         #                 #    #  #                 #  ###         #  #                 #
+    //         #                 #    #  #                 #   #          #  #                 #
+    //  ###   ###    ###  ###   ###   ####   ##    ###   ###   #     ##   ####   ##    ###   ###
+    // ##      #    #  #  #  #   #    #  #  # ##  #  #  #  #   #    #  #  #  #  # ##  #  #  #  #
+    //   ##    #    # ##  #      #    #  #  ##    # ##  #  #   #    #  #  #  #  ##    # ##  #  #
+    // ###      ##   # #  #       ##  #  #   ##    # #   ###   #     ##   #  #   ##    # #   ###
+    /**
+     * Starts the head to head scene.
+     * @param {string} banner The URL of the banner.
+     * @returns {Promise} A promise that resolves when the head to head scene has been started.
+     */
+    static async startHeadToHead(banner) {
+        await window.Common.loadTemplate("/js/?files=/views/home/game/title.js,/views/home/game/info.js,/views/home/game/notification.js,/js/home/game.js", "Game");
+        await window.Common.loadTemplate("/js/?files=/views/home/game/support.js,/views/home/game/recent.js", "GameSupportView");
+        await window.Common.loadTemplate("/js/?files=/views/home/headtohead.js", "HeadToHeadView");
+
+        await window.Common.loadDataIntoTemplate("/api/config/roncliGaming", "#scene", window.HeadToHeadView.get);
+
+        /** @type {HTMLDivElement} */
+        const bannerDiv = document.getElementById("banner");
+
+        if (bannerDiv) {
+            bannerDiv.style.backgroundImage = `url(${banner})`;
+        }
+
+        window.Game.start();
+    }
+
     //         #                 #    ###          #
     //         #                 #     #           #
     //  ###   ###    ###  ###   ###    #    ###   ###   ###    ##
@@ -250,6 +278,9 @@ class Home {
                             break;
                         case "analysis":
                             await Home.startAnalysis();
+                            break;
+                        case "headtohead":
+                            await Home.startHeadToHead(data.banner);
                             break;
                         case "ctm":
                             await Home.startCTM();

@@ -187,6 +187,33 @@ class OBSWebsocket {
         } catch (err) {} finally {}
     }
 
+    //         #                 #    ###                 #
+    //         #                 #    #  #                #
+    //  ###   ###    ###  ###   ###   #  #   ##    ###   ###   ###    ##    ###  # #    ###
+    // ##      #    #  #  #  #   #    ###   # ##  ##      #    #  #  # ##  #  #  ####  ##
+    //   ##    #    # ##  #      #    # #   ##      ##    #    #     ##    # ##  #  #    ##
+    // ###      ##   # #  #       ##  #  #   ##   ###      ##  #      ##    # #  #  #  ###
+    /**
+     * Starts the restreams.
+     * @returns {Promise} A promise that resolves when the restreams are started.
+     */
+    static async startRestreams() {
+        if (!settings.obswsEnabled) {
+            return;
+        }
+
+        try {
+            await obs.send("SetSceneItemProperties", {
+                item: {name: "Restreams"},
+                visible: true,
+                bounds: {},
+                scale: {},
+                crop: {},
+                position: {}
+            });
+        } catch (err) {} finally {}
+    }
+
     //         #                 #     ##    #                             #
     //         #                 #    #  #   #
     //  ###   ###    ###  ###   ###    #    ###   ###    ##    ###  # #   ##    ###    ###
@@ -517,6 +544,34 @@ class OBSWebsocket {
                 sourceName: "Browser - Overlay",
                 filterName: "Chroma Key",
                 filterEnabled: false
+            });
+        } catch (err) {} finally {}
+    }
+
+    //         #                ###                 #
+    //         #                #  #                #
+    //  ###   ###    ##   ###   #  #   ##    ###   ###   ###    ##    ###  # #    ###
+    // ##      #    #  #  #  #  ###   # ##  ##      #    #  #  # ##  #  #  ####  ##
+    //   ##    #    #  #  #  #  # #   ##      ##    #    #     ##    # ##  #  #    ##
+    // ###      ##   ##   ###   #  #   ##   ###      ##  #      ##    # #  #  #  ###
+    //                    #
+    /**
+     * Stops the restreams.
+     * @returns {Promise} A promise that resolves when the restreams are stopped.
+     */
+    static async stopRestreams() {
+        if (!settings.obswsEnabled) {
+            return;
+        }
+
+        try {
+            await obs.send("SetSceneItemProperties", {
+                item: {name: "Restreams"},
+                visible: false,
+                bounds: {},
+                scale: {},
+                crop: {},
+                position: {}
             });
         } catch (err) {} finally {}
     }

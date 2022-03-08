@@ -151,9 +151,35 @@ class Game {
                     switch (ev.data.type) {
                         case "roncliGaming":
                             document.getElementById("title").innerHTML = window.GameTitleView.get(ev.data.data.title);
-                            document.getElementById("info").innerHTML = window.GameInfoView.get(ev.data.data.info);
+                            if (document.getElementById("info")) {
+                                document.getElementById("info").innerHTML = window.GameInfoView.get(ev.data.data.info);
+                            }
                             if (document.getElementById("analysis-info")) {
                                 document.getElementById("analysis-info").innerHTML = window.GameInfoView.get(ev.data.data.analysis);
+                            }
+                            if (document.getElementById("player-1")) {
+                                document.getElementById("player-1").innerHTML = window.Common.htmlEncode(ev.data.data.player1);
+                            }
+                            if (document.getElementById("twitch-1")) {
+                                document.getElementById("twitch-1").innerHTML = window.Common.htmlEncode(ev.data.data.twitch1);
+                            }
+                            if (document.getElementById("score-1")) {
+                                document.getElementById("score-1").innerHTML = window.Common.htmlEncode(ev.data.data.score1);
+                            }
+                            if (document.getElementById("units-1")) {
+                                document.getElementById("units-1").innerHTML = window.Common.htmlEncode(ev.data.data.units);
+                            }
+                            if (document.getElementById("player-2")) {
+                                document.getElementById("player-2").innerHTML = window.Common.htmlEncode(ev.data.data.player2);
+                            }
+                            if (document.getElementById("twitch-2")) {
+                                document.getElementById("twitch-2").innerHTML = window.Common.htmlEncode(ev.data.data.twitch2);
+                            }
+                            if (document.getElementById("score-2")) {
+                                document.getElementById("score-2").innerHTML = window.Common.htmlEncode(ev.data.data.score2);
+                            }
+                            if (document.getElementById("units-2")) {
+                                document.getElementById("units-2").innerHTML = window.Common.htmlEncode(ev.data.data.units);
                             }
                             break;
                     }
@@ -180,6 +206,67 @@ class Game {
                     window.Home.data.elapsedStart = new Date();
                     new window.Elapsed(window.Home.data.elapsedStart, document.getElementById("elapsed"));
                     break;
+                case "banner": {
+                    const banner = document.getElementById("banner");
+
+                    if (banner) {
+                        banner.style.backgroundImage = `url(${ev.url})`;
+                    }
+
+                    break;
+                }
+                case "timer": {
+                    if (ev.command === "reset") {
+                        if (Game.timerTimeout) {
+                            clearTimeout(Game.timerTimeout);
+                        }
+
+                        Game.timerElapsed = 0;
+                        Game.timerStart = void 0;
+                        Game.timerTimeout = void 0;
+
+                        const timer = document.getElementById("timer");
+
+                        if (timer) {
+                            timer.innerHTML = "<div>0</div>:<div>0</div><div>0</div>:<div>0</div><div>0</div>.<div>0</div><div>0</div>";
+                        }
+                    }
+
+                    if (ev.command === "start") {
+                        if (Game.timerStart) {
+                            break;
+                        }
+
+                        Game.timerStart = new Date(new Date().getTime() - Game.timerElapsed);
+                        Game.timerElapsed = void 0;
+                        Game.timerTimeout = setInterval(() => {
+                            console.log(Game.timerElapsed, Game.timerStart);
+                            Game.timerElapsed = new Date().getTime() - Game.timerStart.getTime();
+
+                            const timer = document.getElementById("timer");
+
+                            if (timer) {
+                                timer.innerHTML = `<div>${Math.floor(Game.timerElapsed / (1000 * 60 * 60))}</div>:<div>${Math.floor(Game.timerElapsed / (1000 * 60 * 10)) % 6}</div><div>${Math.floor(Game.timerElapsed / (1000 * 60)) % 10}</div>:<div>${Math.floor(Game.timerElapsed / (1000 * 10)) % 6}</div><div>${Math.floor(Game.timerElapsed / 1000) % 10}</div>.<div>${Math.floor(Game.timerElapsed / 100) % 10}</div><div>${Math.floor(Game.timerElapsed / 10) % 10}</div>`;
+                            }
+                        }, 1);
+                    }
+
+                    if (ev.command === "stop") {
+                        if (!Game.timerStart) {
+                            break;
+                        }
+
+                        if (Game.timerTimeout) {
+                            clearInterval(Game.timerTimeout);
+                        }
+
+                        Game.timerElapsed = new Date().getTime() - Game.timerStart.getTime();
+                        Game.timerStart = void 0;
+                        Game.timerTimeout = void 0;
+                    }
+
+                    break;
+                }
                 case "notification":
                     switch (ev.data.type) {
                         case "bits":
@@ -814,5 +901,14 @@ Game.lastTrack = "";
 
 /** @type {NodeJS.Timeout} */
 Game.notifyTimeout = void 0;
+
+/** @type {number} */
+Game.timerElapsed = 0;
+
+/** @type {Date} */
+Game.timerStart = void 0;
+
+/** @type {NodeJS.Timeout} */
+Game.timerTimeout = void 0;
 
 window.Game = Game;

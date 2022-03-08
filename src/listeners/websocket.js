@@ -78,6 +78,8 @@ class WebsocketListener {
                     await OBSWebsocket.startDiscord("game");
                 } else if (WebsocketListener.data.phase === "analysis") {
                     await OBSWebsocket.startDiscord("analysis");
+                } else if (WebsocketListener.data.phase === "headtohead") {
+                    await OBSWebsocket.startDiscord("headtohead");
                 }
                 await WebsocketListener.sleep(1000);
                 Websocket.broadcast(data);
@@ -102,7 +104,7 @@ class WebsocketListener {
                     await Twitch.setStreamInfo(title, game);
                 }
                 break;
-            case "load-tetris":
+            case "load-twitch":
                 childProcess.spawn("streamlink", [
                     "--twitch-disable-hosting",
                     "--twitch-disable-ads",
@@ -116,6 +118,32 @@ class WebsocketListener {
                     `twitch.tv/${data.name}`,
                     "best"
                 ]);
+
+                if (data.sendSettings) {
+                    Websocket.broadcast({
+                        type: "settings",
+                        data: {
+                            type: data.sendSettings,
+                            data: ConfigFile.get("roncliGaming")
+                        }
+                    });
+                }
+
+                break;
+            case "banner":
+                Websocket.broadcast({
+                    type: "banner",
+                    url: data.url
+                });
+
+                await ConfigFile.set({banner: data.url});
+
+                break;
+            case "timer":
+                Websocket.broadcast({
+                    type: "timer",
+                    command: data.command
+                });
 
                 break;
             case "music":
@@ -181,6 +209,8 @@ class WebsocketListener {
                 switch (data.scene) {
                     case "Start Stream":
                     case "Start Analysis":
+                    case "Start Head to Head":
+                    case "Start CTM":
                         {
                             WebsocketListener.data.phase = "intro";
 
@@ -188,15 +218,19 @@ class WebsocketListener {
 
                             Notifications.stop();
                             await OBSWebsocket.switchScene("roncli Gaming");
+                            OBSWebsocket.stopMic();
                             OBSWebsocket.stopWebcam("ctm");
                             OBSWebsocket.stopWebcam("frame");
                             OBSWebsocket.stopWebcam("game");
                             OBSWebsocket.stopWebcam("analysis");
                             OBSWebsocket.stopDisplay();
                             OBSWebsocket.stopCTM();
+                            OBSWebsocket.stopRestreams();
                             OBSWebsocket.stopDiscord("game");
                             OBSWebsocket.stopDiscord("analysis");
+                            OBSWebsocket.stopDiscord("headtohead");
                             OBSWebsocket.stopTetris();
+                            OBSWebsocket.stopRestreams();
                             until += 5000;
                             await WebsocketListener.sleep(until - Date.now());
                             if (WebsocketListener.reset) {
@@ -322,33 +356,54 @@ class WebsocketListener {
 
                             Websocket.broadcast({
                                 type: "scene",
-                                scene: {"Start Stream": "game", "Start Analysis": "analysis"}[data.scene]
+                                scene: {"Start Stream": "game", "Start Analysis": "analysis", "Start Head to Head": "headtohead", "Start CTM": "ctm"}[data.scene]
                             });
                             OBSWebsocket.startMic();
-                            OBSWebsocket.stopWebcam("ctm");
                             OBSWebsocket.stopWebcam("frame");
                             switch (data.scene) {
                                 case "Start Stream":
                                     OBSWebsocket.startWebcam("game");
+                                    OBSWebsocket.stopWebcam("ctm");
                                     OBSWebsocket.stopWebcam("analysis");
                                     OBSWebsocket.startDisplay();
+                                    OBSWebsocket.stopCTM();
+                                    OBSWebsocket.stopRestreams();
                                     break;
                                 case "Start Analysis":
                                     OBSWebsocket.stopWebcam("game");
+                                    OBSWebsocket.stopWebcam("ctm");
                                     OBSWebsocket.startWebcam("analysis");
                                     OBSWebsocket.stopDisplay();
+                                    OBSWebsocket.stopCTM();
+                                    OBSWebsocket.stopRestreams();
+                                    break;
+                                case "Start Head to Head":
+                                    OBSWebsocket.stopWebcam("game");
+                                    OBSWebsocket.stopWebcam("ctm");
+                                    OBSWebsocket.stopWebcam("analysis");
+                                    OBSWebsocket.stopDisplay();
+                                    OBSWebsocket.stopCTM();
+                                    OBSWebsocket.startRestreams();
+                                    break;
+                                case "Start CTM":
+                                    OBSWebsocket.stopWebcam("game");
+                                    OBSWebsocket.startWebcam("ctm");
+                                    OBSWebsocket.stopWebcam("analysis");
+                                    OBSWebsocket.stopDisplay();
+                                    OBSWebsocket.startCTM();
+                                    OBSWebsocket.stopRestreams();
                                     break;
                             }
-                            OBSWebsocket.stopCTM();
                             OBSWebsocket.stopDiscord("game");
                             OBSWebsocket.stopDiscord("analysis");
+                            OBSWebsocket.stopDiscord("headtohead");
                             until += 2000;
                             await WebsocketListener.sleep(until - Date.now());
 
                             Notifications.start();
                         }
 
-                        WebsocketListener.data.phase = {"Start Stream": "game", "Start Analysis": "analysis"}[data.scene];
+                        WebsocketListener.data.phase = {"Start Stream": "game", "Start Analysis": "analysis", "Start Head to Head": "headtohead", "Start CTM": "ctm"}[data.scene];
                         break;
                     case "Webcam":
                         switch (WebsocketListener.data.phase) {
@@ -406,8 +461,10 @@ class WebsocketListener {
                                     OBSWebsocket.stopWebcam("analysis");
                                     OBSWebsocket.stopDisplay();
                                     OBSWebsocket.stopCTM();
+                                    OBSWebsocket.stopRestreams();
                                     OBSWebsocket.stopDiscord("game");
                                     OBSWebsocket.stopDiscord("analysis");
+                                    OBSWebsocket.stopDiscord("headtohead");
                                 }
                                 break;
                         }
@@ -447,8 +504,10 @@ class WebsocketListener {
                                     OBSWebsocket.stopWebcam("analysis");
                                     OBSWebsocket.startDisplay();
                                     OBSWebsocket.stopCTM();
+                                    OBSWebsocket.stopRestreams();
                                     OBSWebsocket.stopDiscord("game");
                                     OBSWebsocket.stopDiscord("analysis");
+                                    OBSWebsocket.stopDiscord("headtohead");
                                     until += 2000;
                                     await WebsocketListener.sleep(until - Date.now());
 
@@ -492,8 +551,10 @@ class WebsocketListener {
                                     OBSWebsocket.startWebcam("analysis");
                                     OBSWebsocket.stopDisplay();
                                     OBSWebsocket.stopCTM();
+                                    OBSWebsocket.stopRestreams();
                                     OBSWebsocket.stopDiscord("game");
                                     OBSWebsocket.stopDiscord("analysis");
+                                    OBSWebsocket.stopDiscord("headtohead");
                                     until += 2000;
                                     await WebsocketListener.sleep(until - Date.now());
 
@@ -502,6 +563,54 @@ class WebsocketListener {
                                 break;
                         }
                         WebsocketListener.data.phase = "analysis";
+                        break;
+                    case "Head to Head":
+                        switch (WebsocketListener.data.phase) {
+                            case "intro":
+                            case "ending":
+                            case "headtohead":
+                                return;
+                            default:
+                                {
+                                    let until = Date.now();
+
+                                    Websocket.broadcast({
+                                        type: "overlay",
+                                        data: {
+                                            type: "stinger"
+                                        }
+                                    });
+                                    until += 625;
+                                    await WebsocketListener.sleep(until - Date.now());
+                                    if (WebsocketListener.reset) {
+                                        WebsocketListener.reset = false;
+                                        return;
+                                    }
+
+                                    Websocket.broadcast({
+                                        type: "scene",
+                                        scene: "headtohead",
+                                        banner: ConfigFile.get("banner")
+                                    });
+                                    OBSWebsocket.startMic();
+                                    OBSWebsocket.stopWebcam("ctm");
+                                    OBSWebsocket.stopWebcam("frame");
+                                    OBSWebsocket.stopWebcam("game");
+                                    OBSWebsocket.stopWebcam("analysis");
+                                    OBSWebsocket.stopDisplay();
+                                    OBSWebsocket.stopCTM();
+                                    OBSWebsocket.startRestreams();
+                                    OBSWebsocket.stopDiscord("game");
+                                    OBSWebsocket.stopDiscord("analysis");
+                                    OBSWebsocket.stopDiscord("headtohead");
+                                    until += 2000;
+                                    await WebsocketListener.sleep(until - Date.now());
+
+                                    Notifications.start();
+                                }
+                                break;
+                        }
+                        WebsocketListener.data.phase = "headtohead";
                         break;
                     case "CTM":
                         switch (WebsocketListener.data.phase) {
@@ -537,8 +646,10 @@ class WebsocketListener {
                                     OBSWebsocket.stopWebcam("analysis");
                                     OBSWebsocket.stopDisplay();
                                     OBSWebsocket.startCTM();
+                                    OBSWebsocket.stopRestreams();
                                     OBSWebsocket.stopDiscord("game");
                                     OBSWebsocket.stopDiscord("analysis");
+                                    OBSWebsocket.stopDiscord("headtohead");
                                     until += 2000;
                                     await WebsocketListener.sleep(until - Date.now());
 
@@ -615,8 +726,10 @@ class WebsocketListener {
                                     OBSWebsocket.stopWebcam("analysis");
                                     OBSWebsocket.stopDisplay();
                                     OBSWebsocket.stopCTM();
+                                    OBSWebsocket.stopRestreams();
                                     OBSWebsocket.stopDiscord("game");
                                     OBSWebsocket.stopDiscord("analysis");
+                                    OBSWebsocket.stopDiscord("headtohead");
                                 }
                                 break;
                         }
@@ -649,8 +762,10 @@ class WebsocketListener {
 
                                         OBSWebsocket.stopDisplay();
                                         OBSWebsocket.stopCTM();
+                                        OBSWebsocket.stopRestreams();
                                         OBSWebsocket.stopDiscord("game");
                                         OBSWebsocket.stopDiscord("analysis");
+                                        OBSWebsocket.stopDiscord("headtohead");
                                         OBSWebsocket.stopWebcam("ctm");
                                         OBSWebsocket.startWebcam("frame");
                                         OBSWebsocket.stopWebcam("game");
@@ -738,8 +853,10 @@ class WebsocketListener {
                             OBSWebsocket.stopWebcam("analysis");
                             OBSWebsocket.stopDisplay();
                             OBSWebsocket.stopCTM();
+                            OBSWebsocket.stopRestreams();
                             OBSWebsocket.stopDiscord("game");
                             OBSWebsocket.stopDiscord("analysis");
+                            OBSWebsocket.stopDiscord("headtohead");
                             OBSWebsocket.stopTetris();
 
                             until += 5000;

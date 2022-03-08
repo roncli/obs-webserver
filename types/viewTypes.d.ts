@@ -6,6 +6,11 @@ declare namespace ViewTypes {
         imageLocation?: string
     }
 
+    type Banner = {
+        url?: string
+        title?: string
+    }
+
     type Command = {
         name?: string
         text?: string
@@ -43,6 +48,17 @@ declare namespace ViewTypes {
         game: string
         info: string
         analysis: string
+        player1: string
+        twitch1: string
+        score1: string
+        player2: string
+        twitch2: string
+        score2: string
+        units: string
+        banners: {
+            url: string
+            title: string
+        }[]
     }
 
     type SpotifyPlaylist = {

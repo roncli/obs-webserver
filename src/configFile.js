@@ -1,5 +1,5 @@
 /**
- * @typedef {{[x: string]: string}} Settings
+ * @typedef {{[x: string]: any}} Settings
  */
 
 const nconf = require("nconf"),

@@ -22,6 +22,9 @@ class Control {
     static DOMContentLoaded() {
         Control.startWebsocket();
 
+        let settingTemplate;
+        let settingApi;
+
         document.getElementById("scenes").addEventListener("click", async (ev) => {
             /** @type {HTMLButtonElement} */
             const button = ev.target;
@@ -44,7 +47,7 @@ class Control {
             }
         });
 
-        document.getElementById("scene").addEventListener("click", (ev) => {
+        document.getElementById("scene").addEventListener("click", async (ev) => {
             /** @type {HTMLButtonElement} */
             const button = ev.target;
 
@@ -134,7 +137,7 @@ class Control {
 
             if (button && button.matches("button#player-1-start")) {
                 Control.ws.send(JSON.stringify({
-                    type: "load-tetris",
+                    type: "load-twitch",
                     name: document.getElementById("player-1").value,
                     player: 1
                 }));
@@ -142,7 +145,7 @@ class Control {
 
             if (button && button.matches("button#player-2-start")) {
                 Control.ws.send(JSON.stringify({
-                    type: "load-tetris",
+                    type: "load-twitch",
                     name: document.getElementById("player-2").value,
                     player: 2
                 }));
@@ -150,7 +153,7 @@ class Control {
 
             if (button && button.matches("button#player-3-start")) {
                 Control.ws.send(JSON.stringify({
-                    type: "load-tetris",
+                    type: "load-twitch",
                     name: document.getElementById("player-3").value,
                     player: 3
                 }));
@@ -158,10 +161,70 @@ class Control {
 
             if (button && button.matches("button#player-4-start")) {
                 Control.ws.send(JSON.stringify({
-                    type: "load-tetris",
+                    type: "load-twitch",
                     name: document.getElementById("player-4").value,
                     player: 4
                 }));
+            }
+
+            if (button && button.matches("button#player1-start")) {
+                Control.ws.send(JSON.stringify({
+                    type: "load-twitch",
+                    name: document.getElementById("twitch1").value,
+                    player: 1,
+                    sendSettings: "roncliGaming"
+                }));
+            }
+
+            if (button && button.matches("button#player2-start")) {
+                Control.ws.send(JSON.stringify({
+                    type: "load-twitch",
+                    name: document.getElementById("twitch2").value,
+                    player: 2,
+                    sendSettings: "roncliGaming"
+                }));
+            }
+
+            if (button && button.matches("button#banner-go")) {
+                /** @type {HTMLSelectElement} */
+                const bannerList = document.getElementById("banner-list");
+
+                const banner = bannerList.options[bannerList.selectedIndex];
+
+                Control.ws.send(JSON.stringify({
+                    type: "banner",
+                    url: banner.dataset.url
+                }));
+            }
+
+            if (button && button.matches("button#timer-reset")) {
+                Control.ws.send(JSON.stringify({
+                    type: "timer",
+                    command: "reset"
+                }));
+            }
+
+            if (button && button.matches("button#timer-start")) {
+                Control.ws.send(JSON.stringify({
+                    type: "timer",
+                    command: "start"
+                }));
+            }
+
+            if (button && button.matches("button#timer-stop")) {
+                Control.ws.send(JSON.stringify({
+                    type: "timer",
+                    command: "stop"
+                }));
+            }
+
+            if (button && button.matches("button.setting")) {
+                await window.Common.loadTemplate(button.dataset.path, button.dataset.class);
+
+                settingTemplate = window[button.dataset.subclass].get;
+                settingApi = button.dataset.api;
+
+                await window.Common.loadDataIntoTemplate(settingApi, "#setting", window[button.dataset.class].get);
             }
         });
 
@@ -269,9 +332,6 @@ class Control {
                 }));
             }
         });
-
-        let settingTemplate;
-        let settingApi;
 
         document.getElementById("settings").addEventListener("click", async (ev) => {
             /** @type {HTMLButtonElement} */
@@ -487,6 +547,22 @@ class Control {
                                 option.classList.add("music");
                                 option.dataset.uri = music.uri;
                                 select.add(option);
+                            }
+                            break;
+                        }
+                        case "banners": {
+                            /** @type {HTMLSelectElement} */
+                            const select = document.getElementById("banner-list");
+
+                            if (select) {
+                                select.innerHTML = "";
+
+                                for (const banner of data.data.data) {
+                                    const option = new Option(banner.title);
+                                    option.classList.add("banner");
+                                    option.dataset.url = banner.url;
+                                    select.add(option);
+                                }
                             }
                             break;
                         }

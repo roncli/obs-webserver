@@ -293,7 +293,7 @@ class Twitch {
      */
     static async runAd() {
         try {
-            await channelTwitchClient.helix.channels.startChannelCommercial(settings.twitch.userId, 120);
+            await channelTwitchClient.channels.startChannelCommercial(settings.twitch.userId, 120);
         } catch (err) {
             eventEmitter.emit("error", {
                 message: "Error running an ad.",

@@ -191,7 +191,8 @@ div#frame div#social {
 }
 
 div#game,
-div#analysis {
+div#analysis,
+div#head-to-head {
     position: absolute;
     width: 1920px;
     height: 1080px;
@@ -200,19 +201,22 @@ div#analysis {
 }
 
 div#game div#title,
-div#analysis div#title {
+div#analysis div#title,
+div#head-to-head div#title {
     position: absolute;
     width: 1920px;
     text-align: center;
 }
 
 div#game div#title div.header,
-div#analysis div#title div.header {
+div#analysis div#title div.header,
+div#head-to-head div#title div.header {
     font-size: 56px;
 }
 
 div#game div#title div.text,
-div#analysis div#title div.text {
+div#analysis div#title div.text,
+div#head-to-head div#title div.text {
     font-size: 48px;
 }
 
@@ -240,9 +244,9 @@ div#analysis div#analysis-info {
 div#game div#info div.header,
 div#game div#info div.text,
 div#analysis div#info div.header,
-div#analysis div#info div.header,
+div#analysis div#info div.text,
 div#analysis div#analysis-info div.header,
-div#analysis div#analysis-info div.header {
+div#analysis div#analysis-info div.text {
     margin: 0 7px;
 }
 
@@ -253,14 +257,16 @@ div#analysis div#analysis-info div.header {
 }
 
 div#game div#support,
-div#analysis div#support {
+div#analysis div#support,
+div#head-to-head div#support {
     position: absolute;
     left: 614px;
     top: 984px;
 }
 
 div#game div#support div.support,
-div#analysis div#support div.support {
+div#analysis div#support div.support,
+div#head-to-head div#support div.support {
     display: grid;
     font-size: 22px;
     grid-auto-flow: column;
@@ -270,7 +276,8 @@ div#analysis div#support div.support {
 }
 
 div#game div#recent,
-div#analysis div#recent {
+div#analysis div#recent,
+div#head-to-head div#recent {
     position: absolute;
     right: 7px;
     top: 984px;
@@ -278,7 +285,8 @@ div#analysis div#recent {
 }
 
 div#game div#recent div.recent,
-div#analysis div#recent div.recent {
+div#analysis div#recent div.recent,
+div#head-to-head div#recent div.recent {
     display: grid;
     font-size: 22px;
     grid-auto-flow: column;
@@ -288,7 +296,8 @@ div#analysis div#recent div.recent {
 }
 
 div#game div#notification,
-div#analysis div#notification {
+div#analysis div#notification,
+div#head-to-head div#notification {
     position: absolute;
     display: grid;
     left: 614px;
@@ -297,7 +306,8 @@ div#analysis div#notification {
 }
 
 div#game div#notification div.notification,
-div#analysis div#notification, div.notification {
+div#analysis div#notification, div.notification,
+div#head-to-head div#notification, div.notification {
     display: grid;
     font-size: 36px;
     grid-template-rows: 93px;
@@ -310,7 +320,8 @@ div#analysis div#notification, div.notification {
 }
 
 div#game div#notification div.notification .message,
-div#analysis div#notification div.notification .message {
+div#analysis div#notification div.notification .message,
+div#head-to-head div#notification div.notification .message {
     font-size: 16px;
 }
 
@@ -319,7 +330,8 @@ div#game div#social {
     top: 998px;
 }
 
-div#analysis div#social {
+div#analysis div#social,
+div#head-to-head div#social {
     left: 10px;
     top: 998px;
 }
@@ -331,6 +343,141 @@ div#game div#elapsed {
     text-align: center;
     color: white;
     font-size: 72px;
+}
+
+div#head-to-head div#display-1 {
+    position: absolute;
+    top: 125px;
+    left: 13px;
+    width: 944px;
+    height: 535px;
+    background-color: black;
+}
+
+div#head-to-head div#player-1 {
+    position: absolute;
+    top: 658px;
+    left: 13px;
+    color: white;
+    font-size: 60px;
+}
+
+div#head-to-head div#glitch-1 {
+    position: absolute;
+    top: 667px;
+    right: 1122px;
+    width: 32px;
+    height: 32px;
+    background: url("/images/twitch.png") 32px 32px;
+}
+
+div#head-to-head div#twitch-1 {
+    position: absolute;
+    top: 669px;
+    right: 1159px;
+    color: white;
+    font-size: 24px;
+    text-align: right;
+}
+
+div#head-to-head div#score-1 {
+    position: absolute;
+    top: 684px;
+    left: 644px;
+    color: white;
+    width: 400px;
+    font-size: 60px;
+    text-align: center;
+}
+
+div#head-to-head div#units-1 {
+    position: absolute;
+    top: 664px;
+    left: 644px;
+    color: white;
+    width: 400px;
+    font-size: 16px;
+    text-align: center;
+}
+
+div#head-to-head div#display-2 {
+    position: absolute;
+    top: 125px;
+    right: 13px;
+    width: 944px;
+    height: 535px;
+    background-color: black;
+}
+
+div#head-to-head div#player-2 {
+    position: absolute;
+    top: 658px;
+    right: 13px;
+    color: white;
+    font-size: 60px;
+    text-align: right;
+}
+
+div#head-to-head div#glitch-2 {
+    position: absolute;
+    top: 667px;
+    left: 1122px;
+    width: 32px;
+    height: 32px;
+    background: url("/images/twitch.png") 32px 32px;
+}
+
+div#head-to-head div#twitch-2 {
+    position: absolute;
+    top: 669px;
+    left: 1159px;
+    color: white;
+    font-size: 24px;
+}
+
+div#head-to-head div#score-2 {
+    position: absolute;
+    top: 684px;
+    left: 876px;
+    color: white;
+    width: 400px;
+    font-size: 60px;
+    text-align: center;
+}
+
+div#head-to-head div#units-2 {
+    position: absolute;
+    top: 664px;
+    left: 876px;
+    color: white;
+    width: 400px;
+    font-size: 16px;
+    text-align: center;
+}
+
+div#head-to-head div#timer {
+    position: absolute;
+    top: 680px;
+    left: 0;
+    width: 1920px;
+    color: white;
+    font-size: 36px;
+    text-align: center;
+}
+
+div#head-to-head div#timer > div {
+    display: inline-block;
+    width: 17px;
+    text-align: center;
+}
+
+div#head-to-head div#banner {
+    position: absolute;
+    top: 741px;
+    left: 0;
+    width: 1920px;
+    height: 243px;
+    background-size: 1920px 243px;
 }
 
 div#ctm {

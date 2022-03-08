@@ -47,28 +47,28 @@ class Streamlabs {
         client = io(`https://sockets.streamlabs.com/?token=${settings.streamlabs.token}`);
 
         Streamlabs.client.on("connect_error", (ev) => {
-            console.log("connect_error", ev);
+            console.log("Streamlabs connect error:", ev);
             setTimeout(() => {
                 Streamlabs.client.connect();
             }, 60000);
         });
 
         Streamlabs.client.on("connect_timeout", (ev) => {
-            console.log("connect_timeout", ev);
+            console.log("Streamlabs connect timeout:", ev);
             setTimeout(() => {
                 Streamlabs.client.connect();
             }, 60000);
         });
 
         Streamlabs.client.on("disconnect", (ev) => {
-            console.log("disconnect", ev);
+            console.log("Streamlabs disconnected:", ev);
             setTimeout(() => {
                 Streamlabs.client.connect();
             }, 60000);
         });
 
         Streamlabs.client.on("error", (ev) => {
-            console.log("error", ev, ev.message);
+            console.log("Streamlabs error:", ev, ev.message);
         });
 
         Streamlabs.client.connect();

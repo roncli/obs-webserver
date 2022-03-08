@@ -7,19 +7,19 @@
 const ConfigFile = require("../../src/configFile"),
     Websocket = require("../../src/websocket");
 
-//   ###                   ##     #             #             #
-//  #   #                 #  #                 # #
-//  #       ###   # ##    #      ##     ## #  #   #  # ##    ##
-//  #      #   #  ##  #  ####     #    #  #   #   #  ##  #    #
-//  #      #   #  #   #   #       #     ##    #####  ##  #    #
-//  #   #  #   #  #   #   #       #    #      #   #  # ##     #
-//   ###    ###   #   #   #      ###    ###   #   #  #       ###
-//                                     #   #         #
-//                                      ###          #
+//  ####                         ##      #     ###                   #                    #    ####    ###
+//  #   #                         #           #   #                                      # #   #   #    #
+//  #   #   ###   # ##    ###     #     ##    #       ###   ## #    ##    # ##    ## #  #   #  #   #    #
+//  ####   #   #  ##  #  #   #    #      #    #          #  # # #    #    ##  #  #  #   #   #  ####     #
+//  # #    #   #  #   #  #        #      #    #  ##   ####  # # #    #    #   #   ##    #####  #        #
+//  #  #   #   #  #   #  #   #    #      #    #   #  #   #  # # #    #    #   #  #      #   #  #        #
+//  #   #   ###   #   #   ###    ###    ###    ###    ####  #   #   ###   #   #   ###   #   #  #       ###
+//                                                                               #   #
+//                                                                                ###
 /**
- * A class that represents the Config API.
+ * A class that represents the roncli Gaming API.
  */
-class ConfigApi {
+class RoncliGamingAPI {
     //              #
     //              #
     //  ###   ##   ###
@@ -34,7 +34,7 @@ class ConfigApi {
      * @returns {void}
      */
     static get(req, res) {
-        res.json({data: ConfigFile.get(req.params.key) || []});
+        res.json({data: ConfigFile.get("roncliGaming") || []});
     }
 
     //                        #
@@ -56,14 +56,16 @@ class ConfigApi {
         /** @type {Settings} */
         const obj = {};
 
-        obj[req.params.key] = req.body;
+        obj.roncliGaming = ConfigFile.get("roncliGaming");
+
+        Object.assign(obj.roncliGaming, req.body);
 
         ConfigFile.set(obj);
 
         Websocket.broadcast({
             type: "settings",
             data: {
-                type: req.params.key,
+                type: "roncliGaming",
                 data: req.body
             }
         });
@@ -72,8 +74,8 @@ class ConfigApi {
     }
 }
 
-ConfigApi.route = {
-    path: "/api/config/:key"
+RoncliGamingAPI.route = {
+    path: "/api/roncliGaming"
 };
 
-module.exports = ConfigApi;
+module.exports = RoncliGamingAPI;

@@ -7,19 +7,17 @@
 const ConfigFile = require("../../src/configFile"),
     Websocket = require("../../src/websocket");
 
-//   ###                   ##     #             #             #
-//  #   #                 #  #                 # #
-//  #       ###   # ##    #      ##     ## #  #   #  # ##    ##
-//  #      #   #  ##  #  ####     #    #  #   #   #  ##  #    #
-//  #      #   #  #   #   #       #     ##    #####  ##  #    #
-//  #   #  #   #  #   #   #       #    #      #   #  # ##     #
-//   ###    ###   #   #   #      ###    ###   #   #  #       ###
-//                                     #   #         #
-//                                      ###          #
+//  ####                                               #    ####    ###
+//   #  #                                             # #   #   #    #
+//   #  #   ###   # ##   # ##    ###   # ##    ###   #   #  #   #    #
+//   ###       #  ##  #  ##  #  #   #  ##  #  #      #   #  ####     #
+//   #  #   ####  #   #  #   #  #####  #       ###   #####  #        #
+//   #  #  #   #  #   #  #   #  #      #          #  #   #  #        #
+//  ####    ####  #   #  #   #   ###   #      ####   #   #  #       ###
 /**
- * A class that represents the Config API.
+ * A class that represents the Banners API.
  */
-class ConfigApi {
+class BannersAPI {
     //              #
     //              #
     //  ###   ##   ###
@@ -34,7 +32,7 @@ class ConfigApi {
      * @returns {void}
      */
     static get(req, res) {
-        res.json({data: ConfigFile.get(req.params.key) || []});
+        res.json({data: ConfigFile.get("roncliGaming").banners || []});
     }
 
     //                        #
@@ -53,17 +51,16 @@ class ConfigApi {
      * @returns {void}
      */
     static post(req, res) {
-        /** @type {Settings} */
-        const obj = {};
+        const roncliGaming = ConfigFile.get("roncliGaming");
 
-        obj[req.params.key] = req.body;
+        roncliGaming.banners = req.body;
 
-        ConfigFile.set(obj);
+        ConfigFile.set({roncliGaming});
 
         Websocket.broadcast({
             type: "settings",
             data: {
-                type: req.params.key,
+                type: "banners",
                 data: req.body
             }
         });
@@ -72,8 +69,8 @@ class ConfigApi {
     }
 }
 
-ConfigApi.route = {
-    path: "/api/config/:key"
+BannersAPI.route = {
+    path: "/api/banners"
 };
 
-module.exports = ConfigApi;
+module.exports = BannersAPI;
