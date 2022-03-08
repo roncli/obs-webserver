@@ -17,12 +17,12 @@
         "@twurple/api": "5.0.17",
         "@twurple/auth": "5.0.17",
         "@twurple/chat": "5.0.17",
-        "@twurple/pubsub": "5.0.17",
+        "@twurple/pubsub": "5.0.18",
         "blockrain": "Aerolab/blockrain.js#ba6d4192370d2ce4f75ce31796f345eb5711b489",
         "compression": "1.7.4",
         "csso": "5.0.2",
         "discord.js": "13.6.0",
-        "express": "4.17.2",
+        "express": "4.17.3",
         "express-ws": "5.0.2",
         "html-minifier": "4.0.0",
         "igdb-api-node": "5.0.1",
@@ -30,7 +30,7 @@
         "obs-websocket-js": "4.0.3",
         "socket.io-client": "2.4.0",
         "spotify-web-api-node": "5.0.2",
-        "terser": "5.10.0"
+        "terser": "5.12.0"
     },
     "devDependencies": {
         "@babel/core": "7.17.2",
