@@ -16,7 +16,7 @@
         "@root/request": "1.8.1",
         "@twurple/api": "5.1.6",
         "@twurple/auth": "5.1.6",
-        "@twurple/chat": "5.0.18",
+        "@twurple/chat": "5.1.6",
         "@twurple/pubsub": "5.1.6",
         "blockrain": "Aerolab/blockrain.js#ba6d4192370d2ce4f75ce31796f345eb5711b489",
         "compression": "1.7.4",
