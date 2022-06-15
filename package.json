@@ -13,7 +13,7 @@
         "url": "https://github.com/roncli/obs-webserver.git"
     },
     "dependencies": {
-        "@root/request": "1.8.1",
+        "@root/request": "1.8.2",
         "@twurple/api": "5.1.6",
         "@twurple/auth": "5.1.6",
         "@twurple/chat": "5.1.6",
