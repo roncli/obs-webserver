@@ -1,14 +1,9 @@
 const DiscordJs = require("discord.js"),
 
-    Commands = require("./commands"),
-    Exception = require("../logging/exception"),
     Log = require("../logging/log"),
     settings = require("../../settings"),
-    Warning = require("../logging/warning"),
 
-    commands = new Commands(),
-    discord = new DiscordJs.Client(settings.discord.options), // eslint-disable-line no-extra-parens
-    messageParse = /^!(?<cmd>[^ ]+)(?: +(?<args>.*[^ ]))? *$/;
+    discord = new DiscordJs.Client(settings.discord.options);
 
 let readied = false;
 
@@ -104,10 +99,6 @@ class Discord {
             Log.exception("Disconnected from Discord.", ev);
         });
 
-        discord.on("messageCreate", (message) => {
-            Discord.message(message.author, message.content, message.channel);
-        });
-
         discord.on("error", (err) => {
             if (err.message === "read ECONNRESET") {
                 // Swallow this error, see https://github.com/discordjs/discord.js/issues/3043#issuecomment-465543902
@@ -153,52 +144,6 @@ class Discord {
         return discord && discord.ws && guild ? discord.ws.status === 0 : false;
     }
 
-    // # #    ##    ###    ###    ###   ###   ##
-    // ####  # ##  ##     ##     #  #  #  #  # ##
-    // #  #  ##      ##     ##   # ##   ##   ##
-    // #  #   ##   ###    ###     # #  #      ##
-    //                                  ###
-    /**
-     * Parses a message.
-     * @param {DiscordJs.User} user The user who sent the message.
-     * @param {string} message The text of the message.
-     * @param {DiscordJs.TextBasedChannel} channel The channel the message was sent on.
-     * @returns {Promise} A promise that resolves when the message is parsed.
-     */
-    static async message(user, message, channel) {
-        const member = guild.members.cache.find((m) => m.id === user.id);
-
-        for (const text of message.split("\n")) {
-            if (!messageParse.test(text)) {
-                continue;
-            }
-
-            const {groups: {cmd, args}} = messageParse.exec(text),
-                command = cmd.toLocaleLowerCase();
-
-            if (Object.getOwnPropertyNames(Commands.prototype).filter((p) => typeof Commands.prototype[p] === "function" && p !== "constructor").indexOf(command) !== -1) {
-                let success;
-                try {
-                    success = await commands[command](member, channel, args);
-                } catch (err) {
-                    if (err instanceof Warning) {
-                        Log.warning(`${channel} ${member}: ${text}\n${err}`);
-                    } else if (err instanceof Exception) {
-                        Log.exception(`${channel} ${member}: ${text}\n${err.message}`, err.innerError);
-                    } else {
-                        Log.exception(`${channel} ${member}: ${text}`, err);
-                    }
-
-                    return;
-                }
-
-                if (success) {
-                    Log.log(`${channel} ${member}: ${text}`);
-                }
-            }
-        }
-    }
-
     //  ###  #  #   ##   #  #   ##
     // #  #  #  #  # ##  #  #  # ##
     // #  #  #  #  ##    #  #  ##
@@ -217,25 +162,24 @@ class Discord {
 
         let msg;
         try {
-            msg = await Discord.richQueue(new DiscordJs.MessageEmbed({description: message}), channel);
+            msg = await Discord.richQueue(new DiscordJs.EmbedBuilder({description: message}), channel);
         } catch {}
         return msg;
     }
 
-    //                                             ####        #              #
-    //                                             #           #              #
-    // # #    ##    ###    ###    ###   ###   ##   ###   # #   ###    ##    ###
-    // ####  # ##  ##     ##     #  #  #  #  # ##  #     ####  #  #  # ##  #  #
-    // #  #  ##      ##     ##   # ##   ##   ##    #     #  #  #  #  ##    #  #
-    // #  #   ##   ###    ###     # #  #      ##   ####  #  #  ###    ##    ###
-    //                                  ###
+    //             #              #  ###          #    ##       #
+    //             #              #  #  #               #       #
+    //  ##   # #   ###    ##    ###  ###   #  #  ##     #     ###   ##   ###
+    // # ##  ####  #  #  # ##  #  #  #  #  #  #   #     #    #  #  # ##  #  #
+    // ##    #  #  #  #  ##    #  #  #  #  #  #   #     #    #  #  ##    #
+    //  ##   #  #  ###    ##    ###  ###    ###  ###   ###    ###   ##   #
     /**
-     * Gets a new DiscordJs MessageEmbed object.
-     * @param {DiscordJs.MessageEmbedOptions} [options] The options to pass.
-     * @returns {DiscordJs.MessageEmbed} The MessageEmbed object.
+     * Gets a new DiscordJs EmbedBuilder object.
+     * @param {DiscordJs.EmbedData} [options] The options to pass.
+     * @returns {DiscordJs.EmbedBuilder} The EmbedBuilder object.
      */
-    static messageEmbed(options) {
-        return new DiscordJs.MessageEmbed(options);
+    static embedBuilder(options) {
+        return new DiscordJs.EmbedBuilder(options);
     }
 
     //        #          #      ##
@@ -247,7 +191,7 @@ class Discord {
     //                            #
     /**
      * Queues a rich embed message to be sent.
-     * @param {DiscordJs.MessageEmbed} embed The message to be sent.
+     * @param {DiscordJs.EmbedBuilder} embed The message to be sent.
      * @param {DiscordJs.TextChannel|DiscordJs.DMChannel|DiscordJs.GuildMember} channel The channel to send the message to.
      * @returns {Promise<DiscordJs.Message>} A promise that resolves with the sent message.
      */
@@ -256,21 +200,21 @@ class Discord {
             return void 0;
         }
 
-        embed.setFooter({text: embed.footer ? embed.footer.text : "", iconURL: Discord.icon});
+        embed.setFooter({text: embed.data && embed.data.footer ? embed.data.footer.text : "obs-webserver", iconURL: Discord.icon});
 
-        if (embed && embed.fields) {
-            embed.fields.forEach((field) => {
+        if (embed && embed.data && embed.data.fields) {
+            embed.data.fields.forEach((field) => {
                 if (field.value && field.value.length > 1024) {
                     field.value = field.value.substring(0, 1024);
                 }
             });
         }
 
-        if (!embed.color) {
+        if (!embed.data && embed.data.color) {
             embed.setColor(0x191935);
         }
 
-        if (!embed.timestamp) {
+        if (!embed.data && !embed.data.timestamp) {
             embed.setTimestamp(new Date());
         }
 
@@ -287,204 +231,23 @@ class Discord {
         return msg;
     }
 
-    //                          #           ##   #                             ##
-    //                          #          #  #  #                              #
-    //  ##   ###    ##    ###  ###    ##   #     ###    ###  ###   ###    ##    #
-    // #     #  #  # ##  #  #   #    # ##  #     #  #  #  #  #  #  #  #  # ##   #
-    // #     #     ##    # ##   #    ##    #  #  #  #  # ##  #  #  #  #  ##     #
-    //  ##   #      ##    # #    ##   ##    ##   #  #   # #  #  #  #  #   ##   ###
-    /**
-     * Creates a new channel on the Discord server.
-     * @param {string} name The name of the channel.
-     * @param {"GUILD_CATEGORY" | "GUILD_TEXT" | "GUILD_VOICE"} type The type of channel to create.
-     * @param {DiscordJs.PermissionOverwrites[]|DiscordJs.ChannelCreationOverwrites[]} [overwrites] The permissions that should overwrite the default permission set.
-     * @param {string} [reason] The reason the channel is being created.
-     * @returns {Promise<DiscordJs.TextChannel | DiscordJs.NewsChannel | DiscordJs.VoiceChannel | DiscordJs.CategoryChannel | DiscordJs.StoreChannel | DiscordJs.StageChannel>} The created channel.
-     */
-    static createChannel(name, type, overwrites, reason) {
-        if (!guild) {
-            return void 0;
-        }
-        return guild.channels.create(name, {type, permissionOverwrites: overwrites, reason});
-    }
-
-    //                          #          ###         ##
-    //                          #          #  #         #
-    //  ##   ###    ##    ###  ###    ##   #  #   ##    #     ##
-    // #     #  #  # ##  #  #   #    # ##  ###   #  #   #    # ##
-    // #     #     ##    # ##   #    ##    # #   #  #   #    ##
-    //  ##   #      ##    # #    ##   ##   #  #   ##   ###    ##
-    /**
-     * Creates a new role on the Discord server.
-     * @param {DiscordJs.RoleData} [data] The role data.
-     * @returns {Promise<DiscordJs.Role>} A promise that resolves with the created role.
-     */
-    static createRole(data) {
-        if (!guild) {
-            return void 0;
-        }
-        return guild.roles.create(data);
-    }
-
-    //   #    #             #   ##   #                             ##    ###         ###      #
-    //  # #                 #  #  #  #                              #    #  #         #       #
-    //  #    ##    ###    ###  #     ###    ###  ###   ###    ##    #    ###   #  #   #     ###
-    // ###    #    #  #  #  #  #     #  #  #  #  #  #  #  #  # ##   #    #  #  #  #   #    #  #
-    //  #     #    #  #  #  #  #  #  #  #  # ##  #  #  #  #  ##     #    #  #   # #   #    #  #
-    //  #    ###   #  #   ###   ##   #  #   # #  #  #  #  #   ##   ###   ###     #   ###    ###
-    //                                                                          #
-    /**
-     * Finds a Discord channel by its ID.
-     * @param {string} id The ID of the channel.
-     * @returns {DiscordJs.GuildChannel | DiscordJs.ThreadChannel} The Discord channel.
-     */
-    static findChannelById(id) {
-        if (!guild) {
-            return void 0;
-        }
-        return guild.channels.cache.find((c) => c.id === id);
-    }
-
-    //   #    #             #   ##   #                             ##    ###         #  #
-    //  # #                 #  #  #  #                              #    #  #        ## #
-    //  #    ##    ###    ###  #     ###    ###  ###   ###    ##    #    ###   #  #  ## #   ###  # #    ##
-    // ###    #    #  #  #  #  #     #  #  #  #  #  #  #  #  # ##   #    #  #  #  #  # ##  #  #  ####  # ##
-    //  #     #    #  #  #  #  #  #  #  #  # ##  #  #  #  #  ##     #    #  #   # #  # ##  # ##  #  #  ##
-    //  #    ###   #  #   ###   ##   #  #   # #  #  #  #  #   ##   ###   ###     #   #  #   # #  #  #   ##
-    //                                                                          #
-    /**
-     * Finds a Discord channel by its name.
-     * @param {string} name The name of the channel.
-     * @returns {DiscordJs.GuildChannel | DiscordJs.ThreadChannel} The Discord channel.
-     */
-    static findChannelByName(name) {
-        if (!guild) {
-            return void 0;
-        }
-        return guild.channels.cache.find((c) => c.name === name);
-    }
-
-    //   #    #             #   ##          #    ##       #  #  #              #                 ###         ###    #                 ##                #  #
-    //  # #                 #  #  #               #       #  ####              #                 #  #        #  #                      #                ## #
-    //  #    ##    ###    ###  #     #  #  ##     #     ###  ####   ##   # #   ###    ##   ###   ###   #  #  #  #  ##     ###   ###    #     ###  #  #  ## #   ###  # #    ##
-    // ###    #    #  #  #  #  # ##  #  #   #     #    #  #  #  #  # ##  ####  #  #  # ##  #  #  #  #  #  #  #  #   #    ##     #  #   #    #  #  #  #  # ##  #  #  ####  # ##
-    //  #     #    #  #  #  #  #  #  #  #   #     #    #  #  #  #  ##    #  #  #  #  ##    #     #  #   # #  #  #   #      ##   #  #   #    # ##   # #  # ##  # ##  #  #  ##
-    //  #    ###   #  #   ###   ###   ###  ###   ###    ###  #  #   ##   #  #  ###    ##   #     ###     #   ###   ###   ###    ###   ###    # #    #   #  #   # #  #  #   ##
-    //                                                                                                  #                       #                  #
-    /**
-     * Returns the Discord user in the guild by their display name.
-     * @param {string} displayName The display name of the Discord user.
-     * @returns {DiscordJs.GuildMember} The guild member.
-     */
-    static findGuildMemberByDisplayName(displayName) {
-        if (!guild) {
-            return void 0;
-        }
-        return guild.members.cache.find((m) => m.displayName === displayName);
-    }
-
-    //   #    #             #   ##          #    ##       #  #  #              #                 ###         ###      #
-    //  # #                 #  #  #               #       #  ####              #                 #  #         #       #
-    //  #    ##    ###    ###  #     #  #  ##     #     ###  ####   ##   # #   ###    ##   ###   ###   #  #   #     ###
-    // ###    #    #  #  #  #  # ##  #  #   #     #    #  #  #  #  # ##  ####  #  #  # ##  #  #  #  #  #  #   #    #  #
-    //  #     #    #  #  #  #  #  #  #  #   #     #    #  #  #  #  ##    #  #  #  #  ##    #     #  #   # #   #    #  #
-    //  #    ###   #  #   ###   ###   ###  ###   ###    ###  #  #   ##   #  #  ###    ##   #     ###     #   ###    ###
+    //   #    #             #  ###                #     ##   #                             ##    ###         #  #
+    //  # #                 #   #                 #    #  #  #                              #    #  #        ## #
+    //  #    ##    ###    ###   #     ##   #  #  ###   #     ###    ###  ###   ###    ##    #    ###   #  #  ## #   ###  # #    ##
+    // ###    #    #  #  #  #   #    # ##   ##    #    #     #  #  #  #  #  #  #  #  # ##   #    #  #  #  #  # ##  #  #  ####  # ##
+    //  #     #    #  #  #  #   #    ##     ##    #    #  #  #  #  # ##  #  #  #  #  ##     #    #  #   # #  # ##  # ##  #  #  ##
+    //  #    ###   #  #   ###   #     ##   #  #    ##   ##   #  #   # #  #  #  #  #   ##   ###   ###     #   #  #   # #  #  #   ##
     //                                                                                                  #
     /**
-     * Returns the Discord user in the guild by their Discord ID.
-     * @param {string} id The ID of the Discord user.
-     * @returns {DiscordJs.GuildMember} The guild member.
+     * Finds a Discord text channel by its name.
+     * @param {string} name The name of the channel.
+     * @returns {DiscordJs.TextChannel} The Discord text channel.
      */
-    static findGuildMemberById(id) {
+    static findTextChannelByName(name) {
         if (!guild) {
             return void 0;
         }
-        return guild.members.cache.find((m) => m.id === id);
-    }
-
-    //   #    #             #  ###         ##          ###         ###      #
-    //  # #                 #  #  #         #          #  #         #       #
-    //  #    ##    ###    ###  #  #   ##    #     ##   ###   #  #   #     ###
-    // ###    #    #  #  #  #  ###   #  #   #    # ##  #  #  #  #   #    #  #
-    //  #     #    #  #  #  #  # #   #  #   #    ##    #  #   # #   #    #  #
-    //  #    ###   #  #   ###  #  #   ##   ###    ##   ###     #   ###    ###
-    //                                                        #
-    /**
-     * Finds a Discord role by its ID.
-     * @param {string} id The ID of the role.
-     * @returns {DiscordJs.Role} The Discord role.
-     */
-    static findRoleById(id) {
-        if (!guild) {
-            return void 0;
-        }
-        return guild.roles.cache.find((r) => r.id === id);
-    }
-
-    //   #    #             #  ###         ##          ###         #  #
-    //  # #                 #  #  #         #          #  #        ## #
-    //  #    ##    ###    ###  #  #   ##    #     ##   ###   #  #  ## #   ###  # #    ##
-    // ###    #    #  #  #  #  ###   #  #   #    # ##  #  #  #  #  # ##  #  #  ####  # ##
-    //  #     #    #  #  #  #  # #   #  #   #    ##    #  #   # #  # ##  # ##  #  #  ##
-    //  #    ###   #  #   ###  #  #   ##   ###    ##   ###     #   #  #   # #  #  #   ##
-    //                                                        #
-    /**
-     * Finds a Discord role by its name.
-     * @param {string} name The name of the role.
-     * @returns {DiscordJs.Role} The Discord role.
-     */
-    static findRoleByName(name) {
-        if (!guild) {
-            return void 0;
-        }
-        return guild.roles.cache.find((r) => r.name === name);
-    }
-
-    //   #    #             #  #  #                     ###         ###      #
-    //  # #                 #  #  #                     #  #         #       #
-    //  #    ##    ###    ###  #  #   ###    ##   ###   ###   #  #   #     ###
-    // ###    #    #  #  #  #  #  #  ##     # ##  #  #  #  #  #  #   #    #  #
-    //  #     #    #  #  #  #  #  #    ##   ##    #     #  #   # #   #    #  #
-    //  #    ###   #  #   ###   ##   ###     ##   #     ###     #   ###    ###
-    //                                                         #
-    /**
-     * Finds a Discord user by user ID.
-     * @param {string} id The user ID.
-     * @returns {Promise<DiscordJs.User>} A promise that resolves with the user.
-     */
-    static findUserById(id) {
-        return discord.users.fetch(id, {cache: false});
-    }
-
-    //              #    #  #
-    //              #    ## #
-    //  ###   ##   ###   ## #   ###  # #    ##
-    // #  #  # ##   #    # ##  #  #  ####  # ##
-    //  ##   ##     #    # ##  # ##  #  #  ##
-    // #      ##     ##  #  #   # #  #  #   ##
-    //  ###
-    /**
-     * Returns the user's display name if they are a guild member, or a username if they are a user.
-     * @param {DiscordJs.GuildMember|DiscordJs.User} user The user to get the name for.
-     * @returns {string} The name of the user.
-     */
-    static getName(user) {
-        return user instanceof DiscordJs.GuildMember ? user.displayName : user.username;
-    }
-
-    //  #            ##
-    //              #  #
-    // ##     ###   #  #  #  #  ###    ##   ###
-    //  #    ##     #  #  #  #  #  #  # ##  #  #
-    //  #      ##   #  #  ####  #  #  ##    #
-    // ###   ###     ##   ####  #  #   ##   #
-    /**
-     * Determines whether the user is the owner.
-     * @param {DiscordJs.GuildMember} member The user to check.
-     * @returns {boolean} Whether the user is the owner.
-     */
-    static isOwner(member) {
-        return member && member.user.username === settings.admin.username && member.user.discriminator === settings.admin.discriminator;
+        return /** @type {DiscordJs.TextChannel} */(guild.channels.cache.find((c) => c.name === name && c.type === DiscordJs.ChannelType.GuildText)); // eslint-disable-line no-extra-parens
     }
 }
 

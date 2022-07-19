@@ -162,38 +162,38 @@ class Log {
                                 });
 
                                 if (res.body.id) {
-                                    await Discord.queue(`Error occurred, see ${res.body.url}.`, /** @type {DiscordJs.TextChannel} */ (Discord.findChannelByName("botcli-errors"))); // eslint-disable-line no-extra-parens
+                                    await Discord.queue(`Error occurred, see ${res.body.url}.`, Discord.findTextChannelByName("botcli-errors"));
                                 } else {
-                                    await Discord.queue("Error occurred, problem sending log, see http://logger.roncli.com.", /** @type {DiscordJs.TextChannel} */ (Discord.findChannelByName("botcli-errors"))); // eslint-disable-line no-extra-parens
+                                    await Discord.queue("Error occurred, problem sending log, see http://logger.roncli.com.", Discord.findTextChannelByName("botcli-errors"));
                                 }
                             } catch (err) {
                                 await Log.outputToDiscord(log, err);
                             }
                         } else {
-                            const message = Discord.messageEmbed({
+                            const message = Discord.embedBuilder({
                                 color: 0xFF0000,
                                 fields: [],
-                                timestamp: log.date
+                                timestamp: log.date.toISOString() // TODO: Remove .toISOString() once this is fixed: https://github.com/discordjs/discord.js/issues/8323
                             });
 
                             if (log.message) {
                                 message.setDescription(log.message);
                             }
 
-                            await Discord.richQueue(message, /** @type {DiscordJs.TextChannel} */ (Discord.findChannelByName("botcli-errors"))); // eslint-disable-line no-extra-parens
+                            await Discord.richQueue(message, Discord.findTextChannelByName("botcli-errors"));
                         }
                     } else {
-                        const message = Discord.messageEmbed({
+                        const message = Discord.embedBuilder({
                             color: log.type === "log" ? 0x80FF80 : log.type === "warning" ? 0xFFFF00 : 0xFF0000,
                             fields: [],
-                            timestamp: log.date
+                            timestamp: log.date.toISOString() // TODO: Remove .toISOString() once this is fixed: https://github.com/discordjs/discord.js/issues/8323
                         });
 
                         if (log.message) {
                             message.setDescription(log.message);
                         }
 
-                        await Discord.richQueue(message, /** @type {DiscordJs.TextChannel} */ (Discord.findChannelByName("botcli-log"))); // eslint-disable-line no-extra-parens
+                        await Discord.richQueue(message, Discord.findTextChannelByName("botcli-log"));
                     }
                 }
 
@@ -225,17 +225,17 @@ class Log {
 
         while (value.length > 0) {
             if (continued) {
-                await Discord.queue(value.substring(0, 1024), /** @type {DiscordJs.TextChannel} */ (Discord.findChannelByName("botcli-errors"))); // eslint-disable-line no-extra-parens
+                await Discord.queue(value.substring(0, 1024), Discord.findTextChannelByName("botcli-errors"));
             } else if (log.message) {
-                const message = Discord.messageEmbed({
+                const message = Discord.embedBuilder({
                     color: 0xFF0000,
                     fields: [],
-                    timestamp: log.date
+                    timestamp: log.date.toISOString() // TODO: Remove .toISOString() once this is fixed: https://github.com/discordjs/discord.js/issues/8323
                 });
 
                 message.setDescription(log.message);
 
-                message.fields.push({
+                message.addFields({
                     name: "Message",
                     value: value.substring(0, 1024),
                     inline: false
@@ -243,7 +243,7 @@ class Log {
 
                 continued = true;
 
-                await Discord.richQueue(message, /** @type {DiscordJs.TextChannel} */ (Discord.findChannelByName("botcli-errors"))); // eslint-disable-line no-extra-parens
+                await Discord.richQueue(message, Discord.findTextChannelByName("botcli-errors"));
             }
 
             value = value.substring(1024);
@@ -254,17 +254,17 @@ class Log {
 
         while (value.length > 0) {
             if (continued) {
-                await Discord.queue(value.substring(0, 1024), /** @type {DiscordJs.TextChannel} */ (Discord.findChannelByName("botcli-errors"))); // eslint-disable-line no-extra-parens
+                await Discord.queue(value.substring(0, 1024), Discord.findTextChannelByName("botcli-errors"));
             } else if (log.message) {
-                const message = Discord.messageEmbed({
+                const message = Discord.embedBuilder({
                     color: 0xFF0000,
                     fields: [],
-                    timestamp: log.date
+                    timestamp: log.date.toISOString() // TODO: Remove .toISOString() once this is fixed: https://github.com/discordjs/discord.js/issues/8323
                 });
 
                 message.setDescription("Error while writing to logging database.");
 
-                message.fields.push({
+                message.addFields({
                     name: "Message",
                     value: value.substring(0, 1024),
                     inline: false
@@ -272,7 +272,7 @@ class Log {
 
                 continued = true;
 
-                await Discord.richQueue(message, /** @type {DiscordJs.TextChannel} */ (Discord.findChannelByName("botcli-errors"))); // eslint-disable-line no-extra-parens
+                await Discord.richQueue(message, Discord.findTextChannelByName("botcli-errors"));
             }
 
             value = value.substring(1024);
