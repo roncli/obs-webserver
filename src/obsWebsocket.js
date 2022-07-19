@@ -1,4 +1,4 @@
-const OBSWebSocketJs = require("obs-websocket-js"),
+const OBSWebSocketJs = require("obs-websocket-js").default,
 
     settings = require("../settings");
 
@@ -16,6 +16,26 @@ let obs;
  * A class used for communication with OBS via websockets.
  */
 class OBSWebsocket {
+    //              #    ###    #                ###      #
+    //              #     #     #                 #       #
+    //  ###   ##   ###    #    ###    ##   # #    #     ###
+    // #  #  # ##   #     #     #    # ##  ####   #    #  #
+    //  ##   ##     #     #     #    ##    #  #   #    #  #
+    // #      ##     ##  ###     ##   ##   #  #  ###    ###
+    //  ###
+    /**
+     * Gets the item ID by source name.
+     * @param {string} sceneName The name of the scene.
+     * @param {string} sourceName The name of the source.
+     * @returns {Promise<number>} The source's item ID.
+     */
+    static async getItemId(sceneName, sourceName) {
+        return (await obs.call("GetSceneItemId", {
+            sceneName,
+            sourceName
+        })).sceneItemId;
+    }
+
     //         #                 #
     //         #                 #
     //  ###   ###    ###  ###   ###
@@ -35,6 +55,7 @@ class OBSWebsocket {
             obs = new OBSWebSocketJs();
         }
 
+        // @ts-ignore Awaiting PR https://github.com/obs-websocket-community-projects/obs-websocket-js/pull/217
         obs.on("error", () => {
             OBSWebsocket.start();
         });
@@ -43,7 +64,7 @@ class OBSWebsocket {
             obs = null;
         });
 
-        await obs.connect(settings.obsws);
+        await obs.connect(settings.obsws.address, settings.obsws.password);
     }
 
     //         #                 #     ##   ###   #  #
@@ -62,13 +83,10 @@ class OBSWebsocket {
         }
 
         try {
-            await obs.send("SetSceneItemProperties", {
-                item: {name: "CTM Stencil"},
-                visible: true,
-                bounds: {},
-                scale: {},
-                crop: {},
-                position: {}
+            await obs.call("SetSceneItemEnabled", {
+                sceneName: "roncli Gaming",
+                sceneItemId: await OBSWebsocket.getItemId("roncli Gaming", "CTM Stencil"),
+                sceneItemEnabled: true
             });
         } catch (err) {} finally {}
     }
@@ -90,13 +108,10 @@ class OBSWebsocket {
         }
 
         try {
-            await obs.send("SetSceneItemProperties", {
-                item: {name: `Discord - ${location}`},
-                visible: true,
-                bounds: {},
-                scale: {},
-                crop: {},
-                position: {}
+            await obs.call("SetSceneItemEnabled", {
+                sceneName: "roncli Gaming",
+                sceneItemId: await OBSWebsocket.getItemId("roncli Gaming", `Discord - ${location}`),
+                sceneItemEnabled: true
             });
         } catch (err) {} finally {}
     }
@@ -118,13 +133,10 @@ class OBSWebsocket {
         }
 
         try {
-            await obs.send("SetSceneItemProperties", {
-                item: {name: "Display"},
-                visible: true,
-                bounds: {},
-                scale: {},
-                crop: {},
-                position: {}
+            await obs.call("SetSceneItemEnabled", {
+                sceneName: "roncli Gaming",
+                sceneItemId: await OBSWebsocket.getItemId("roncli Gaming", "Display"),
+                sceneItemEnabled: true
             });
         } catch (err) {} finally {}
     }
@@ -145,18 +157,15 @@ class OBSWebsocket {
         }
 
         try {
-            await obs.send("SetSceneItemProperties", {
-                item: {name: "Audio Input Capture - Microphone"},
-                visible: true,
-                bounds: {},
-                scale: {},
-                crop: {},
-                position: {}
+            await obs.call("SetSceneItemEnabled", {
+                sceneName: "roncli Gaming",
+                sceneItemId: await OBSWebsocket.getItemId("roncli Gaming", "Audio Input Capture - Microphone"),
+                sceneItemEnabled: true
             });
 
-            await obs.send("SetMute", {
-                source: "Audio Input Capture - Microphone",
-                mute: false
+            await obs.call("SetInputMute", {
+                inputName: "Audio Input Capture - Microphone",
+                inputMuted: false
             });
         } catch (err) {} finally {}
     }
@@ -178,7 +187,7 @@ class OBSWebsocket {
         }
 
         try {
-            await obs.send("SetSourceFilterVisibility", {
+            await obs.call("SetSourceFilterEnabled", {
                 sourceName: "Browser - Overlay",
                 filterName: "Chroma Key",
                 filterEnabled: true
@@ -202,13 +211,10 @@ class OBSWebsocket {
         }
 
         try {
-            await obs.send("SetSceneItemProperties", {
-                item: {name: "Restreams"},
-                visible: true,
-                bounds: {},
-                scale: {},
-                crop: {},
-                position: {}
+            await obs.call("SetSceneItemEnabled", {
+                sceneName: "roncli Gaming",
+                sceneItemId: await OBSWebsocket.getItemId("roncli Gaming", "Restreams"),
+                sceneItemEnabled: true
             });
         } catch (err) {} finally {}
     }
@@ -230,7 +236,7 @@ class OBSWebsocket {
         }
 
         try {
-            await obs.send("StartStreaming", void 0);
+            await obs.call("StartStream");
         } catch (err) {} finally {}
     }
 
@@ -250,35 +256,26 @@ class OBSWebsocket {
         }
 
         try {
-            await obs.send("SetSceneItemProperties", {
-                item: {name: "Tetris - 2P - 1 & 2"},
-                visible: true,
-                bounds: {},
-                scale: {},
-                crop: {},
-                position: {}
+            await obs.call("SetSceneItemEnabled", {
+                sceneName: "roncli Gaming",
+                sceneItemId: await OBSWebsocket.getItemId("roncli Gaming", "Tetris - 2P - 1 & 2"),
+                sceneItemEnabled: true
             });
         } catch (err) {} finally {}
 
         try {
-            await obs.send("SetSceneItemProperties", {
-                item: {name: "Tetris - 2P - 3 & 4"},
-                visible: false,
-                bounds: {},
-                scale: {},
-                crop: {},
-                position: {}
+            await obs.call("SetSceneItemEnabled", {
+                sceneName: "roncli Gaming",
+                sceneItemId: await OBSWebsocket.getItemId("roncli Gaming", "Tetris - 2P - 3 & 4"),
+                sceneItemEnabled: false
             });
         } catch (err) {} finally {}
 
         try {
-            await obs.send("SetSceneItemProperties", {
-                item: {name: "Tetris - 4P"},
-                visible: false,
-                bounds: {},
-                scale: {},
-                crop: {},
-                position: {}
+            await obs.call("SetSceneItemEnabled", {
+                sceneName: "roncli Gaming",
+                sceneItemId: await OBSWebsocket.getItemId("roncli Gaming", "Tetris - 4P"),
+                sceneItemEnabled: false
             });
         } catch (err) {} finally {}
     }
@@ -299,35 +296,26 @@ class OBSWebsocket {
         }
 
         try {
-            await obs.send("SetSceneItemProperties", {
-                item: {name: "Tetris - 2P - 1 & 2"},
-                visible: false,
-                bounds: {},
-                scale: {},
-                crop: {},
-                position: {}
+            await obs.call("SetSceneItemEnabled", {
+                sceneName: "roncli Gaming",
+                sceneItemId: await OBSWebsocket.getItemId("roncli Gaming", "Tetris - 2P - 1 & 2"),
+                sceneItemEnabled: false
             });
         } catch (err) {} finally {}
 
         try {
-            await obs.send("SetSceneItemProperties", {
-                item: {name: "Tetris - 2P - 3 & 4"},
-                visible: true,
-                bounds: {},
-                scale: {},
-                crop: {},
-                position: {}
+            await obs.call("SetSceneItemEnabled", {
+                sceneName: "roncli Gaming",
+                sceneItemId: await OBSWebsocket.getItemId("roncli Gaming", "Tetris - 2P - 3 & 4"),
+                sceneItemEnabled: true
             });
         } catch (err) {} finally {}
 
         try {
-            await obs.send("SetSceneItemProperties", {
-                item: {name: "Tetris - 4P"},
-                visible: false,
-                bounds: {},
-                scale: {},
-                crop: {},
-                position: {}
+            await obs.call("SetSceneItemEnabled", {
+                sceneName: "roncli Gaming",
+                sceneItemId: await OBSWebsocket.getItemId("roncli Gaming", "Tetris - 4P"),
+                sceneItemEnabled: false
             });
         } catch (err) {} finally {}
     }
@@ -348,35 +336,26 @@ class OBSWebsocket {
         }
 
         try {
-            await obs.send("SetSceneItemProperties", {
-                item: {name: "Tetris - 2P - 1 & 2"},
-                visible: false,
-                bounds: {},
-                scale: {},
-                crop: {},
-                position: {}
+            await obs.call("SetSceneItemEnabled", {
+                sceneName: "roncli Gaming",
+                sceneItemId: await OBSWebsocket.getItemId("roncli Gaming", "Tetris - 2P - 1 & 2"),
+                sceneItemEnabled: false
             });
         } catch (err) {} finally {}
 
         try {
-            await obs.send("SetSceneItemProperties", {
-                item: {name: "Tetris - 2P - 3 & 4"},
-                visible: false,
-                bounds: {},
-                scale: {},
-                crop: {},
-                position: {}
+            await obs.call("SetSceneItemEnabled", {
+                sceneName: "roncli Gaming",
+                sceneItemId: await OBSWebsocket.getItemId("roncli Gaming", "Tetris - 2P - 3 & 4"),
+                sceneItemEnabled: false
             });
         } catch (err) {} finally {}
 
         try {
-            await obs.send("SetSceneItemProperties", {
-                item: {name: "Tetris - 4P"},
-                visible: true,
-                bounds: {},
-                scale: {},
-                crop: {},
-                position: {}
+            await obs.call("SetSceneItemEnabled", {
+                sceneName: "roncli Gaming",
+                sceneItemId: await OBSWebsocket.getItemId("roncli Gaming", "Tetris - 4P"),
+                sceneItemEnabled: true
             });
         } catch (err) {} finally {}
     }
@@ -398,13 +377,10 @@ class OBSWebsocket {
         }
 
         try {
-            await obs.send("SetSceneItemProperties", {
-                item: {name: `Webcam - ${location}`},
-                visible: true,
-                bounds: {},
-                scale: {},
-                crop: {},
-                position: {}
+            await obs.call("SetSceneItemEnabled", {
+                sceneName: "roncli Gaming",
+                sceneItemId: await OBSWebsocket.getItemId("roncli Gaming", `Webcam - ${location}`),
+                sceneItemEnabled: true
             });
         } catch (err) {} finally {}
     }
@@ -426,13 +402,10 @@ class OBSWebsocket {
         }
 
         try {
-            await obs.send("SetSceneItemProperties", {
-                item: {name: "CTM Stencil"},
-                visible: false,
-                bounds: {},
-                scale: {},
-                crop: {},
-                position: {}
+            await obs.call("SetSceneItemEnabled", {
+                sceneName: "roncli Gaming",
+                sceneItemId: await OBSWebsocket.getItemId("roncli Gaming", "CTM Stencil"),
+                sceneItemEnabled: false
             });
         } catch (err) {} finally {}
     }
@@ -455,13 +428,10 @@ class OBSWebsocket {
         }
 
         try {
-            await obs.send("SetSceneItemProperties", {
-                item: {name: `Discord - ${location}`},
-                visible: false,
-                bounds: {},
-                scale: {},
-                crop: {},
-                position: {}
+            await obs.call("SetSceneItemEnabled", {
+                sceneName: "roncli Gaming",
+                sceneItemId: await OBSWebsocket.getItemId("roncli Gaming", `Discord - ${location}`),
+                sceneItemEnabled: false
             });
         } catch (err) {} finally {}
     }
@@ -483,13 +453,10 @@ class OBSWebsocket {
         }
 
         try {
-            await obs.send("SetSceneItemProperties", {
-                item: {name: "Display"},
-                visible: false,
-                bounds: {},
-                scale: {},
-                crop: {},
-                position: {}
+            await obs.call("SetSceneItemEnabled", {
+                sceneName: "roncli Gaming",
+                sceneItemId: await OBSWebsocket.getItemId("roncli Gaming", "Display"),
+                sceneItemEnabled: false
             });
         } catch (err) {} finally {}
     }
@@ -511,13 +478,10 @@ class OBSWebsocket {
         }
 
         try {
-            await obs.send("SetSceneItemProperties", {
-                item: {name: "Audio Input Capture - Microphone"},
-                visible: false,
-                bounds: {},
-                scale: {},
-                crop: {},
-                position: {}
+            await obs.call("SetSceneItemEnabled", {
+                sceneName: "roncli Gaming",
+                sceneItemId: await OBSWebsocket.getItemId("roncli Gaming", "Audio Input Capture - Microphone"),
+                sceneItemEnabled: false
             });
         } catch (err) {} finally {}
     }
@@ -539,7 +503,7 @@ class OBSWebsocket {
         }
 
         try {
-            await obs.send("SetSourceFilterVisibility", {
+            await obs.call("SetSourceFilterEnabled", {
                 sourceName: "Browser - Overlay",
                 filterName: "Chroma Key",
                 filterEnabled: false
@@ -564,13 +528,10 @@ class OBSWebsocket {
         }
 
         try {
-            await obs.send("SetSceneItemProperties", {
-                item: {name: "Restreams"},
-                visible: false,
-                bounds: {},
-                scale: {},
-                crop: {},
-                position: {}
+            await obs.call("SetSceneItemEnabled", {
+                sceneName: "roncli Gaming",
+                sceneItemId: await OBSWebsocket.getItemId("roncli Gaming", "Restreams"),
+                sceneItemEnabled: false
             });
         } catch (err) {} finally {}
     }
@@ -592,7 +553,7 @@ class OBSWebsocket {
         }
 
         try {
-            await obs.send("StopStreaming", void 0);
+            await obs.call("StopStream");
         } catch (err) {} finally {}
     }
 
@@ -613,35 +574,26 @@ class OBSWebsocket {
         }
 
         try {
-            await obs.send("SetSceneItemProperties", {
-                item: {name: "Tetris - 2P - 1 & 2"},
-                visible: false,
-                bounds: {},
-                scale: {},
-                crop: {},
-                position: {}
+            await obs.call("SetSceneItemEnabled", {
+                sceneName: "roncli Gaming",
+                sceneItemId: await OBSWebsocket.getItemId("roncli Gaming", "Tetris - 2P - 1 & 2"),
+                sceneItemEnabled: false
             });
         } catch (err) {} finally {}
 
         try {
-            await obs.send("SetSceneItemProperties", {
-                item: {name: "Tetris - 2P - 3 & 4"},
-                visible: false,
-                bounds: {},
-                scale: {},
-                crop: {},
-                position: {}
+            await obs.call("SetSceneItemEnabled", {
+                sceneName: "roncli Gaming",
+                sceneItemId: await OBSWebsocket.getItemId("roncli Gaming", "Tetris - 2P - 3 & 4"),
+                sceneItemEnabled: false
             });
         } catch (err) {} finally {}
 
         try {
-            await obs.send("SetSceneItemProperties", {
-                item: {name: "Tetris - 4P"},
-                visible: false,
-                bounds: {},
-                scale: {},
-                crop: {},
-                position: {}
+            await obs.call("SetSceneItemEnabled", {
+                sceneName: "roncli Gaming",
+                sceneItemId: await OBSWebsocket.getItemId("roncli Gaming", "Tetris - 4P"),
+                sceneItemEnabled: false
             });
         } catch (err) {} finally {}
     }
@@ -664,13 +616,10 @@ class OBSWebsocket {
         }
 
         try {
-            await obs.send("SetSceneItemProperties", {
-                item: {name: `Webcam - ${location}`},
-                visible: false,
-                bounds: {},
-                scale: {},
-                crop: {},
-                position: {}
+            await obs.call("SetSceneItemEnabled", {
+                sceneName: "roncli Gaming",
+                sceneItemId: await OBSWebsocket.getItemId("roncli Gaming", `Webcam - ${location}`),
+                sceneItemEnabled: false
             });
         } catch (err) {} finally {}
     }
@@ -692,7 +641,7 @@ class OBSWebsocket {
         }
 
         try {
-            await obs.send("SetCurrentScene", {"scene-name": scene});
+            await obs.call("SetCurrentProgramScene", {sceneName: scene});
         } catch (err) {} finally {}
     }
 }
