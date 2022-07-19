@@ -35,7 +35,6 @@ class OBSWebsocket {
             obs = new OBSWebSocketJs();
         }
 
-        // @ts-ignore See https://github.com/haganbmj/obs-websocket-js/issues/203
         obs.on("error", () => {
             OBSWebsocket.start();
         });
