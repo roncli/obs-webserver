@@ -570,13 +570,12 @@ div#tetris {
     height: 1080px;
 }
 
-div#tetris div#game {
+div#tetris div#tetris-game {
     position: absolute;
     top: 0;
     left: 0;
     width: 1920px;
     height: 1080px;
-    opacity: 0.5;
 }
 
 div#tetris div#organization {

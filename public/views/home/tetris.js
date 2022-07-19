@@ -24,7 +24,7 @@ class TetrisView {
     static get(data) {
         return /* html */`
             <div id="tetris">
-                <div id="game"></div>
+                <div id="tetris-game"></div>
                 <div id="organization"${data && data.color ? ` style="color: ${data.color};"` : ""}>${TetrisView.Common.htmlEncode(data && data.organization)}</div>
                 <div id="title"${data && data.color ? ` style="color: ${data.color};"` : ""}>${TetrisView.Common.htmlEncode(data && data.title)}</div>
             </div>

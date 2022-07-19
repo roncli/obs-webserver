@@ -35,7 +35,6 @@ class Tetris {
         for (let i = 0; i < 10; i++) {
             if (i === 9) {
                 window.BlockrainThemes[`level${i}`] = {
-                    background: "#000000",
                     complexBlocks: {
                         line: `/images/blockrain/level${i}-ctm/i.png`,
                         square: `/images/blockrain/level${i}-ctm/o.png`,
@@ -48,7 +47,6 @@ class Tetris {
                 };
             } else {
                 window.BlockrainThemes[`level${i}`] = {
-                    background: "#000000",
                     complexBlocks: {
                         line: `/images/blockrain/level${i}/i.png`,
                         square: `/images/blockrain/level${i}/o.png`,
@@ -67,7 +65,7 @@ class Tetris {
             level = 0,
             score = 0;
 
-        const game = window.$("#tetris #game").blockrain({
+        const game = window.$("#tetris #tetris-game").blockrain({
             autoplay: true,
             autoplayRestart: true,
             speed: 100,
