@@ -173,7 +173,7 @@ class Log {
                             const message = Discord.embedBuilder({
                                 color: 0xFF0000,
                                 fields: [],
-                                timestamp: log.date.toISOString() // TODO: Remove .toISOString() once this is fixed: https://github.com/discordjs/discord.js/issues/8323
+                                timestamp: Date.now() // TODO: Use new Date() again once this is fixed: https://github.com/discordjs/discord.js/issues/8323
                             });
 
                             if (log.message) {
@@ -186,7 +186,7 @@ class Log {
                         const message = Discord.embedBuilder({
                             color: log.type === "log" ? 0x80FF80 : log.type === "warning" ? 0xFFFF00 : 0xFF0000,
                             fields: [],
-                            timestamp: log.date.toISOString() // TODO: Remove .toISOString() once this is fixed: https://github.com/discordjs/discord.js/issues/8323
+                            timestamp: Date.now() // TODO: Use new Date() again once this is fixed: https://github.com/discordjs/discord.js/issues/8323
                         });
 
                         if (log.message) {
@@ -230,7 +230,7 @@ class Log {
                 const message = Discord.embedBuilder({
                     color: 0xFF0000,
                     fields: [],
-                    timestamp: log.date.toISOString() // TODO: Remove .toISOString() once this is fixed: https://github.com/discordjs/discord.js/issues/8323
+                    timestamp: Date.now() // TODO: Use new Date() again once this is fixed: https://github.com/discordjs/discord.js/issues/8323
                 });
 
                 message.setDescription(log.message);
@@ -259,7 +259,7 @@ class Log {
                 const message = Discord.embedBuilder({
                     color: 0xFF0000,
                     fields: [],
-                    timestamp: log.date.toISOString() // TODO: Remove .toISOString() once this is fixed: https://github.com/discordjs/discord.js/issues/8323
+                    timestamp: Date.now() // TODO: Use new Date() again once this is fixed: https://github.com/discordjs/discord.js/issues/8323
                 });
 
                 message.setDescription("Error while writing to logging database.");
