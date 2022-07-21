@@ -210,11 +210,11 @@ class Discord {
             });
         }
 
-        if (!embed.data && embed.data.color) {
+        if (!embed.data || !embed.data.color) {
             embed.setColor(0x191935);
         }
 
-        if (!embed.data && !embed.data.timestamp) {
+        if (!embed.data || !embed.data.timestamp) {
             embed.setTimestamp(new Date());
         }
 
