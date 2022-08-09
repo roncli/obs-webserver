@@ -17,7 +17,7 @@
         "@twurple/api": "5.2.0",
         "@twurple/auth": "5.2.1",
         "@twurple/chat": "5.2.0",
-        "@twurple/pubsub": "5.2.0",
+        "@twurple/pubsub": "5.2.1",
         "blockrain": "Aerolab/blockrain.js#ba6d4192370d2ce4f75ce31796f345eb5711b489",
         "compression": "1.7.4",
         "csso": "5.0.4",
