@@ -491,9 +491,9 @@ div#ctm {
 
 div#ctm div#title {
     position: absolute;
-    top: 577px;
+    top: 665px;
     right: 24px;
-    width: 684px;
+    width: 365px;
     text-align: right;
 }
 
@@ -507,7 +507,7 @@ div#ctm div#title div.text {
 
 div#ctm div#info {
     position: absolute;
-    top: 712px;
+    top: 800px;
     left: 24px;
     width: 636px;
     font-size: 18px;
@@ -548,9 +548,10 @@ div#ctm div#notification div.notification .message {
 
 div#ctm div#elapsed {
     position: absolute;
-    top: 446px;
+    left: 24px;
+    top: 586px;
     width: 636px;
-    text-align: center;
+    text-align: left;
     color: white;
     font-size: 72px;
 }

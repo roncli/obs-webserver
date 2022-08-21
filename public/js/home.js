@@ -28,6 +28,22 @@ class Home {
         Home.spotify = false;
     }
 
+    //                          ##                #     #      #
+    //                         #  #               #           # #
+    // # #    ##   # #    ##    #    ###    ##   ###   ##     #    #  #
+    // ####  #  #  # #   # ##    #   #  #  #  #   #     #    ###   #  #
+    // #  #  #  #  # #   ##    #  #  #  #  #  #   #     #     #     # #
+    // #  #   ##    #     ##    ##   ###    ##     ##  ###    #      #
+    //                               #                              #
+    /**
+     * Move Spotify to the specified top position.
+     * @param {string} top The top position.
+     * @returns {void}
+     */
+    static moveSpotify(top) {
+        document.getElementById("spotify").style.top = top;
+    }
+
     //          #                    #       #                   ##                    #
     //          #                    #      # #                   #
     //   ###   ####    ###   # ##   ####   #   #  # ##    ###     #    #   #   ###    ##     ###
@@ -47,6 +63,8 @@ class Home {
         await window.Common.loadTemplate("/js/?files=/views/home/analysis.js", "AnalysisView");
 
         await window.Common.loadDataIntoTemplate("/api/config/roncliGaming", "#scene", window.AnalysisView.get);
+
+        Home.moveSpotify("");
 
         window.Game.start();
     }
@@ -68,6 +86,8 @@ class Home {
 
         await window.Common.loadDataIntoTemplate("/api/config/roncliGaming", "#scene", window.CTMView.get);
 
+        Home.moveSpotify("586px");
+
         window.Game.start();
     }
 
@@ -85,6 +105,8 @@ class Home {
         await window.Common.loadTemplate("/js/?files=/views/home/frame.js,/js/home/frame.js", "FrameView");
 
         document.getElementById("scene").innerHTML = window.FrameView.get(true);
+
+        Home.moveSpotify("");
 
         window.Frame.start();
     }
@@ -105,6 +127,8 @@ class Home {
         await window.Common.loadTemplate("/js/?files=/views/home/game.js", "GameView");
 
         await window.Common.loadDataIntoTemplate("/api/config/roncliGaming", "#scene", window.GameView.get);
+
+        Home.moveSpotify("");
 
         window.Game.start();
     }
@@ -133,6 +157,8 @@ class Home {
         if (bannerDiv) {
             bannerDiv.style.backgroundImage = `url(${banner})`;
         }
+
+        Home.moveSpotify("");
 
         window.Game.start();
     }
