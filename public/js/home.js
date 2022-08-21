@@ -41,7 +41,11 @@ class Home {
      * @returns {void}
      */
     static moveSpotify(top) {
-        document.getElementById("spotify").style.top = top;
+        const spotify = document.getElementById("spotify");
+
+        if (spotify) {
+            spotify.style.top = top;
+        }
     }
 
     //          #                    #       #                   ##                    #

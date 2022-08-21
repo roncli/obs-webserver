@@ -30,6 +30,7 @@ class HomeView {
             <div id="preload-media" class="hidden">
                 <video>
                     <source src="/media/intro.mp4" type="video/mp4" />
+                    <source src="/media/trailer.mp4" type="video/mp4" />
                 </video>
             </div>
         `;
