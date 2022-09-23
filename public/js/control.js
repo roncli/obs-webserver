@@ -185,6 +185,38 @@ class Control {
                 }));
             }
 
+            if (button && button.matches("button#player1-start-replay")) {
+                Control.ws.send(JSON.stringify({
+                    type: "load-twitch-replay",
+                    name: document.getElementById("twitch1").value,
+                    player: 1,
+                    sendSettings: "roncliGaming"
+                }));
+            }
+
+            if (button && button.matches("button#player2-start-replay")) {
+                Control.ws.send(JSON.stringify({
+                    type: "load-twitch-replay",
+                    name: document.getElementById("twitch2").value,
+                    player: 2,
+                    sendSettings: "roncliGaming"
+                }));
+            }
+
+            if (button && button.matches("button#player1-toggle-replay")) {
+                Control.ws.send(JSON.stringify({
+                    type: "toggle-replay",
+                    player: 1
+                }));
+            }
+
+            if (button && button.matches("button#player2-toggle-replay")) {
+                Control.ws.send(JSON.stringify({
+                    type: "toggle-replay",
+                    player: 2
+                }));
+            }
+
             if (button && button.matches("button#banner-go")) {
                 /** @type {HTMLSelectElement} */
                 const bannerList = document.getElementById("banner-list");

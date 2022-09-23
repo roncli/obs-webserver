@@ -130,6 +130,44 @@ class WebsocketListener {
                 }
 
                 break;
+            case "load-twitch-replay":
+                childProcess.spawn("streamlink", [
+                    "--twitch-disable-hosting",
+                    "--twitch-disable-ads",
+                    "--player", "C:\\Program Files\\VideoLAN\\VLC\\vlc.exe",
+                    "--player-args", `--no-one-instance --play-and-exit --input-title-format "Player ${data.player} Replay" --qt-minimal-view --no-audio`,
+                    "--hls-live-edge", "3",
+                    "--hls-segment-threads", "1",
+                    "--hls-start-offset", "00:00:20",
+                    "--retry-open", "1",
+                    "--retry-max", "5",
+                    "--retry-streams", "1",
+                    `twitch.tv/${data.name}`,
+                    "best"
+                ]);
+
+                if (data.sendSettings) {
+                    Websocket.broadcast({
+                        type: "settings",
+                        data: {
+                            type: data.sendSettings,
+                            data: ConfigFile.get("roncliGaming")
+                        }
+                    });
+                }
+
+                break;
+            case "toggle-replay": {
+                const visible = await OBSWebsocket.isVisible("Restreams", `Player ${data.player} - Replay`);
+
+                if (visible) {
+                    OBSWebsocket.stopReplay(`Player ${data.player}`);
+                } else {
+                    OBSWebsocket.startReplay(`Player ${data.player}`);
+                }
+
+                break;
+            }
             case "banner":
                 Websocket.broadcast({
                     type: "banner",
@@ -226,11 +264,15 @@ class WebsocketListener {
                             OBSWebsocket.stopDisplay();
                             OBSWebsocket.stopCTM();
                             OBSWebsocket.stopRestreams();
+                            OBSWebsocket.stopReplay("Player 1");
+                            OBSWebsocket.stopReplay("Player 2");
                             OBSWebsocket.stopDiscord("game");
                             OBSWebsocket.stopDiscord("analysis");
                             OBSWebsocket.stopDiscord("headtohead");
                             OBSWebsocket.stopTetris();
                             OBSWebsocket.stopRestreams();
+                            OBSWebsocket.stopReplay("Player 1");
+                            OBSWebsocket.stopReplay("Player 2");
                             until += 5000;
                             await WebsocketListener.sleep(until - Date.now());
                             if (WebsocketListener.reset) {
@@ -368,6 +410,8 @@ class WebsocketListener {
                                     OBSWebsocket.startDisplay();
                                     OBSWebsocket.stopCTM();
                                     OBSWebsocket.stopRestreams();
+                                    OBSWebsocket.stopReplay("Player 1");
+                                    OBSWebsocket.stopReplay("Player 2");
                                     break;
                                 case "Start Analysis":
                                     OBSWebsocket.stopWebcam("game");
@@ -376,6 +420,8 @@ class WebsocketListener {
                                     OBSWebsocket.stopDisplay();
                                     OBSWebsocket.stopCTM();
                                     OBSWebsocket.stopRestreams();
+                                    OBSWebsocket.stopReplay("Player 1");
+                                    OBSWebsocket.stopReplay("Player 2");
                                     break;
                                 case "Start Head to Head":
                                     OBSWebsocket.stopWebcam("game");
@@ -384,6 +430,8 @@ class WebsocketListener {
                                     OBSWebsocket.stopDisplay();
                                     OBSWebsocket.stopCTM();
                                     OBSWebsocket.startRestreams();
+                                    OBSWebsocket.stopReplay("Player 1");
+                                    OBSWebsocket.stopReplay("Player 2");
                                     break;
                                 case "Start CTM":
                                     OBSWebsocket.stopWebcam("game");
@@ -392,6 +440,8 @@ class WebsocketListener {
                                     OBSWebsocket.stopDisplay();
                                     OBSWebsocket.startCTM();
                                     OBSWebsocket.stopRestreams();
+                                    OBSWebsocket.stopReplay("Player 1");
+                                    OBSWebsocket.stopReplay("Player 2");
                                     break;
                             }
                             OBSWebsocket.stopDiscord("game");
@@ -462,6 +512,8 @@ class WebsocketListener {
                                     OBSWebsocket.stopDisplay();
                                     OBSWebsocket.stopCTM();
                                     OBSWebsocket.stopRestreams();
+                                    OBSWebsocket.stopReplay("Player 1");
+                                    OBSWebsocket.stopReplay("Player 2");
                                     OBSWebsocket.stopDiscord("game");
                                     OBSWebsocket.stopDiscord("analysis");
                                     OBSWebsocket.stopDiscord("headtohead");
@@ -505,6 +557,8 @@ class WebsocketListener {
                                     OBSWebsocket.startDisplay();
                                     OBSWebsocket.stopCTM();
                                     OBSWebsocket.stopRestreams();
+                                    OBSWebsocket.stopReplay("Player 1");
+                                    OBSWebsocket.stopReplay("Player 2");
                                     OBSWebsocket.stopDiscord("game");
                                     OBSWebsocket.stopDiscord("analysis");
                                     OBSWebsocket.stopDiscord("headtohead");
@@ -552,6 +606,8 @@ class WebsocketListener {
                                     OBSWebsocket.stopDisplay();
                                     OBSWebsocket.stopCTM();
                                     OBSWebsocket.stopRestreams();
+                                    OBSWebsocket.stopReplay("Player 1");
+                                    OBSWebsocket.stopReplay("Player 2");
                                     OBSWebsocket.stopDiscord("game");
                                     OBSWebsocket.stopDiscord("analysis");
                                     OBSWebsocket.stopDiscord("headtohead");
@@ -600,6 +656,8 @@ class WebsocketListener {
                                     OBSWebsocket.stopDisplay();
                                     OBSWebsocket.stopCTM();
                                     OBSWebsocket.startRestreams();
+                                    OBSWebsocket.stopReplay("Player 1");
+                                    OBSWebsocket.stopReplay("Player 2");
                                     OBSWebsocket.stopDiscord("game");
                                     OBSWebsocket.stopDiscord("analysis");
                                     OBSWebsocket.stopDiscord("headtohead");
@@ -647,6 +705,8 @@ class WebsocketListener {
                                     OBSWebsocket.stopDisplay();
                                     OBSWebsocket.startCTM();
                                     OBSWebsocket.stopRestreams();
+                                    OBSWebsocket.stopReplay("Player 1");
+                                    OBSWebsocket.stopReplay("Player 2");
                                     OBSWebsocket.stopDiscord("game");
                                     OBSWebsocket.stopDiscord("analysis");
                                     OBSWebsocket.stopDiscord("headtohead");
@@ -727,6 +787,8 @@ class WebsocketListener {
                                     OBSWebsocket.stopDisplay();
                                     OBSWebsocket.stopCTM();
                                     OBSWebsocket.stopRestreams();
+                                    OBSWebsocket.stopReplay("Player 1");
+                                    OBSWebsocket.stopReplay("Player 2");
                                     OBSWebsocket.stopDiscord("game");
                                     OBSWebsocket.stopDiscord("analysis");
                                     OBSWebsocket.stopDiscord("headtohead");
@@ -763,6 +825,8 @@ class WebsocketListener {
                                         OBSWebsocket.stopDisplay();
                                         OBSWebsocket.stopCTM();
                                         OBSWebsocket.stopRestreams();
+                                        OBSWebsocket.stopReplay("Player 1");
+                                        OBSWebsocket.stopReplay("Player 2");
                                         OBSWebsocket.stopDiscord("game");
                                         OBSWebsocket.stopDiscord("analysis");
                                         OBSWebsocket.stopDiscord("headtohead");
@@ -854,6 +918,8 @@ class WebsocketListener {
                             OBSWebsocket.stopDisplay();
                             OBSWebsocket.stopCTM();
                             OBSWebsocket.stopRestreams();
+                            OBSWebsocket.stopReplay("Player 1");
+                            OBSWebsocket.stopReplay("Player 2");
                             OBSWebsocket.stopDiscord("game");
                             OBSWebsocket.stopDiscord("analysis");
                             OBSWebsocket.stopDiscord("headtohead");

@@ -68,6 +68,8 @@ class RoncliGamingView {
                             Twitch <input type="text" class="setting" id="twitch1" data-type="twitch1" style="width: 300px;" value="${RoncliGamingView.Common.htmlEncode(data.data.twitch1)}"><br />
                             Score <input type="text" class="setting" data-type="score1" style="width: 300px;" value="${RoncliGamingView.Common.htmlEncode(data.data.score1)}"><br />
                             <button id="player1-start">Start Player 1</button>
+                            <button id="player1-start-replay">Start Player 1 Replay</button>
+                            <button id="player1-toggle-replay">Toggle Player 1 Replay</button>
                         </div>
                         <div>
                             Player 2<br />
@@ -75,6 +77,8 @@ class RoncliGamingView {
                             Twitch <input type="text" class="setting" id="twitch2" data-type="twitch2" style="width: 300px;" value="${RoncliGamingView.Common.htmlEncode(data.data.twitch2)}"><br />
                             Score <input type="text" class="setting" data-type="score2" style="width: 300px;" value="${RoncliGamingView.Common.htmlEncode(data.data.score2)}"><br />
                             <button id="player2-start">Start Player 2</button>
+                            <button id="player2-start-replay">Start Player 2 Replay</button>
+                            <button id="player2-toggle-replay">Toggle Player 2 Replay</button>
                         </div>
                         <div>
                             <button id="timer-reset">Reset Timer</button>

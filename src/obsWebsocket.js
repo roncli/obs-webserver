@@ -36,6 +36,25 @@ class OBSWebsocket {
         })).sceneItemId;
     }
 
+    //  #           #  #   #            #    #     ##
+    //              #  #                     #      #
+    // ##     ###   #  #  ##     ###   ##    ###    #     ##
+    //  #    ##     #  #   #    ##      #    #  #   #    # ##
+    //  #      ##    ##    #      ##    #    #  #   #    ##
+    // ###   ###     ##   ###   ###    ###   ###   ###    ##
+    /**
+     * Determines if a source is visible.
+     * @param {string} sceneName The scene name.
+     * @param {string} sourceName The source name.
+     * @returns {Promise<boolean>} A promise that returns whether the source is visible.
+     */
+    static async isVisible(sceneName, sourceName) {
+        return (await obs.call("GetSceneItemEnabled", {
+            sceneName,
+            sceneItemId: await OBSWebsocket.getItemId(sceneName, sourceName)
+        })).sceneItemEnabled;
+    }
+
     //         #                 #
     //         #                 #
     //  ###   ###    ###  ###   ###
@@ -191,6 +210,37 @@ class OBSWebsocket {
                 sourceName: "Browser - Overlay",
                 filterName: "Chroma Key",
                 filterEnabled: true
+            });
+        } catch (err) {} finally {}
+    }
+
+    //         #                 #    ###               ##
+    //         #                 #    #  #               #
+    //  ###   ###    ###  ###   ###   #  #   ##   ###    #     ###  #  #
+    // ##      #    #  #  #  #   #    ###   # ##  #  #   #    #  #  #  #
+    //   ##    #    # ##  #      #    # #   ##    #  #   #    # ##   # #
+    // ###      ##   # #  #       ##  #  #   ##   ###   ###    # #    #
+    //                                            #                  #
+    /**
+     * Starts the replay and the filter for the live scene.
+     * @param {string} source The name of the source.
+     * @returns {Promise} A promise that resolves when the replay is started.
+     */
+    static async startReplay(source) {
+        if (!settings.obswsEnabled) {
+            return;
+        }
+
+        try {
+            await obs.call("SetSourceFilterEnabled", {
+                sourceName: source,
+                filterName: "Color Correction",
+                filterEnabled: true
+            });
+            await obs.call("SetSceneItemEnabled", {
+                sceneName: "Restreams",
+                sceneItemId: await OBSWebsocket.getItemId("Restreams", `${source} - Replay`),
+                sceneItemEnabled: true
             });
         } catch (err) {} finally {}
     }
@@ -507,6 +557,37 @@ class OBSWebsocket {
                 sourceName: "Browser - Overlay",
                 filterName: "Chroma Key",
                 filterEnabled: false
+            });
+        } catch (err) {} finally {}
+    }
+
+    //         #                ###               ##
+    //         #                #  #               #
+    //  ###   ###    ##   ###   #  #   ##   ###    #     ###  #  #
+    // ##      #    #  #  #  #  ###   # ##  #  #   #    #  #  #  #
+    //   ##    #    #  #  #  #  # #   ##    #  #   #    # ##   # #
+    // ###      ##   ##   ###   #  #   ##   ###   ###    # #    #
+    //                    #                 #                  #
+    /**
+     * Stops the replay and the filter for the live scene.
+     * @param {string} source The name of the source.
+     * @returns {Promise} A promise that resolves when the replay is stopped.
+     */
+    static async stopReplay(source) {
+        if (!settings.obswsEnabled) {
+            return;
+        }
+
+        try {
+            await obs.call("SetSourceFilterEnabled", {
+                sourceName: source,
+                filterName: "Color Correction",
+                filterEnabled: false
+            });
+            await obs.call("SetSceneItemEnabled", {
+                sceneName: "Restreams",
+                sceneItemId: await OBSWebsocket.getItemId("Restreams", `${source} - Replay`),
+                sceneItemEnabled: false
             });
         } catch (err) {} finally {}
     }
