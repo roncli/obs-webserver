@@ -559,14 +559,14 @@ div#ctm div#elapsed {
 div#tetris div,
 div#tetris2p div,
 div#tetris4p div {
-    font-family: "Bungee Regular";
+    font-family: "Press Start Regular";
     text-transform: uppercase;
-    font-size: 36px;
+    font-size: 24px;
 }
 
 div#tetris {
     position: absolute;
-    background: url("/images/tdm-background.png") 1920px 1080px;
+    background: url("/images/background.png") 1920px 1080px;
     width: 1920px;
     height: 1080px;
 }
@@ -605,7 +605,7 @@ div#tetris .blockrain-score {
 
 div#tetris2p {
     position: absolute;
-    background: url("/images/tdm-background.png") 1920px 1080px;
+    background: url("/images/background.png") 1920px 1080px;
     width: 1920px;
     height: 1080px;
 }
@@ -619,6 +619,7 @@ div#tetris2p div#left-player {
     justify-content: right;
     width: 800px;
     height: 125px;
+    font-size: 36px;
 }
 
 div#tetris2p div#right-player {
@@ -629,6 +630,7 @@ div#tetris2p div#right-player {
     align-items: center;
     width: 808px;
     height: 125px;
+    font-size: 36px;
 }
 
 div#tetris2p div#left-score {
@@ -658,7 +660,7 @@ div#tetris2p div#left-text {
     position: absolute;
     left: 160px;
     top: 415px;
-    font-size: 40px;
+    font-size: 30px;
     width: 373px;
     height: 506px;
 }
@@ -667,7 +669,7 @@ div#tetris2p div#right-text {
     position: absolute;
     left: 1388px;
     top: 415px;
-    font-size: 40px;
+    font-size: 30px;
     width: 373px;
     height: 506px;
 }
@@ -703,7 +705,7 @@ div#tetris2p div#status {
 
 div#tetris4p {
     position: absolute;
-    background: url("/images/tdm-background.png") 1920px 1080px;
+    background: url("/images/background.png") 1920px 1080px;
     width: 1920px;
     height: 1080px;
 }
