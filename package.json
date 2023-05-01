@@ -33,7 +33,7 @@
         "terser": "5.16.9"
     },
     "devDependencies": {
-        "@babel/core": "7.21.4",
+        "@babel/core": "7.21.5",
         "@babel/eslint-parser": "7.19.1",
         "@types/express": "4.17.17",
         "@types/express-ws": "3.0.1",
