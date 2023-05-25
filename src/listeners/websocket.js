@@ -804,6 +804,11 @@ class WebsocketListener {
                                 return;
                             default:
                                 {
+                                    if (WebsocketListener.isEnding) {
+                                        return;
+                                    }
+                                    WebsocketListener.isEnding = true;
+
                                     let until = Date.now();
 
                                     Notifications.stop();
@@ -819,6 +824,7 @@ class WebsocketListener {
                                         await WebsocketListener.sleep(until - Date.now());
                                         if (WebsocketListener.reset) {
                                             WebsocketListener.reset = false;
+                                            WebsocketListener.isEnding = false;
                                             return;
                                         }
 
@@ -842,6 +848,7 @@ class WebsocketListener {
                                         await WebsocketListener.sleep(until - Date.now());
                                         if (WebsocketListener.reset) {
                                             WebsocketListener.reset = false;
+                                            WebsocketListener.isEnding = false;
                                             return;
                                         }
                                     } else {
@@ -864,6 +871,7 @@ class WebsocketListener {
                                     await WebsocketListener.sleep(until - Date.now());
                                     if (WebsocketListener.reset) {
                                         WebsocketListener.reset = false;
+                                        WebsocketListener.isEnding = false;
                                         return;
                                     }
 
@@ -878,6 +886,7 @@ class WebsocketListener {
                                     await WebsocketListener.sleep(until - Date.now());
                                     if (WebsocketListener.reset) {
                                         WebsocketListener.reset = false;
+                                        WebsocketListener.isEnding = false;
                                         return;
                                     }
 
@@ -891,12 +900,15 @@ class WebsocketListener {
                                     await WebsocketListener.sleep(until - Date.now());
                                     if (WebsocketListener.reset) {
                                         WebsocketListener.reset = false;
+                                        WebsocketListener.isEnding = false;
                                         return;
                                     }
 
                                     OBSWebsocket.stopStreaming();
                                     OBSWebsocket.switchScene("Off Air");
                                     Notifications.reset();
+
+                                    WebsocketListener.isEnding = false;
                                 }
 
                                 break;
@@ -1134,6 +1146,8 @@ class WebsocketListener {
 WebsocketListener.data = {
     phase: ""
 };
+
+WebsocketListener.isEnding = false;
 
 WebsocketListener.reset = false;
 
