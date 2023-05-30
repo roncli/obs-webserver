@@ -85,6 +85,11 @@ class SpotifyApi {
                         return;
                     }
 
+                    if (err.message && err.message.indexOf("ERR_SOCKET_CONNECTION_TIMEOUT") !== -1) {
+                        res.sendStatus(500);
+                        return;
+                    }
+
                     // Log other errors.
                     Log.exception("There was an error with getting the Spotify now playing list.", err);
                     res.sendStatus(500);
