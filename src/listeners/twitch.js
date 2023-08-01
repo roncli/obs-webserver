@@ -4,8 +4,6 @@
  * @typedef {import("../../types/twitchListenerTypes").ErrorEvent} TwitchListenerTypes.ErrorEvent
  * @typedef {import("../../types/twitchListenerTypes").FollowEvent} TwitchListenerTypes.FollowEvent
  * @typedef {import("../../types/twitchListenerTypes").GiftPrimeEvent} TwitchListenerTypes.GiftPrimeEvent
- * @typedef {import("../../types/twitchListenerTypes").HostEvent} TwitchListenerTypes.HostEvent
- * @typedef {import("../../types/twitchListenerTypes").HostedEvent} TwitchListenerTypes.HostedEvent
  * @typedef {import("../../types/twitchListenerTypes").MessageEvent} TwitchListenerTypes.MessageEvent
  * @typedef {import("../../types/twitchListenerTypes").RaidedEvent} TwitchListenerTypes.RaidedEvent
  * @typedef {import("../../types/twitchListenerTypes").RedemptionEvent} TwitchListenerTypes.RedemptionEvent
@@ -152,39 +150,6 @@ class TwitchListener {
         if (ev.channel === settings.twitch.channelName) {
             Notifications.add("giftPrime", ev);
             Twitch.botChatClient.say(settings.twitch.channelName, `${ev.name} has gifted ${ev.gift}, a Prime gift, to the community!`);
-        }
-    }
-
-    // #                   #
-    // #                   #
-    // ###    ##    ###   ###
-    // #  #  #  #  ##      #
-    // #  #  #  #    ##    #
-    // #  #   ##   ###      ##
-    /**
-     * Handles when a channel gets hosted.
-     * @param {TwitchListenerTypes.HostEvent} ev The host event.
-     * @returns {void}
-     */
-    static host(ev) {
-
-    }
-
-    // #                   #             #
-    // #                   #             #
-    // ###    ##    ###   ###    ##    ###
-    // #  #  #  #  ##      #    # ##  #  #
-    // #  #  #  #    ##    #    ##    #  #
-    // #  #   ##   ###      ##   ##    ###
-    /**
-     * Handles when the current channel is hosted.
-     * @param {TwitchListenerTypes.HostedEvent} ev The hosted event.
-     * @returns {void}
-     */
-    static hosted(ev) {
-        if (ev.channel === settings.twitch.channelName) {
-            Notifications.add("hosted", ev);
-            Twitch.botChatClient.say(settings.twitch.channelName, `Thanks for the host, ${ev.name}!  Everyone, be sure to visit https://twitch.tv/${ev.user} to check out their stream!`);
         }
     }
 

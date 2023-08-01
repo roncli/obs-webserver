@@ -35,21 +35,6 @@ declare namespace TwitchListenerTypes {
         gift: string
     }
 
-    type HostEvent = {
-        channel: string
-        user: string
-        name: string
-        viewerCount: number
-    }
-
-    type HostedEvent = {
-        channel: string
-        user: string
-        name: string
-        auto: boolean
-        viewerCount: number
-    }
-
     type MessageEvent = {
         channel: string
         user: string

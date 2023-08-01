@@ -15,13 +15,13 @@ const events = require("events"),
 
     settings = require("../../settings");
 
-/** @type {AuthProvider} */
+/** @type {TwitchAuth.AppTokenAuthProvider} */
 let apiAuthProvider;
 
 /** @type {string} */
 let botAccessToken;
 
-/** @type {AuthProvider} */
+/** @type {TwitchAuth.RefreshingAuthProvider} */
 let botAuthProvider;
 
 /** @type {string} */
@@ -36,7 +36,7 @@ let botTwitchClient;
 /** @type {string} */
 let channelAccessToken;
 
-/** @type {AuthProvider} */
+/** @type {TwitchAuth.RefreshingAuthProvider} */
 let channelAuthProvider;
 
 /** @type {string} */
@@ -135,10 +135,10 @@ class Twitch {
      * @returns {Promise<boolean>} Returns whether the Twitch client is ready.
      */
     static async connect() {
-        channelAccessToken = channelAccessToken || ConfigFile.get("channelAccessToken");
-        channelRefreshToken = channelRefreshToken || ConfigFile.get("channelRefreshToken");
-        botAccessToken = botAccessToken || ConfigFile.get("botAccessToken");
-        botRefreshToken = botRefreshToken || ConfigFile.get("botRefreshToken");
+        channelAccessToken ||= ConfigFile.get("channelAccessToken");
+        channelRefreshToken ||= ConfigFile.get("channelRefreshToken");
+        botAccessToken ||= ConfigFile.get("botAccessToken");
+        botRefreshToken ||= ConfigFile.get("botRefreshToken");
 
         if (!channelAccessToken || !channelRefreshToken || !botAccessToken || !botRefreshToken) {
             return false;
@@ -170,63 +170,63 @@ class Twitch {
      * @returns {Promise} A promise that resolves when login is complete.
      */
     static async login() {
-        channelAuthProvider = new TwitchAuth.RefreshingAuthProvider(
-            {
-                clientId: settings.twitch.clientId,
-                clientSecret: settings.twitch.clientSecret,
-                onRefresh: async (token) => {
-                    channelAccessToken = token.accessToken;
-                    channelRefreshToken = token.refreshToken;
-                    await ConfigFile.set({
-                        channelAccessToken,
-                        channelRefreshToken
-                    });
-                }
-            },
-            {
-                accessToken: channelAccessToken,
-                refreshToken: channelRefreshToken,
-                expiresIn: void 0,
-                obtainmentTimestamp: void 0,
-                scope: settings.twitch.channelScopes
-            }
-        );
+        channelAuthProvider = new TwitchAuth.RefreshingAuthProvider({
+            clientId: settings.twitch.clientId,
+            clientSecret: settings.twitch.clientSecret
+        });
+
+        channelAuthProvider.onRefresh(async (userId, token) => {
+            channelAccessToken = token.accessToken;
+            channelRefreshToken = token.refreshToken;
+            await ConfigFile.set({
+                channelAccessToken,
+                channelRefreshToken
+            });
+        });
+
+        await channelAuthProvider.addUserForToken({
+            accessToken: channelAccessToken,
+            refreshToken: channelRefreshToken,
+            expiresIn: 0,
+            obtainmentTimestamp: 0,
+            scope: settings.twitch.channelScopes
+        }, ["chat"]);
 
         channelTwitchClient = new TwitchClient({
             authProvider: channelAuthProvider
         });
 
-        await channelTwitchClient.requestScopes(settings.twitch.channelScopes);
+        await channelTwitchClient.requestScopesForUser(settings.twitch.channelUserId, settings.twitch.channelScopes);
 
-        botAuthProvider = new TwitchAuth.RefreshingAuthProvider(
-            {
-                clientId: settings.twitch.clientId,
-                clientSecret: settings.twitch.clientSecret,
-                onRefresh: async (token) => {
-                    botAccessToken = token.accessToken;
-                    botRefreshToken = token.refreshToken;
-                    await ConfigFile.set({
-                        botAccessToken,
-                        botRefreshToken
-                    });
-                }
-            },
-            {
-                accessToken: botAccessToken,
-                refreshToken: botRefreshToken,
-                expiresIn: void 0,
-                obtainmentTimestamp: void 0,
-                scope: settings.twitch.botScopes
-            }
-        );
+        botAuthProvider = new TwitchAuth.RefreshingAuthProvider({
+            clientId: settings.twitch.clientId,
+            clientSecret: settings.twitch.clientSecret
+        });
+
+        await botAuthProvider.addUserForToken({
+            accessToken: botAccessToken,
+            refreshToken: botRefreshToken,
+            expiresIn: void 0,
+            obtainmentTimestamp: void 0,
+            scope: settings.twitch.botScopes
+        }, ["chat"]);
+
+        botAuthProvider.onRefresh(async (userId, token) => {
+            botAccessToken = token.accessToken;
+            botRefreshToken = token.refreshToken;
+            await ConfigFile.set({
+                botAccessToken,
+                botRefreshToken
+            });
+        });
 
         botTwitchClient = new TwitchClient({
             authProvider: botAuthProvider
         });
 
-        await botTwitchClient.requestScopes(settings.twitch.botScopes);
+        await botTwitchClient.requestScopesForUser(settings.twitch.botUserId, settings.twitch.botScopes);
 
-        apiAuthProvider = new TwitchAuth.ClientCredentialsAuthProvider(settings.twitch.clientId, settings.twitch.clientSecret);
+        apiAuthProvider = new TwitchAuth.AppTokenAuthProvider(settings.twitch.clientId, settings.twitch.clientSecret);
 
         await Twitch.setupChat();
         await Twitch.setupPubSub();
@@ -267,8 +267,8 @@ class Twitch {
      */
     static async refreshTokens() {
         try {
-            await channelAuthProvider.refresh();
-            await botAuthProvider.refresh();
+            await channelAuthProvider.refreshAccessTokenForUser(settings.twitch.channelUserId);
+            await botAuthProvider.refreshAccessTokenForUser(settings.twitch.botUserId);
         } catch (err) {
             eventEmitter.emit("error", {
                 message: "Error refreshing twitch client tokens.",
@@ -293,7 +293,7 @@ class Twitch {
      */
     static async runAd() {
         try {
-            await channelTwitchClient.channels.startChannelCommercial(settings.twitch.userId, 120);
+            await channelTwitchClient.channels.startChannelCommercial(settings.twitch.channelUserId, 120);
         } catch (err) {
             eventEmitter.emit("error", {
                 message: "Error running an ad.",
@@ -315,7 +315,7 @@ class Twitch {
      */
     static async searchGameList(search) {
         try {
-            const client = IGDB.default(apiAuthProvider.clientId, (await apiAuthProvider.getAccessToken()).accessToken),
+            const client = IGDB.default(apiAuthProvider.clientId, (await apiAuthProvider.getAppAccessToken()).accessToken),
                 res = await client.where(`name ~ "${search.replace(/"/g, "\\\"")}"*`).fields(["id", "name", "cover.url"]).limit(50).request("/games");
 
             return res.data;
@@ -348,7 +348,7 @@ class Twitch {
             gameId = gameData.id;
         } catch (err) {}
 
-        await channelTwitchClient.channels.updateChannelInfo(settings.twitch.userId, {title, gameId});
+        await channelTwitchClient.channels.updateChannelInfo(settings.twitch.channelUserId, {title, gameId});
     }
 
     //               #                 ##   #            #
@@ -420,37 +420,7 @@ class Twitch {
                 channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
                 user,
                 name: subInfo.displayName,
-                gifter: subInfo.gifterDisplayName,
-                tier: subInfo.plan
-            });
-        });
-
-        channelChatClient.client.onHost(async (channel, target, viewers) => {
-            let user;
-            try {
-                user = (await channelTwitchClient.search.searchChannels(target)).data.find((c) => c.displayName === target);
-            } catch (err) {} finally {}
-
-            eventEmitter.emit("host", {
-                channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
-                user: user ? user.name : target,
-                name: target,
-                viewerCount: viewers
-            });
-        });
-
-        channelChatClient.client.onHosted(async (channel, byChannel, auto, viewers) => {
-            let user;
-            try {
-                user = (await channelTwitchClient.search.searchChannels(byChannel)).data.find((c) => c.displayName === byChannel);
-            } catch (err) {} finally {}
-
-            eventEmitter.emit("hosted", {
-                channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
-                user: user ? user.name : byChannel,
-                name: byChannel.charAt(0) === "#" ? byChannel.substr(1) : byChannel,
-                auto,
-                viewerCount: viewers
+                gifter: subInfo.gifterDisplayName
             });
         });
 
@@ -604,7 +574,7 @@ class Twitch {
 
         await pubsub.setup(channelTwitchClient._authProvider);
 
-        pubsub.client.onBits(settings.twitch.userId, async (message) => {
+        pubsub.client.onBits(settings.twitch.channelUserId, async (message) => {
             const displayName = message.userId ? (await channelTwitchClient.users.getUserById(message.userId)).displayName : "";
 
             eventEmitter.emit("bits", {
@@ -618,7 +588,7 @@ class Twitch {
             });
         });
 
-        pubsub.client.onRedemption(settings.twitch.userId, (message) => {
+        pubsub.client.onRedemption(settings.twitch.channelUserId, (message) => {
             eventEmitter.emit("redemption", {
                 userId: message.userId,
                 user: message.userName,

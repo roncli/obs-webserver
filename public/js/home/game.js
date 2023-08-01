@@ -405,34 +405,6 @@ class Game {
                             `);
 
                             break;
-                        case "hosted":
-                            if (!window.Home.data.hosted) {
-                                window.Home.data.hosted = {};
-                            }
-
-                            window.Home.data.hosted[ev.data.data.user] = {
-                                name: ev.data.data.name,
-                                viewerCount: ev.data.data.viewerCount,
-                                auto: ev.data.data.auto
-                            };
-
-                            window.Home.data.recent.push(/* html */`
-                                <div>
-                                    <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
-                                    <span class="text">Hosted${ev.data.data.viewerCount ? ` x${ev.data.data.viewerCount}` : ""}</span>
-                                </div>
-                            `);
-
-                            Game.notify("/images/roncliYouKnowIt-56.png", "/media/host-raid.ogg", /* html */`
-                                <div>
-                                    <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
-                                    <span class="text">is ${ev.data.data.auto ? "auto-" : ""}hosting the channel${ev.data.data.viewerCount ? /* html */` with</span>
-                                    <span class="header">${format(ev.data.data.viewerCount)}</span>
-                                    <span class="text">${ev.data.data.viewerCount === 1 ? "viewer" : "viewers"}` : ""}!</span>
-                                </div>
-                            `);
-
-                            break;
                         case "raided":
                             if (!window.Home.data.raided) {
                                 window.Home.data.raided = {};
@@ -837,7 +809,7 @@ class Game {
                                 isPrime: false,
                                 months: void 0,
                                 streak: void 0,
-                                tier: ev.data.data.tier
+                                tier: "Upgraded"
                             };
 
                             window.Home.data.recent.push(/* html */`
@@ -851,9 +823,7 @@ class Game {
                             Game.notify("/images/roncliGetRekt-56.png", "/media/sub.ogg", /* html */`
                                 <div>
                                     <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
-                                    <span class="text">has chosen to remain a</span>
-                                    <span class="header">${Game.getTierName(ev.data.data.tier)}</span>
-                                    <span class="text">for</span>
+                                    <span class="text">has chosen to upgrade their gift sub from</span>
                                     <span class="header">${window.Common.htmlEncode(ev.data.data.gifter)}!</span>
                                 </div>
                             `);

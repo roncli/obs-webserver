@@ -36,14 +36,13 @@ class GameSupportView {
         const bits = data.bits ? Object.keys(data.bits).reduce((prev, cur) => prev + data.bits[cur].bits, 0) : 0,
             followers = data.follow ? Object.keys(data.follow).length : 0,
             primeGifts = data.giftPrime ? Object.keys(data.giftPrime).reduce((prev, cur) => prev + data.giftPrime[cur].gifts.length, 0) : 0,
-            hosts = data.hosted ? Object.keys(data.hosted).length : 0,
-            hostedViewers = data.hosted ? Object.keys(data.hosted).reduce((prev, cur) => prev + data.hosted[cur].viewerCount, 0) : 0,
             raids = data.raided ? Object.keys(data.raided).length : 0,
             raiders = data.raided ? Object.keys(data.raided).reduce((prev, cur) => prev + data.raided[cur].viewerCount, 0) : 0,
             primeSubs = data.sub ? Object.keys(data.sub).filter((sub) => data.sub[sub].isPrime || data.sub[sub].tier === "Prime").length : 0,
             tier1Subs = data.sub ? Object.keys(data.sub).filter((sub) => !data.sub[sub].isPrime && data.sub[sub].tier === "1000").length : 0,
             tier2Subs = data.sub ? Object.keys(data.sub).filter((sub) => !data.sub[sub].isPrime && data.sub[sub].tier === "2000").length : 0,
             tier3Subs = data.sub ? Object.keys(data.sub).filter((sub) => !data.sub[sub].isPrime && data.sub[sub].tier === "3000").length : 0,
+            upgradedSubs = data.sub ? Object.keys(data.sub).filter((sub) => !data.sub[sub].isPrime && data.sub[sub].tier === "Upgraded").length : 0,
             giftedTier1Subs = data.subGift ? Object.keys(data.subGift).reduce((prev, cur) => prev + data.subGift[cur].gifts.filter((gift) => gift.tier === "1000").length, 0) : 0,
             giftedTier2Subs = data.subGift ? Object.keys(data.subGift).reduce((prev, cur) => prev + data.subGift[cur].gifts.filter((gift) => gift.tier === "2000").length, 0) : 0,
             giftedTier3Subs = data.subGift ? Object.keys(data.subGift).reduce((prev, cur) => prev + data.subGift[cur].gifts.filter((gift) => gift.tier === "3000").length, 0) : 0,
@@ -63,7 +62,7 @@ class GameSupportView {
 
         const donation = Object.keys(donations).map((d) => ({currency: d, amount: donations[d]})).sort((a, b) => a.currency === b.currency ? 0 : a.currency === "USD" ? -1 : b.currency === "USD" ? 1 : a.currency.localeCompare(b.currency));
 
-        if (bits + followers + primeGifts + hosts + hostedViewers + raids + raiders + primeSubs + tier1Subs + tier2Subs + tier3Subs + giftedTier1Subs + giftedTier2Subs + giftedTier3Subs + achievementPoints + donation.length === 0) {
+        if (bits + followers + primeGifts + raids + raiders + primeSubs + tier1Subs + tier2Subs + tier3Subs + upgradedSubs + giftedTier1Subs + giftedTier2Subs + giftedTier3Subs + achievementPoints + donation.length === 0) {
             return "";
         }
 
@@ -84,12 +83,6 @@ class GameSupportView {
                 ${primeGifts ? /* html */`
                     <div class="text">${format(primeGifts)} Prime ${primeGifts === 1 ? "Gift" : "Gifts"}</div>
                 ` : ""}
-                ${hosts ? /* html */`
-                    <div class="text">${format(hosts)} ${hosts === 1 ? "Host" : "Hosts"}</div>
-                ` : ""}
-                ${hostedViewers ? /* html */`
-                    <div class="text">${format(hostedViewers)} Hosted ${hostedViewers === 1 ? "Viewer" : "Viewers"}</div>
-                ` : ""}
                 ${raids ? /* html */`
                     <div class="text">${format(raids)} ${raids === 1 ? "Raid" : "Raids"}</div>
                 ` : ""}
@@ -107,6 +100,9 @@ class GameSupportView {
                 ` : ""}
                 ${tier3Subs ? /* html */`
                     <div class="text">${format(tier3Subs)} ${tier3Subs === 1 ? "Pyromaniac" : "Pyromaniacs"}</div>
+                ` : ""}
+                ${upgradedSubs ? /* html */`
+                    <div class="text">${format(upgradedSubs)} ${upgradedSubs === 1 ? "Upgraded Sub" : "Upgraded Subs"}</div>
                 ` : ""}
                 ${giftedTier1Subs ? /* html */`
                     <div class="text">${format(giftedTier1Subs)} ${giftedTier1Subs === 1 ? "Demolitionist" : "Demolitionists"} Gifted</div>

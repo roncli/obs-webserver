@@ -31,11 +31,6 @@ class FrameEndingView {
             followers = Object.keys(data.follow).map((f) => data.follow[f].name).sort();
         }
 
-        let hosts = [];
-        if (data.hosted) {
-            hosts = Object.keys(data.hosted).map((h) => data.hosted[h].name).sort();
-        }
-
         let raids = [];
         if (data.raided) {
             raids = Object.keys(data.raided).map((r) => data.raided[r].name).sort();
@@ -68,15 +63,12 @@ class FrameEndingView {
 
         return /* html */`
             <div id="crawler">
-                ${followers.length + hosts.length + raids.length + cheers.length + donations.length + subs.length === 0 ? /* html */`
+                ${followers.length + raids.length + cheers.length + donations.length + subs.length === 0 ? /* html */`
                     Thanks to everyone for watching!
                 ` : /* html */`
                     Thanks to everyone for watching, and an extra thanks to those who supported the stream today!
                     ${followers.length === 0 ? "" : /* html */`
                         <br /><br />New Followers:<br />${followers.map((f) => /* html */`<span class="text">${FrameEndingView.Common.htmlEncode(f)}</span>`).join("<br />")}
-                    `}
-                    ${hosts.length === 0 ? "" : /* html */`
-                        <br /><br />Hosts:<br />${hosts.map((h) => /* html */`<span class="text">${FrameEndingView.Common.htmlEncode(h)}</span>`).join("<br />")}
                     `}
                     ${raids.length === 0 ? "" : /* html */`
                         <br /><br />Raids:<br />${raids.map((r) => /* html */`<span class="text">${FrameEndingView.Common.htmlEncode(r)}</span>`).join("<br />")}

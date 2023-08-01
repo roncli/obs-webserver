@@ -5,6 +5,7 @@
  */
 
 const Log = require("../../../src/logging/log"),
+    settings = require("../../../settings"),
     Twitch = require("../../../src/twitch");
 
 //  ####     #     #     #                        #                #                               #
@@ -35,7 +36,7 @@ class BitLeaderboard {
         /** @type {HelixBitsLeaderboard} */
         let bits;
         try {
-            bits = await Twitch.channelTwitchClient.bits.getLeaderboard({
+            bits = await Twitch.channelTwitchClient.bits.getLeaderboard(settings.twitch.channelUserId, {
                 count: 100,
                 period: "all"
             });
