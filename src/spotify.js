@@ -62,7 +62,7 @@ class Spotify {
 
         setTimeout(() => {
             accessTokenValid = false;
-        }, 3540000);
+        }, data.body.expires_in * 1000 - 60000);
 
         spotify.setAccessToken(data.body.access_token);
     }
