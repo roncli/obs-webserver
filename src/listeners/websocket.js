@@ -101,7 +101,20 @@ class WebsocketListener {
                         title = roncliGaming.title.replace(/\n/g, " - "),
                         game = roncliGaming.game;
 
-                    await Twitch.setStreamInfo(title, game);
+                    try {
+                        await Twitch.setStreamInfo(title, game);
+                    } catch (err) {
+                        if (err && err._body) {
+                            const body = JSON.parse(err._body);
+
+                            Websocket.broadcast({
+                                type: "error",
+                                message: `There was an error setting the stream info: Status: ${body.status}, Message: ${body.message}`
+                            });
+                        }
+
+                        break;
+                    }
                 }
                 break;
             case "load-twitch":

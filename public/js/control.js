@@ -601,7 +601,9 @@ class Control {
                     }
                     break;
                 case "error":
-
+                    if (data.message) {
+                        alert(data.message);
+                    }
                     break;
                 default:
                     break;
