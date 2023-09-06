@@ -489,6 +489,45 @@ class Game {
                                     `);
 
                                     break;
+                                case "Overload: That's Not How You Use...": {
+                                    let weapon = "random";
+                                    if (ev.data.data.message.startsWith("driller")) {
+                                        weapon = "driller";
+                                    } else if (ev.data.data.message.startsWith("flak")) {
+                                        weapon = "flak";
+                                    } else if (ev.data.data.message.startsWith("thunderbolt")) {
+                                        weapon = "thunderbolt";
+                                    } else if (ev.data.data.message.startsWith("falcon")) {
+                                        weapon = "falcons";
+                                    } else if (ev.data.data.message.startsWith("missile pod") || ev.data.data.message.startsWith("missilepod")) {
+                                        weapon = "missile pods";
+                                    } else if (ev.data.data.message.startsWith("hunter")) {
+                                        weapon = "hunters";
+                                    } else if (ev.data.data.message.startsWith("creeper")) {
+                                        weapon = "creepers";
+                                    } else if (ev.data.data.message.startsWith("nova")) {
+                                        weapon = "novas";
+                                    } else if (ev.data.data.message.startsWith("devastator")) {
+                                        weapon = "devastators";
+                                    } else if (ev.data.data.message.startsWith("timer") || ev.data.data.message.startsWith("time bomb") || ev.data.data.message.startsWith("timebomb")) {
+                                        weapon = "timers";
+                                    } else if (ev.data.data.message.startsWith("vortex") || ev.data.data.message.startsWith("vortices")) {
+                                        weapon = "vortices";
+                                    }
+
+                                    Game.notify("/images/roncliFail-56.png", `/media/${weapon === "random" ? ["driller", "flak", "thunderbolt", "falcons", "missilepods", "hunters", "creepers", "novas", "devastators", "timers", "vortices"][Math.floor(Math.random() * 11)].replace(" ", "") : weapon.replace(" ", "")}.ogg`, /* html */`
+                                        <div>
+                                            <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
+                                            <span class="text">has spent</span>
+                                            <span class="header">${Game.cost(ev.data.data.cost)}</span>
+                                            <span class="text">to remind you</span>
+                                            <span class="header">that's not how you use ${weapon === "random" ? "that" : weapon}!</span>${ev.data.data.message ? /* html */`<br />
+                                            <span class="message">${window.Common.htmlEncode(ev.data.data.message)}</span>` : ""}
+                                        </div>
+                                    `);
+
+                                    break;
+                                }
                                 case "This is fine":
                                     Game.notify("/images/roncliFine-56.png", void 0, /* html */`
                                         <div>
