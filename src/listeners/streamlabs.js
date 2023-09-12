@@ -54,7 +54,7 @@ class StreamlabsListener {
                         user: message.name,
                         name: message.name,
                         date: message.created_at
-                    });
+                    }, "alert");
                     Twitch.botChatClient.say(settings.twitch.channelName, `Thank you for following roncli Gaming, ${message.name}!`);
                     break;
                 case "donation":
@@ -64,7 +64,7 @@ class StreamlabsListener {
                         amount: message.amount,
                         currency: message.currency,
                         message: message.message
-                    });
+                    }, "alert");
                     Twitch.botChatClient.say(settings.twitch.channelName, `Thank you ${message.name} for your generous donation of ${message.formatted_amount}${!message.currency || message.currency.length === 0 || message.currency === "USD" ? "" : ` ${message.currency}`}!`);
                     break;
             }

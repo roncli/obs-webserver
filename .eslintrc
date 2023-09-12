@@ -70,6 +70,7 @@
         ],
         "no-underscore-dangle": "off",
         "no-useless-constructor": "off",
+        "no-unmodified-loop-condition": "off",
         "no-void": "off",
         "object-property-newline": "off",
         "one-var": [

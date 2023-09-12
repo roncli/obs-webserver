@@ -1,4 +1,5 @@
 const Deferred = require("./deferred"),
+    Lighting = require("./lighting"),
     Queue = require("./queue"),
     Websocket = require("./websocket");
 
@@ -30,13 +31,12 @@ class Notifications {
      * Adds a notification to the queue.
      * @param {string} type The notification type.
      * @param {object} data The data of for notification.
+     * @param {string} [lighting] The optional lighting to use.
      * @returns {void}
      */
-    static add(type, data) {
-        console.log(`Received notification ${type}.`);
+    static add(type, data, lighting) {
         queue.push(async () => {
-            console.log(`Awaiting notification ${type}.`);
-            await Notifications.send(type, data);
+            await Notifications.send(type, data, lighting);
         });
     }
 
@@ -50,28 +50,37 @@ class Notifications {
      * Sends a notification to the websocket when ready.
      * @param {string} type The type of notification.
      * @param {object} data The data to send.
+     * @param {string} [lighting] The optional lighting to use.
      * @returns {Promise} A promise that resolves when the notification has been sent.
      */
-    static async send(type, data) {
+    static async send(type, data, lighting) {
+        const oldLighting = Lighting.data.currentLights;
+
         await notificationReady;
-        console.log("Notification system is ready.");
         await notificationCooldown;
-        console.log("Notification cooldown is ready.");
 
         if (!notificationCooldown || !notificationCooldown.isPending()) {
             notificationCooldown = Deferred.promise();
         }
         setTimeout(() => {
+            if (lighting && Lighting.data.currentLights === lighting) {
+                Lighting.stopAnimation();
+                Lighting.data.currentLights = oldLighting;
+                Lighting.startAnimation();
+            }
             notificationCooldown.resolve();
-            console.log("Notification cooldown is complete.");
         }, 10 * 1000);
 
-        console.log(`Sending notification ${type}.`);
         Websocket.broadcast({
             type: "notification",
             data: {type, data}
         });
-        console.log("Notificaiton cooldown is beginning.");
+
+        if (lighting) {
+            Lighting.stopAnimation();
+            Lighting.data.currentLights = lighting;
+            Lighting.startAnimation();
+        }
     }
 
     //         #                 #
@@ -85,7 +94,6 @@ class Notifications {
      * @returns {void}
      */
     static start() {
-        console.log("Starting notification system.");
         notificationReady.resolve();
         notificationCooldown.resolve();
     }
@@ -102,7 +110,6 @@ class Notifications {
      * @returns {void}
      */
     static stop() {
-        console.log("Stopping notification system.");
         if (!notificationReady || !notificationReady.isPending()) {
             notificationReady = Deferred.promise();
         }
@@ -119,8 +126,6 @@ class Notifications {
      * @returns {void}
      */
     static reset() {
-        console.log("Resetting notification system.");
-
         // Flush current notifications.
         Notifications.start();
 

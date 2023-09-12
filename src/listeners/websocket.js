@@ -1,10 +1,7 @@
-/**
- * @typedef {import("ws").Data} WebSocket.Data
- */
-
 const childProcess = require("child_process"),
 
     ConfigFile = require("../configFile"),
+    Lighting = require("../lighting"),
     Log = require("../logging/log"),
     Notifications = require("../notifications"),
     OBSWebsocket = require("../obsWebsocket"),
@@ -24,24 +21,6 @@ const childProcess = require("child_process"),
  * A class that handles listening to Websocket events.
  */
 class WebsocketListener {
-    //        ##
-    //         #
-    //  ###    #     ##    ##   ###
-    // ##      #    # ##  # ##  #  #
-    //   ##    #    ##    ##    #  #
-    // ###    ###    ##    ##   ###
-    //                          #
-    /**
-     * Sleeps the thread for the specified time.
-     * @param {number} ms The number of milliseconds to sleep for.
-     * @returns {Promise} A promise that resolves when the sleep period has completed.
-     */
-    static sleep(ms) {
-        return new Promise((resolve) => {
-            setTimeout(resolve, ms);
-        });
-    }
-
     // # #    ##    ###    ###    ###   ###   ##
     // ####  # ##  ##     ##     #  #  #  #  # ##
     // #  #  ##      ##     ##   # ##   ##   ##
@@ -264,6 +243,9 @@ class WebsocketListener {
                     case "Start CTM":
                         {
                             WebsocketListener.data.phase = "intro";
+                            Lighting.stopAnimation();
+                            Lighting.data.currentLights = "fire";
+                            Lighting.startAnimation();
 
                             let until = Date.now();
 
@@ -409,6 +391,10 @@ class WebsocketListener {
                                 return;
                             }
 
+                            Lighting.stopAnimation();
+                            Lighting.data.currentLights = "main";
+                            Lighting.startAnimation();
+
                             Websocket.broadcast({
                                 type: "scene",
                                 scene: {"Start Stream": "game", "Start Analysis": "analysis", "Start Head to Head": "headtohead", "Start CTM": "ctm"}[data.scene]
@@ -500,6 +486,9 @@ class WebsocketListener {
                                         return;
                                     }
 
+                                    Lighting.stopAnimation();
+                                    Lighting.data.currentLights = "fire";
+                                    Lighting.startAnimation();
                                     Websocket.broadcast({
                                         type: "scene",
                                         scene: "frame"
@@ -558,6 +547,9 @@ class WebsocketListener {
                                         return;
                                     }
 
+                                    Lighting.stopAnimation();
+                                    Lighting.data.currentLights = "main";
+                                    Lighting.startAnimation();
                                     Websocket.broadcast({
                                         type: "scene",
                                         scene: "game"
@@ -607,6 +599,9 @@ class WebsocketListener {
                                         return;
                                     }
 
+                                    Lighting.stopAnimation();
+                                    Lighting.data.currentLights = "main";
+                                    Lighting.startAnimation();
                                     Websocket.broadcast({
                                         type: "scene",
                                         scene: "analysis"
@@ -706,6 +701,9 @@ class WebsocketListener {
                                         return;
                                     }
 
+                                    Lighting.stopAnimation();
+                                    Lighting.data.currentLights = "main";
+                                    Lighting.startAnimation();
                                     Websocket.broadcast({
                                         type: "scene",
                                         scene: "ctm"
@@ -841,6 +839,9 @@ class WebsocketListener {
                                             return;
                                         }
 
+                                        Lighting.stopAnimation();
+                                        Lighting.data.currentLights = "fire";
+                                        Lighting.startAnimation();
                                         OBSWebsocket.stopDisplay();
                                         OBSWebsocket.stopCTM();
                                         OBSWebsocket.stopRestreams();
@@ -1153,6 +1154,24 @@ class WebsocketListener {
                         break;
                 }
         }
+    }
+
+    //        ##
+    //         #
+    //  ###    #     ##    ##   ###
+    // ##      #    # ##  # ##  #  #
+    //   ##    #    ##    ##    #  #
+    // ###    ###    ##    ##   ###
+    //                          #
+    /**
+     * Sleeps the thread for the specified time.
+     * @param {number} ms The number of milliseconds to sleep for.
+     * @returns {Promise} A promise that resolves when the sleep period has completed.
+     */
+    static sleep(ms) {
+        return new Promise((resolve) => {
+            setTimeout(resolve, ms);
+        });
     }
 }
 

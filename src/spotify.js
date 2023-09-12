@@ -1,5 +1,5 @@
 /**
- * @typedef {import("../types/SpotifyTypes").Track} SpotifyTypes.Track
+ * @typedef {import("../types/spotifyTypes").Track} SpotifyTypes.Track
  */
 
 const settings = require("../settings"),

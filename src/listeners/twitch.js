@@ -22,12 +22,16 @@
  * @typedef {import("../../types/viewTypes").Command} ViewTypes.Command
  */
 
-const ConfigFile = require("../configFile"),
+const Color = require("../color"),
+    ConfigFile = require("../configFile"),
+    Lighting = require("../lighting"),
     Log = require("../logging/log"),
     Notifications = require("../notifications"),
     Twitch = require("../twitch"),
 
-    settings = require("../../settings");
+    settings = require("../../settings"),
+
+    colorABoxRegex = /(?<box>[1-9]|1[0-6]) #?(?<color>[0-9a-f]{6})/i;
 
 /** @type {{[x: string]: boolean}} */
 const cooldown = {};
@@ -97,7 +101,7 @@ class TwitchListener {
      * @returns {void}
      */
     static bits(ev) {
-        Notifications.add("bits", ev);
+        Notifications.add("bits", ev, "alert");
         if (ev.isAnonymous) {
             Twitch.botChatClient.say(settings.twitch.channelName, `There has been an anonymous cheer of ${ev.name} bit${ev.bits === 1 ? "" : "s"}!`);
         } else {
@@ -130,7 +134,7 @@ class TwitchListener {
      * @returns {void}
      */
     static follow(ev) {
-        Notifications.add("follow", ev);
+        Notifications.add("follow", ev, "alert");
         Twitch.botChatClient.say(settings.twitch.channelName, `Thank you for following roncli Gaming, ${ev.name}!`);
     }
 
@@ -148,7 +152,7 @@ class TwitchListener {
      */
     static giftPrime(ev) {
         if (ev.channel === settings.twitch.channelName) {
-            Notifications.add("giftPrime", ev);
+            Notifications.add("giftPrime", ev, "alert");
             Twitch.botChatClient.say(settings.twitch.channelName, `${ev.name} has gifted ${ev.gift}, a Prime gift, to the community!`);
         }
     }
@@ -220,7 +224,7 @@ class TwitchListener {
      */
     static raided(ev) {
         if (ev.channel === settings.twitch.channelName) {
-            Notifications.add("raided", ev);
+            Notifications.add("raided", ev, "alert");
             Twitch.botChatClient.say(settings.twitch.channelName, `Thanks for the raid, ${ev.name}!  Everyone, be sure to visit https://twitch.tv/${ev.user} to check out their stream!`);
         }
     }
@@ -235,10 +239,30 @@ class TwitchListener {
     /**
      * Handles when channel points are redeemed in the channel.
      * @param {TwitchListenerTypes.RedemptionEvent} ev The redemption event.
-     * @returns {void}
+     * @returns {Promise} A promise that resolves when the redemption is completed.
      */
-    static redemption(ev) {
-        Notifications.add("redemption", ev);
+    static async redemption(ev) {
+        let lighting = void 0;
+        switch (ev.reward) {
+            case "Color a box":
+                if (colorABoxRegex.test(ev.message)) {
+                    const {groups: {box, color}} = colorABoxRegex.exec(ev.message);
+                    Lighting.data.lights.main.lights.set(+box, new Color(parseInt(color.substring(0, 2), 16), parseInt(color.substring(2, 4), 16), parseInt(color.substring(4, 6), 16)));
+                    if (Lighting.data.currentLights === "main") {
+                        await Lighting.data.lights.main.lights.illuminate();
+                    }
+                } else {
+                    Twitch.botChatClient.say(settings.twitch.channelName, `Oops, looks like your bytes were spent for naught, ${ev.user}!`);
+                }
+                return;
+            case "This is fine":
+                lighting = "fire";
+                break;
+            case "VIP Badge":
+                lighting = "alert";
+                break;
+        }
+        Notifications.add("redemption", ev, lighting);
     }
 
     //                          #
@@ -254,7 +278,7 @@ class TwitchListener {
      */
     static resub(ev) {
         if (ev.channel === settings.twitch.channelName) {
-            Notifications.add("resub", ev);
+            Notifications.add("resub", ev, "alert");
             Twitch.botChatClient.say(settings.twitch.channelName, `Thanks ${ev.name} for continuing to be a ${TwitchListener.getTierName(ev.tier, ev.isPrime)}!${ev.months && ev.months > 1 ? `  They have been subscribed for ${ev.months} months${ev.streak && ev.streak === ev.months ? " in a row!" : ""}${ev.streak && ev.streak > 1 && ev.streak !== ev.months ? ` and for ${ev.streak} months in a row!` : ""}!` : ""}`);
         }
     }
@@ -303,7 +327,7 @@ class TwitchListener {
      */
     static sub(ev) {
         if (ev.channel === settings.twitch.channelName) {
-            Notifications.add("sub", ev);
+            Notifications.add("sub", ev, "alert");
             Twitch.botChatClient.say(settings.twitch.channelName, `Thanks ${ev.name} for becoming a ${TwitchListener.getTierName(ev.tier, ev.isPrime)}!${ev.months && ev.months > 1 ? `  They have been subscribed for ${ev.months} months${ev.streak && ev.streak === ev.months ? " in a row!" : ""}${ev.streak && ev.streak > 1 && ev.streak !== ev.months ? ` and for ${ev.streak} months in a row!` : ""}!` : ""}`);
         }
     }
@@ -321,7 +345,7 @@ class TwitchListener {
      */
     static subExtend(ev) {
         if (ev.channel === settings.twitch.channelName) {
-            Notifications.add("subExtend", ev);
+            Notifications.add("subExtend", ev, "alert");
             Twitch.botChatClient.say(settings.twitch.channelName, `Thanks ${ev.name} for becoming a ${TwitchListener.getTierName(ev.tier, false)}!${ev.months && ev.months > 1 ? `  They have been subscribed for ${ev.months} months!` : ""}`);
         }
     }
@@ -339,7 +363,7 @@ class TwitchListener {
      */
     static subGift(ev) {
         if (ev.channel === settings.twitch.channelName) {
-            Notifications.add("subGift", ev);
+            Notifications.add("subGift", ev, "alert");
             Twitch.botChatClient.say(settings.twitch.channelName, `Thanks ${ev.gifterName} for making ${ev.name} a ${TwitchListener.getTierName(ev.tier, false)}!`);
         }
     }
@@ -358,7 +382,7 @@ class TwitchListener {
      */
     static subGiftCommunity(ev) {
         if (ev.channel === settings.twitch.channelName) {
-            Notifications.add("subGiftCommunity", ev);
+            Notifications.add("subGiftCommunity", ev, "alert");
             Twitch.botChatClient.say(settings.twitch.channelName, `Thanks ${ev.name} for making ${ev.giftCount} new ${TwitchListener.getTierName(ev.tier, false)}s!${ev.totalGiftCount && ev.giftCount !== ev.totalGiftCount ? `  They have gifted ${ev.totalGiftCount} total subscriptions in the channel!` : ""}`);
         }
     }
@@ -377,7 +401,7 @@ class TwitchListener {
      */
     static subGiftCommunityPayForward(ev) {
         if (ev.channel === settings.twitch.channelName) {
-            Notifications.add("subGiftCommunityPayForward", ev);
+            Notifications.add("subGiftCommunityPayForward", ev, "alert");
             Twitch.botChatClient.say(settings.twitch.channelName, `Thanks ${ev.name} for paying forward ${ev.originalGifter}'s gift subscription!`);
         }
     }
@@ -396,7 +420,7 @@ class TwitchListener {
      */
     static subGiftPayForward(ev) {
         if (ev.channel === settings.twitch.channelName) {
-            Notifications.add("subGiftPayForward", ev);
+            Notifications.add("subGiftPayForward", ev, "alert");
             Twitch.botChatClient.say(settings.twitch.channelName, `Thanks ${ev.name} for paying forward ${ev.originalGifter}'s gift subscription to ${ev.recipient}!`);
         }
     }
@@ -415,7 +439,7 @@ class TwitchListener {
      */
     static subGiftUpgrade(ev) {
         if (ev.channel === settings.twitch.channelName) {
-            Notifications.add("subGiftUpgrade", ev);
+            Notifications.add("subGiftUpgrade", ev, "alert");
             Twitch.botChatClient.say(settings.twitch.channelName, `Thanks ${ev.name} for remaining a ${TwitchListener.getTierName(ev.tier, false)}, continuing the gift subscription from ${ev.gifter}!`);
         }
     }
@@ -434,7 +458,7 @@ class TwitchListener {
      */
     static subPrimeUpgraded(ev) {
         if (ev.channel === settings.twitch.channelName) {
-            Notifications.add("subPrimeUpgraded", ev);
+            Notifications.add("subPrimeUpgraded", ev, "alert");
             Twitch.botChatClient.say(settings.twitch.channelName, `Thanks ${ev.name} for upgrading their Prime subscription and becoming a full ${TwitchListener.getTierName(ev.tier, false)}!`);
         }
     }
