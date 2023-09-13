@@ -904,6 +904,10 @@ class WebsocketListener {
                                         return;
                                     }
 
+                                    Lighting.stopAnimation();
+                                    Lighting.data.currentLights = "main";
+                                    Lighting.startAnimation();
+
                                     OBSWebsocket.stopWebcam("frame");
                                     Websocket.broadcast({
                                         type: "phase",
