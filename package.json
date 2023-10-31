@@ -30,7 +30,7 @@
         "obs-websocket-js": "5.0.3",
         "socket.io-client": "2.5.0",
         "spotify-web-api-node": "5.0.2",
-        "terser": "5.22.0",
+        "terser": "5.23.0",
         "wled": "1.1.0"
     },
     "devDependencies": {
