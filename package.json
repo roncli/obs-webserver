@@ -14,8 +14,8 @@
     },
     "dependencies": {
         "@root/request": "1.9.2",
-        "@twurple/api": "7.0.10",
-        "@twurple/auth": "7.0.10",
+        "@twurple/api": "7.2.1",
+        "@twurple/auth": "7.2.1",
         "@twurple/chat": "7.0.10",
         "@twurple/pubsub": "7.0.10",
         "blockrain": "Aerolab/blockrain.js#ba6d4192370d2ce4f75ce31796f345eb5711b489",
