@@ -286,6 +286,7 @@ class OBSWebsocket {
         }
 
         try {
+            await obs.call("StartRecord");
             await obs.call("StartStream");
         } catch (err) {} finally {}
     }
@@ -635,6 +636,7 @@ class OBSWebsocket {
 
         try {
             await obs.call("StopStream");
+            await obs.call("StopRecord");
         } catch (err) {} finally {}
     }
 
