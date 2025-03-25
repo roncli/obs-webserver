@@ -1,4 +1,5 @@
 /**
+ * @typedef {import("@twurple/api").HelixChannelFollower} HelixChannelFollower
  * @typedef {import("@twurple/auth").AuthProvider} AuthProvider
  * @typedef {import("@twurple/chat").ChatClient} ChatClient
  */
@@ -7,12 +8,11 @@ const events = require("events"),
     IGDB = require("igdb-api-node"),
     TwitchAuth = require("@twurple/auth"),
     TwitchClient = require("@twurple/api").ApiClient,
+    EventSubWs = require("@twurple/eventsub-ws"),
 
     Chat = require("./chat"),
     ConfigFile = require("../configFile"),
     Log = require("../logging/log"),
-    PubSub = require("./pubsub"),
-
     settings = require("../../settings");
 
 /** @type {TwitchAuth.AppTokenAuthProvider} */
@@ -48,8 +48,8 @@ let channelTwitchClient;
 /** @type {Chat} */
 let channelChatClient;
 
-/** @type {PubSub} */
-let pubsub;
+/** @type {EventSubWs.EventSubWsListener} */
+let eventSubListener;
 
 const eventEmitter = new events.EventEmitter();
 
@@ -158,6 +158,31 @@ class Twitch {
         return !!(channelAuthProvider && botAuthProvider);
     }
 
+    //              #    ####        ##    ##
+    //              #    #            #     #
+    //  ###   ##   ###   ###    ##    #     #     ##   #  #   ##   ###    ###
+    // #  #  # ##   #    #     #  #   #     #    #  #  #  #  # ##  #  #  ##
+    //  ##   ##     #    #     #  #   #     #    #  #  ####  ##    #       ##
+    // #      ##     ##  #      ##   ###   ###    ##   ####   ##   #     ###
+    //  ###
+    /**
+     * Gets the list of followers.
+     * @returns {Promise<HelixChannelFollower[]>} An array of followers.
+     */
+    static async getFollowers() {
+        try {
+            const followers = await channelTwitchClient.channels.getChannelFollowers(settings.twitch.channelUserId, void 0, {limit: 100});
+
+            return followers.data;
+        } catch (err) {
+            eventEmitter.emit("error", {
+                message: "Error getting followers.",
+                err
+            });
+            return [];
+        }
+    }
+
     // ##                 #
     //  #
     //  #     ##    ###  ##    ###
@@ -229,7 +254,7 @@ class Twitch {
         apiAuthProvider = new TwitchAuth.AppTokenAuthProvider(settings.twitch.clientId, settings.twitch.clientSecret);
 
         await Twitch.setupChat();
-        await Twitch.setupPubSub();
+        Twitch.setupEventSub();
     }
 
     // ##                             #
@@ -558,46 +583,44 @@ class Twitch {
         }
     }
 
-    //               #                ###         #      ##         #
-    //               #                #  #        #     #  #        #
-    //  ###    ##   ###   #  #  ###   #  #  #  #  ###    #    #  #  ###
-    // ##     # ##   #    #  #  #  #  ###   #  #  #  #    #   #  #  #  #
-    //   ##   ##     #    #  #  #  #  #     #  #  #  #  #  #  #  #  #  #
-    // ###     ##     ##   ###  ###   #      ###  ###    ##    ###  ###
+    //               #                ####                     #     ##         #
+    //               #                #                        #    #  #        #
+    //  ###    ##   ###   #  #  ###   ###   # #    ##   ###   ###    #    #  #  ###
+    // ##     # ##   #    #  #  #  #  #     # #   # ##  #  #   #      #   #  #  #  #
+    //   ##   ##     #    #  #  #  #  #     # #   ##    #  #   #    #  #  #  #  #  #
+    // ###     ##     ##   ###  ###   ####   #     ##   #  #    ##   ##    ###  ###
     //                          #
     /**
-     * Sets up the Twitch PubSub subscriptions.
-     * @returns {Promise} A promise that resolves when the Twitch PubSub subscriptions are setup.
+     * Sets up the Twitch EventSub subscriptions.
+     * @returns {void}
      */
-    static async setupPubSub() {
-        pubsub = new PubSub();
+    static setupEventSub() {
+        eventSubListener = new EventSubWs.EventSubWsListener({
+            apiClient: channelTwitchClient
+        });
 
-        await pubsub.setup(channelTwitchClient._authProvider);
+        eventSubListener.start();
 
-        pubsub.client.onBits(settings.twitch.channelUserId, async (message) => {
-            const displayName = message.userId ? (await channelTwitchClient.users.getUserById(message.userId)).displayName : "";
-
+        eventSubListener.onChannelCheer(settings.twitch.channelUserId, (message) => {
             eventEmitter.emit("bits", {
                 userId: message.userId,
                 user: message.userName,
-                name: displayName,
+                name: message.userDisplayName,
                 bits: message.bits,
-                totalBits: message.totalBits,
                 message: message.message,
                 isAnonymous: message.isAnonymous
             });
         });
 
-        pubsub.client.onRedemption(settings.twitch.channelUserId, (message) => {
+        eventSubListener.onChannelRedemptionAdd(settings.twitch.channelUserId, (message) => {
             eventEmitter.emit("redemption", {
                 userId: message.userId,
                 user: message.userName,
                 name: message.userDisplayName,
-                message: message.message,
+                message: message.input,
                 date: message.redemptionDate,
-                cost: message.rewardCost,
                 reward: message.rewardTitle,
-                isQueued: message.rewardIsQueued
+                cost: message.rewardCost
             });
         });
     }
