@@ -446,6 +446,19 @@ class Game {
                                     `);
 
                                     break;
+                                case "Grand Designs: No!":
+                                    Game.notify("/images/roncliRIP-56.png", "/media/gd-no.ogg", /* html */`
+                                        <div>
+                                            <span class="header">${window.Common.htmlEncode(ev.data.data.name)}</span>
+                                            <span class="text">has spent</span>
+                                            <span class="header">${Game.cost(ev.data.data.cost)}</span>
+                                            <span class="text">to scream</span>
+                                            <span class="header">NOOOOOOOOOOOO!</span>${ev.data.data.message ? /* html */`<br />
+                                            <span class="message">${window.Common.htmlEncode(ev.data.data.message)}</span>` : ""}
+                                        </div>
+                                    `);
+
+                                    break;
                                 case "Noita: Eh, Steve":
                                     Game.notify("/images/roncliWhatever-56.png", "/media/eh-steve.ogg", /* html */`
                                         <div>
