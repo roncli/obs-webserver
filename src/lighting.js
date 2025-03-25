@@ -33,6 +33,35 @@ class Lighting {
         }
     }
 
+    //  #           #     #     ##   #
+    //                    #    #  #  #
+    // ##    ###   ##    ###    #    ###    ##   #  #   ##    ###   ###    ##
+    //  #    #  #   #     #      #   #  #  #  #  #  #  #     #  #  ##     # ##
+    //  #    #  #   #     #    #  #  #  #  #  #  ####  #     # ##    ##   ##
+    // ###   #  #  ###     ##   ##   #  #   ##   ####   ##    # #  ###     ##
+    /**
+     * Initialize the main lighting with the showcase lighting.
+     * @returns {void}
+     */
+    static initShowcase() {
+        Lighting.data.lights.main.lights.set(1, new Color(235, 235, 235));
+        Lighting.data.lights.main.lights.set(2, new Color(128, 0, 128));
+        Lighting.data.lights.main.lights.set(3, new Color(135, 215, 246));
+        Lighting.data.lights.main.lights.set(4, new Color(135, 215, 246));
+        Lighting.data.lights.main.lights.set(5, new Color(2, 191, 2));
+        Lighting.data.lights.main.lights.set(6, new Color(2, 191, 2));
+        Lighting.data.lights.main.lights.set(7, new Color(145, 70, 255));
+        Lighting.data.lights.main.lights.set(8, new Color(0, 16, 160));
+        Lighting.data.lights.main.lights.set(9, new Color(68, 106, 151));
+        Lighting.data.lights.main.lights.set(10, new Color(238, 28, 37));
+        Lighting.data.lights.main.lights.set(11, new Color(245, 140, 186));
+        Lighting.data.lights.main.lights.set(12, new Color(0, 180, 255));
+        Lighting.data.lights.main.lights.set(13, new Color(255, 231, 87));
+        Lighting.data.lights.main.lights.set(14, new Color(238, 28, 37));
+        Lighting.data.lights.main.lights.set(15, new Color(0, 113, 206));
+        Lighting.data.lights.main.lights.set(16, new Color(0, 113, 206));
+    }
+
     //         #                 #     ##          #                 #     #
     //         #                 #    #  #                           #
     //  ###   ###    ###  ###   ###   #  #  ###   ##    # #    ###  ###   ##     ##   ###
@@ -107,36 +136,18 @@ Lighting.data = {
                         break;
                 }
 
-                Lighting.data.lights.fire.lights.reset();
-                Lighting.data.lights.fire.lights.set(1 + startSegment, new Color(40, 40, 106));
-                Lighting.data.lights.fire.lights.set(2 + startSegment, new Color(40, 40, 106));
-                Lighting.data.lights.fire.lights.set(3 + startSegment, new Color(40, 40, 106));
-                Lighting.data.lights.fire.lights.set(5 + startSegment, new Color(30, 30, 80));
-                Lighting.data.lights.fire.lights.set(6 + startSegment, new Color(30, 30, 80));
-                Lighting.data.lights.fire.lights.set(9 + startSegment, new Color(20, 20, 53));
-                Lighting.data.lights.fire.lights.set(11 + startSegment, new Color(20, 20, 53));
+                Lighting.data.lights.alert.lights.reset();
+                Lighting.data.lights.alert.lights.set(1 + startSegment, new Color(40, 40, 106));
+                Lighting.data.lights.alert.lights.set(2 + startSegment, new Color(40, 40, 106));
+                Lighting.data.lights.alert.lights.set(3 + startSegment, new Color(40, 40, 106));
+                Lighting.data.lights.alert.lights.set(5 + startSegment, new Color(30, 30, 80));
+                Lighting.data.lights.alert.lights.set(6 + startSegment, new Color(30, 30, 80));
+                Lighting.data.lights.alert.lights.set(9 + startSegment, new Color(20, 20, 53));
+                Lighting.data.lights.alert.lights.set(11 + startSegment, new Color(20, 20, 53));
             },
             animationDelay: 500
         }
     }
 };
-
-// Initialize the main lighting with the showcase lighting.
-Lighting.data.lights.main.lights.set(1, new Color(235, 235, 235));
-Lighting.data.lights.main.lights.set(2, new Color(128, 0, 128));
-Lighting.data.lights.main.lights.set(3, new Color(135, 215, 246));
-Lighting.data.lights.main.lights.set(4, new Color(135, 215, 246));
-Lighting.data.lights.main.lights.set(5, new Color(2, 191, 2));
-Lighting.data.lights.main.lights.set(6, new Color(2, 191, 2));
-Lighting.data.lights.main.lights.set(7, new Color(145, 70, 255));
-Lighting.data.lights.main.lights.set(8, new Color(145, 70, 255));
-Lighting.data.lights.main.lights.set(9, new Color(68, 106, 151));
-Lighting.data.lights.main.lights.set(10, new Color(238, 28, 37));
-Lighting.data.lights.main.lights.set(11, new Color(245, 140, 186));
-Lighting.data.lights.main.lights.set(12, new Color(0, 180, 255));
-Lighting.data.lights.main.lights.set(13, new Color(255, 231, 87));
-Lighting.data.lights.main.lights.set(14, new Color(238, 28, 37));
-Lighting.data.lights.main.lights.set(15, new Color(0, 113, 206));
-Lighting.data.lights.main.lights.set(16, new Color(0, 113, 206));
 
 module.exports = Lighting;

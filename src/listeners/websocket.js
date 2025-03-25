@@ -52,6 +52,17 @@ class WebsocketListener {
                 }
 
                 break;
+            case "lighting":
+                Lighting.stopAnimation();
+
+                if (data.data.lighting === "main") {
+                    Lighting.initShowcase();
+                }
+
+                Lighting.data.currentLights = data.data.lighting;
+                Lighting.startAnimation();
+
+                break;
             case "discord":
                 if (WebsocketListener.data.phase === "game") {
                     await OBSWebsocket.startDiscord("game");
@@ -392,6 +403,7 @@ class WebsocketListener {
                             }
 
                             Lighting.stopAnimation();
+                            Lighting.initShowcase();
                             Lighting.data.currentLights = "main";
                             Lighting.startAnimation();
 

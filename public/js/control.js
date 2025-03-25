@@ -365,6 +365,25 @@ class Control {
             }
         });
 
+        document.getElementById("lighting").addEventListener("click", (ev) => {
+            /** @type {HTMLButtonElement} */
+            const button = ev.target;
+
+            if (button && button.matches("button#lighting-go")) {
+                /** @type {HTMLSelectElement} */
+                const lightingList = document.getElementById("lighting-list");
+
+                const lighting = lightingList.options[lightingList.selectedIndex];
+
+                Control.ws.send(JSON.stringify({
+                    type: "lighting",
+                    data: {
+                        lighting: lighting.dataset.lighting
+                    }
+                }));
+            }
+        });
+
         document.getElementById("settings").addEventListener("click", async (ev) => {
             /** @type {HTMLButtonElement} */
             const button = ev.target;

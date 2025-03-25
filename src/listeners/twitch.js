@@ -31,7 +31,7 @@ const Color = require("../color"),
 
     settings = require("../../settings"),
 
-    colorABoxRegex = /(?<box>[1-9]|1[0-6]) #?(?<color>[0-9a-f]{6})/i;
+    colorABoxRegex = /^(?<box>[1-9]|1[0-6]) #?(?<color>[0-9a-f]{6})$/i;
 
 /** @type {{[x: string]: boolean}} */
 const cooldown = {};

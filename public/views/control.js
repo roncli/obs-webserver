@@ -69,6 +69,14 @@ class ControlView {
                 </select>
                 <button id="action-go">Go</button>
             </div>
+            <div id="lighting">
+                Lighting<br />
+                <select id="lighting-list">
+                    <option class="lighting" data-lighting="fire">Fire</option>
+                    <option class="lighting" data-lighting="main">Main</option>
+                </select>
+                <button id="lighting-go">Go</button>
+            </div>
             <div id="twitch">
                 Twitch<br />
                 <button class="api" data-api="/api/twitch/refresh" data-method="POST">Refresh Tokens</button>
