@@ -39,7 +39,7 @@
         "@types/express": "5.0.1",
         "@types/express-ws": "3.0.5",
         "@types/nconf": "0.10.7",
-        "@types/node": "22.13.16",
+        "@types/node": "22.13.17",
         "@types/socket.io-client": "1.4.36"
     },
     "engines": {
