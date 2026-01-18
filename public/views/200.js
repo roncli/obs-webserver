@@ -1,21 +1,9 @@
-//   ###   #   #  #   #    #
-//  #   #  #  #   #   #
-//  #   #  # #    #   #   ##     ###   #   #
-//  #   #  ##      # #     #    #   #  #   #
-//  #   #  # #     # #     #    #####  # # #
-//  #   #  #  #    # #     #    #      # # #
-//   ###   #   #    #     ###    ###    # #
+// MARK: class OKView
 /**
  * A class that represents the 200 view.
  */
 class OKView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered OK template.
      * @param {string} message The message for the OK view.

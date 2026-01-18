@@ -2,24 +2,12 @@
  * @typedef {import("../../types/viewTypes").IndexViewParameters} ViewTypes.IndexViewParameters
  */
 
-//   ###              #                #   #    #
-//    #               #                #   #
-//    #    # ##    ## #   ###   #   #  #   #   ##     ###   #   #
-//    #    ##  #  #  ##  #   #   # #    # #     #    #   #  #   #
-//    #    #   #  #   #  #####    #     # #     #    #####  # # #
-//    #    #   #  #  ##  #       # #    # #     #    #      # # #
-//   ###   #   #   ## #   ###   #   #    #     ###    ###    # #
+// MARK: class IndexView
 /**
  * A class that represents the general website template.
  */
 class IndexView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered page template.
      * @param {ViewTypes.IndexViewParameters} data The data to render the page with.

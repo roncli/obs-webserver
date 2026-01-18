@@ -7,24 +7,12 @@
 const ConfigFile = require("../../src/configFile"),
     Websocket = require("../../src/websocket");
 
-//  ####                                               #    ####    ###
-//   #  #                                             # #   #   #    #
-//   #  #   ###   # ##   # ##    ###   # ##    ###   #   #  #   #    #
-//   ###       #  ##  #  ##  #  #   #  ##  #  #      #   #  ####     #
-//   #  #   ####  #   #  #   #  #####  #       ###   #####  #        #
-//   #  #  #   #  #   #  #   #  #      #          #  #   #  #        #
-//  ####    ####  #   #  #   #   ###   #      ####   #   #  #       ###
+// MARK: class BannersAPI
 /**
  * A class that represents the Banners API.
  */
 class BannersAPI {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Processes the request.
      * @param {Express.Request} req The request.
@@ -35,15 +23,7 @@ class BannersAPI {
         res.json({data: ConfigFile.get("roncliGaming").banners || []});
     }
 
-    //                        #
-    //                        #
-    //  # ##    ###    ###   ####
-    //  ##  #  #   #  #       #
-    //  ##  #  #   #   ###    #
-    //  # ##   #   #      #   #  #
-    //  #       ###   ####     ##
-    //  #
-    //  #
+    // MARK: static post
     /**
      * Processes the request.
      * @param {Express.Request} req The request.

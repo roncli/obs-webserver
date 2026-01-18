@@ -6,24 +6,12 @@
 const Common = require("../includes/common"),
     ServerErrorView = require("../../public/views/500");
 
-//   ###                                      #####
-//  #   #                                     #
-//  #       ###   # ##   #   #   ###   # ##   #      # ##   # ##    ###   # ##
-//   ###   #   #  ##  #  #   #  #   #  ##  #  ####   ##  #  ##  #  #   #  ##  #
-//      #  #####  #       # #   #####  #      #      #      #      #   #  #
-//  #   #  #      #       # #   #      #      #      #      #      #   #  #
-//   ###    ###   #        #     ###   #      #####  #      #       ###   #
+// MARK: class ServerError
 /**
  * A class that represents the 500 page.
  */
 class ServerError {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Processes the request.
      * @param {Express.Request} req The request.

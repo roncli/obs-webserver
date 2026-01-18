@@ -1,23 +1,13 @@
-/** @typedef {import("../../../types/viewTypes").Command} ViewTypes.Command */
+/**
+ * @typedef {import("../../../types/viewTypes").Command} ViewTypes.Command
+ */
 
-//   ###                                          #  #   #    #
-//  #   #                                         #  #   #
-//  #       ###   ## #   ## #    ###   # ##    ## #  #   #   ##     ###   #   #
-//  #      #   #  # # #  # # #      #  ##  #  #  ##   # #     #    #   #  #   #
-//  #      #   #  # # #  # # #   ####  #   #  #   #   # #     #    #####  # # #
-//  #   #  #   #  # # #  # # #  #   #  #   #  #  ##   # #     #    #      # # #
-//   ###    ###   #   #  #   #   ####  #   #   ## #    #     ###    ###    # #
+// MARK: class CommandView
 /**
  * A class that represents the command settings view.
  */
 class CommandView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered command setting template.
      * @param {ViewTypes.Command} command The command to render.

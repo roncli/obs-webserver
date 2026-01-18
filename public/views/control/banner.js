@@ -1,23 +1,13 @@
-/** @typedef {import("../../../types/viewTypes").Banner} ViewTypes.Banner */
+/**
+ * @typedef {import("../../../types/viewTypes").Banner} ViewTypes.Banner
+ */
 
-//  ####                                      #   #    #
-//   #  #                                     #   #
-//   #  #   ###   # ##   # ##    ###   # ##   #   #   ##     ###   #   #
-//   ###       #  ##  #  ##  #  #   #  ##  #   # #     #    #   #  #   #
-//   #  #   ####  #   #  #   #  #####  #       # #     #    #####  # # #
-//   #  #  #   #  #   #  #   #  #      #       # #     #    #      # # #
-//  ####    ####  #   #  #   #   ###   #        #     ###    ###    # #
+// MARK: class BannerView
 /**
  * A class that represents the banner settings view.
  */
 class BannerView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered banner setting template.
      * @param {ViewTypes.Banner} banner The banner to render.

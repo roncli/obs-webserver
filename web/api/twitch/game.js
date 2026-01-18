@@ -7,24 +7,12 @@
 const Log = require("../../../src/logging/log"),
     Twitch = require("../../../src/twitch");
 
-//   ###
-//  #   #
-//  #       ###   ## #    ###
-//  #          #  # # #  #   #
-//  #  ##   ####  # # #  #####
-//  #   #  #   #  # # #  #
-//   ###    ####  #   #   ###
+// MARK: class Game
 /**
  * A class that represents the game API.
  */
 class Game {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static async get
     /**
      * Processes the request.
      * @param {Express.Request} req The request.

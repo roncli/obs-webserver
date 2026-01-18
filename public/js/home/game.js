@@ -1,20 +1,9 @@
-//   ###
-//  #   #
-//  #       ###   ## #    ###
-//  #          #  # # #  #   #
-//  #  ##   ####  # # #  #####
-//  #   #  #   #  # # #  #
-//   ###    ####  #   #   ###
+// MARK: class Game
 /**
  * A class that provides functions for the game scene.
  */
 class Game {
-    //                     #
-    //                     #
-    //  ##    ##    ###   ###
-    // #     #  #  ##      #
-    // #     #  #    ##    #
-    //  ##    ##   ###      ##
+    // MARK: static cost
     /**
      * Gets the byte cost for a value.
      * @param {number} bytes The number of bytes.
@@ -36,13 +25,7 @@ class Game {
         return `${format(Math.floor(bytes / (1024 * 1024 * 1024 * 1024)))} Terabytes`;
     }
 
-    //              #    ###    #                #  #
-    //              #     #                      ## #
-    //  ###   ##   ###    #    ##     ##   ###   ## #   ###  # #    ##
-    // #  #  # ##   #     #     #    # ##  #  #  # ##  #  #  ####  # ##
-    //  ##   ##     #     #     #    ##    #     # ##  # ##  #  #  ##
-    // #      ##     ##   #    ###    ##   #     #  #   # #  #  #   ##
-    //  ###
+    // MARK: static getTierName
     /**
      * Gets the tier name based on the data from the Twitch API.
      * @param {string} tier The tier from the Twitch API.
@@ -62,13 +45,7 @@ class Game {
         }
     }
 
-    //              #     #      #
-    //              #           # #
-    // ###    ##   ###   ##     #    #  #
-    // #  #  #  #   #     #    ###   #  #
-    // #  #  #  #   #     #     #     # #
-    // #  #   ##     ##  ###    #      #
-    //                                #
+    // MARK: static notify
     /**
      * Start a notification.
      * @param {string} image The image for the notification.
@@ -128,12 +105,7 @@ class Game {
         }, timeout);
     }
 
-    //         #                 #
-    //         #                 #
-    //  ###   ###    ###  ###   ###
-    // ##      #    #  #  #  #   #
-    //   ##    #    # ##  #      #
-    // ###      ##   # #  #       ##
+    // MARK: static start
     /**
      * Starts the game scene.
      * @returns {void}

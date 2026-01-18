@@ -1,21 +1,9 @@
-//   ###                         ###            ##          #   #    #
-//  #   #                         #            #  #         #   #
-//  #       ###   ## #    ###     #    # ##    #      ###   #   #   ##     ###   #   #
-//  #          #  # # #  #   #    #    ##  #  ####   #   #   # #     #    #   #  #   #
-//  #  ##   ####  # # #  #####    #    #   #   #     #   #   # #     #    #####  # # #
-//  #   #  #   #  # # #  #        #    #   #   #     #   #   # #     #    #      # # #
-//   ###    ####  #   #   ###    ###   #   #   #      ###     #     ###    ###    # #
+// MARK: class GameInfoView
 /**
  * A class that represents the game info view.
  */
 class GameInfoView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered page template.
      * @param {string} info The data to render.

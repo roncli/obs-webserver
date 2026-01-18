@@ -1,25 +1,13 @@
-/** @typedef {import("../../../types/viewTypes").RoncliGaming} ViewTypes.RoncliGaming */
+/**
+ * @typedef {import("../../../types/viewTypes").RoncliGaming} ViewTypes.RoncliGaming
+ */
 
-//    #                   ##                    #           #   #    #
-//   # #                   #                                #   #
-//  #   #  # ##    ###     #    #   #   ###    ##     ###   #   #   ##     ###   #   #
-//  #   #  ##  #      #    #    #   #  #        #    #       # #     #    #   #  #   #
-//  #####  #   #   ####    #    #  ##   ###     #     ###    # #     #    #####  # # #
-//  #   #  #   #  #   #    #     ## #      #    #        #   # #     #    #      # # #
-//  #   #  #   #   ####   ###       #  ####    ###   ####     #     ###    ###    # #
-//                              #   #
-//                               ###
+// MARK: class AnalysisView
 /**
  * A class that represents the analysis view.
  */
 class AnalysisView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered page template.
      * @param {{data: ViewTypes.RoncliGaming}} data The data to render.

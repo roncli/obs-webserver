@@ -1,21 +1,9 @@
-//  #####                              ####   ####   ####   #   #    #
-//  #                                   #  #  #   #   #  #  #   #
-//  #      # ##    ###   ## #    ###    #  #  #   #   #  #  #   #   ##     ###   #   #
-//  ####   ##  #      #  # # #  #   #   ###   ####    ###    # #     #    #   #  #   #
-//  #      #       ####  # # #  #####   #  #  # #     #  #   # #     #    #####  # # #
-//  #      #      #   #  # # #  #       #  #  #  #    #  #   # #     #    #      # # #
-//  #      #       ####  #   #   ###   ####   #   #  ####     #     ###    ###    # #
+// MARK: class FrameBRBView
 /**
  * A class that represents the frame trailer view.
  */
 class FrameBRBView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered page template.
      * @returns {string} An HTML string of the page.

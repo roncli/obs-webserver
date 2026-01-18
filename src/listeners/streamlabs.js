@@ -9,23 +9,12 @@ const Notifications = require("../notifications"),
 
     idTable = new Set();
 
-//   ###    #                                  ##           #             #        #            #
-//  #   #   #                                   #           #             #                     #
-//  #      ####   # ##    ###    ###   ## #     #     ###   # ##    ###   #       ##     ###   ####    ###   # ##    ###   # ##
-//   ###    #     ##  #  #   #      #  # # #    #        #  ##  #  #      #        #    #       #     #   #  ##  #  #   #  ##  #
-//      #   #     #      #####   ####  # # #    #     ####  #   #   ###   #        #     ###    #     #####  #   #  #####  #
-//  #   #   #  #  #      #      #   #  # # #    #    #   #  ##  #      #  #        #        #   #  #  #      #   #  #      #
-//   ###     ##   #       ###    ####  #   #   ###    ####  # ##   ####   #####   ###   ####     ##    ###   #   #   ###   #
+// MARK: class StreamlabsListener
 /**
  * A class that handles listening to Streamlabs events.
  */
 class StreamlabsListener {
-    //                          #
-    //                          #
-    //  ##   # #    ##   ###   ###
-    // # ##  # #   # ##  #  #   #
-    // ##    # #   ##    #  #   #
-    //  ##    #     ##   #  #    ##
+    // MARK: static event
     /**
      * Handles an event.
      * @param {any} data The event data.

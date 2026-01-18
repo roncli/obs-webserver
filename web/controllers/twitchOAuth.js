@@ -12,24 +12,12 @@ const Common = require("../includes/common"),
     Twitch = require("../../src/twitch"),
     util = require("util");
 
-//  #####           #     #            #       ###     #            #     #
-//    #                   #            #      #   #   # #           #     #
-//    #    #   #   ##    ####    ###   # ##   #   #  #   #  #   #  ####   # ##
-//    #    #   #    #     #     #   #  ##  #  #   #  #   #  #   #   #     ##  #
-//    #    # # #    #     #     #      #   #  #   #  #####  #   #   #     #   #
-//    #    # # #    #     #  #  #   #  #   #  #   #  #   #  #  ##   #  #  #   #
-//    #     # #    ###     ##    ###   #   #   ###   #   #   ## #    ##   #   #
+// MARK: class TwitchOAuth
 /**
  * A class that handles the Twitch OAuth response.
  */
 class TwitchOAuth {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static async get
     /**
      * Processes the request.
      * @param {Express.Request} req The request.

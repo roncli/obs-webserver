@@ -3,26 +3,12 @@
  * @typedef {import("../../../types/viewTypes").RoncliGaming} ViewTypes.RoncliGaming
  */
 
-//  ####                         ##      #     ###                   #                  #   #    #
-//  #   #                         #           #   #                                     #   #
-//  #   #   ###   # ##    ###     #     ##    #       ###   ## #    ##    # ##    ## #  #   #   ##     ###   #   #
-//  ####   #   #  ##  #  #   #    #      #    #          #  # # #    #    ##  #  #  #    # #     #    #   #  #   #
-//  # #    #   #  #   #  #        #      #    #  ##   ####  # # #    #    #   #   ##     # #     #    #####  # # #
-//  #  #   #   #  #   #  #   #    #      #    #   #  #   #  # # #    #    #   #  #       # #     #    #      # # #
-//  #   #   ###   #   #   ###    ###    ###    ###    ####  #   #   ###   #   #   ###     #     ###    ###    # #
-//                                                                               #   #
-//                                                                                ###
+// MARK: class RoncliGamingView
 /**
  * A class that represents the roncli Gaming view.
  */
 class RoncliGamingView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered roncli Gaming template.
      * @param {{data: ViewTypes.RoncliGaming}} data The data to render the view with.

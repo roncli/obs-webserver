@@ -1,20 +1,9 @@
-//  #####
-//  #
-//  #      # ##    ###   ## #    ###
-//  ####   ##  #      #  # # #  #   #
-//  #      #       ####  # # #  #####
-//  #      #      #   #  # # #  #
-//  #      #       ####  #   #   ###
+// MARK: class Frame
 /**
  * A class that provides functions for the frame scene.
  */
 class Frame {
-    //         #                 #
-    //         #                 #
-    //  ###   ###    ###  ###   ###
-    // ##      #    #  #  #  #   #
-    //   ##    #    # ##  #      #
-    // ###      ##   # #  #       ##
+    // MARK: static start
     /**
      * Starts the frame scene.
      * @returns {void}
@@ -77,12 +66,7 @@ class Frame {
         };
     }
 
-    //         #                 #    ###   ###   ###
-    //         #                 #    #  #  #  #  #  #
-    //  ###   ###    ###  ###   ###   ###   #  #  ###
-    // ##      #    #  #  #  #   #    #  #  ###   #  #
-    //   ##    #    # ##  #      #    #  #  # #   #  #
-    // ###      ##   # #  #       ##  ###   #  #  ###
+    // MARK: static async startBRB
     /**
      * Starts the BRB frame.
      * @returns {Promise} A promise that resolves when the BRB frame is shown.
@@ -93,13 +77,7 @@ class Frame {
         await window.Common.loadDataIntoTemplate(void 0, "#content", window.FrameBRBView.get);
     }
 
-    //         #                 #    ####           #   #
-    //         #                 #    #              #
-    //  ###   ###    ###  ###   ###   ###   ###    ###  ##    ###    ###
-    // ##      #    #  #  #  #   #    #     #  #  #  #   #    #  #  #  #
-    //   ##    #    # ##  #      #    #     #  #  #  #   #    #  #   ##
-    // ###      ##   # #  #       ##  ####  #  #   ###  ###   #  #  #
-    //                                                               ###
+    // MARK: static async startEnding
     /**
      * Starts the ending frame.
      * @param {string} version The version.
@@ -123,12 +101,7 @@ class Frame {
         }, 5000);
     }
 
-    //         #                 #    ###          #
-    //         #                 #     #           #
-    //  ###   ###    ###  ###   ###    #    ###   ###   ###    ##
-    // ##      #    #  #  #  #   #     #    #  #   #    #  #  #  #
-    //   ##    #    # ##  #      #     #    #  #   #    #     #  #
-    // ###      ##   # #  #       ##  ###   #  #    ##  #      ##
+    // MARK: static async startIntro
     /**
      * Starts the intro frame.
      * @returns {Promise} A promise that resolves when the intro frame is shown.

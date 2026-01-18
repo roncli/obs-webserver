@@ -1,20 +1,9 @@
-//   ###           #
-//    #            #
-//    #    # ##   ####   # ##    ###
-//    #    ##  #   #     ##  #  #   #
-//    #    #   #   #     #      #   #
-//    #    #   #   #  #  #      #   #
-//   ###   #   #    ##   #       ###
+// MARK: class Intro
 /**
  * A class that provides functions for the intro scene.
  */
 class Intro {
-    //         #                 #
-    //         #                 #
-    //  ###   ###    ###  ###   ###
-    // ##      #    #  #  #  #   #
-    //   ##    #    # ##  #      #
-    // ###      ##   # #  #       ##
+    // MARK: static start
     /**
      * Starts the intro scene.
      * @returns {void}

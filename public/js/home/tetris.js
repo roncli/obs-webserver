@@ -1,20 +1,9 @@
-//  #####          #              #
-//    #            #
-//    #     ###   ####   # ##    ##     ###
-//    #    #   #   #     ##  #    #    #
-//    #    #####   #     #        #     ###
-//    #    #       #  #  #        #        #
-//    #     ###     ##   #       ###   ####
+// MARK: class Tetris
 /**
  * A class that provides functions for the Tetris 2P scene.
  */
 class Tetris {
-    //         #                 #
-    //         #                 #
-    //  ###   ###    ###  ###   ###
-    // ##      #    #  #  #  #   #
-    //   ##    #    # ##  #      #
-    // ###      ##   # #  #       ##
+    // MARK: static start
     /**
      * Starts the intro scene.
      * @returns {void}

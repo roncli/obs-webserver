@@ -2,24 +2,12 @@
  * @typedef {import("../../types/viewTypes").HomeViewParameters} ViewTypes.HomeViewParameters
  */
 
-//  #   #                       #   #    #
-//  #   #                       #   #
-//  #   #   ###   ## #    ###   #   #   ##     ###   #   #
-//  #####  #   #  # # #  #   #   # #     #    #   #  #   #
-//  #   #  #   #  # # #  #####   # #     #    #####  # # #
-//  #   #  #   #  # # #  #       # #     #    #      # # #
-//  #   #   ###   #   #   ###     #     ###    ###    # #
+// MARK: class HomeView
 /**
  * A class that represents the home view.
  */
 class HomeView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered page template.
      * @returns {string} An HTML string of the page.

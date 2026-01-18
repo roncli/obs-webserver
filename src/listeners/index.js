@@ -5,24 +5,12 @@ const Streamlabs = require("../streamlabs"),
     Websocket = require("../websocket"),
     WebsocketListener = require("./websocket");
 
-//  #        #            #
-//  #                     #
-//  #       ##     ###   ####    ###   # ##    ###   # ##    ###
-//  #        #    #       #     #   #  ##  #  #   #  ##  #  #
-//  #        #     ###    #     #####  #   #  #####  #       ###
-//  #        #        #   #  #  #      #   #  #      #          #
-//  #####   ###   ####     ##    ###   #   #   ###   #      ####
+// MARK: class Listeners
 /**
  * A class that sets up listening to eventEmitters.
  */
 class Listeners {
-    //               #
-    //               #
-    //  ###    ##   ###   #  #  ###
-    // ##     # ##   #    #  #  #  #
-    //   ##   ##     #    #  #  #  #
-    // ###     ##     ##   ###  ###
-    //                          #
+    // MARK: static setup
     /**
      * Sets up the listeners for Twitch and Websockets.
      * @returns {void}

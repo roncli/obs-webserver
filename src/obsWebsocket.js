@@ -5,24 +5,12 @@ const OBSWebSocketJs = require("obs-websocket-js").default,
 /** @type {OBSWebSocketJs} */
 let obs;
 
-//   ###   ####    ###   #   #         #                           #              #
-//  #   #   #  #  #   #  #   #         #                           #              #
-//  #   #   #  #  #      #   #   ###   # ##    ###    ###    ###   #   #   ###   ####
-//  #   #   ###    ###   # # #  #   #  ##  #  #      #   #  #   #  #  #   #   #   #
-//  #   #   #  #      #  # # #  #####  #   #   ###   #   #  #      ###    #####   #
-//  #   #   #  #  #   #  ## ##  #      ##  #      #  #   #  #   #  #  #   #       #  #
-//   ###   ####    ###   #   #   ###   # ##   ####    ###    ###   #   #   ###     ##
+// MARK: class OBSWebsocket
 /**
  * A class used for communication with OBS via websockets.
  */
 class OBSWebsocket {
-    //              #    ###    #                ###      #
-    //              #     #     #                 #       #
-    //  ###   ##   ###    #    ###    ##   # #    #     ###
-    // #  #  # ##   #     #     #    # ##  ####   #    #  #
-    //  ##   ##     #     #     #    ##    #  #   #    #  #
-    // #      ##     ##  ###     ##   ##   #  #  ###    ###
-    //  ###
+    // MARK: static async getItemId
     /**
      * Gets the item ID by source name.
      * @param {string} sceneName The name of the scene.
@@ -36,12 +24,7 @@ class OBSWebsocket {
         })).sceneItemId;
     }
 
-    //  #           #  #   #            #    #     ##
-    //              #  #                     #      #
-    // ##     ###   #  #  ##     ###   ##    ###    #     ##
-    //  #    ##     #  #   #    ##      #    #  #   #    # ##
-    //  #      ##    ##    #      ##    #    #  #   #    ##
-    // ###   ###     ##   ###   ###    ###   ###   ###    ##
+    // MARK: static async isVisible
     /**
      * Determines if a source is visible.
      * @param {string} sceneName The scene name.
@@ -55,12 +38,7 @@ class OBSWebsocket {
         })).sceneItemEnabled;
     }
 
-    //         #                 #
-    //         #                 #
-    //  ###   ###    ###  ###   ###
-    // ##      #    #  #  #  #   #
-    //   ##    #    # ##  #      #
-    // ###      ##   # #  #       ##
+    // MARK: static async start
     /**
      * Starts the OBS Websocket.
      * @returns {Promise} A promise that resolves when the OBS websocket has been started.
@@ -86,12 +64,7 @@ class OBSWebsocket {
         await obs.connect(settings.obsws.address, settings.obsws.password);
     }
 
-    //         #                 #     ##   ###   #  #
-    //         #                 #    #  #   #    ####
-    //  ###   ###    ###  ###   ###   #      #    ####
-    // ##      #    #  #  #  #   #    #      #    #  #
-    //   ##    #    # ##  #      #    #  #   #    #  #
-    // ###      ##   # #  #       ##   ##    #    #  #
+    // MARK: static async startCTM
     /**
      * Starts CTM.
      * @returns {Promise} A promise that resolves when CTM is started.
@@ -110,12 +83,7 @@ class OBSWebsocket {
         } catch (err) {} finally {}
     }
 
-    //         #                 #    ###    #                                #
-    //         #                 #    #  #                                    #
-    //  ###   ###    ###  ###   ###   #  #  ##     ###    ##    ##   ###    ###
-    // ##      #    #  #  #  #   #    #  #   #    ##     #     #  #  #  #  #  #
-    //   ##    #    # ##  #      #    #  #   #      ##   #     #  #  #     #  #
-    // ###      ##   # #  #       ##  ###   ###   ###     ##    ##   #      ###
+    // MARK: static async startDiscord
     /**
      * Starts Discord at the specified location.
      * @param {string} location The location to start Discord at.
@@ -135,13 +103,7 @@ class OBSWebsocket {
         } catch (err) {} finally {}
     }
 
-    //         #                 #    ###    #                 ##
-    //         #                 #    #  #                      #
-    //  ###   ###    ###  ###   ###   #  #  ##     ###   ###    #     ###  #  #
-    // ##      #    #  #  #  #   #    #  #   #    ##     #  #   #    #  #  #  #
-    //   ##    #    # ##  #      #    #  #   #      ##   #  #   #    # ##   # #
-    // ###      ##   # #  #       ##  ###   ###   ###    ###   ###    # #    #
-    //                                                   #                  #
+    // MARK: static async startDisplay
     /**
      * Starts the display.
      * @returns {Promise} A promise that resolves when the display is started.
@@ -160,12 +122,7 @@ class OBSWebsocket {
         } catch (err) {} finally {}
     }
 
-    //         #                 #    #  #   #
-    //         #                 #    ####
-    //  ###   ###    ###  ###   ###   ####  ##     ##
-    // ##      #    #  #  #  #   #    #  #   #    #
-    //   ##    #    # ##  #      #    #  #   #    #
-    // ###      ##   # #  #       ##  #  #  ###    ##
+    // MARK: static async startMic
     /**
      * Starts the microphone.
      * @returns {Promise} A promise that resolves when the microphone is started.
@@ -189,13 +146,7 @@ class OBSWebsocket {
         } catch (err) {} finally {}
     }
 
-    //         #                 #     ##                     ##                ####   #    ##     #
-    //         #                 #    #  #                     #                #            #     #
-    //  ###   ###    ###  ###   ###   #  #  # #    ##   ###    #     ###  #  #  ###   ##     #    ###    ##   ###
-    // ##      #    #  #  #  #   #    #  #  # #   # ##  #  #   #    #  #  #  #  #      #     #     #    # ##  #  #
-    //   ##    #    # ##  #      #    #  #  # #   ##    #      #    # ##   # #  #      #     #     #    ##    #
-    // ###      ##   # #  #       ##   ##    #     ##   #     ###    # #    #   #     ###   ###     ##   ##   #
-    //                                                                     #
+    // MARK: static async startOverlayFilter
     /**
      * Starts the overlay filter for the stinger.
      * @returns {Promise} A promise that resolves when the filter is started.
@@ -214,13 +165,7 @@ class OBSWebsocket {
         } catch (err) {} finally {}
     }
 
-    //         #                 #    ###               ##
-    //         #                 #    #  #               #
-    //  ###   ###    ###  ###   ###   #  #   ##   ###    #     ###  #  #
-    // ##      #    #  #  #  #   #    ###   # ##  #  #   #    #  #  #  #
-    //   ##    #    # ##  #      #    # #   ##    #  #   #    # ##   # #
-    // ###      ##   # #  #       ##  #  #   ##   ###   ###    # #    #
-    //                                            #                  #
+    // MARK: static async startReplay
     /**
      * Starts the replay and the filter for the live scene.
      * @param {string} source The name of the source.
@@ -245,12 +190,7 @@ class OBSWebsocket {
         } catch (err) {} finally {}
     }
 
-    //         #                 #    ###                 #
-    //         #                 #    #  #                #
-    //  ###   ###    ###  ###   ###   #  #   ##    ###   ###   ###    ##    ###  # #    ###
-    // ##      #    #  #  #  #   #    ###   # ##  ##      #    #  #  # ##  #  #  ####  ##
-    //   ##    #    # ##  #      #    # #   ##      ##    #    #     ##    # ##  #  #    ##
-    // ###      ##   # #  #       ##  #  #   ##   ###      ##  #      ##    # #  #  #  ###
+    // MARK: static async startRestreams
     /**
      * Starts the restreams.
      * @returns {Promise} A promise that resolves when the restreams are started.
@@ -269,13 +209,7 @@ class OBSWebsocket {
         } catch (err) {} finally {}
     }
 
-    //         #                 #     ##    #                             #
-    //         #                 #    #  #   #
-    //  ###   ###    ###  ###   ###    #    ###   ###    ##    ###  # #   ##    ###    ###
-    // ##      #    #  #  #  #   #      #    #    #  #  # ##  #  #  ####   #    #  #  #  #
-    //   ##    #    # ##  #      #    #  #   #    #     ##    # ##  #  #   #    #  #   ##
-    // ###      ##   # #  #       ##   ##     ##  #      ##    # #  #  #  ###   #  #  #
-    //                                                                                 ###
+    // MARK: static async startStreaming
     /**
      * Starts OBS streaming.
      * @returns {Promise} A promise that resolves when streaming starts.
@@ -291,12 +225,7 @@ class OBSWebsocket {
         } catch (err) {} finally {}
     }
 
-    //         #                 #    ###          #           #            ##   ###    #     ##
-    //         #                 #     #           #                       #  #  #  #  ##    #  #
-    //  ###   ###    ###  ###   ###    #     ##   ###   ###   ##     ###      #  #  #   #       #
-    // ##      #    #  #  #  #   #     #    # ##   #    #  #   #    ##       #   ###    #      #
-    //   ##    #    # ##  #      #     #    ##     #    #      #      ##    #    #      #     #
-    // ###      ##   # #  #       ##   #     ##     ##  #     ###   ###    ####  #     ###   ####
+    // MARK: static async startTetris2P12
     /**
      * Starts the Tetris scene for players 1 and 2.
      * @returns {Promise} A promise that resolves when the scene is started.
@@ -331,12 +260,7 @@ class OBSWebsocket {
         } catch (err) {} finally {}
     }
 
-    //         #                 #    ###          #           #            ##   ###   ####    #
-    //         #                 #     #           #                       #  #  #  #     #   ##
-    //  ###   ###    ###  ###   ###    #     ##   ###   ###   ##     ###      #  #  #   ##   # #
-    // ##      #    #  #  #  #   #     #    # ##   #    #  #   #    ##       #   ###      #  ####
-    //   ##    #    # ##  #      #     #    ##     #    #      #      ##    #    #     #  #    #
-    // ###      ##   # #  #       ##   #     ##     ##  #     ###   ###    ####  #      ##     #
+    // MARK: static async startTetris2P34
     /**
      * Starts the Tetris scene for players 1 and 2.
      * @returns {Promise} A promise that resolves when the scene is started.
@@ -371,12 +295,7 @@ class OBSWebsocket {
         } catch (err) {} finally {}
     }
 
-    //         #                 #    ###          #           #             #   ###
-    //         #                 #     #           #                        ##   #  #
-    //  ###   ###    ###  ###   ###    #     ##   ###   ###   ##     ###   # #   #  #
-    // ##      #    #  #  #  #   #     #    # ##   #    #  #   #    ##     ####  ###
-    //   ##    #    # ##  #      #     #    ##     #    #      #      ##     #   #
-    // ###      ##   # #  #       ##   #     ##     ##  #     ###   ###      #   #
+    // MARK: static async startTetris4P
     /**
      * Starts the Tetris scene for four players.
      * @returns {Promise} A promise that resolves when the scene is started.
@@ -411,12 +330,7 @@ class OBSWebsocket {
         } catch (err) {} finally {}
     }
 
-    //         #                 #    #  #        #
-    //         #                 #    #  #        #
-    //  ###   ###    ###  ###   ###   #  #   ##   ###    ##    ###  # #
-    // ##      #    #  #  #  #   #    ####  # ##  #  #  #     #  #  ####
-    //   ##    #    # ##  #      #    ####  ##    #  #  #     # ##  #  #
-    // ###      ##   # #  #       ##  #  #   ##   ###    ##    # #  #  #
+    // MARK: static async startWebcam
     /**
      * Starts the webcam at the specified location.
      * @param {string} location The location to start the webcam at.
@@ -436,13 +350,7 @@ class OBSWebsocket {
         } catch (err) {} finally {}
     }
 
-    //         #                 ##   ###   #  #
-    //         #                #  #   #    ####
-    //  ###   ###    ##   ###   #      #    ####
-    // ##      #    #  #  #  #  #      #    #  #
-    //   ##    #    #  #  #  #  #  #   #    #  #
-    // ###      ##   ##   ###    ##    #    #  #
-    //                    #
+    // MARK: static async stopCTM
     /**
      * Stops CTM.
      * @returns {Promise} A promise that resolves when CTM is stopped.
@@ -461,13 +369,7 @@ class OBSWebsocket {
         } catch (err) {} finally {}
     }
 
-    //         #                ###    #                                #
-    //         #                #  #                                    #
-    //  ###   ###    ##   ###   #  #  ##     ###    ##    ##   ###    ###
-    // ##      #    #  #  #  #  #  #   #    ##     #     #  #  #  #  #  #
-    //   ##    #    #  #  #  #  #  #   #      ##   #     #  #  #     #  #
-    // ###      ##   ##   ###   ###   ###   ###     ##    ##   #      ###
-    //                    #
+    // MARK: static async stopDiscord
     /**
      * Stops Discord at the specified location.
      * @param {string} location The location to start Discord at.
@@ -487,13 +389,7 @@ class OBSWebsocket {
         } catch (err) {} finally {}
     }
 
-    //         #                ###    #                 ##
-    //         #                #  #                      #
-    //  ###   ###    ##   ###   #  #  ##     ###   ###    #     ###  #  #
-    // ##      #    #  #  #  #  #  #   #    ##     #  #   #    #  #  #  #
-    //   ##    #    #  #  #  #  #  #   #      ##   #  #   #    # ##   # #
-    // ###      ##   ##   ###   ###   ###   ###    ###   ###    # #    #
-    //                    #                        #                  #
+    // MARK: static async stopDisplay
     /**
      * Stops the display.
      * @returns {Promise} A promise that resolves when the display is stopped.
@@ -512,13 +408,7 @@ class OBSWebsocket {
         } catch (err) {} finally {}
     }
 
-    //         #                #  #   #
-    //         #                ####
-    //  ###   ###    ##   ###   ####  ##     ##
-    // ##      #    #  #  #  #  #  #   #    #
-    //   ##    #    #  #  #  #  #  #   #    #
-    // ###      ##   ##   ###   #  #  ###    ##
-    //                    #
+    // MARK: static async stopMic
     /**
      * Stops the microphone.
      * @returns {Promise} A promise that resolves when the microphone is stopped.
@@ -537,13 +427,7 @@ class OBSWebsocket {
         } catch (err) {} finally {}
     }
 
-    //         #                 ##                     ##                ####   #    ##     #
-    //         #                #  #                     #                #            #     #
-    //  ###   ###    ##   ###   #  #  # #    ##   ###    #     ###  #  #  ###   ##     #    ###    ##   ###
-    // ##      #    #  #  #  #  #  #  # #   # ##  #  #   #    #  #  #  #  #      #     #     #    # ##  #  #
-    //   ##    #    #  #  #  #  #  #  # #   ##    #      #    # ##   # #  #      #     #     #    ##    #
-    // ###      ##   ##   ###    ##    #     ##   #     ###    # #    #   #     ###   ###     ##   ##   #
-    //                    #                                          #
+    // MARK: static async stopOverlayFilter
     /**
      * Stops the overlay filter for the stinger.
      * @returns {Promise} A promise that resolves when the filter is stopped.
@@ -562,13 +446,7 @@ class OBSWebsocket {
         } catch (err) {} finally {}
     }
 
-    //         #                ###               ##
-    //         #                #  #               #
-    //  ###   ###    ##   ###   #  #   ##   ###    #     ###  #  #
-    // ##      #    #  #  #  #  ###   # ##  #  #   #    #  #  #  #
-    //   ##    #    #  #  #  #  # #   ##    #  #   #    # ##   # #
-    // ###      ##   ##   ###   #  #   ##   ###   ###    # #    #
-    //                    #                 #                  #
+    // MARK: static async stopReplay
     /**
      * Stops the replay and the filter for the live scene.
      * @param {string} source The name of the source.
@@ -593,13 +471,7 @@ class OBSWebsocket {
         } catch (err) {} finally {}
     }
 
-    //         #                ###                 #
-    //         #                #  #                #
-    //  ###   ###    ##   ###   #  #   ##    ###   ###   ###    ##    ###  # #    ###
-    // ##      #    #  #  #  #  ###   # ##  ##      #    #  #  # ##  #  #  ####  ##
-    //   ##    #    #  #  #  #  # #   ##      ##    #    #     ##    # ##  #  #    ##
-    // ###      ##   ##   ###   #  #   ##   ###      ##  #      ##    # #  #  #  ###
-    //                    #
+    // MARK: static async stopRestreams
     /**
      * Stops the restreams.
      * @returns {Promise} A promise that resolves when the restreams are stopped.
@@ -618,13 +490,7 @@ class OBSWebsocket {
         } catch (err) {} finally {}
     }
 
-    //         #                 ##    #                             #
-    //         #                #  #   #
-    //  ###   ###    ##   ###    #    ###   ###    ##    ###  # #   ##    ###    ###
-    // ##      #    #  #  #  #    #    #    #  #  # ##  #  #  ####   #    #  #  #  #
-    //   ##    #    #  #  #  #  #  #   #    #     ##    # ##  #  #   #    #  #   ##
-    // ###      ##   ##   ###    ##     ##  #      ##    # #  #  #  ###   #  #  #
-    //                    #                                                      ###
+    // MARK: static async stopStreaming
     /**
      * Stops OBS streaming.
      * @returns {Promise} A promise that resolves when OBS stops streaming.
@@ -640,13 +506,7 @@ class OBSWebsocket {
         } catch (err) {} finally {}
     }
 
-    //         #                ###          #           #
-    //         #                 #           #
-    //  ###   ###    ##   ###    #     ##   ###   ###   ##     ###
-    // ##      #    #  #  #  #   #    # ##   #    #  #   #    ##
-    //   ##    #    #  #  #  #   #    ##     #    #      #      ##
-    // ###      ##   ##   ###    #     ##     ##  #     ###   ###
-    //                    #
+    // MARK: static async stopTetris
     /**
      * Stops the tetris scenes.
      * @returns {Promise} A promise that resolves when the tetris scenes are stopped.
@@ -681,13 +541,7 @@ class OBSWebsocket {
         } catch (err) {} finally {}
     }
 
-    //         #                #  #        #
-    //         #                #  #        #
-    //  ###   ###    ##   ###   #  #   ##   ###    ##    ###  # #
-    // ##      #    #  #  #  #  ####  # ##  #  #  #     #  #  ####
-    //   ##    #    #  #  #  #  ####  ##    #  #  #     # ##  #  #
-    // ###      ##   ##   ###   #  #   ##   ###    ##    # #  #  #
-    //                    #
+    // MARK: static async stopWebcam
     /**
      * Stops the webcam at the specified location.
      * @param {string} location The location to stop the webcam at.
@@ -707,12 +561,7 @@ class OBSWebsocket {
         } catch (err) {} finally {}
     }
 
-    //               #     #          #      ##
-    //                     #          #     #  #
-    //  ###   #  #  ##    ###    ##   ###    #     ##    ##   ###    ##
-    // ##     #  #   #     #    #     #  #    #   #     # ##  #  #  # ##
-    //   ##   ####   #     #    #     #  #  #  #  #     ##    #  #  ##
-    // ###    ####  ###     ##   ##   #  #   ##    ##    ##   #  #   ##
+    // MARK: static async switchScene
     /**
      * Switches to the specified scene.
      * @param {string} scene The scene to switch to

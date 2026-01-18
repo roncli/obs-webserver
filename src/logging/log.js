@@ -16,26 +16,12 @@ let Discord;
 
 let running = false;
 
-//  #
-//  #
-//  #       ###    ## #
-//  #      #   #  #  #
-//  #      #   #   ##
-//  #      #   #  #
-//  #####   ###    ###
-//                #   #
-//                 ###
+// MARK: class Log
 /**
  * A class that handles logging.
  */
 class Log {
-    // ##
-    //  #
-    //  #     ##    ###
-    //  #    #  #  #  #
-    //  #    #  #   ##
-    // ###    ##   #
-    //              ###
+    // MARK: static log
     /**
      * Logs a message.
      * @param {string} message The message to log.
@@ -50,13 +36,7 @@ class Log {
         Log.output();
     }
 
-    //                          #
-    //
-    // #  #   ###  ###   ###   ##    ###    ###
-    // #  #  #  #  #  #  #  #   #    #  #  #  #
-    // ####  # ##  #     #  #   #    #  #   ##
-    // ####   # #  #     #  #  ###   #  #  #
-    //                                      ###
+    // MARK: static warning
     /**
      * Logs a warning.
      * @param {string} message The string to log.
@@ -71,13 +51,7 @@ class Log {
         Log.output();
     }
 
-    //                                #     #
-    //                                #
-    //  ##   #  #   ##    ##   ###   ###   ##     ##   ###
-    // # ##   ##   #     # ##  #  #   #     #    #  #  #  #
-    // ##     ##   #     ##    #  #   #     #    #  #  #  #
-    //  ##   #  #   ##    ##   ###     ##  ###    ##   #  #
-    //                         #
+    // MARK: static exception
     /**
      * Logs an exception.
      * @param {string} message The message describing the error.
@@ -94,13 +68,7 @@ class Log {
         Log.output();
     }
 
-    //              #                 #
-    //              #                 #
-    //  ##   #  #  ###   ###   #  #  ###
-    // #  #  #  #   #    #  #  #  #   #
-    // #  #  #  #   #    #  #  #  #   #
-    //  ##    ###    ##  ###    ###    ##
-    //                   #
+    // MARK: static async output
     /**
      * Outputs the log queue.
      * @returns {Promise} A promise that resolves when the output has been completed.
@@ -206,13 +174,7 @@ class Log {
         }
     }
 
-    //              #                 #    ###         ###    #                                #
-    //              #                 #     #          #  #                                    #
-    //  ##   #  #  ###   ###   #  #  ###    #     ##   #  #  ##     ###    ##    ##   ###    ###
-    // #  #  #  #   #    #  #  #  #   #     #    #  #  #  #   #    ##     #     #  #  #  #  #  #
-    // #  #  #  #   #    #  #  #  #   #     #    #  #  #  #   #      ##   #     #  #  #     #  #
-    //  ##    ###    ##  ###    ###    ##   #     ##   ###   ###   ###     ##    ##   #      ###
-    //                   #
+    // MARK: static async outputToDiscord
     /**
      * Outputs a log to Discord.
      * @param {LogTypes.LogEntry} log The log to write.

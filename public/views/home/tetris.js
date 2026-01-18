@@ -1,21 +1,9 @@
-//  #####          #              #           #   #    #
-//    #            #                          #   #
-//    #     ###   ####   # ##    ##     ###   #   #   ##     ###   #   #
-//    #    #   #   #     ##  #    #    #       # #     #    #   #  #   #
-//    #    #####   #     #        #     ###    # #     #    #####  # # #
-//    #    #       #  #  #        #        #   # #     #    #      # # #
-//    #     ###     ##   #       ###   ####     #     ###    ###    # #
+// MARK: class TetrisView
 /**
  * A class that represents the tetris view.
  */
 class TetrisView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered page template.
      * @param {{organization: string, title: string, color: string}} data The data for the view.

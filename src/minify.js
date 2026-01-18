@@ -15,25 +15,12 @@ const csso = require("csso"),
 const nameCache = {},
     outputCache = {};
 
-//  #   #    #             #      ##
-//  #   #                        #  #
-//  ## ##   ##    # ##    ##     #     #   #
-//  # # #    #    ##  #    #    ####   #   #
-//  #   #    #    #   #    #     #     #  ##
-//  #   #    #    #   #    #     #      ## #
-//  #   #   ###   #   #   ###    #         #
-//                                     #   #
-//                                      ###
+// MARK: class Minify
 /**
 * Minifies and combines the specified files.
 */
 class Minify {
-    //                     #  #                 #  ##
-    //                     #  #                 #   #
-    //  ##    ###    ###   ####   ###  ###    ###   #     ##   ###
-    // #     ##     ##     #  #  #  #  #  #  #  #   #    # ##  #  #
-    // #       ##     ##   #  #  # ##  #  #  #  #   #    ##    #
-    //  ##   ###    ###    #  #   # #  #  #   ###  ###    ##   #
+    // MARK: static async cssHandler
     /**
      * The Express handler to return the minified version of the CSS file passed.
      * @param {Express.Request} req The request.
@@ -98,13 +85,7 @@ class Minify {
         }
     }
 
-    //   #          #  #                 #  ##
-    //              #  #                 #   #
-    //   #    ###   ####   ###  ###    ###   #     ##   ###
-    //   #   ##     #  #  #  #  #  #  #  #   #    # ##  #  #
-    //   #     ##   #  #  # ##  #  #  #  #   #    ##    #
-    // # #   ###    #  #   # #  #  #   ###  ###    ##   #
-    //  #
+    // MARK: static async jsHandler
     /**
      * The Express handler to return the minified version of the JavaScript file passed.
      * @param {Express.Request} req The request.
@@ -181,12 +162,7 @@ class Minify {
         }
     }
 
-    //                   #      #
-    //                   #
-    //  ##    ##   # #   ###   ##    ###    ##
-    // #     #  #  ####  #  #   #    #  #  # ##
-    // #     #  #  #  #  #  #   #    #  #  ##
-    //  ##    ##   #  #  ###   ###   #  #   ##
+    // MARK: static combine
     /**
      * Combines the specified filenames into a single filename.
      * @param {string[]} files The list of filenames to combine.

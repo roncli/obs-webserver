@@ -5,24 +5,12 @@
 
 const Common = require("../includes/common");
 
-//  ####     #                                    #
-//   #  #                                         #
-//   #  #   ##     ###    ###    ###   # ##    ## #
-//   #  #    #    #      #   #  #   #  ##  #  #  ##
-//   #  #    #     ###   #      #   #  #      #   #
-//   #  #    #        #  #   #  #   #  #      #  ##
-//  ####    ###   ####    ###    ###   #       ## #
+// MARK: class Discord
 /**
  * A class that handles the Discord page.
  */
 class Discord {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Processes the request.
      * @param {Express.Request} req The request.

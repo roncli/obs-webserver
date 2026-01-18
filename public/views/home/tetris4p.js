@@ -1,21 +1,9 @@
-//  #####          #              #              #   ####   #   #    #
-//    #            #                            ##   #   #  #   #
-//    #     ###   ####   # ##    ##     ###    # #   #   #  #   #   ##     ###   #   #
-//    #    #   #   #     ##  #    #    #      #  #   ####    # #     #    #   #  #   #
-//    #    #####   #     #        #     ###   #####  #       # #     #    #####  # # #
-//    #    #       #  #  #        #        #     #   #       # #     #    #      # # #
-//    #     ###     ##   #       ###   ####      #   #        #     ###    ###    # #
+// MARK: class Tetris4PView
 /**
  * A class that represents the tetris 4P view.
  */
 class Tetris4PView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered page template.
      * @param {{event: {organization: string, title: string, status: string, color: string}, player1: {name: string, score: string}, player2: {name: string, score: string}, player3: {name: string, score: string}, player4: {name: string, score: string}}} data The data for the view.

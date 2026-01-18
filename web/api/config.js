@@ -7,26 +7,12 @@
 const ConfigFile = require("../../src/configFile"),
     Websocket = require("../../src/websocket");
 
-//   ###                   ##     #             #             #
-//  #   #                 #  #                 # #
-//  #       ###   # ##    #      ##     ## #  #   #  # ##    ##
-//  #      #   #  ##  #  ####     #    #  #   #   #  ##  #    #
-//  #      #   #  #   #   #       #     ##    #####  ##  #    #
-//  #   #  #   #  #   #   #       #    #      #   #  # ##     #
-//   ###    ###   #   #   #      ###    ###   #   #  #       ###
-//                                     #   #         #
-//                                      ###          #
+// MARK: class ConfigApi
 /**
  * A class that represents the Config API.
  */
 class ConfigApi {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Processes the request.
      * @param {Express.Request} req The request.
@@ -37,15 +23,7 @@ class ConfigApi {
         res.json({data: ConfigFile.get(req.params.key) || []});
     }
 
-    //                        #
-    //                        #
-    //  # ##    ###    ###   ####
-    //  ##  #  #   #  #       #
-    //  ##  #  #   #   ###    #
-    //  # ##   #   #      #   #  #
-    //  #       ###   ####     ##
-    //  #
-    //  #
+    // MARK: static post
     /**
      * Processes the request.
      * @param {Express.Request} req The request.

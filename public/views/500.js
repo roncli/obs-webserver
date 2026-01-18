@@ -1,21 +1,9 @@
-//   ###                                      #####                              #   #    #
-//  #   #                                     #                                  #   #
-//  #       ###   # ##   #   #   ###   # ##   #      # ##   # ##    ###   # ##   #   #   ##     ###   #   #
-//   ###   #   #  ##  #  #   #  #   #  ##  #  ####   ##  #  ##  #  #   #  ##  #   # #     #    #   #  #   #
-//      #  #####  #       # #   #####  #      #      #      #      #   #  #       # #     #    #####  # # #
-//  #   #  #      #       # #   #      #      #      #      #      #   #  #       # #     #    #      # # #
-//   ###    ###   #        #     ###   #      #####  #      #       ###   #        #     ###    ###    # #
+// MARK: class ServerErrorView
 /**
  * A class that represents the 500 view.
  */
 class ServerErrorView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered server error template.
      * @param {boolean} [control] Determines whether to display a link to return to the control page.

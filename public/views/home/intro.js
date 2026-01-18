@@ -1,21 +1,9 @@
-//   ###           #                   #   #    #
-//    #            #                   #   #
-//    #    # ##   ####   # ##    ###   #   #   ##     ###   #   #
-//    #    ##  #   #     ##  #  #   #   # #     #    #   #  #   #
-//    #    #   #   #     #      #   #   # #     #    #####  # # #
-//    #    #   #   #  #  #      #   #   # #     #    #      # # #
-//   ###   #   #    ##   #       ###     #     ###    ###    # #
+// MARK: IntroView
 /**
  * A class that represents the intro view.
  */
 class IntroView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered page template.
      * @returns {string} An HTML string of the page.

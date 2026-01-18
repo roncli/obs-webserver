@@ -2,24 +2,12 @@
  * @typedef {import("../types/deferredTypes")} DeferredTypes.DeferredPromise
  */
 
-//  ####            ##                                   #
-//   #  #          #  #                                  #
-//   #  #   ###    #      ###   # ##   # ##    ###    ## #
-//   #  #  #   #  ####   #   #  ##  #  ##  #  #   #  #  ##
-//   #  #  #####   #     #####  #      #      #####  #   #
-//   #  #  #       #     #      #      #      #      #  ##
-//  ####    ###    #      ###   #      #       ###    ## #
+// MARK: class Deferred
 /**
  * A class to create a deferred promise.
  */
 class Deferred {
-    //                          #
-
-    // ###   ###    ##   # #   ##     ###    ##
-    // #  #  #  #  #  #  ####   #    ##     # ##
-    // #  #  #     #  #  #  #   #      ##   ##
-    // ###   #      ##   #  #  ###   ###     ##
-    // #
+    // MARK: static promise
     /**
      * Creates a deferred promise.
      * @returns {DeferredTypes.DeferredPromise} The deferred promise.

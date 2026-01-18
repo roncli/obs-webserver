@@ -10,22 +10,12 @@ const HtmlMinifier = require("html-minifier"),
 /** @type {typeof import("../../public/views/index")} */
 let IndexView;
 
-//   ###
-//  #   #
-//  #       ###   ## #   ## #    ###   # ##
-//  #      #   #  # # #  # # #  #   #  ##  #
-//  #      #   #  # # #  # # #  #   #  #   #
-//  #   #  #   #  # # #  # # #  #   #  #   #
-//   ###    ###   #   #  #   #   ###   #   #
+// MARK: class Common
 /**
  * A class that handles common web functions.
  */
 class Common {
-    // ###    ###   ###   ##
-    // #  #  #  #  #  #  # ##
-    // #  #  # ##   ##   ##
-    // ###    # #  #      ##
-    // #            ###
+    // MARK: static page
     /**
      * Generates a webpage from the provided HTML using a common template.
      * @param {string} head The HTML to insert into the header.
@@ -65,12 +55,7 @@ class Common {
         );
     }
 
-    // #      #          ##    ####                       #
-    // #      #           #    #                          #
-    // ###   ###   # #    #    ###   ###    ##    ##    ###   ##
-    // #  #   #    ####   #    #     #  #  #     #  #  #  #  # ##
-    // #  #   #    #  #   #    #     #  #  #     #  #  #  #  ##
-    // #  #    ##  #  #  ###   ####  #  #   ##    ##    ###   ##
+    // MARK: static htmlEncode
     /**
      * HTML-encodes a string.
      * @param {string} str The string.
@@ -80,13 +65,7 @@ class Common {
         return str && str.replace(/[\u0080-\uFFFF<>&]/gim, (i) => `&#${i.charCodeAt(0)};`).replace(/\r\n/gim, "<br />").replace(/[\r\n]/gim, "<br />") || "";
     }
 
-    //                                      #           ##          #     #
-    //                                      #          #  #         #
-    //  ###   ##   ###    ##   ###    ###  ###    ##   #  #  ###   ###   ##     ##   ###    ###
-    // #  #  # ##  #  #  # ##  #  #  #  #   #    # ##  #  #  #  #   #     #    #  #  #  #  ##
-    //  ##   ##    #  #  ##    #     # ##   #    ##    #  #  #  #   #     #    #  #  #  #    ##
-    // #      ##   #  #   ##   #      # #    ##   ##    ##   ###     ##  ###    ##   #  #  ###
-    //  ###                                                  #
+    // MARK: static generateOptions
     /**
      * Generates an HTML string of options.
      * @param {ViewTypes.Option[]} options The options.
@@ -105,13 +84,7 @@ class Common {
         `;
     }
 
-    //   #          ####                       #
-    //              #                          #
-    //   #    ###   ###   ###    ##    ##    ###   ##
-    //   #   ##     #     #  #  #     #  #  #  #  # ##
-    //   #     ##   #     #  #  #     #  #  #  #  ##
-    // # #   ###    ####  #  #   ##    ##    ###   ##
-    //  #
+    // MARK: static jsEncode
     /**
      * Javascript-encodes a string.
      * @param {*} str The string.

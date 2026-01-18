@@ -1,21 +1,9 @@
-//   ###                        ####                                #     #   #    #
-//  #   #                       #   #                               #     #   #
-//  #       ###   ## #    ###   #   #   ###    ###    ###   # ##   ####   #   #   ##     ###   #   #
-//  #          #  # # #  #   #  ####   #   #  #   #  #   #  ##  #   #      # #     #    #   #  #   #
-//  #  ##   ####  # # #  #####  # #    #####  #      #####  #   #   #      # #     #    #####  # # #
-//  #   #  #   #  # # #  #      #  #   #      #   #  #      #   #   #  #   # #     #    #      # # #
-//   ###    ####  #   #   ###   #   #   ###    ###    ###   #   #    ##     #     ###    ###    # #
+// MARK: class GameRecentView
 /**
  * A class that represents the game recent view.
  */
 class GameRecentView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered page template.
      * @returns {string} An HTML string of the page.

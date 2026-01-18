@@ -7,26 +7,12 @@
 const ConfigFile = require("../../src/configFile"),
     Websocket = require("../../src/websocket");
 
-//  ####                         ##      #     ###                   #                    #    ####    ###
-//  #   #                         #           #   #                                      # #   #   #    #
-//  #   #   ###   # ##    ###     #     ##    #       ###   ## #    ##    # ##    ## #  #   #  #   #    #
-//  ####   #   #  ##  #  #   #    #      #    #          #  # # #    #    ##  #  #  #   #   #  ####     #
-//  # #    #   #  #   #  #        #      #    #  ##   ####  # # #    #    #   #   ##    #####  #        #
-//  #  #   #   #  #   #  #   #    #      #    #   #  #   #  # # #    #    #   #  #      #   #  #        #
-//  #   #   ###   #   #   ###    ###    ###    ###    ####  #   #   ###   #   #   ###   #   #  #       ###
-//                                                                               #   #
-//                                                                                ###
+// MARK: class RoncliGamingAPI
 /**
  * A class that represents the roncli Gaming API.
  */
 class RoncliGamingAPI {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Processes the request.
      * @param {Express.Request} req The request.
@@ -37,15 +23,7 @@ class RoncliGamingAPI {
         res.json({data: ConfigFile.get("roncliGaming") || []});
     }
 
-    //                        #
-    //                        #
-    //  # ##    ###    ###   ####
-    //  ##  #  #   #  #       #
-    //  ##  #  #   #   ###    #
-    //  # ##   #   #      #   #  #
-    //  #       ###   ####     ##
-    //  #
-    //  #
+    // MARK: static post
     /**
      * Processes the request.
      * @param {Express.Request} req The request.

@@ -1,4 +1,6 @@
-/** @typedef {import("socket.io-client")} SocketIOClient */
+/**
+ * @typedef {import("socket.io-client")} SocketIOClient
+ */
 
 const io = require("socket.io-client"),
     settings = require("../settings");
@@ -6,25 +8,14 @@ const io = require("socket.io-client"),
 /** @type {SocketIOClient.Socket} */
 let client = void 0;
 
-//   ###    #                                  ##           #
-//  #   #   #                                   #           #
-//  #      ####   # ##    ###    ###   ## #     #     ###   # ##    ###
-//   ###    #     ##  #  #   #      #  # # #    #        #  ##  #  #
-//      #   #     #      #####   ####  # # #    #     ####  #   #   ###
-//  #   #   #  #  #      #      #   #  # # #    #    #   #  ##  #      #
-//   ###     ##   #       ###    ####  #   #   ###    ####  # ##   ####
+// MARK: class Streamlabs
 /**
  * A class that handles connection to Streamlabs.
  *
  * @static
  */
 class Streamlabs {
-    //       ##     #                 #
-    //        #                       #
-    //  ##    #    ##     ##   ###   ###
-    // #      #     #    # ##  #  #   #
-    // #      #     #    ##    #  #   #
-    //  ##   ###   ###    ##   #  #    ##
+    // MARK: static get client
     /**
      * The Streamlabs client.
      * @returns {SocketIOClient.Socket} The Streamlabs client.
@@ -33,12 +24,7 @@ class Streamlabs {
         return client;
     }
 
-    //         #                 #
-    //         #                 #
-    //  ###   ###    ###  ###   ###
-    // ##      #    #  #  #  #   #
-    //   ##    #    # ##  #      #
-    // ###      ##   # #  #       ##
+    // MARK: static start
     /**
      * Starts listening to Streamlabs.
      * @returns {void}

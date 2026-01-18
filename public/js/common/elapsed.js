@@ -1,22 +1,9 @@
-//  #####   ##                                    #
-//  #        #                                    #
-//  #        #     ###   # ##    ###    ###    ## #
-//  ####     #        #  ##  #  #      #   #  #  ##
-//  #        #     ####  ##  #   ###   #####  #   #
-//  #        #    #   #  # ##       #  #      #  ##
-//  #####   ###    ####  #      ####    ###    ## #
-//                       #
-//                       #
+// MARK: class Elapsed
 /**
  * A class that represents an elapsed timer.
  */
 class Elapsed {
-    //                           #                       #
-    //                           #                       #
-    //  ##    ##   ###    ###   ###   ###   #  #   ##   ###    ##   ###
-    // #     #  #  #  #  ##      #    #  #  #  #  #      #    #  #  #  #
-    // #     #  #  #  #    ##    #    #     #  #  #      #    #  #  #
-    //  ##    ##   #  #  ###      ##  #      ###   ##     ##   ##   #
+    // MARK: constructor
     /**
      * Creates a new elapsed timer instance.
      * @param {DateTime} start The start of the Elapsed.
@@ -35,13 +22,7 @@ class Elapsed {
         this.update();
     }
 
-    //                #         #
-    //                #         #
-    // #  #  ###    ###   ###  ###    ##
-    // #  #  #  #  #  #  #  #   #    # ##
-    // #  #  #  #  #  #  # ##   #    ##
-    //  ###  ###    ###   # #    ##   ##
-    //       #
+    // MARK: update
     /**
      * Updates the timer.
      * @returns {void}

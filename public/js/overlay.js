@@ -1,22 +1,9 @@
-//   ###                         ##
-//  #   #                         #
-//  #   #  #   #   ###   # ##     #     ###   #   #
-//  #   #  #   #  #   #  ##  #    #        #  #   #
-//  #   #   # #   #####  #        #     ####  #  ##
-//  #   #   # #   #      #        #    #   #   ## #
-//   ###     #     ###   #       ###    ####      #
-//                                            #   #
-//                                             ###
+// MARK: class Overlay
 /**
  * A class that provides functions for the overlay page.
  */
 class Overlay {
-    // ###    ##   #  #   ##                #                 #    #                    #           #
-    // #  #  #  #  ####  #  #               #                 #    #                    #           #
-    // #  #  #  #  ####  #      ##   ###   ###    ##   ###   ###   #      ##    ###   ###   ##    ###
-    // #  #  #  #  #  #  #     #  #  #  #   #    # ##  #  #   #    #     #  #  #  #  #  #  # ##  #  #
-    // #  #  #  #  #  #  #  #  #  #  #  #   #    ##    #  #   #    #     #  #  # ##  #  #  ##    #  #
-    // ###    ##   #  #   ##    ##   #  #    ##   ##   #  #    ##  ####   ##    # #   ###   ##    ###
+    // MARK: static DOMContentLoaded
     /**
      * Sets up the page's events.
      * @returns {void}
@@ -39,13 +26,7 @@ class Overlay {
         });
     }
 
-    //        ##
-    //         #
-    //  ###    #     ##    ##   ###
-    // ##      #    # ##  # ##  #  #
-    //   ##    #    ##    ##    #  #
-    // ###    ###    ##    ##   ###
-    //                          #
+    // MARK: static sleep
     /**
      * Sleeps for a specified amount of time.
      * @param {number} ms The number of milliseconds to sleep.
@@ -57,12 +38,7 @@ class Overlay {
         });
     }
 
-    //         #                 #    ####   #
-    //         #                 #    #
-    //  ###   ###    ###  ###   ###   ###   ##    ###    ##
-    // ##      #    #  #  #  #   #    #      #    #  #  # ##
-    //   ##    #    # ##  #      #    #      #    #     ##
-    // ###      ##   # #  #       ##  #     ###   #      ##
+    // MARK: static startFire
     /**
      * Starts the fire GIF.
      * @returns {void}
@@ -77,13 +53,7 @@ class Overlay {
         }, 10000);
     }
 
-    //         #                 #     ##    #     #
-    //         #                 #    #  #   #
-    //  ###   ###    ###  ###   ###    #    ###   ##    ###    ###   ##   ###
-    // ##      #    #  #  #  #   #      #    #     #    #  #  #  #  # ##  #  #
-    //   ##    #    # ##  #      #    #  #   #     #    #  #   ##   ##    #
-    // ###      ##   # #  #       ##   ##     ##  ###   #  #  #      ##   #
-    //                                                         ###
+    // MARK: static startStinger
     /**
      * Starts the stinger transition.
      * @returns {void}
@@ -95,13 +65,7 @@ class Overlay {
         stinger.play();
     }
 
-    //         #                 #    ###                            #
-    //         #                 #     #                             #
-    //  ###   ###    ###  ###   ###    #     ##   ###    ##   #  #  ###
-    // ##      #    #  #  #  #   #     #    #  #  #  #  #  #  #  #   #
-    //   ##    #    # ##  #      #     #    #  #  #  #  #  #  #  #   #
-    // ###      ##   # #  #       ##   #     ##   ###    ##    ###    ##
-    //                                            #
+    // MARK: static startTopout
     /**
      * Starts the topout transition.
      * @returns {Promise} A promise that resolves when the topout is complete.
@@ -127,12 +91,7 @@ class Overlay {
         }
     }
 
-    //         #                 #    #  #        #                        #            #
-    //         #                 #    #  #        #                        #            #
-    //  ###   ###    ###  ###   ###   #  #   ##   ###    ###    ##    ##   # #    ##   ###
-    // ##      #    #  #  #  #   #    ####  # ##  #  #  ##     #  #  #     ##    # ##   #
-    //   ##    #    # ##  #      #    ####  ##    #  #    ##   #  #  #     # #   ##     #
-    // ###      ##   # #  #       ##  #  #   ##   ###   ###     ##    ##   #  #   ##     ##
+    // MARK: static startWebsocket
     /**
      * Starts the WebSocket connection.
      * @returns {void}

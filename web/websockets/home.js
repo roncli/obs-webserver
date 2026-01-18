@@ -5,23 +5,12 @@
 
 const WS = require("../../src/websocket");
 
-//  #   #
-//  #   #
-//  #   #   ###   ## #    ###
-//  #####  #   #  # # #  #   #
-//  #   #  #   #  # # #  #####
-//  #   #  #   #  # # #  #
-//  #   #   ###   #   #   ###
+// MARK: class Home
 /**
  * A websocket to handle connections to the home page.
  */
 class Home {
-    //       ##
-    //        #
-    //  ##    #     ##    ###    ##
-    // #      #    #  #  ##     # ##
-    // #      #    #  #    ##   ##
-    //  ##   ###    ##   ###     ##
+    // MARK: static close
     /**
      * Close the websocket.
      * @param {WebSocket} ws The websocket.
@@ -31,12 +20,7 @@ class Home {
         WS.unregister(ws);
     }
 
-    //  #           #     #
-    //                    #
-    // ##    ###   ##    ###
-    //  #    #  #   #     #
-    //  #    #  #   #     #
-    // ###   #  #  ###     ##
+    // MARK: static init
     /**
      * Initializes the websocket.
      * @param {WebSocket} ws The websocket.
@@ -46,11 +30,7 @@ class Home {
         WS.register(ws);
     }
 
-    // # #    ##    ###    ###    ###   ###   ##
-    // ####  # ##  ##     ##     #  #  #  #  # ##
-    // #  #  ##      ##     ##   # ##   ##   ##
-    // #  #   ##   ###    ###     # #  #      ##
-    //                                  ###
+    // MARK: static message
     /**
      * Handles receiving a message.
      * @param {WebSocket} ws The websocket.

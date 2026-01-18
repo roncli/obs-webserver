@@ -1,25 +1,12 @@
 const Color = require("./color"),
     Lights = require("./lights");
 
-//  #        #           #       #       #
-//  #                    #       #
-//  #       ##     ## #  # ##   ####    ##    # ##    ## #
-//  #        #    #  #   ##  #   #       #    ##  #  #  #
-//  #        #     ##    #   #   #       #    #   #   ##
-//  #        #    #      #   #   #  #    #    #   #  #
-//  #####   ###    ###   #   #    ##    ###   #   #   ###
-//                #   #                              #   #
-//                 ###                                ###
+// MARK: class Lighting
 /**
  * A class that handles lighting for the scenes.
  */
 class Lighting {
-    //              #                 #
-    //                                #
-    //  ###  ###   ##    # #    ###  ###    ##
-    // #  #  #  #   #    ####  #  #   #    # ##
-    // # ##  #  #   #    #  #  # ##   #    ##
-    //  # #  #  #  ###   #  #   # #    ##   ##
+    // MARK: static async animate
     /**
      * Animates the current lighting.
      * @returns {Promise} A promise that resolves when the current lighting is animated.
@@ -33,12 +20,7 @@ class Lighting {
         }
     }
 
-    //  #           #     #     ##   #
-    //                    #    #  #  #
-    // ##    ###   ##    ###    #    ###    ##   #  #   ##    ###   ###    ##
-    //  #    #  #   #     #      #   #  #  #  #  #  #  #     #  #  ##     # ##
-    //  #    #  #   #     #    #  #  #  #  #  #  ####  #     # ##    ##   ##
-    // ###   #  #  ###     ##   ##   #  #   ##   ####   ##    # #  ###     ##
+    // MARK: static initShowcase
     /**
      * Initialize the main lighting with the showcase lighting.
      * @returns {void}
@@ -62,12 +44,7 @@ class Lighting {
         Lighting.data.lights.main.lights.set(16, new Color(0, 113, 206));
     }
 
-    //         #                 #     ##          #                 #     #
-    //         #                 #    #  #                           #
-    //  ###   ###    ###  ###   ###   #  #  ###   ##    # #    ###  ###   ##     ##   ###
-    // ##      #    #  #  #  #   #    ####  #  #   #    ####  #  #   #     #    #  #  #  #
-    //   ##    #    # ##  #      #    #  #  #  #   #    #  #  # ##   #     #    #  #  #  #
-    // ###      ##   # #  #       ##  #  #  #  #  ###   #  #   # #    ##  ###    ##   #  #
+    // MARK: static startAnimation
     /**
      * Starts animation for the current lighting setup.
      * @returns {void}
@@ -77,13 +54,7 @@ class Lighting {
         Lighting.data.lightsTimeout = setTimeout(Lighting.animate, 1);
     }
 
-    //         #                 ##          #                 #     #
-    //         #                #  #                           #
-    //  ###   ###    ##   ###   #  #  ###   ##    # #    ###  ###   ##     ##   ###
-    // ##      #    #  #  #  #  ####  #  #   #    ####  #  #   #     #    #  #  #  #
-    //   ##    #    #  #  #  #  #  #  #  #   #    #  #  # ##   #     #    #  #  #  #
-    // ###      ##   ##   ###   #  #  #  #  ###   #  #   # #    ##  ###    ##   #  #
-    //                    #
+    // MARK: static stopAnimation
     /**
      * Stops animation for the current lighting setup.
      * @returns {void}

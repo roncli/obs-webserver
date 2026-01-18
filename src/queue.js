@@ -3,24 +3,12 @@
  * @returns {void | PromiseLike<void>}
  */
 
-//   ###
-//  #   #
-//  #   #  #   #   ###   #   #   ###
-//  #   #  #   #  #   #  #   #  #   #
-//  #   #  #   #  #####  #   #  #####
-//  # # #  #  ##  #      #  ##  #
-//   ###    ## #   ###    ## #   ###
-//      #
+// MARK: Queue
 /**
  * A class that creates a queue of functions.
  */
 class Queue {
-    //                           #                       #
-    //                           #                       #
-    //  ##    ##   ###    ###   ###   ###   #  #   ##   ###    ##   ###
-    // #     #  #  #  #  ##      #    #  #  #  #  #      #    #  #  #  #
-    // #     #  #  #  #    ##    #    #     #  #  #      #    #  #  #
-    //  ##    ##   #  #  ###      ##  #      ###   ##     ##   ##   #
+    // MARK: constructor
     /**
      * Creates a new queue.
      */
@@ -30,13 +18,7 @@ class Queue {
         this.complete = 0;
     }
 
-    //                    #
-    //                    #
-    // ###   #  #   ###   ###
-    // #  #  #  #  ##     #  #
-    // #  #  #  #    ##   #  #
-    // ###    ###  ###    #  #
-    // #
+    // MARK: push
     /**
      * Adds a function to the queue.
      * @param {QueuedFunction} fx The function to add to the queue.

@@ -1,21 +1,9 @@
-//   ###                        #   #          #       #      ##     #                   #       #                  #   #    #
-//  #   #                       #   #          #             #  #                        #                          #   #
-//  #       ###   ## #    ###   ##  #   ###   ####    ##     #      ##     ###    ###   ####    ##     ###   # ##   #   #   ##     ###   #   #
-//  #          #  # # #  #   #  # # #  #   #   #       #    ####     #    #   #      #   #       #    #   #  ##  #   # #     #    #   #  #   #
-//  #  ##   ####  # # #  #####  #  ##  #   #   #       #     #       #    #       ####   #       #    #   #  #   #   # #     #    #####  # # #
-//  #   #  #   #  # # #  #      #   #  #   #   #  #    #     #       #    #   #  #   #   #  #    #    #   #  #   #   # #     #    #      # # #
-//   ###    ####  #   #   ###   #   #   ###     ##    ###    #      ###    ###    ####    ##    ###    ###   #   #    #     ###    ###    # #
+// MARK: class GameNotificationView
 /**
  * A class that represents the game notification view.
  */
 class GameNotificationView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered page template.
      * @param {string} image The image for the notification.

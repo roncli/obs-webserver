@@ -1,21 +1,9 @@
-//   ###                        #####    #     #      ##           #   #    #
-//  #   #                         #            #       #           #   #
-//  #       ###   ## #    ###     #     ##    ####     #     ###   #   #   ##     ###   #   #
-//  #          #  # # #  #   #    #      #     #       #    #   #   # #     #    #   #  #   #
-//  #  ##   ####  # # #  #####    #      #     #       #    #####   # #     #    #####  # # #
-//  #   #  #   #  # # #  #        #      #     #  #    #    #       # #     #    #      # # #
-//   ###    ####  #   #   ###     #     ###     ##    ###    ###     #     ###    ###    # #
+// MARK: class GameTitleView
 /**
  * A class that represents the game title view.
  */
 class GameTitleView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered page template.
      * @param {string} title The data to render.

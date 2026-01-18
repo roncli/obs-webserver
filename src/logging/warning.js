@@ -1,12 +1,4 @@
-//  #   #                         #
-//  #   #
-//  #   #   ###   # ##   # ##    ##    # ##    ## #
-//  # # #      #  ##  #  ##  #    #    ##  #  #  #
-//  # # #   ####  #      #   #    #    #   #   ##
-//  ## ##  #   #  #      #   #    #    #   #  #
-//  #   #   ####  #      #   #   ###   #   #   ###
-//                                            #   #
-//                                             ###
+// MARK: class Warning
 /**
  * An error class used to denote a warning rather than an error.
  */

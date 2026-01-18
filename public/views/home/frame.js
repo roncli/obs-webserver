@@ -1,21 +1,9 @@
-//  #####                              #   #    #
-//  #                                  #   #
-//  #      # ##    ###   ## #    ###   #   #   ##     ###   #   #
-//  ####   ##  #      #  # # #  #   #   # #     #    #   #  #   #
-//  #      #       ####  # # #  #####   # #     #    #####  # # #
-//  #      #      #   #  # # #  #       # #     #    #      # # #
-//  #      #       ####  #   #   ###     #     ###    ###    # #
+// MARK: class FrameView
 /**
  * A class that represents the frame view.
  */
 class FrameView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered page template.
      * @returns {string} An HTML string of the page.

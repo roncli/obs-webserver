@@ -2,24 +2,12 @@
  * @typedef {import("../../types/viewTypes").ControlViewParameters} ViewTypes.ControlViewParameters
  */
 
-//   ###                  #                    ##    #   #    #
-//  #   #                 #                     #    #   #
-//  #       ###   # ##   ####   # ##    ###     #    #   #   ##     ###   #   #
-//  #      #   #  ##  #   #     ##  #  #   #    #     # #     #    #   #  #   #
-//  #      #   #  #   #   #     #      #   #    #     # #     #    #####  # # #
-//  #   #  #   #  #   #   #  #  #      #   #    #     # #     #    #      # # #
-//   ###    ###   #   #    ##   #       ###    ###     #     ###    ###    # #
+// MARK: class ControlView
 /**
  * A class that represents the control view.
  */
 class ControlView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered control template.
      * @param {ViewTypes.ControlViewParameters} data The set of data required to render the view.

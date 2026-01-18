@@ -10,23 +10,12 @@ let queue = new Queue(),
 // Notification cooldown starts resolved.
 notificationCooldown.resolve();
 
-//  #   #          #       #      ##     #                   #       #
-//  #   #          #             #  #                        #
-//  ##  #   ###   ####    ##     #      ##     ###    ###   ####    ##     ###   # ##    ###
-//  # # #  #   #   #       #    ####     #    #   #      #   #       #    #   #  ##  #  #
-//  #  ##  #   #   #       #     #       #    #       ####   #       #    #   #  #   #   ###
-//  #   #  #   #   #  #    #     #       #    #   #  #   #   #  #    #    #   #  #   #      #
-//  #   #   ###     ##    ###    #      ###    ###    ####    ##    ###    ###   #   #  ####
+// MARK: class Notifications
 /**
  * A class that handles notifications for the stream.
  */
 class Notifications {
-    //          #     #
-    //          #     #
-    //  ###   ###   ###
-    // #  #  #  #  #  #
-    // # ##  #  #  #  #
-    //  # #   ###   ###
+    // MARK: static add
     /**
      * Adds a notification to the queue.
      * @param {string} type The notification type.
@@ -40,12 +29,7 @@ class Notifications {
         });
     }
 
-    //                       #
-    //                       #
-    //  ###    ##   ###    ###
-    // ##     # ##  #  #  #  #
-    //   ##   ##    #  #  #  #
-    // ###     ##   #  #   ###
+    // MARK: static send
     /**
      * Sends a notification to the websocket when ready.
      * @param {string} type The type of notification.
@@ -83,12 +67,7 @@ class Notifications {
         }
     }
 
-    //         #                 #
-    //         #                 #
-    //  ###   ###    ###  ###   ###
-    // ##      #    #  #  #  #   #
-    //   ##    #    # ##  #      #
-    // ###      ##   # #  #       ##
+    // MARK: static start
     /**
      * Starts the processing of notifications.
      * @returns {void}
@@ -98,13 +77,7 @@ class Notifications {
         notificationCooldown.resolve();
     }
 
-    //         #
-    //         #
-    //  ###   ###    ##   ###
-    // ##      #    #  #  #  #
-    //   ##    #    #  #  #  #
-    // ###      ##   ##   ###
-    //                    #
+    // MARK: static stop
     /**
      * Stops the processing of notifications.
      * @returns {void}
@@ -115,12 +88,7 @@ class Notifications {
         }
     }
 
-    //                           #
-    //                           #
-    // ###    ##    ###    ##   ###
-    // #  #  # ##  ##     # ##   #
-    // #     ##      ##   ##     #
-    // #      ##   ###     ##     ##
+    // MARK: static reset
     /**
      * Resets the notification system.
      * @returns {void}

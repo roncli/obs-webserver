@@ -9,24 +9,12 @@ const ConfigFile = require("../../src/configFile"),
     ServerErrorView = require("../../public/views/500"),
     Twitch = require("../../src/twitch");
 
-//   ###                  #                    ##
-//  #   #                 #                     #
-//  #       ###   # ##   ####   # ##    ###     #
-//  #      #   #  ##  #   #     ##  #  #   #    #
-//  #      #   #  #   #   #     #      #   #    #
-//  #   #  #   #  #   #   #  #  #      #   #    #
-//   ###    ###   #   #    ##   #       ###    ###
+// MARK: class Control
 /**
  * A class that handles the control page.
  */
 class Control {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static async get
     /**
      * Processes the request.
      * @param {Express.Request} req The request.

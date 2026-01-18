@@ -5,26 +5,12 @@
 
 const Websocket = require("../../src/websocket");
 
-//  #####          #              #             #             #
-//    #            #                           # #
-//    #     ###   ####   # ##    ##     ###   #   #  # ##    ##
-//    #    #   #   #     ##  #    #    #      #   #  ##  #    #
-//    #    #####   #     #        #     ###   #####  ##  #    #
-//    #    #       #  #  #        #        #  #   #  # ##     #
-//    #     ###     ##   #       ###   ####   #   #  #       ###
-//                                                   #
-//                                                   #
+// MARK: class TetrisApi
 /**
  * A class that represents the Tetris API.
  */
 class TetrisApi {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Processes the request.
      * @param {Express.Request} req The request.
@@ -52,15 +38,7 @@ class TetrisApi {
         });
     }
 
-    //                        #
-    //                        #
-    //  # ##    ###    ###   ####
-    //  ##  #  #   #  #       #
-    //  ##  #  #   #   ###    #
-    //  # ##   #   #      #   #  #
-    //  #       ###   ####     ##
-    //  #
-    //  #
+    // MARK: static post
     /**
      * Processes the request.
      * @param {Express.Request} req The request.

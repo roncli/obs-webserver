@@ -1,4 +1,6 @@
-/** @typedef {import("express").Router} Express.Router */
+/**
+ * @typedef {import("express").Router} Express.Router
+ */
 
 const compression = require("compression"),
     express = require("express"),
@@ -14,13 +16,7 @@ const compression = require("compression"),
     settings = require("./settings"),
     Twitch = require("./src/twitch");
 
-//         #                 #
-//         #                 #
-//  ###   ###    ###  ###   ###   #  #  ###
-// ##      #    #  #  #  #   #    #  #  #  #
-//   ##    #    # ##  #      #    #  #  #  #
-// ###      ##   # #  #       ##   ###  ###
-//                                      #
+// MARK: async function startup
 /**
  * Starts up the application.
  */

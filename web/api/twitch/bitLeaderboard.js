@@ -8,24 +8,12 @@ const Log = require("../../../src/logging/log"),
     settings = require("../../../settings"),
     Twitch = require("../../../src/twitch");
 
-//  ####     #     #     #                        #                #                               #
-//   #  #          #     #                        #                #                               #
-//   #  #   ##    ####   #       ###    ###    ## #   ###   # ##   # ##    ###    ###   # ##    ## #
-//   ###     #     #     #      #   #      #  #  ##  #   #  ##  #  ##  #  #   #      #  ##  #  #  ##
-//   #  #    #     #     #      #####   ####  #   #  #####  #      #   #  #   #   ####  #      #   #
-//   #  #    #     #  #  #      #      #   #  #  ##  #      #      ##  #  #   #  #   #  #      #  ##
-//  ####    ###     ##   #####   ###    ####   ## #   ###   #      # ##    ###    ####  #       ## #
+// MARK: class BitLeaderboard
 /**
  * A class that represents the bit leaderboard API.
  */
 class BitLeaderboard {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static async get
     /**
      * Processes the request.
      * @param {Express.Request} req The request.

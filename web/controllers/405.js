@@ -6,24 +6,12 @@
 const Common = require("../includes/common"),
     MethodNotAllowedView = require("../../public/views/405");
 
-//  #   #          #     #                 #  #   #          #       #     ##     ##                             #
-//  #   #          #     #                 #  #   #          #      # #     #      #                             #
-//  ## ##   ###   ####   # ##    ###    ## #  ##  #   ###   ####   #   #    #      #     ###   #   #   ###    ## #
-//  # # #  #   #   #     ##  #  #   #  #  ##  # # #  #   #   #     #   #    #      #    #   #  #   #  #   #  #  ##
-//  #   #  #####   #     #   #  #   #  #   #  #  ##  #   #   #     #####    #      #    #   #  # # #  #####  #   #
-//  #   #  #       #  #  #   #  #   #  #  ##  #   #  #   #   #  #  #   #    #      #    #   #  # # #  #      #  ##
-//  #   #   ###     ##   #   #   ###    ## #  #   #   ###     ##   #   #   ###    ###    ###    # #    ###    ## #
+// MARK: class MethodNotAllowed
 /**
  * A class that represents the 405 page.
  */
 class MethodNotAllowed {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Processes the request.
      * @param {Express.Request} req The request.

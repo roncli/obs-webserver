@@ -1,23 +1,9 @@
-//  #####                              #####             #    #                  #   #    #
-//  #                                  #                 #                       #   #
-//  #      # ##    ###   ## #    ###   #      # ##    ## #   ##    # ##    ## #  #   #   ##     ###   #   #
-//  ####   ##  #      #  # # #  #   #  ####   ##  #  #  ##    #    ##  #  #  #    # #     #    #   #  #   #
-//  #      #       ####  # # #  #####  #      #   #  #   #    #    #   #   ##     # #     #    #####  # # #
-//  #      #      #   #  # # #  #      #      #   #  #  ##    #    #   #  #       # #     #    #      # # #
-//  #      #       ####  #   #   ###   #####  #   #   ## #   ###   #   #   ###     #     ###    ###    # #
-//                                                                        #   #
-//                                                                         ###
+// MARK: class FrameEndingView
 /**
  * A class that represents the frame ending view.
  */
 class FrameEndingView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered page template.
      * @param {string} version The version.

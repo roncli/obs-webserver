@@ -1,23 +1,13 @@
-/** @typedef {import("../../../types/viewTypes").Action} ViewTypes.Action */
+/**
+ * @typedef {import("../../../types/viewTypes").Action} ViewTypes.Action
+ */
 
-//    #            #       #                  #   #    #
-//   # #           #                          #   #
-//  #   #   ###   ####    ##     ###   # ##   #   #   ##     ###   #   #
-//  #   #  #   #   #       #    #   #  ##  #   # #     #    #   #  #   #
-//  #####  #       #       #    #   #  #   #   # #     #    #####  # # #
-//  #   #  #   #   #  #    #    #   #  #   #   # #     #    #      # # #
-//  #   #   ###     ##    ###    ###   #   #    #     ###    ###    # #
+// MARK: class ActionView
 /**
  * A class that represents the action settings view.
  */
 class ActionView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered action setting template.
      * @param {ViewTypes.Action} action The action to render.

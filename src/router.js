@@ -13,23 +13,12 @@ const fs = require("fs"),
     Log = require("./logging/log"),
     classes = {};
 
-//  ####                  #
-//  #   #                 #
-//  #   #   ###   #   #  ####    ###   # ##
-//  ####   #   #  #   #   #     #   #  ##  #
-//  # #    #   #  #   #   #     #####  #
-//  #  #   #   #  #  ##   #  #  #      #
-//  #   #   ###    ## #    ##    ###   #
+// MARK: class Router
 /**
  * A class that handles the router for the website.
  */
 class Router {
-    //       #                 #      ##               #
-    //       #                 #     #  #              #
-    //  ##   ###    ##    ##   # #   #      ###   ##   ###    ##
-    // #     #  #  # ##  #     ##    #     #  #  #     #  #  # ##
-    // #     #  #  ##    #     # #   #  #  # ##  #     #  #  ##
-    //  ##   #  #   ##    ##   #  #   ##    # #   ##   #  #   ##
+    // MARK: static async checkCache
     /**
      * Checks the cache and refreshes it if necessary.
      * @param {string} file The name of the class.
@@ -51,13 +40,7 @@ class Router {
         }
     }
 
-    //              #     ##   ##
-    //              #    #  #   #
-    //  ###   ##   ###   #      #     ###   ###    ###    ##    ###
-    // #  #  # ##   #    #      #    #  #  ##     ##     # ##  ##
-    //  ##   ##     #    #  #   #    # ##    ##     ##   ##      ##
-    // #      ##     ##   ##   ###    # #  ###    ###     ##   ###
-    //  ###
+    // MARK: static async getClasses
     /**
      * Gets all of the available classes.
      * @param {string} dir The directory to get the classes for.
@@ -87,13 +70,7 @@ class Router {
         }
     }
 
-    //              #    ###                #
-    //              #    #  #               #
-    //  ###   ##   ###   #  #   ##   #  #  ###    ##   ###
-    // #  #  # ##   #    ###   #  #  #  #   #    # ##  #  #
-    //  ##   ##     #    # #   #  #  #  #   #    ##    #
-    // #      ##     ##  #  #   ##    ###    ##   ##   #
-    //  ###
+    // MARK: static async getRouter
     /**
      * Gets the router to use for the website.
      * @returns {Promise<Express.Router>} A promise that resolves with the router to use for the website.

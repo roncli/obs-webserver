@@ -10,22 +10,12 @@ const childProcess = require("child_process"),
     Twitch = require("../twitch"),
     Websocket = require("../websocket");
 
-//  #   #         #                           #              #     #        #            #
-//  #   #         #                           #              #     #                     #
-//  #   #   ###   # ##    ###    ###    ###   #   #   ###   ####   #       ##     ###   ####    ###   # ##    ###   # ##
-//  # # #  #   #  ##  #  #      #   #  #   #  #  #   #   #   #     #        #    #       #     #   #  ##  #  #   #  ##  #
-//  # # #  #####  #   #   ###   #   #  #      ###    #####   #     #        #     ###    #     #####  #   #  #####  #
-//  ## ##  #      ##  #      #  #   #  #   #  #  #   #       #  #  #        #        #   #  #  #      #   #  #      #
-//  #   #   ###   # ##   ####    ###    ###   #   #   ###     ##   #####   ###   ####     ##    ###   #   #   ###   #
+// MARK: class WebsocketListener
 /**
  * A class that handles listening to Websocket events.
  */
 class WebsocketListener {
-    // # #    ##    ###    ###    ###   ###   ##
-    // ####  # ##  ##     ##     #  #  #  #  # ##
-    // #  #  ##      ##     ##   # ##   ##   ##
-    // #  #   ##   ###    ###     # #  #      ##
-    //                                  ###
+    // MARK: static async message
     /**
      * Handles when a message is received by the websocket.
      * @param {object} data The message event.
@@ -1172,13 +1162,7 @@ class WebsocketListener {
         }
     }
 
-    //        ##
-    //         #
-    //  ###    #     ##    ##   ###
-    // ##      #    # ##  # ##  #  #
-    //   ##    #    ##    ##    #  #
-    // ###    ###    ##    ##   ###
-    //                          #
+    // MARK: static sleep
     /**
      * Sleeps the thread for the specified time.
      * @param {number} ms The number of milliseconds to sleep for.

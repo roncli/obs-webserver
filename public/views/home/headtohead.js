@@ -1,23 +1,13 @@
-/** @typedef {import("../../../types/viewTypes").RoncliGaming} ViewTypes.RoncliGaming */
+/**
+ * @typedef {import("../../../types/viewTypes").RoncliGaming} ViewTypes.RoncliGaming
+ */
 
-//  #   #                    #  #####         #   #                    #  #   #    #
-//  #   #                    #    #           #   #                    #  #   #
-//  #   #   ###    ###    ## #    #     ###   #   #   ###    ###    ## #  #   #   ##     ###   #   #
-//  #####  #   #      #  #  ##    #    #   #  #####  #   #      #  #  ##   # #     #    #   #  #   #
-//  #   #  #####   ####  #   #    #    #   #  #   #  #####   ####  #   #   # #     #    #####  # # #
-//  #   #  #      #   #  #  ##    #    #   #  #   #  #      #   #  #  ##   # #     #    #      # # #
-//  #   #   ###    ####   ## #    #     ###   #   #   ###    ####   ## #    #     ###    ###    # #
+// MARK: class HeadToHeadView
 /**
  * A class that represents the head to head view.
  */
 class HeadToHeadView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered page template.
      * @param {{data: ViewTypes.RoncliGaming}} data The data to render.

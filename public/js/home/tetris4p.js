@@ -1,20 +1,9 @@
-//  #####          #              #              #   ####
-//    #            #                            ##   #   #
-//    #     ###   ####   # ##    ##     ###    # #   #   #
-//    #    #   #   #     ##  #    #    #      #  #   ####
-//    #    #####   #     #        #     ###   #####  #
-//    #    #       #  #  #        #        #     #   #
-//    #     ###     ##   #       ###   ####      #   #
+// MARK: class Tetris4P
 /**
  * A class that provides functions for the Tetris 4P scene.
  */
 class Tetris4P {
-    //         #                 #
-    //         #                 #
-    //  ###   ###    ###  ###   ###
-    // ##      #    #  #  #  #   #
-    //   ##    #    # ##  #      #
-    // ###      ##   # #  #       ##
+    // MARK: static start
     /**
      * Starts the intro scene.
      * @returns {void}

@@ -10,24 +10,12 @@ const Common = require("../includes/common"),
     promisify = require("util").promisify,
     settings = require("../../settings");
 
-//  #####           #     #            #      ####            ##                        #
-//    #                   #            #      #   #          #  #                       #
-//    #    #   #   ##    ####    ###   # ##   #   #   ###    #     # ##    ###    ###   # ##
-//    #    #   #    #     #     #   #  ##  #  ####   #   #  ####   ##  #  #   #  #      ##  #
-//    #    # # #    #     #     #      #   #  # #    #####   #     #      #####   ###   #   #
-//    #    # # #    #     #  #  #   #  #   #  #  #   #       #     #      #          #  #   #
-//    #     # #    ###     ##    ###   #   #  #   #   ###    #     #       ###   ####   #   #
+// MARK: class TwitchRefresh
 /**
  * A class that handles the Twitch refresh page.
  */
 class TwitchRefresh {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static async get
     /**
      * Processes the request.
      * @param {Express.Request} req The request.

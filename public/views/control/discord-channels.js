@@ -1,33 +1,23 @@
-/** @typedef {import("../../../types/viewTypes").DiscordChannel} ViewTypes.DiscordChannel */
+/**
+ * @typedef {import("../../../types/viewTypes").DiscordChannel} ViewTypes.DiscordChannel
+ */
 
-//  ####     #                                    #   ###   #                                   ##           #   #    #
-//   #  #                                         #  #   #  #                                    #           #   #
-//   #  #   ##     ###    ###    ###   # ##    ## #  #      # ##    ###   # ##   # ##    ###     #     ###   #   #   ##     ###   #   #
-//   #  #    #    #      #   #  #   #  ##  #  #  ##  #      ##  #      #  ##  #  ##  #  #   #    #    #       # #     #    #   #  #   #
-//   #  #    #     ###   #      #   #  #      #   #  #      #   #   ####  #   #  #   #  #####    #     ###    # #     #    #####  # # #
-//   #  #    #        #  #   #  #   #  #      #  ##  #   #  #   #  #   #  #   #  #   #  #        #        #   # #     #    #      # # #
-//  ####    ###   ####    ###    ###   #       ## #   ###   #   #   ####  #   #  #   #   ###    ###   ####     #     ###    ###    # #
+// MARK: class DiscordChannelsView
 /**
  * A class that represents the Discord channels settings view.
  */
 class DiscordChannelsView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered Discord channels settings template.
-     * @param {{data: ViewTypes.DiscordChannel[]}} playlists The Discord channels to render.
+     * @param {{data: ViewTypes.DiscordChannel[]}} channels The Discord channels to render.
      * @returns {string} An HTML string of the Discord channels settings view.
      */
-    static get(playlists) {
+    static get(channels) {
         return /* html */`
             <div>
                 Discord Channels<br />
-                ${playlists.data.map((p) => DiscordChannelsView.DiscordChannelView.get(p)).join("")}
+                ${channels.data.map((p) => DiscordChannelsView.DiscordChannelView.get(p)).join("")}
                 ${DiscordChannelsView.DiscordChannelView.get({}, true)}
                 <button class="settings-save" data-key="discordChannels">Save</button>
                 <button class="settings-cancel">Cancel</button>

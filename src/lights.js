@@ -33,25 +33,12 @@ let openWs = false;
 
 let waiting = false;
 
-//  #        #           #       #
-//  #                    #       #
-//  #       ##     ## #  # ##   ####    ###
-//  #        #    #  #   ##  #   #     #
-//  #        #     ##    #   #   #      ###
-//  #        #    #      #   #   #  #      #
-//  #####   ###    ###   #   #    ##   ####
-//                #   #
-//                 ###
+// MARK: class Lights
 /**
  * A class that easily sets lighting on the gaming wall.
  */
 class Lights {
-    //  #           #     #    #  #
-    //                    #    #  #
-    // ##    ###   ##    ###   #  #   ###
-    //  #    #  #   #     #    ####  ##
-    //  #    #  #   #     #    ####    ##
-    // ###   #  #  ###     ##  #  #  ###
+    // MARK: static initWs
     /**
      * Initializes the websocket for wled.
      * @returns {void}
@@ -78,12 +65,7 @@ class Lights {
         });
     }
 
-    //                           #                       #
-    //                           #                       #
-    //  ##    ##   ###    ###   ###   ###   #  #   ##   ###    ##   ###
-    // #     #  #  #  #  ##      #    #  #  #  #  #      #    #  #  #  #
-    // #     #  #  #  #    ##    #    #     #  #  #      #    #  #  #
-    //  ##    ##   #  #  ###      ##  #      ###   ##     ##   ##   #
+    // MARK: constructor
     /**
      * Creates a new instance of lights.
      * @param {boolean} [useWs] Whether to use websockets.
@@ -101,12 +83,7 @@ class Lights {
         }
     }
 
-    //  #    ##    ##                 #                 #
-    //        #     #                                   #
-    // ##     #     #    #  #  # #   ##    ###    ###  ###    ##
-    //  #     #     #    #  #  ####   #    #  #  #  #   #    # ##
-    //  #     #     #    #  #  #  #   #    #  #  # ##   #    ##
-    // ###   ###   ###    ###  #  #  ###   #  #   # #    ##   ##
+    // MARK: async illuminate
     /**
      * Illuminates the gaming wall with the current set of lights.
      * @returns {Promise} A promise that resolves when the illumination is complete.
@@ -140,12 +117,7 @@ class Lights {
         }
     }
 
-    //                           #
-    //                           #
-    // ###    ##    ###    ##   ###
-    // #  #  # ##  ##     # ##   #
-    // #     ##      ##   ##     #
-    // #      ##   ###     ##     ##
+    // MARK: reset
     /**
      * Resets all lights to black.
      * @returns {void}
@@ -169,12 +141,7 @@ class Lights {
         this.lights.set(16, new Color(0, 0, 0));
     }
 
-    //               #
-    //               #
-    //  ###    ##   ###
-    // ##     # ##   #
-    //   ##   ##     #
-    // ###     ##     ##
+    // MARK: set
     /**
      * Sets a lighting segment to a specific color.
      * @param {number} segment The segment.

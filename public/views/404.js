@@ -1,21 +1,9 @@
-//  #   #          #     #####                           #  #   #    #
-//  #   #          #     #                               #  #   #
-//  ##  #   ###   ####   #       ###   #   #  # ##    ## #  #   #   ##     ###   #   #
-//  # # #  #   #   #     ####   #   #  #   #  ##  #  #  ##   # #     #    #   #  #   #
-//  #  ##  #   #   #     #      #   #  #   #  #   #  #   #   # #     #    #####  # # #
-//  #   #  #   #   #  #  #      #   #  #  ##  #   #  #  ##   # #     #    #      # # #
-//  #   #   ###     ##   #       ###    ## #  #   #   ## #    #     ###    ###    # #
+// MARK: class NotFoundView
 /**
  * A class that represents the 404 view.
  */
 class NotFoundView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered not found template.
      * @param {string} message The message for the not found view.

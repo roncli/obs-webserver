@@ -1,23 +1,9 @@
-//   ###                         ###                                       #     #   #    #
-//  #   #                       #   #                                      #     #   #
-//  #       ###   ## #    ###   #      #   #  # ##   # ##    ###   # ##   ####   #   #   ##     ###   #   #
-//  #          #  # # #  #   #   ###   #   #  ##  #  ##  #  #   #  ##  #   #      # #     #    #   #  #   #
-//  #  ##   ####  # # #  #####      #  #   #  ##  #  ##  #  #   #  #       #      # #     #    #####  # # #
-//  #   #  #   #  # # #  #      #   #  #  ##  # ##   # ##   #   #  #       #  #   # #     #    #      # # #
-//   ###    ####  #   #   ###    ###    ## #  #      #       ###   #        ##     #     ###    ###    # #
-//                                            #      #
-//                                            #      #
+// MARK: class GameSupportView
 /**
  * A class that represents the game support view.
  */
 class GameSupportView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered page template.
      * @returns {string} An HTML string of the page.

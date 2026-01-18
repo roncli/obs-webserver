@@ -10,23 +10,12 @@ let readied = false;
 /** @type {DiscordJs.Guild} */
 let guild;
 
-//  ####     #                                    #
-//   #  #                                         #
-//   #  #   ##     ###    ###    ###   # ##    ## #
-//   #  #    #    #      #   #  #   #  ##  #  #  ##
-//   #  #    #     ###   #      #   #  #      #   #
-//   #  #    #        #  #   #  #   #  #      #  ##
-//  ####    ###   ####    ###    ###   #       ## #
+// MARK: class Discord
 /**
  * A static class that handles all Discord.js interctions.
  */
 class Discord {
-    //       #                             ##
-    //       #                              #
-    //  ##   ###    ###  ###   ###    ##    #     ###
-    // #     #  #  #  #  #  #  #  #  # ##   #    ##
-    // #     #  #  # ##  #  #  #  #  ##     #      ##
-    //  ##   #  #   # #  #  #  #  #   ##   ###   ###
+    // MARK: static get channels
     /**
      * Returns the channels on the server.
      * @returns {DiscordJs.Collection<string, DiscordJs.GuildChannel | DiscordJs.ThreadChannel>} The channels.
@@ -39,12 +28,7 @@ class Discord {
         return new DiscordJs.Collection();
     }
 
-    //  #
-    //
-    // ##     ##    ##   ###
-    //  #    #     #  #  #  #
-    //  #    #     #  #  #  #
-    // ###    ##    ##   #  #
+    // MARK: static get icon
     /**
      * Returns the guild's icon.
      * @returns {string} The URL of the icon.
@@ -57,12 +41,7 @@ class Discord {
         return void 0;
     }
 
-    //  #       #
-    //          #
-    // ##     ###
-    //  #    #  #
-    //  #    #  #
-    // ###    ###
+    // MARK: static get id
     /**
      * Returns the server ID.
      * @returns {string} The ID of the server.
@@ -75,13 +54,7 @@ class Discord {
         return void 0;
     }
 
-    //         #                 #
-    //         #                 #
-    //  ###   ###    ###  ###   ###   #  #  ###
-    // ##      #    #  #  #  #   #    #  #  #  #
-    //   ##    #    # ##  #      #    #  #  #  #
-    // ###      ##   # #  #       ##   ###  ###
-    //                                      #
+    // MARK: static startup
     /**
      * Sets up Discord events.  Should only ever be called once.
      * @returns {void}
@@ -109,12 +82,7 @@ class Discord {
         });
     }
 
-    //                                      #
-    //                                      #
-    //  ##    ##   ###   ###    ##    ##   ###
-    // #     #  #  #  #  #  #  # ##  #      #
-    // #     #  #  #  #  #  #  ##    #      #
-    //  ##    ##   #  #  #  #   ##    ##     ##
+    // MARK: static async connect
     /**
      * Connects to Discord.
      * @returns {Promise} A promise that resolves once Discord is connected.
@@ -130,12 +98,7 @@ class Discord {
         }
     }
 
-    //  #            ##                                  #             #
-    //              #  #                                 #             #
-    // ##     ###   #      ##   ###   ###    ##    ##   ###    ##    ###
-    //  #    ##     #     #  #  #  #  #  #  # ##  #      #    # ##  #  #
-    //  #      ##   #  #  #  #  #  #  #  #  ##    #      #    ##    #  #
-    // ###   ###     ##    ##   #  #  #  #   ##    ##     ##   ##    ###
+    // MARK: static isConnected
     /**
      * Determines whether the bot is connected to Discord.
      * @returns {boolean} Whether the bot is connected to Discord.
@@ -144,11 +107,7 @@ class Discord {
         return discord && discord.ws && guild ? discord.ws.status === 0 : false;
     }
 
-    //  ###  #  #   ##   #  #   ##
-    // #  #  #  #  # ##  #  #  # ##
-    // #  #  #  #  ##    #  #  ##
-    //  ###   ###   ##    ###   ##
-    //    #
+    // MARK: static async queue
     /**
      * Queues a message to be sent.
      * @param {string} message The message to be sent.
@@ -167,12 +126,7 @@ class Discord {
         return msg;
     }
 
-    //             #              #  ###          #    ##       #
-    //             #              #  #  #               #       #
-    //  ##   # #   ###    ##    ###  ###   #  #  ##     #     ###   ##   ###
-    // # ##  ####  #  #  # ##  #  #  #  #  #  #   #     #    #  #  # ##  #  #
-    // ##    #  #  #  #  ##    #  #  #  #  #  #   #     #    #  #  ##    #
-    //  ##   #  #  ###    ##    ###  ###    ###  ###   ###    ###   ##   #
+    // MARK: static embedBuilder
     /**
      * Gets a new DiscordJs EmbedBuilder object.
      * @param {DiscordJs.EmbedData} [options] The options to pass.
@@ -182,13 +136,7 @@ class Discord {
         return new DiscordJs.EmbedBuilder(options);
     }
 
-    //        #          #      ##
-    //                   #     #  #
-    // ###   ##     ##   ###   #  #  #  #   ##   #  #   ##
-    // #  #   #    #     #  #  #  #  #  #  # ##  #  #  # ##
-    // #      #    #     #  #  ## #  #  #  ##    #  #  ##
-    // #     ###    ##   #  #   ##    ###   ##    ###   ##
-    //                            #
+    // MARK: static async richQueue
     /**
      * Queues a rich embed message to be sent.
      * @param {DiscordJs.EmbedBuilder} embed The message to be sent.
@@ -231,13 +179,7 @@ class Discord {
         return msg;
     }
 
-    //   #    #             #  ###                #     ##   #                             ##    ###         #  #
-    //  # #                 #   #                 #    #  #  #                              #    #  #        ## #
-    //  #    ##    ###    ###   #     ##   #  #  ###   #     ###    ###  ###   ###    ##    #    ###   #  #  ## #   ###  # #    ##
-    // ###    #    #  #  #  #   #    # ##   ##    #    #     #  #  #  #  #  #  #  #  # ##   #    #  #  #  #  # ##  #  #  ####  # ##
-    //  #     #    #  #  #  #   #    ##     ##    #    #  #  #  #  # ##  #  #  #  #  ##     #    #  #   # #  # ##  # ##  #  #  ##
-    //  #    ###   #  #   ###   #     ##   #  #    ##   ##   #  #   # #  #  #  #  #   ##   ###   ###     #   #  #   # #  #  #   ##
-    //                                                                                                  #
+    // MARK: static findTextChannelByName
     /**
      * Finds a Discord text channel by its name.
      * @param {string} name The name of the channel.

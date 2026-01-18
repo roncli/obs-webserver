@@ -6,26 +6,12 @@
 const Common = require("../includes/common"),
     OverlayView = require("../../public/views/overlay");
 
-//   ###                         ##
-//  #   #                         #
-//  #   #  #   #   ###   # ##     #     ###   #   #
-//  #   #  #   #  #   #  ##  #    #        #  #   #
-//  #   #   # #   #####  #        #     ####  #  ##
-//  #   #   # #   #      #        #    #   #   ## #
-//   ###     #     ###   #       ###    ####      #
-//                                            #   #
-//                                             ###
+// MARK: class Overlay
 /**
  * A class that handles the overlay page.
  */
 class Overlay {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Processes the request.
      * @param {Express.Request} req The request.

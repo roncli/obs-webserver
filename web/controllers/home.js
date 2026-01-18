@@ -6,24 +6,12 @@
 const Common = require("../includes/common"),
     HomeView = require("../../public/views/home");
 
-//  #   #
-//  #   #
-//  #   #   ###   ## #    ###
-//  #####  #   #  # # #  #   #
-//  #   #  #   #  # # #  #####
-//  #   #  #   #  # # #  #
-//  #   #   ###   #   #   ###
+// MARK: class Home
 /**
  * A class that handles the home page.
  */
 class Home {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Processes the request.
      * @param {Express.Request} req The request.

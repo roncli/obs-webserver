@@ -6,24 +6,12 @@
 const Common = require("../includes/common"),
     NotFoundView = require("../../public/views/404");
 
-//  #   #          #     #####                           #
-//  #   #          #     #                               #
-//  ##  #   ###   ####   #       ###   #   #  # ##    ## #
-//  # # #  #   #   #     ####   #   #  #   #  ##  #  #  ##
-//  #  ##  #   #   #     #      #   #  #   #  #   #  #   #
-//  #   #  #   #   #  #  #      #   #  #  ##  #   #  #  ##
-//  #   #   ###     ##   #       ###    ## #  #   #   ## #
+// MARK: class NotFound
 /**
  * A class that represents the 404 page.
  */
 class NotFound {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Processes the request.
      * @param {Express.Request} req The request.

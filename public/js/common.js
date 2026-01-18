@@ -2,23 +2,12 @@
  * @typedef {import("../../types/viewTypes").Option} ViewTypes.Option
  */
 
-//   ###
-//  #   #
-//  #       ###   ## #   ## #    ###   # ##
-//  #      #   #  # # #  # # #  #   #  ##  #
-//  #      #   #  # # #  # # #  #   #  #   #
-//  #   #  #   #  # # #  # # #  #   #  #   #
-//   ###    ###   #   #  #   #   ###   #   #
+// MARK: class Common
 /**
  * A class that provides common functions.
  */
 class Common {
-    // #      #          ##    ####                       #
-    // #      #           #    #                          #
-    // ###   ###   # #    #    ###   ###    ##    ##    ###   ##
-    // #  #   #    ####   #    #     #  #  #     #  #  #  #  # ##
-    // #  #   #    #  #   #    #     #  #  #     #  #  #  #  ##
-    // #  #    ##  #  #  ###   ####  #  #   ##    ##    ###   ##
+    // MARK: static htmlEncode
     /**
      * HTML-encodes a string.
      * @param {string} str The string.
@@ -28,13 +17,7 @@ class Common {
         return str && str.replace(/[\u0080-\uFFFF<>&]/gim, (i) => `&#${i.charCodeAt(0)};`) || "";
     }
 
-    //                                      #           ##          #     #
-    //                                      #          #  #         #
-    //  ###   ##   ###    ##   ###    ###  ###    ##   #  #  ###   ###   ##     ##   ###    ###
-    // #  #  # ##  #  #  # ##  #  #  #  #   #    # ##  #  #  #  #   #     #    #  #  #  #  ##
-    //  ##   ##    #  #  ##    #     # ##   #    ##    #  #  #  #   #     #    #  #  #  #    ##
-    // #      ##   #  #   ##   #      # #    ##   ##    ##   ###     ##  ###    ##   #  #  ###
-    //  ###                                                  #
+    // MARK: static generateOptions
     /**
      * Generates an HTML string of options.
      * @param {ViewTypes.Option[]} options The options.
@@ -53,13 +36,7 @@ class Common {
         `;
     }
 
-    // ##                   #  ###                     ##           #
-    //  #                   #   #                       #           #
-    //  #     ##    ###   ###   #     ##   # #   ###    #     ###  ###    ##
-    //  #    #  #  #  #  #  #   #    # ##  ####  #  #   #    #  #   #    # ##
-    //  #    #  #  # ##  #  #   #    ##    #  #  #  #   #    # ##   #    ##
-    // ###    ##    # #   ###   #     ##   #  #  ###   ###    # #    ##   ##
-    //                                           #
+    // MARK: static async loadTemplate
     /**
      * Load a template into memory.
      * @param {string} path The path of the template.
@@ -83,13 +60,7 @@ class Common {
         });
     }
 
-    // ##                   #  ###          #          ###          #          ###                     ##           #
-    //  #                   #  #  #         #           #           #           #                       #           #
-    //  #     ##    ###   ###  #  #   ###  ###    ###   #    ###   ###    ##    #     ##   # #   ###    #     ###  ###    ##
-    //  #    #  #  #  #  #  #  #  #  #  #   #    #  #   #    #  #   #    #  #   #    # ##  ####  #  #   #    #  #   #    # ##
-    //  #    #  #  # ##  #  #  #  #  # ##   #    # ##   #    #  #   #    #  #   #    ##    #  #  #  #   #    # ##   #    ##
-    // ###    ##    # #   ###  ###    # #    ##   # #  ###   #  #    ##   ##    #     ##   #  #  ###   ###    # #    ##   ##
-    //                                                                                           #
+    // MARK: static async loadDataIntoTemplate
     /**
      * Loads data from an API into an element.
      * @param {string} api The API to load data from, or null if no data is needed.

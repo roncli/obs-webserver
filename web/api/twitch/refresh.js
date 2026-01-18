@@ -6,26 +6,12 @@
 const Log = require("../../../src/logging/log"),
     Twitch = require("../../../src/twitch");
 
-//  ####            ##                        #
-//  #   #          #  #                       #
-//  #   #   ###    #     # ##    ###    ###   # ##
-//  ####   #   #  ####   ##  #  #   #  #      ##  #
-//  # #    #####   #     #      #####   ###   #   #
-//  #  #   #       #     #      #          #  #   #
-//  #   #   ###    #     #       ###   ####   #   #
+// MARK: class Refresh
 /**
  * A class that represents the Twitch Refresh API.
  */
 class Refresh {
-    //                        #
-    //                        #
-    //  # ##    ###    ###   ####
-    //  ##  #  #   #  #       #
-    //  ##  #  #   #   ###    #
-    //  # ##   #   #      #   #  #
-    //  #       ###   ####     ##
-    //  #
-    //  #
+    // MARK: static async post
     /**
      * Processes the request.
      * @param {Express.Request} req The request.

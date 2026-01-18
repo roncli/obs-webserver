@@ -2,23 +2,12 @@
  * @typedef {import("../../types/spotifyTypes").Track} SpotifyTypes.Track
  */
 
-//  #   #
-//  #   #
-//  #   #   ###   ## #    ###
-//  #####  #   #  # # #  #   #
-//  #   #  #   #  # # #  #####
-//  #   #  #   #  # # #  #
-//  #   #   ###   #   #   ###
+// MARK: class Home
 /**
  * A class that provides functions for the home page.
  */
 class Home {
-    // ###    ##   #  #   ##                #                 #    #                    #           #
-    // #  #  #  #  ####  #  #               #                 #    #                    #           #
-    // #  #  #  #  ####  #      ##   ###   ###    ##   ###   ###   #      ##    ###   ###   ##    ###
-    // #  #  #  #  #  #  #     #  #  #  #   #    # ##  #  #   #    #     #  #  #  #  #  #  # ##  #  #
-    // #  #  #  #  #  #  #  #  #  #  #  #   #    ##    #  #   #    #     #  #  # ##  #  #  ##    #  #
-    // ###    ##   #  #   ##    ##   #  #    ##   ##   #  #    ##  ####   ##    # #   ###   ##    ###
+    // MARK: static DOMContentLoaded
     /**
      * Sets up the page's events.
      * @returns {void}
@@ -48,13 +37,7 @@ class Home {
         }
     }
 
-    //         #                 #     ##               ##                  #
-    //         #                 #    #  #               #
-    //  ###   ###    ###  ###   ###   #  #  ###    ###   #    #  #   ###   ##     ###
-    // ##      #    #  #  #  #   #    ####  #  #  #  #   #    #  #  ##      #    ##
-    //   ##    #    # ##  #      #    #  #  #  #  # ##   #     # #    ##    #      ##
-    // ###      ##   # #  #       ##  #  #  #  #   # #  ###     #   ###    ###   ###
-    //                                                         #
+    // MARK: static async startAnalysis
     /**
      * Starts the analysis scene.
      * @returns {Promise} A promise that resolves when the analysis scene has been started.
@@ -71,13 +54,7 @@ class Home {
         window.Game.start();
     }
 
-
-    //         #                 #     ##   ###   #  #
-    //         #                 #    #  #   #    ####
-    //  ###   ###    ###  ###   ###   #      #    ####
-    // ##      #    #  #  #  #   #    #      #    #  #
-    //   ##    #    # ##  #      #    #  #   #    #  #
-    // ###      ##   # #  #       ##   ##    #    #  #
+    // MARK: static async startCTM
     /**
      * Starts the CTM scene.
      * @returns {Promise} A promise that resolves when the ctm scene has been started.
@@ -93,12 +70,7 @@ class Home {
         window.Game.start();
     }
 
-    //         #                 #    ####
-    //         #                 #    #
-    //  ###   ###    ###  ###   ###   ###   ###    ###  # #    ##
-    // ##      #    #  #  #  #   #    #     #  #  #  #  ####  # ##
-    //   ##    #    # ##  #      #    #     #     # ##  #  #  ##
-    // ###      ##   # #  #       ##  #     #      # #  #  #   ##
+    // MARK: static async startFrame
     /**
      * Starts the frame scene.
      * @returns {Promise} A promise that resolves when the frame scene has been started.
@@ -113,12 +85,7 @@ class Home {
         window.Frame.start();
     }
 
-    //         #                 #     ##
-    //         #                 #    #  #
-    //  ###   ###    ###  ###   ###   #      ###  # #    ##
-    // ##      #    #  #  #  #   #    # ##  #  #  ####  # ##
-    //   ##    #    # ##  #      #    #  #  # ##  #  #  ##
-    // ###      ##   # #  #       ##   ###   # #  #  #   ##
+    // MARK: static async startGame
     /**
      * Starts the game scene.
      * @returns {Promise} A promise that resolves when the game scene has been started.
@@ -135,12 +102,7 @@ class Home {
         window.Game.start();
     }
 
-    //         #                 #    #  #                 #  ###         #  #                 #
-    //         #                 #    #  #                 #   #          #  #                 #
-    //  ###   ###    ###  ###   ###   ####   ##    ###   ###   #     ##   ####   ##    ###   ###
-    // ##      #    #  #  #  #   #    #  #  # ##  #  #  #  #   #    #  #  #  #  # ##  #  #  #  #
-    //   ##    #    # ##  #      #    #  #  ##    # ##  #  #   #    #  #  #  #  ##    # ##  #  #
-    // ###      ##   # #  #       ##  #  #   ##    # #   ###   #     ##   #  #   ##    # #   ###
+    // MARK: static async startHeadToHead
     /**
      * Starts the head to head scene.
      * @param {string} banner The URL of the banner.
@@ -165,12 +127,7 @@ class Home {
         window.Game.start();
     }
 
-    //         #                 #    ###          #
-    //         #                 #     #           #
-    //  ###   ###    ###  ###   ###    #    ###   ###   ###    ##
-    // ##      #    #  #  #  #   #     #    #  #   #    #  #  #  #
-    //   ##    #    # ##  #      #     #    #  #   #    #     #  #
-    // ###      ##   # #  #       ##  ###   #  #    ##  #      ##
+    // MARK: static async startIntro
     /**
      * Starts the intro scene.
      * @returns {Promise} A promise that resolves when the intro scene has been started.
@@ -204,12 +161,7 @@ class Home {
         Home.updateSpotify(5000);
     }
 
-    //         #                 #    ###          #           #
-    //         #                 #     #           #
-    //  ###   ###    ###  ###   ###    #     ##   ###   ###   ##     ###
-    // ##      #    #  #  #  #   #     #    # ##   #    #  #   #    ##
-    //   ##    #    # ##  #      #     #    ##     #    #      #      ##
-    // ###      ##   # #  #       ##   #     ##     ##  #     ###   ###
+    // MARK: static async startTetris
     /**
      * Starts the updating of Tetris.
      * @param {{organization: string, title: string, color: string}} data The data for the view.
@@ -224,12 +176,7 @@ class Home {
         window.Tetris.start();
     }
 
-    //         #                 #    ###          #           #            ##   ###
-    //         #                 #     #           #                       #  #  #  #
-    //  ###   ###    ###  ###   ###    #     ##   ###   ###   ##     ###      #  #  #
-    // ##      #    #  #  #  #   #     #    # ##   #    #  #   #    ##       #   ###
-    //   ##    #    # ##  #      #     #    ##     #    #      #      ##    #    #
-    // ###      ##   # #  #       ##   #     ##     ##  #     ###   ###    ####  #
+    // MARK: static async startTetris2P
     /**
      * Starts the updating of Tetris 2P.
      * @param {{event: {organization: string, title: string, status: string, color: string}, player1: {name: string, score: string, info: string}, player2: {name: string, score: string, info: string}}} data The data for the view.
@@ -244,12 +191,7 @@ class Home {
         window.Tetris2P.start();
     }
 
-    //         #                 #    ###          #           #             #   ###
-    //         #                 #     #           #                        ##   #  #
-    //  ###   ###    ###  ###   ###    #     ##   ###   ###   ##     ###   # #   #  #
-    // ##      #    #  #  #  #   #     #    # ##   #    #  #   #    ##     ####  ###
-    //   ##    #    # ##  #      #     #    ##     #    #      #      ##     #   #
-    // ###      ##   # #  #       ##   #     ##     ##  #     ###   ###      #   #
+    // MARK: static async startTetris4P
     /**
      * Starts the updating of Tetris 4P.
      * @param {{event: {organization: string, title: string, status: string, color: string}, player1: {name: string, score: string}, player2: {name: string, score: string}, player3: {name: string, score: string}, player4: {name: string, score: string}}} data The data for the view.
@@ -264,12 +206,7 @@ class Home {
         window.Tetris4P.start();
     }
 
-    //         #                 #    #  #        #                        #            #
-    //         #                 #    #  #        #                        #            #
-    //  ###   ###    ###  ###   ###   #  #   ##   ###    ###    ##    ##   # #    ##   ###
-    // ##      #    #  #  #  #   #    ####  # ##  #  #  ##     #  #  #     ##    # ##   #
-    //   ##    #    # ##  #      #    ####  ##    #  #    ##   #  #  #     # #   ##     #
-    // ###      ##   # #  #       ##  #  #   ##   ###   ###     ##    ##   #  #   ##     ##
+    // MARK: static startWebsocket
     /**
      * Starts the WebSocket connection.
      * @returns {void}

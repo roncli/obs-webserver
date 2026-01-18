@@ -1,23 +1,9 @@
-//   ###                         ##                  #   #    #
-//  #   #                         #                  #   #
-//  #   #  #   #   ###   # ##     #     ###   #   #  #   #   ##     ###   #   #
-//  #   #  #   #  #   #  ##  #    #        #  #   #   # #     #    #   #  #   #
-//  #   #   # #   #####  #        #     ####  #  ##   # #     #    #####  # # #
-//  #   #   # #   #      #        #    #   #   ## #   # #     #    #      # # #
-//   ###     #     ###   #       ###    ####      #    #     ###    ###    # #
-//                                            #   #
-//                                             ###
+// MARK: class OverlayView
 /**
  * A class that represents the overlay view.
  */
 class OverlayView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered page template.
      * @returns {string} An HTML string of the page.

@@ -1,21 +1,9 @@
-//  #####          #              #           #   #    #
-//    #            #                          #   #
-//    #     ###   ####   # ##    ##     ###   #   #   ##     ###   #   #
-//    #    #   #   #     ##  #    #    #       # #     #    #   #  #   #
-//    #    #####   #     #        #     ###    # #     #    #####  # # #
-//    #    #       #  #  #        #        #   # #     #    #      # # #
-//    #     ###     ##   #       ###   ####     #     ###    ###    # #
+// MARK: class TetrisView
 /**
  * A class that represents the Tetris view.
  */
 class TetrisView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered Tetris template.
      * @returns {string} An HTML string of the roncli Gaming view.

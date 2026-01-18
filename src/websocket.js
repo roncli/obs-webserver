@@ -11,23 +11,12 @@ const clients = [];
 
 const eventEmitter = new events.EventEmitter();
 
-//  #   #         #                           #              #
-//  #   #         #                           #              #
-//  #   #   ###   # ##    ###    ###    ###   #   #   ###   ####
-//  # # #  #   #  ##  #  #      #   #  #   #  #  #   #   #   #
-//  # # #  #####  #   #   ###   #   #  #      ###    #####   #
-//  ## ##  #      ##  #      #  #   #  #   #  #  #   #       #  #
-//  #   #   ###   # ##   ####    ###    ###   #   #   ###     ##
+// MARK: class Websocket
 /**
  * A class used for communication via websockets.
  */
 class Websocket {
-    //                          #
-    //                          #
-    //  ##   # #    ##   ###   ###    ###
-    // # ##  # #   # ##  #  #   #    ##
-    // ##    # #   ##    #  #   #      ##
-    //  ##    #     ##   #  #    ##  ###
+    // MARK: static get events
     /**
      * Returns the EventEmitter for Websocket events.
      * @returns {events.EventEmitter} The EventEmitter object.
@@ -36,12 +25,7 @@ class Websocket {
         return eventEmitter;
     }
 
-    // #                          #                      #
-    // #                          #                      #
-    // ###   ###    ##    ###   ###   ##    ###   ###   ###
-    // #  #  #  #  #  #  #  #  #  #  #     #  #  ##      #
-    // #  #  #     #  #  # ##  #  #  #     # ##    ##    #
-    // ###   #      ##    # #   ###   ##    # #  ###      ##
+    // MARK: static broadcast
     /**
      * Broadcasts a message to qualifying connected websocket clients.
      * @param {object} message The message to send.
@@ -61,13 +45,7 @@ class Websocket {
         });
     }
 
-    //                    #            #
-    //                                 #
-    // ###    ##    ###  ##     ###   ###    ##   ###
-    // #  #  # ##  #  #   #    ##      #    # ##  #  #
-    // #     ##     ##    #      ##    #    ##    #
-    // #      ##   #     ###   ###      ##   ##   #
-    //              ###
+    // MARK: static register
     /**
      * Registers a websocket for broadcasting.
      * @param {WebSocket} ws The websocket to broadcast to.
@@ -77,13 +55,7 @@ class Websocket {
         clients.push(ws);
     }
 
-    //                                #            #
-    //                                             #
-    // #  #  ###   ###    ##    ###  ##     ###   ###    ##   ###
-    // #  #  #  #  #  #  # ##  #  #   #    ##      #    # ##  #  #
-    // #  #  #  #  #     ##     ##    #      ##    #    ##    #
-    //  ###  #  #  #      ##   #     ###   ###      ##   ##   #
-    //                          ###
+    // MARK: static unregister
     /**
      * Unregisters a websocket from broadcasting.
      * @param {WebSocket} ws The websocket to stop broadcasting to.

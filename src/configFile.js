@@ -5,26 +5,12 @@
 const nconf = require("nconf"),
     path = require("path");
 
-//   ###                   ##     #           #####    #     ##
-//  #   #                 #  #                #               #
-//  #       ###   # ##    #      ##     ## #  #       ##      #     ###
-//  #      #   #  ##  #  ####     #    #  #   ####     #      #    #   #
-//  #      #   #  #   #   #       #     ##    #        #      #    #####
-//  #   #  #   #  #   #   #       #    #      #        #      #    #
-//   ###    ###   #   #   #      ###    ###   #       ###    ###    ###
-//                                     #   #
-//                                      ###
+// MARK: class ConfigFile
 /**
  * A class to handle saving configuration settings.
  */
 class ConfigFile {
-    //               #
-    //               #
-    //  ###    ##   ###   #  #  ###
-    // ##     # ##   #    #  #  #  #
-    //   ##   ##     #    #  #  #  #
-    // ###     ##     ##   ###  ###
-    //                          #
+    // MARK: static setup
     /**
      * Sets up the configuration.
      * @returns {void}
@@ -35,12 +21,7 @@ class ConfigFile {
         });
     }
 
-    //               #
-    //               #
-    //  ###    ##   ###
-    // ##     # ##   #
-    //   ##   ##     #
-    // ###     ##     ##
+    // MARK: static set
     /**
      * Updates the settings on the config.
      * @param {Settings} settings The settings to save into the configuration.
@@ -62,13 +43,7 @@ class ConfigFile {
         });
     }
 
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Retrieves a setting from the config.
      * @param {string} key The key to get the settings for.
