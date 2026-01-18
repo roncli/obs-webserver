@@ -6,7 +6,7 @@ const childProcess = require("child_process"),
     Notifications = require("../notifications"),
     OBSWebsocket = require("../obsWebsocket"),
     pjson = require("../../package.json"),
-    Spotify = require("../spotify"),
+    SMTC = require("../smtc"),
     Twitch = require("../twitch"),
     Websocket = require("../websocket");
 
@@ -176,63 +176,6 @@ class WebsocketListener {
                     command: data.command
                 });
 
-                break;
-            case "music":
-                switch (data.data.command) {
-                    case "play":
-                        {
-                            let okToSend = false;
-
-                            try {
-                                await Spotify.getSpotifyToken();
-                                await Spotify.spotify.setVolume(data.data.volume);
-                                await Spotify.spotify.play({uris: data.data.track ? [data.data.track] : void 0, "context_uri": data.data.uri});
-
-                                okToSend = true;
-                            } catch (err) {
-                                if (err.statusCode !== 404) {
-                                    Log.exception("There was an error playing Spotify.", err);
-                                }
-                            }
-
-                            if (okToSend) {
-                                Websocket.broadcast({
-                                    type: "updateSpotify"
-                                });
-                            }
-                        }
-
-                        break;
-                    case "stop":
-                        {
-                            let okToSend = false;
-
-                            try {
-                                await Spotify.getSpotifyToken();
-                                await Spotify.spotify.pause();
-
-                                okToSend = true;
-                            } catch (err) {
-                                if (err.statusCode === 403) {
-                                    // Forbidden from the Spotify API means that the player is already paused, which is fine.
-                                    okToSend = true;
-                                } else if (err.body && err.body.error && err.body.error.reason === "NO_ACTIVE_DEVICE") {
-                                    // Just ignore no active device because you can't pause if there's no active device.
-                                    okToSend = true;
-                                    return;
-                                } else {
-                                    Log.exception("There was an error pausing Spotify.", err);
-                                }
-                            }
-
-                            if (okToSend) {
-                                Websocket.broadcast({
-                                    type: "clearSpotify"
-                                });
-                            }
-                        }
-                        break;
-                }
                 break;
             case "transition":
                 await OBSWebsocket.start();

@@ -19,7 +19,7 @@ class Intro {
                                 const video = document.getElementById("video-intro");
                                 video.play();
                             }
-                            window.Home.stopSpotify();
+                            window.Home.stopSMTC();
                             break;
                     }
                     break;

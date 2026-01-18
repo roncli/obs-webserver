@@ -16,7 +16,7 @@ class AnalysisView {
     static get(data) {
         return /* html */`
             <div id="analysis">
-                <div id="spotify">${AnalysisView.SpotifyView.get()}</div>
+                <div id="smtc">${AnalysisView.SMTCView.get()}</div>
                 <div id="title">${AnalysisView.GameTitleView.get(data.data.title)}</div>
                 <div id="info">${AnalysisView.GameInfoView.get(data.data.info)}</div>
                 <div id="analysis-info">${AnalysisView.GameInfoView.get(data.data.analysis)}</div>
@@ -42,9 +42,9 @@ AnalysisView.GameInfoView = typeof GameInfoView === "undefined" ? require("./gam
 /** @type {typeof import("./game/recent")} */
 // @ts-ignore
 AnalysisView.GameRecentView = typeof GameRecentView === "undefined" ? require("./game/recent") : GameRecentView; // eslint-disable-line no-undef
-/** @type {typeof import("./spotify")} */
+/** @type {typeof import("./smtc")} */
 // @ts-ignore
-AnalysisView.SpotifyView = typeof SpotifyView === "undefined" ? require("./game/spotify") : SpotifyView; // eslint-disable-line no-undef
+AnalysisView.SMTCView = typeof SMTCView === "undefined" ? require("./smtc") : SMTCView; // eslint-disable-line no-undef
 /** @type {typeof import("./game/support")} */
 // @ts-ignore
 AnalysisView.GameSupportView = typeof GameSupportView === "undefined" ? require("./game/support") : GameSupportView; // eslint-disable-line no-undef

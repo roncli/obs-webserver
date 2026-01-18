@@ -13,7 +13,7 @@ class FrameBRBView {
             <div id="roncli-gaming-small"></div>
             <div id="whatever"></div>
             <div id="brb-text">Will Resume Shortly!</div>
-            <div id="spotify">${FrameBRBView.SpotifyView.get()}</div>
+            <div id="smtc">${FrameBRBView.SMTCView.get()}</div>
             <div id="social">
                 <div>
                     <div id="discord-icon"></div>
@@ -26,9 +26,9 @@ class FrameBRBView {
     }
 }
 
-/** @type {typeof import("../spotify")} */
+/** @type {typeof import("../smtc")} */
 // @ts-ignore
-FrameBRBView.SpotifyView = typeof SpotifyView === "undefined" ? require("./game/spotify") : this.SpotifyView; // eslint-disable-line no-undef
+FrameBRBView.SMTCView = typeof SMTCView === "undefined" ? require("./smtc") : this.SMTCView; // eslint-disable-line no-undef
 
 if (typeof module === "undefined") {
     window.FrameBRBView = FrameBRBView;

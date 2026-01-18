@@ -19,7 +19,6 @@ declare namespace ViewTypes {
 
     type ControlViewParameters = {
         discordChannels: DiscordChannel[]
-        spotifyPlaylists: SpotifyPlaylist[]
         actions: Action[]
     }
 
@@ -59,11 +58,6 @@ declare namespace ViewTypes {
             url: string
             title: string
         }[]
-    }
-
-    type SpotifyPlaylist = {
-        name?: string
-        uri?: string
     }
 }
 

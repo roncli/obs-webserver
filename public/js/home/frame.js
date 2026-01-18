@@ -11,8 +11,8 @@ class Frame {
     static start() {
         window.handleMessage = async (ev) => {
             switch (ev.type) {
-                case "updateSpotify":
-                    if (document.getElementById("spotify")) {
+                case "updateSMTC":
+                    if (document.getElementById("smtc")) {
                         const lastTrack = ev.track ? JSON.stringify({
                             artist: ev.track.artist,
                             title: ev.track.title,
@@ -20,7 +20,7 @@ class Frame {
                         }) : void 0;
 
                         if (lastTrack !== Frame.lastTrack) {
-                            document.getElementById("spotify").innerHTML = window.SpotifyView.get(ev.track);
+                            document.getElementById("smtc").innerHTML = window.SMTCView.get(ev.track);
                         }
 
                         Frame.lastTrack = lastTrack;
@@ -34,7 +34,7 @@ class Frame {
                                 const video = document.getElementById("video-trailer");
                                 video.play();
                             }
-                            window.Home.stopSpotify();
+                            window.Home.stopSMTC();
                             break;
                         case "trailer-done":
                             {
@@ -43,22 +43,22 @@ class Frame {
                                 video.classList.add("hidden");
                                 document.getElementById("content").animate({opacity: [0, 1, 1], transform: ["scale(0.6)", "scale(0.68)", "scale(1)"], offset: [0, 0.2, 1]}, {duration: 5000, easing: "ease-in-out"});
                             }
-                            window.Home.stopSpotify();
+                            window.Home.stopSMTC();
                             break;
                         case "webcam":
-                            window.Home.stopSpotify();
+                            window.Home.stopSMTC();
                             break;
                         case "brb":
                             await Frame.startBRB();
-                            window.Home.startSpotify();
+                            window.Home.startSMTC();
                             break;
                         case "ending":
                             await Frame.startEnding(ev.version);
-                            window.Home.stopSpotify();
+                            window.Home.stopSMTC();
                             break;
                         case "intro":
                             await Frame.startIntro();
-                            window.Home.stopSpotify();
+                            window.Home.stopSMTC();
                             break;
                     }
                     break;

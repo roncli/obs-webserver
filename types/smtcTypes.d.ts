@@ -1,4 +1,4 @@
-declare namespace SpotifyTypes {
+declare namespace SMTCTypes {
     type Track = {
         playing?: boolean
         progress?: number
@@ -9,4 +9,4 @@ declare namespace SpotifyTypes {
     }
 }
 
-export = SpotifyTypes
+export = SMTCTypes

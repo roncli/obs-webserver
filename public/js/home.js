@@ -1,5 +1,5 @@
 /**
- * @typedef {import("../../types/spotifyTypes").Track} SpotifyTypes.Track
+ * @typedef {import("../../types/smtcTypes").Track} SMTCTypes.Track
  */
 
 // MARK: class Home
@@ -14,26 +14,20 @@ class Home {
      */
     static DOMContentLoaded() {
         Home.startWebsocket();
-        Home.spotify = false;
+        Home.smtc = false;
     }
 
-    //                          ##                #     #      #
-    //                         #  #               #           # #
-    // # #    ##   # #    ##    #    ###    ##   ###   ##     #    #  #
-    // ####  #  #  # #   # ##    #   #  #  #  #   #     #    ###   #  #
-    // #  #  #  #  # #   ##    #  #  #  #  #  #   #     #     #     # #
-    // #  #   ##    #     ##    ##   ###    ##     ##  ###    #      #
-    //                               #                              #
+    // MARK: static moveSMTC
     /**
-     * Move Spotify to the specified top position.
+     * Move SMTC information to the specified top position.
      * @param {string} top The top position.
      * @returns {void}
      */
-    static moveSpotify(top) {
-        const spotify = document.getElementById("spotify");
+    static moveSMTC(top) {
+        const smtc = document.getElementById("smtc");
 
-        if (spotify) {
-            spotify.style.top = top;
+        if (smtc) {
+            smtc.style.top = top;
         }
     }
 
@@ -49,7 +43,7 @@ class Home {
 
         await window.Common.loadDataIntoTemplate("/api/config/roncliGaming", "#scene", window.AnalysisView.get);
 
-        Home.moveSpotify("");
+        Home.moveSMTC("");
 
         window.Game.start();
     }
@@ -65,7 +59,7 @@ class Home {
 
         await window.Common.loadDataIntoTemplate("/api/config/roncliGaming", "#scene", window.CTMView.get);
 
-        Home.moveSpotify("586px");
+        Home.moveSMTC("586px");
 
         window.Game.start();
     }
@@ -80,7 +74,7 @@ class Home {
 
         document.getElementById("scene").innerHTML = window.FrameView.get(true);
 
-        Home.moveSpotify("");
+        Home.moveSMTC("");
 
         window.Frame.start();
     }
@@ -97,7 +91,7 @@ class Home {
 
         await window.Common.loadDataIntoTemplate("/api/config/roncliGaming", "#scene", window.GameView.get);
 
-        Home.moveSpotify("");
+        Home.moveSMTC("");
 
         window.Game.start();
     }
@@ -122,7 +116,7 @@ class Home {
             bannerDiv.style.backgroundImage = `url(${banner})`;
         }
 
-        Home.moveSpotify("");
+        Home.moveSMTC("");
 
         window.Game.start();
     }
@@ -140,25 +134,19 @@ class Home {
         window.Intro.start();
     }
 
-    //         #                 #     ##                #     #      #
-    //         #                 #    #  #               #           # #
-    //  ###   ###    ###  ###   ###    #    ###    ##   ###   ##     #    #  #
-    // ##      #    #  #  #  #   #      #   #  #  #  #   #     #    ###   #  #
-    //   ##    #    # ##  #      #    #  #  #  #  #  #   #     #     #     # #
-    // ###      ##   # #  #       ##   ##   ###    ##     ##  ###    #      #
-    //                                      #                              #
+    // MARK: static startSMTC
     /**
-     * Starts the updating of Spotify.
+     * Starts the updating of SMTC information.
      * @returns {void}
      */
-    static startSpotify() {
-        Home.spotify = true;
+    static startSMTC() {
+        Home.smtc = true;
 
-        if (Home.spotifyTimeout) {
-            clearTimeout(Home.spotifyTimeout);
+        if (Home.smtcTimeout) {
+            clearTimeout(Home.smtcTimeout);
         }
 
-        Home.updateSpotify(5000);
+        Home.updateSMTC(5000);
     }
 
     // MARK: static async startTetris
@@ -222,13 +210,13 @@ class Home {
                 case "reset":
                     window.location.reload();
                     break;
-                case "updateSpotify":
-                    if (Home.spotify) {
-                        Home.startSpotify();
+                case "updateSMTC":
+                    if (Home.smtc) {
+                        Home.startSMTC();
                     }
                     return;
-                case "clearSpotify":
-                    Home.spotifyTrack = void 0;
+                case "clearSMTC":
+                    Home.smtcTrack = void 0;
                     break;
                 case "scene":
                     switch (data.scene) {
@@ -269,59 +257,47 @@ class Home {
         };
     }
 
-    //         #                 ##                #     #      #
-    //         #                #  #               #           # #
-    //  ###   ###    ##   ###    #    ###    ##   ###   ##     #    #  #
-    // ##      #    #  #  #  #    #   #  #  #  #   #     #    ###   #  #
-    //   ##    #    #  #  #  #  #  #  #  #  #  #   #     #     #     # #
-    // ###      ##   ##   ###    ##   ###    ##     ##  ###    #      #
-    //                    #           #                              #
+    // MARK: static stopSMTC
     /**
-     * Stops the updating of Spotify.
+     * Stops the updating of SMTC information.
      * @returns {void}
      */
-    static stopSpotify() {
-        if (Home.spotifyTimeout) {
-            clearTimeout(Home.spotifyTimeout);
+    static stopSMTC() {
+        if (Home.smtcTimeout) {
+            clearTimeout(Home.smtcTimeout);
         }
-        Home.spotify = false;
+        Home.smtc = false;
     }
 
-    //                #         #           ##                #     #      #
-    //                #         #          #  #               #           # #
-    // #  #  ###    ###   ###  ###    ##    #    ###    ##   ###   ##     #    #  #
-    // #  #  #  #  #  #  #  #   #    # ##    #   #  #  #  #   #     #    ###   #  #
-    // #  #  #  #  #  #  # ##   #    ##    #  #  #  #  #  #   #     #     #     # #
-    //  ###  ###    ###   # #    ##   ##    ##   ###    ##     ##  ###    #      #
-    //       #                                   #                              #
+    // MARK: static async updateSMTC
     /**
-     * Updates the currently playing Spotify track.
+     * Updates the currently playing SMTC information.
      * @param {number} interval The interval in milliseconds to update the information.
      * @returns {void}
      */
-    static async updateSpotify(interval) {
+    static async updateSMTC(interval) {
         let thisInterval;
 
         try {
-            Home.spotifyTrack = await window.Spotify.readSpotify();
+            Home.smtcTrack = await window.SMTC.readSMTC();
 
-            if (Home.spotifyTrack.playing) {
-                thisInterval = Math.min(1000 + Home.spotifyTrack.duration - Home.spotifyTrack.progress || interval, interval);
+            if (Home.smtcTrack.playing) {
+                thisInterval = Math.min(1000 + Home.smtcTrack.duration - Home.smtcTrack.progress || interval, interval);
             } else {
-                Home.spotifyTrack = void 0;
+                Home.smtcTrack = void 0;
                 thisInterval = void 0;
             }
 
             if (window.handleMessage) {
                 window.handleMessage({
-                    type: "updateSpotify",
-                    track: Home.spotifyTrack
+                    type: "updateSMTC",
+                    track: Home.smtcTrack
                 });
             }
         } catch (err) {
         } finally {
-            Home.spotifyTimeout = setTimeout(() => {
-                Home.updateSpotify(interval);
+            Home.smtcTimeout = setTimeout(() => {
+                Home.updateSMTC(interval);
             }, thisInterval || interval);
         }
     }
@@ -333,13 +309,13 @@ Home.data = {
     achievements: []
 };
 
-Home.spotify = false;
+Home.smtc = false;
 
 /** @type {NodeJS.Timeout} */
-Home.spotifyTimeout = void 0;
+Home.smtcTimeout = void 0;
 
-/** @type {SpotifyTypes.Track} */
-Home.spotifyTrack = void 0;
+/** @type {SMTCTypes.Track} */
+Home.smtcTrack = void 0;
 
 /** @type {WebSocket} */
 Home.ws = void 0;

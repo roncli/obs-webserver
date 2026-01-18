@@ -291,37 +291,6 @@ class Control {
             }
         });
 
-        document.getElementById("music").addEventListener("click", (ev) => {
-            /** @type {HTMLButtonElement} */
-            const button = ev.target;
-
-            if (button && button.matches("button.music-play")) {
-                /** @type {HTMLSelectElement} */
-                const musicList = document.getElementById("music-list");
-
-                const music = musicList.options[musicList.selectedIndex];
-
-                Control.ws.send(JSON.stringify({
-                    type: "music",
-                    data: {
-                        command: "play",
-                        name: music.value,
-                        uri: music.dataset.uri,
-                        volume: button.dataset.volume
-                    }
-                }));
-            }
-
-            if (button && button.matches("button#music-stop")) {
-                Control.ws.send(JSON.stringify({
-                    type: "music",
-                    data: {
-                        command: "stop"
-                    }
-                }));
-            }
-        });
-
         document.getElementById("timer").addEventListener("click", (ev) => {
             /** @type {HTMLButtonElement} */
             const button = ev.target;
@@ -567,20 +536,6 @@ class Control {
                                 option.classList.add("channel");
                                 option.dataset.guildId = channel.guildId;
                                 option.dataset.channelId = channel.channelId;
-                                select.add(option);
-                            }
-                            break;
-                        }
-                        case "spotifyPlaylists": {
-                            /** @type {HTMLSelectElement} */
-                            const select = document.getElementById("music-list");
-
-                            select.innerHTML = "";
-
-                            for (const music of data.data.data) {
-                                const option = new Option(music.name);
-                                option.classList.add("music");
-                                option.dataset.uri = music.uri;
                                 select.add(option);
                             }
                             break;

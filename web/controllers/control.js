@@ -36,7 +36,6 @@ class Control {
             {css: ["/css/control.css"], js: ["/js/control.js"]},
             ControlView.get({
                 discordChannels: ConfigFile.get("discordChannels") || [],
-                spotifyPlaylists: ConfigFile.get("spotifyPlaylists") || [],
                 actions: ConfigFile.get("actions") || []
             })
         ));

@@ -16,7 +16,7 @@ class CTMView {
     static get(data) {
         return /* html */`
             <div id="ctm">
-                <div id="spotify">${CTMView.SpotifyView.get()}</div>
+                <div id="smtc">${CTMView.SMTCView.get()}</div>
                 <div id="title">${CTMView.GameTitleView.get(data.data.title)}</div>
                 <div id="info">${CTMView.GameInfoView.get(data.data.info)}</div>
                 <div id="notification"></div>
@@ -29,9 +29,9 @@ class CTMView {
 /** @type {typeof import("./game/info")} */
 // @ts-ignore
 CTMView.GameInfoView = typeof GameInfoView === "undefined" ? require("./game/info") : GameInfoView; // eslint-disable-line no-undef
-/** @type {typeof import("./spotify")} */
+/** @type {typeof import("./smtc")} */
 // @ts-ignore
-CTMView.SpotifyView = typeof SpotifyView === "undefined" ? require("./game/spotify") : SpotifyView; // eslint-disable-line no-undef
+CTMView.SMTCView = typeof SMTCView === "undefined" ? require("./game/smtc") : SMTCView; // eslint-disable-line no-undef
 /** @type {typeof import("./game/title")} */
 // @ts-ignore
 CTMView.GameTitleView = typeof GameTitleView === "undefined" ? require("./game/title") : GameTitleView; // eslint-disable-line no-undef

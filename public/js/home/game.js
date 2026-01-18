@@ -156,7 +156,7 @@ class Game {
                             break;
                     }
                     break;
-                case "updateSpotify":
+                case "updateSMTC":
                     {
                         const lastTrack = ev.track ? JSON.stringify({
                             artist: ev.track.artist,
@@ -165,14 +165,14 @@ class Game {
                         }) : void 0;
 
                         if (lastTrack !== Game.lastTrack) {
-                            document.getElementById("spotify").innerHTML = window.SpotifyView.get(ev.track);
+                            document.getElementById("smtc").innerHTML = window.SMTCView.get(ev.track);
                         }
 
                         Game.lastTrack = lastTrack;
                     }
                     break;
-                case "clearSpotify":
-                    document.getElementById("spotify").innerHTML = "";
+                case "clearSMTC":
+                    document.getElementById("smtc").innerHTML = "";
                     break;
                 case "elapsed":
                     window.Home.data.elapsedStart = new Date();
@@ -887,7 +887,7 @@ class Game {
             }
         };
 
-        window.Home.startSpotify();
+        window.Home.startSMTC();
     }
 }
 

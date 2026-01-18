@@ -16,7 +16,7 @@ class HeadToHeadView {
     static get(data) {
         return /* html */`
             <div id="head-to-head">
-                <div id="spotify">${HeadToHeadView.SpotifyView.get()}</div>
+                <div id="smtc">${HeadToHeadView.SMTCView.get()}</div>
                 <div id="title">${HeadToHeadView.GameTitleView.get(data.data.title)}</div>
                 <div id="support">${HeadToHeadView.GameSupportView.get()}</div>
                 <div id="display-1"></div>
@@ -54,9 +54,9 @@ HeadToHeadView.Common = typeof Common === "undefined" ? require("../../../web/in
 /** @type {typeof import("./game/recent")} */
 // @ts-ignore
 HeadToHeadView.GameRecentView = typeof GameRecentView === "undefined" ? require("./game/recent") : GameRecentView; // eslint-disable-line no-undef
-/** @type {typeof import("./spotify")} */
+/** @type {typeof import("./smtc")} */
 // @ts-ignore
-HeadToHeadView.SpotifyView = typeof SpotifyView === "undefined" ? require("./game/spotify") : SpotifyView; // eslint-disable-line no-undef
+HeadToHeadView.SMTCView = typeof SMTCView === "undefined" ? require("./smtc") : SMTCView; // eslint-disable-line no-undef
 /** @type {typeof import("./game/support")} */
 // @ts-ignore
 HeadToHeadView.GameSupportView = typeof GameSupportView === "undefined" ? require("./game/support") : GameSupportView; // eslint-disable-line no-undef

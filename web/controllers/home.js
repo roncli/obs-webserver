@@ -21,7 +21,7 @@ class Home {
     static get(req, res) {
         res.status(200).send(Common.page(
             "",
-            {css: ["/css/home.css", "/css/blockrain/blockrain.css"], js: ["/js/spotify.js", "/js/home.js", "/views/home/spotify.js", "/js/common/elapsed.js", "/js/jquery/jquery.js", "/js/blockrain/blockrain.jquery.js"]},
+            {css: ["/css/home.css", "/css/blockrain/blockrain.css"], js: ["/js/smtc.js", "/js/home.js", "/views/home/smtc.js", "/js/common/elapsed.js", "/js/jquery/jquery.js", "/js/blockrain/blockrain.jquery.js"]},
             HomeView.get()
         ));
     }

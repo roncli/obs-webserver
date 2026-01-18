@@ -9,29 +9,29 @@ div#scene {
     overflow: hidden;
 }
 
-div#spotify {
+div#smtc {
     position: absolute;
     top: 7px;
     right: 7px;
 }
 
-div#spotify div {
+div#smtc div {
     display: inline-block;
     vertical-align: top;
 }
 
-div#spotify .now-playing {
+div#smtc .now-playing {
     color: white;
     font-size: 22px;
     max-width: 426px;
     text-align: right;
 }
 
-div#spotify .artwork {
+div#smtc .artwork {
     margin-left: 10px;
 }
 
-div#spotify .artwork img {
+div#smtc .artwork img {
     width: 64px;
     height: 64px;
 }

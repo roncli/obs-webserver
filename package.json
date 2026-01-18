@@ -13,6 +13,7 @@
         "url": "https://github.com/roncli/obs-webserver.git"
     },
     "dependencies": {
+        "@coooookies/windows-smtc-monitor": "1.0.12",
         "@root/request": "1.9.2",
         "@twurple/api": "7.2.1",
         "@twurple/auth": "7.2.1",
@@ -29,7 +30,6 @@
         "nconf": "0.12.1",
         "obs-websocket-js": "5.0.6",
         "socket.io-client": "2.5.0",
-        "spotify-web-api-node": "5.0.2",
         "terser": "5.39.0",
         "wled": "1.1.0"
     },
@@ -46,5 +46,8 @@
         "node": ">=16.6.0"
     },
     "private": true,
-    "scripts": {}
+    "scripts": {
+        "reinstall": "(if exist node_modules rmdir /s /q node_modules) & npm install",
+        "run": "node ."
+    }
 }
