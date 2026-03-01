@@ -44,6 +44,30 @@ class Lighting {
         Lighting.data.lights.main.lights.set(16, new Color(0, 113, 206));
     }
 
+    // MARK: static initCTL
+    /**
+     * Initialize the main lighting with the CTL lighting.
+     * @returns {void}
+     */
+    static initCTL() {
+        Lighting.data.lights.ctl.lights.set(1, new Color(0, 0, 255));
+        Lighting.data.lights.ctl.lights.set(2, new Color(0, 0, 255));
+        Lighting.data.lights.ctl.lights.set(3, new Color(0, 0, 255));
+        Lighting.data.lights.ctl.lights.set(4, new Color(0, 0, 255));
+        Lighting.data.lights.ctl.lights.set(5, new Color(255, 255, 255));
+        Lighting.data.lights.ctl.lights.set(6, new Color(255, 0, 0));
+        Lighting.data.lights.ctl.lights.set(7, new Color(255, 255, 255));
+        Lighting.data.lights.ctl.lights.set(8, new Color(255, 0, 0));
+        Lighting.data.lights.ctl.lights.set(9, new Color(255, 0, 0));
+        Lighting.data.lights.ctl.lights.set(10, new Color(255, 255, 255));
+        Lighting.data.lights.ctl.lights.set(11, new Color(255, 0, 0));
+        Lighting.data.lights.ctl.lights.set(12, new Color(255, 255, 255));
+        Lighting.data.lights.ctl.lights.set(13, new Color(0, 0, 255));
+        Lighting.data.lights.ctl.lights.set(14, new Color(0, 0, 255));
+        Lighting.data.lights.ctl.lights.set(15, new Color(0, 0, 255));
+        Lighting.data.lights.ctl.lights.set(16, new Color(0, 0, 255));
+    }
+
     // MARK: static startAnimation
     /**
      * Starts animation for the current lighting setup.
@@ -75,7 +99,12 @@ Lighting.data = {
     lights: {
         main: {
             lights: new Lights(),
-            animation: () => {},
+            animation: () => { },
+            animationDelay: 0
+        },
+        ctl: {
+            lights: new Lights(),
+            animation: () => { },
             animationDelay: 0
         },
         fire: {

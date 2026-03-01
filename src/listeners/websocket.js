@@ -2,11 +2,9 @@ const childProcess = require("child_process"),
 
     ConfigFile = require("../configFile"),
     Lighting = require("../lighting"),
-    Log = require("../logging/log"),
     Notifications = require("../notifications"),
     OBSWebsocket = require("../obsWebsocket"),
     pjson = require("../../package.json"),
-    SMTC = require("../smtc"),
     Twitch = require("../twitch"),
     Websocket = require("../websocket");
 
@@ -47,6 +45,8 @@ class WebsocketListener {
 
                 if (data.data.lighting === "main") {
                     Lighting.initShowcase();
+                } else if (data.data.lighting === "ctl") {
+                    Lighting.initCTL();
                 }
 
                 Lighting.data.currentLights = data.data.lighting;

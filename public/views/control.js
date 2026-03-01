@@ -51,6 +51,7 @@ class ControlView {
                 <select id="lighting-list">
                     <option class="lighting" data-lighting="fire">Fire</option>
                     <option class="lighting" data-lighting="main">Main</option>
+                    <option class="lighting" data-lighting="ctl">CTL</option>
                 </select>
                 <button id="lighting-go">Go</button>
             </div>
