@@ -9,6 +9,8 @@ const WinSMTC = require("@coooookies/windows-smtc-monitor");
  * A class that reads System Media Transport Controls (SMTC) information.
  */
 class SMTC {
+    static #smtc = new WinSMTC.SMTCMonitor();
+
     // MARK: static #splitArtistAndAlbum
     /**
      * Splits a raw artist and album string into separate artist and album strings.
@@ -38,7 +40,7 @@ class SMTC {
      * @returns {SMTCTypes.Track} The current track information.
      */
     static getCurrentTrack() {
-        const sessions = WinSMTC.SMTCMonitor.getMediaSessions();
+        const sessions = SMTC.#smtc.sessions;
 
         if (sessions.length === 0) {
             return {};
